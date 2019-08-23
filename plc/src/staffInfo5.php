@@ -143,6 +143,7 @@ $ini = parse_ini_file('../common.ini', FALSE);
         }
     }
     
+    $fButton = "<div class='headbutton'><a href='staffInfo1.php'><img src='../img/back.png'></a></div>";
 ?>
 <!DOCTYPE html>
 <html>
