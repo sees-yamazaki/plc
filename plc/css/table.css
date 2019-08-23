@@ -1,0 +1,197 @@
+table.vw {
+  border-collapse:separate;
+  border-spacing: 0;
+    margin: 0 auto;
+}
+
+table.vw th:first-child{
+  border-radius: 5px 0 0 0;
+}
+
+table.vw th:last-child{
+  border-radius: 0 5px 0 0;
+  border-right: 1px solid #3c6690;
+}
+
+table.vw th{
+  text-align: center;
+  color:white;
+  background: linear-gradient(#829ebc,#225588);
+  border-left: 1px solid #3c6690;
+  border-top: 1px solid #3c6690;
+  border-bottom: 1px solid #3c6690;
+  box-shadow: 0px 1px 1px rgba(255,255,255,0.3) inset;
+  padding: 10px 0;
+}
+
+table.vw th.add{
+  text-align: center;
+  color:white;
+  background: linear-gradient(#f8b862,#f39800);
+  border-left: 1px solid #3c6690;
+  border-top: 1px solid #3c6690;
+  border-bottom: 1px solid #3c6690;
+  box-shadow: 0px 1px 1px rgba(255,255,255,0.3) inset;
+  padding: 5px 0;
+}
+
+table.vw td{
+  text-align: center;
+  border-left: 1px solid #a8b7c5;
+  border-bottom: 1px solid #a8b7c5;
+  border-top:none;
+  box-shadow: 0px -3px 5px 1px #eee inset;
+  padding: 10px 0;
+    background-color: white;
+    vertical-align: middle;
+}
+
+table.vw td:last-child{
+  border-right: 1px solid #a8b7c5;
+}
+
+table.vw tr:last-child td:first-child {
+  border-radius: 0 0 0 5px;
+}
+
+table.vw tr:last-child td:last-child {
+  border-radius: 0 0 5px 0;
+}
+    
+/* thin */    
+table.vw2 {
+  border-collapse:separate;
+  border-spacing: 0;
+    margin: 0 auto;
+}
+
+table.vw2 th:first-child{
+  border-radius: 3px 0 0 0;
+}
+
+table.vw2 th:last-child{
+  border-radius: 0 5px 0 0;
+  border-right: 1px solid #3c6690;
+}
+
+table.vw2 th{
+  text-align: center;
+  color:white;
+  background: linear-gradient(#829ebc,#225588);
+  border-left: 1px solid #3c6690;
+  border-top: 1px solid #3c6690;
+  border-bottom: 1px solid #3c6690;
+  box-shadow: 0px 1px 1px rgba(255,255,255,0.3) inset;
+  padding: 5px 0;
+}
+
+table.vw2 th.add{
+  text-align: center;
+  color:white;
+  background: linear-gradient(#f8b862,#f39800);
+  border-left: 1px solid #3c6690;
+  border-top: 1px solid #3c6690;
+  border-bottom: 1px solid #3c6690;
+  box-shadow: 0px 1px 1px rgba(255,255,255,0.3) inset;
+  padding: 5px 0;
+}
+
+table.vw2 td{
+  text-align: center;
+  border-left: 1px solid #a8b7c5;
+  border-bottom: 1px solid #a8b7c5;
+  border-top:none;
+  box-shadow: 0px -3px 5px 1px #eee inset;
+  padding: 1px 0;
+    background-color: white;
+    vertical-align: middle;
+}
+table.vw2 td:last-child{
+  border-right: 1px solid #a8b7c5;
+}
+
+table.vw2 tr:last-child td:first-child {
+  border-radius: 0 0 0 5px;
+}
+
+table.vw2 tr:last-child td:last-child {
+  border-radius: 0 0 5px 0;
+}
+    
+    
+    
+/* calendar */    
+table.cal {
+  border-collapse:separate;
+  border-spacing: 0;
+    margin: 0 auto;
+}
+
+table.cal th:first-child{
+  border-radius: 3px 0 0 0;
+}
+
+table.cal th:last-child{
+  border-radius: 0 5px 0 0;
+  border-right: 1px solid #3c6690;
+}
+
+table.cal th{
+  text-align: center;
+  color:white;
+  background: linear-gradient(#829ebc,#225588);
+  border-left: 1px solid #3c6690;
+  border-top: 1px solid #3c6690;
+  border-bottom: 1px solid #3c6690;
+  box-shadow: 0px 1px 1px rgba(255,255,255,0.3) inset;
+  padding: 5px 0;
+    width:130px
+}
+
+table.cal th.add{
+  text-align: center;
+  color:white;
+  background: linear-gradient(#f8b862,#f39800);
+  border-left: 1px solid #3c6690;
+  border-top: 1px solid #3c6690;
+  border-bottom: 1px solid #3c6690;
+  box-shadow: 0px 1px 1px rgba(255,255,255,0.3) inset;
+  padding: 5px 0;
+}
+
+table.cal td{
+  text-align: center;
+  border-left: 1px solid #a8b7c5;
+  border-bottom: 1px solid #a8b7c5;
+  border-top:none;
+  box-shadow: 0px -3px 5px 1px #eee inset;
+  padding: 1px 0;
+    background-color: white;
+    vertical-align: middle;
+}
+table.cal td:last-child{
+  border-right: 1px solid #a8b7c5;
+}
+
+table.cal tr:last-child td:first-child {
+  border-radius: 0 0 0 5px;
+}
+
+table.cal tr:last-child td:last-child {
+  border-radius: 0 0 5px 0;
+}
+.fSmall {
+  font-size: 0.8rem;
+}
+
+table.cal td.late {
+  background-color:#f5b1aa; 
+}
+
+table.cal td.safe {
+  background-color:#89c3eb; 
+}
+
+td.sumrow {
+  background-color:#d3cfd9;
+}

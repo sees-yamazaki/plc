@@ -1,0 +1,367 @@
+.btn-sticky {
+    display: inline-block;
+    width: 200px;
+    height: 80px;
+    font-size: 1.5em;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    background-color: transparent;
+    border: 2px solid #777;
+    color: #777;
+    line-height: 80px;
+    padding-left: 20px auto;
+}
+
+.btn-sticky:hover {
+    background-color: rgba(0, 0, 0, .2);
+}
+
+.btn-sticky-wide {
+    display: inline-block;
+    width: 100%;
+    height: 80px;
+    font-size: 1.5em;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    background-color: transparent;
+    border: 2px solid #777;
+    color: #777;
+    line-height: 80px;
+    padding-left: 20px auto;
+}
+
+.btn-sticky-wide:hover {
+    background-color: rgba(0, 0, 0, .2);
+}
+
+.headTitle {
+    z-index: 999;
+}
+
+.headbutton {
+    z-index: 999;
+    padding-top: 80px;
+}
+
+.btn-sticky-off {
+    display: inline-block;
+    width: 200px;
+    height: 80px;
+    font-size: 1.5em;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    background-color: transparent;
+    border: 2px solid #ddd;
+    color: #ddd;
+    line-height: 80px;
+    padding-left: 20px auto;
+}
+
+.btn-flat-simple {
+    position: relative;
+    display: inline-block;
+    font-weight: bold;
+    padding: 0.25em 0.5em;
+    text-decoration: none;
+    color: #00BCD4;
+    background: #ECECEC;
+    transition: .4s;
+    font-size: 3em;
+}
+
+.btn-flat-simple:hover {
+    background: #00bcd4;
+    color: white;
+}
+
+
+/* :::::::::::::::: */
+
+.fnt1em {
+    font-size: 1em;
+}
+
+.fnt1p5em {
+    font-size: 1.5em;
+}
+
+.fnt2em {
+    font-size: 2em;
+}
+
+.fnt3em {
+    font-size: 3em;
+}
+
+.titleYM {
+    color: #295890;
+    font-weight: 600;
+}
+
+input.month {
+    width: 200px;
+}
+
+.err {
+    color: red;
+    font-weight: 600;
+}
+
+table.work {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 0px 15px;
+    padding-top: 140px;
+}
+
+table.work th,
+table.work td {
+    padding: 10px;
+}
+
+table.work th {
+    background: #295890;
+    vertical-align: middle;
+    text-align: left;
+    width: 40%;
+    overflow: visible;
+    position: relative;
+    color: #fff;
+    font-weight: normal;
+}
+
+table.work th:after {
+    left: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(136, 183, 213, 0);
+    border-left-color: #295890;
+    border-width: 10px;
+    margin-top: -10px;
+}
+
+table.work1st {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 0px 3px;
+    padding-top: 140px;
+}
+
+table.work2nd {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 0px 3px;
+    padding-top: 20px;
+}
+
+table.work1st th,
+table.work2nd th {
+    background: #295890;
+    vertical-align: middle;
+    text-align: left;
+    width: 40%;
+    overflow: visible;
+    position: relative;
+    color: #fff;
+    font-weight: normal;
+    padding: 8px;
+}
+
+table.work1st td,
+table.work2nd td {
+    padding: 8px;
+    background: #ddd;
+}
+
+
+/* firefox */
+
+@-moz-document url-prefix() {
+    table.work th::after {
+        float: right;
+        padding: 0;
+        left: 30px;
+        top: 10px;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: relative;
+        pointer-events: none;
+        border: 10px solid transparent;
+        border-left: #295890 10px solid;
+        margin-top: -10px;
+    }
+}
+
+table.work td.time {
+    background: #f8f8f8;
+    width: 30%;
+    padding-left: 20px;
+}
+
+table.work td.btn {
+    background: #f8f8f8;
+    width: 30%;
+    padding-left: 20px;
+}
+
+table.cal {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 0px 5px;
+    padding-top: 140px;
+}
+
+table.cal th,
+table.cal td {
+    padding: 10px;
+}
+
+table.cal th {
+    background: #295890;
+    vertical-align: middle;
+    text-align: left;
+    width: 30%;
+    overflow: visible;
+    position: relative;
+    color: #fff;
+    font-weight: normal;
+    padding-left: 20px;
+}
+
+table.cal td.plan {
+    background: #f8f8f8;
+    padding-left: 20px;
+}
+
+.inf {
+    padding-top: 140px;
+}
+
+.boxDate {
+    margin: 0 auto;
+    text-align: center;
+    color: #FFF;
+    width: 80%;
+    background: #6fb2e5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.22);
+    font-size: 2em;
+}
+
+.box30 {
+    margin: 0 auto;
+    text-align: center;
+    width: 80%;
+    background: #f1f1f1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.22);
+    font-size: 2em;
+}
+
+.box30 .box-title {
+    font-size: 1.2em;
+    background: #5fc2f5;
+    padding: 4px;
+    text-align: center;
+    color: #FFF;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+.box30 p {
+    padding: 15px 20px;
+    margin: 0;
+}
+
+.wrapper {
+    min-height: 100vh;
+    position: relative;
+    /*←相対位置*/
+    padding-bottom: 120px;
+    /*←footerの高さ*/
+    box-sizing: border-box;
+    /*←全て含めてmin-height:100vhに*/
+}
+
+footer {
+    width: 100%;
+    background-color: #cccccc;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    position: absolute;
+    /*←絶対位置*/
+    bottom: 0;
+    /*下に固定*/
+}
+
+input.txt {
+    outline: none;
+    display: block;
+    width: 100%;
+    border: 1px solid #d9d9d9;
+    margin: 0 0 20px;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    font-weight: 400;
+    transition: 0.3s ease;
+    font-size: 2em;
+}
+
+.txtS {
+    outline: none;
+    display: block;
+    width: 100%;
+    border: 1px solid #d9d9d9;
+    margin: 0 0 0px;
+    padding: 5px;
+    box-sizing: border-box;
+    font-weight: 400;
+    transition: 0.3s ease;
+    font-size: 1em;
+}
+
+input.time {
+    outline: none;
+    display: block;
+    width: 100%;
+    border: 1px solid #d9d9d9;
+    box-sizing: border-box;
+    font-weight: 400;
+    transition: 0.3s ease;
+    font-size: 2em;
+}
+
+.required {
+    color: red;
+}
+
+td.edit {
+    text-align: center;
+    background-color: #ffffff !important;
+}
+
+td.edit button {
+    background: #aaa;
+    width: 50%;
+    padding: 10px 15px;
+    color: #fff;
+    font-size: 1em;
+}
