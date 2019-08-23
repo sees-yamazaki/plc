@@ -159,8 +159,6 @@ $ini = parse_ini_file('../common.ini', FALSE);
 <body>
 
     <?php include('./staffMenu.php'); ?>
-
-    <button onclick="location.href='staffInfo1.php'" class="floating"><img src="../img/back.png"></button>
     
     <form action="staffInfo5.php" method="POST">
         <table class="work fnt2em">
