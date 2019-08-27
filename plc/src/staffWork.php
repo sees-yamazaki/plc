@@ -124,7 +124,6 @@ session_start();
         }
     }
 
-    $fButton = "<div class='headbutton'><a href='staff.php'><img src='../img/home.png'></a></div>";
 
 ?>
 <!DOCTYPE html>
@@ -142,6 +141,8 @@ session_start();
 <body>
 
     <?php include('./staffMenu.php'); ?>
+
+    <div class='headbutton'><a href='staff.php'><img src='../img/home.png'></a></div>
 
     <?php echo $errorMessage; ?>
 

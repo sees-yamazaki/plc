@@ -308,7 +308,6 @@ require_once 'date.php';
         }
     }
 
-    $fButton = "<div class='headbutton'><a href='staff.php'><img src='../img/home.png'></a></div>";
 ?>
 <!DOCTYPE html>
 <html>
@@ -327,11 +326,13 @@ require_once 'date.php';
 
         <?php include('./staffMenu.php'); ?>        
 
+    <div class='headbutton'><a href='staff.php'><img src='../img/home.png'></a></div>
+
         <form action="staffRec.php" method="post">
         <table class="cal fnt2em">
         <tr><td colspan=4 class="err"><?php echo $errorMessage; ?></td></tr>
             <tr>
-                <td class="titleYM" colspan=3><?php echo $nextY; ?> / <?php echo $nextM; ?>　:
+                <td class="titleYM  fnt1p5em" colspan=3><?php echo $nextY; ?> / <?php echo $nextM; ?>　:
                  <?php echo $statusTitle; ?></td>
             </tr>
             <?php echo $html; ?>

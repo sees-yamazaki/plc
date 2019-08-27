@@ -57,6 +57,14 @@ function delcheck() {
     }
 }
 
+function rePWcheck() {
+    if (window.confirm('パスワードを初期化してもよろしいですか？')) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function pwcheck() {
     var element = document.getElementById("password");
     var element2 = document.getElementById("pass");

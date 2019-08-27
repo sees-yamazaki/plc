@@ -112,7 +112,6 @@ $ini = parse_ini_file('../common.ini', FALSE);
         }
     }
 
-    $fButton = "<div class='headbutton'><a href='staff.php'><img src='../img/home.png'></a></div>";
 
 ?>
 <!DOCTYPE html>
@@ -130,6 +129,8 @@ $ini = parse_ini_file('../common.ini', FALSE);
 <body>
 
     <?php include('./staffMenu.php'); ?>
+
+    <div class='headbutton'><a href='staff.php'><img src='../img/home.png'></a></div>
 
     <form action="staffInfo2.php" method="POST">
         <table class="work1st">

@@ -56,7 +56,6 @@ if(!empty($_SESSION['MSG'])){
         }
     }
 
-    $fButton = "";
 ?>
 <!DOCTYPE html>
 <html>

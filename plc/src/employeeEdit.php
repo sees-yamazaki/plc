@@ -507,13 +507,24 @@
             <tr>
                 <th><span class="required">属性</span></th>
                 <td>
-                    <?php if(!isset($kind) || $kind=="1"){ ?>
-                    <input type="radio" id="kind1" name="kind" value="1" required checked>CP
-                    <input type="radio" name="kind" value="2">派遣社員
-                    <?php }else{ ?>
-                    <input type="radio" id="kind1" name="kind" value="1" required>CP
-                    <input type="radio" name="kind" value="2" checked>派遣社員
-                    <?php } ?>
+                    <?php 
+                    if(!isset($kind) || $kind=="1"){ 
+                        $kind1 = "checked";
+                        $kind2 = "";
+                        $kind3 = "";
+                    }elseif($kind=="2"){
+                        $kind1 = "";
+                        $kind2 = "checked";
+                        $kind3 = "";
+                    }elseif($kind=="3"){
+                        $kind1 = "";
+                        $kind2 = "";
+                        $kind3 = "checked";
+                    }
+                    ?>
+                    <input type="radio" id="kind1" name="kind" value="1" required <?php echo $kind1; ?>>CP
+                    <input type="radio" name="kind" value="2" <?php echo $kind2; ?>>派遣社員
+                    <input type="radio" name="kind" value="3" <?php echo $kind3; ?>>社員
                 </td>
             </tr>
             <tr>

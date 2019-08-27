@@ -22,22 +22,28 @@ if (isset($_POST["login"])) {
         // 入力したユーザIDを格納
         $userid = $_POST["userid"];
 
+        $sql_histry = "INSERT INTO `login_history`(`login_id`, `login_pw`, `login_result`, `login_addr`, `login_referer`, `login_agent`) VALUES (?,?,?,?,?,?)";
+        $sv_addr = $_SERVER['REMOTE_ADDR'];
+        $sv_referer = $_SERVER['HTTP_REFERER'];
+        $sv_agent = $_SERVER['HTTP_USER_AGENT'];
+
         // 3. エラー処理
         try {
 
             require_once 'src/dns.php';
-
+            
             $stmt = $pdo->prepare('SELECT * FROM employee WHERE employee_id = ?');
-
             $stmt->execute(array($userid));
-
             $password = $_POST["password"];
 
             if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
                 //if (password_verify($password, $row['user_pass'])) {
                 if (strcmp($password, $row['employee_pw'])==0) {
-//                    session_regenerate_id(true);
+
+                    // login-log
+                    $stmt2 = $pdo->prepare($sql_histry);
+                    $stmt2->execute(array( $userid, $password,0, $sv_addr, $sv_referer, $sv_agent));
 
                     // 入力したIDのユーザー名を取得
                     $id = $row['employee_seq'];
@@ -57,10 +63,19 @@ if (isset($_POST["login"])) {
                     }
                     exit();  // 処理終了
                 } else {
+
+                    // login-log
+                    $stmt2 = $pdo->prepare($sql_histry);
+                    $stmt2->execute(array( $userid, $password,1, $sv_addr, $sv_referer, $sv_agent));
+
                     // 認証失敗
                     $errorMessage = 'ユーザーIDあるいはパスワードに誤りがあります。';
                 }
             } else {
+                // login-log
+                $stmt2 = $pdo->prepare($sql_histry);
+                $stmt2->execute(array( $userid, $password,1, $sv_addr, $sv_referer, $sv_agent));
+
                 $errorMessage = 'ユーザーIDあるいはパスワードに誤りがあります。';
             }
         } catch (PDOException $e) {

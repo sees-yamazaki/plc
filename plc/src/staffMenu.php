@@ -3,7 +3,6 @@
         <span class="hiraku-open-btn-line"></span>
     </button>
     <div class="headTitle">PLC 勤怠管理システム</div>
-    <?php echo $fButton; ?>
 </header>
 <div class="offcanvas-left">
     <table style="width:90%; background-color: #999; border-spacing: 0px 45px;">

@@ -188,8 +188,10 @@
                 <td>
                     <?php if(!isset($kind) || $kind=="1"){ ?>
                     CP
-                    <?php }else{ ?>
+                    <?php }elseif($kind=="2"){ ?>
                     派遣社員
+                    <?php }else{ ?>
+                    社員
                     <?php } ?>
                 </td>
             </tr>

@@ -66,14 +66,16 @@ require_once 'date.php';
             $realNextTime = getTimestamp_RealNextMonth();
             $realNextY = date('Y',  $realNextTime);
             $realNextM = date('m',  $realNextTime);
-            $status="2";
             if($wY==$realNextY && $wM==$realNextM){
                 $stmt = $pdo->prepare('SELECT * FROM auth_work WHERE employee_seq = ? and work_y = ? and work_m = ? ');
                 $stmt->execute(array($uSeq,$realNextY,$realNextM));
                 if($row = $stmt->fetch()){
                     $status = $row['status'];
+                }else{
+                    $status="0";
                 }
-
+            }else{
+                $status="2";
             }
             
         } catch (PDOException $e) {
@@ -85,7 +87,7 @@ require_once 'date.php';
         }
     }
 
-    $fButton = "<div class='headbutton'><a href='staff.php'><img src='../img/home.png'></a></div>";
+    //$fButton = "<div class='headbutton'><a href='staff.php'><img src='../img/home.png'></a></div>";
 ?>
 <!DOCTYPE html>
 <html>
@@ -104,12 +106,14 @@ require_once 'date.php';
 
         <?php include('./staffMenu.php'); ?>
 
+        <div class='headbutton'><a href='staff.php'><img src='../img/home.png'></a></div>
+
         <?php echo $errorMessage; ?>
 
         <table class="cal fnt2em">
             <tr>
                 <td style="text-align:left"><a href="staffCal.php?ty=<?php echo $lastY; ?>&tm=<?php echo $lastM; ?>" class="btn-sticky">＜＜</a></td>
-                <td class="titleYM"><?php echo $wY; ?> / <?php echo $wM; ?></td>
+                <td class="titleYM fnt1p5em"><?php echo $wY; ?> / <?php echo $wM; ?></td>
                 <td style="text-align:right"><a href="staffCal.php?ty=<?php echo $nextY; ?>&tm=<?php echo $nextM; ?>" class="btn-sticky">＞＞</a></td>
             </tr>
             <?php if($status<>"2"){ ?>

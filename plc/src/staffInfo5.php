@@ -143,7 +143,6 @@ $ini = parse_ini_file('../common.ini', FALSE);
         }
     }
     
-    $fButton = "<div class='headbutton'><a href='staffInfo1.php'><img src='../img/back.png'></a></div>";
 ?>
 <!DOCTYPE html>
 <html>
@@ -159,7 +158,9 @@ $ini = parse_ini_file('../common.ini', FALSE);
 <body>
 
     <?php include('./staffMenu.php'); ?>
-    
+
+    <div class='headbutton'><a href='staffInfo1.php'><img src='../img/back.png'></a></div>
+
     <form action="staffInfo5.php" method="POST">
         <table class="work fnt2em">
 
@@ -187,8 +188,8 @@ $ini = parse_ini_file('../common.ini', FALSE);
             </tr>
             <tr>
                 <th>応募媒体<span class="fnt1em"> (50)</span></th>
-                <td><input type="text" name="recruit" class="txtS" maxlength=50
-                        style="ime-mode: active;" value="<?php echo $recruit; ?>"></td>
+                <td><input type="text" name="recruit" class="txtS" maxlength=50 style="ime-mode: active;"
+                        value="<?php echo $recruit; ?>"></td>
             </tr>
 
             <tr>

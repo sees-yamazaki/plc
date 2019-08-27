@@ -77,18 +77,17 @@ if (!empty($_SESSION["LEVEL"])) {
     <form action="userPw.php" method="POST" onsubmit="return pwcheck()">
 
         <table class="edit" style="width:50%">
-            <caption>ユーザ情報</caption>
             <tr>
                 <th>新しいパスワード</th>
-                <td><input type="password" id="password" name="password" style="ime-mode: disabled;" required>
+                <td><input type="password" id="password" name="password" class="f130P wdtL"  style="ime-mode: disabled;" required>
                 </td>
             </tr>
             <tr>
                 <th>確認用</th>
-                <td><input type="password" id="pass" name="pass" style="ime-mode: disabled;" required>
+                <td><input type="password" id="pass" name="pass" class="f130P wdtL"  style="ime-mode: disabled;" required>
                 </td>
             </tr>
-            <tr><td colspan="2"><button type=submit name="empShift" class="btn-sticky">登録</button></td></tr>
+            <tr><td colspan="2"><button type=submit name="empShift" class="cal2">登録</button></td></tr>
         </table>
 
     </form>

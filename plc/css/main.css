@@ -166,10 +166,10 @@ textarea.info {
     border: 0.5px solid #d9d9d9;
     margin: 0 0 20px;
     border-radius: 0.67em;
-    width: 60%;
+    width: 90%;
     padding: 10px 15px;
     box-sizing: border-box;
-    font-wieght: 400;
+    font-weight: 400;
     transition: 0.3s ease;
     &:focus {
         border-color: #369;

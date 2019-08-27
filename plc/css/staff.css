@@ -46,7 +46,9 @@
 
 .headbutton {
     z-index: 999;
-    padding-top: 80px;
+    position: fixed;
+    margin-top: 130px;
+    margin-left: 5px;
 }
 
 .btn-sticky-off {
@@ -105,6 +107,7 @@
 .titleYM {
     color: #295890;
     font-weight: 600;
+    text-align: center;
 }
 
 input.month {
@@ -232,7 +235,7 @@ table.cal {
 
 table.cal th,
 table.cal td {
-    padding: 10px;
+    padding: 5px;
 }
 
 table.cal th {
@@ -346,7 +349,7 @@ input.time {
     box-sizing: border-box;
     font-weight: 400;
     transition: 0.3s ease;
-    font-size: 2em;
+    font-size: 1.5em;
 }
 
 .required {

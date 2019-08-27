@@ -30,19 +30,26 @@ $ini = parse_ini_file('../common.ini', FALSE);
                 $html .= "<input type='hidden' name='eSeq' value='".$row["employee_seq"]."'>";
                 $html .= "<input type='hidden' name='alert_time' value='".$row["alert_time"]."'>";
                 $html .= "<input type='hidden' name='eName' value='".$row["name"]."'>";
-                $html .= "<td width='100px'>".$row['employee_id']."</td>";
-                $html .= "<td width='250px'>".$row['name']."</td>";
-                if($row['sex']=="1"){
-                    $html .= "<td width='80px'>男</td>";
+                $html .= "<td>".$row['employee_id']."</td>";
+                $html .= "<td>".$row['name']."</td>";
+                if($row['kind']=="1"){
+                    $html .= "<td>CP</td>";
+                }elseif($row['kind']=="2"){
+                    $html .= "<td>派遣社員</td>";
                 }else{
-                    $html .= "<td width='80px'>女</td>";
+                    $html .= "<td>社員</td>";
                 }
-                $html .= "<td width='130px'>".$row['birthday']."</td>";
-                $html .= "<td width='150px' >";
+                if($row['sex']=="1"){
+                    $html .= "<td>男</td>";
+                }else{
+                    $html .= "<td>女</td>";
+                }
+                $html .= "<td>".$row['birthday']."</td>";
+                $html .= "<td width='130px' >";
                 $html .= "<button type='submit' name='edit' >編集</button>　";
-                $html .= "<button type='submit' name='view' >閲覧</button>　";
+                $html .= "<button type='submit' name='view' >閲覧</button>";
                 $html .= "</td>";
-                $html .= "<td width='100px' >";
+                $html .= "<td width='90px' >";
                 $html .= "<button type='submit' name='shift'>シフト</button>";
                 $html .= "</td>";
                 $html .= "</form></tr>";
@@ -80,10 +87,11 @@ $ini = parse_ini_file('../common.ini', FALSE);
 
     <table class="vw2">
         <tr>
-            <th>社員番号</th>
-            <th>氏名</th>
-            <th>性別</th>
-            <th>生年月日</th>
+            <th width='100px'>社員番号</th>
+            <th width='250px'>氏名</th>
+            <th width='120px'>属性</th>
+            <th width='80px'>性別</th>
+            <th width='130px'>生年月日</th>
             <th class="add" colspan="2"><button type='button' onclick="location.href='employeeEdit.php'">新規登録</button></th>
         </tr><?php echo $html; ?>
     </table>
