@@ -1,6 +1,31 @@
 <?php
 session_start();
 
+function array_column2(array $input, $columnKey, $indexKey = null) {
+    $array = array();
+    foreach ($input as $value) {
+        if ( !array_key_exists($columnKey, $value)) {
+            trigger_error("Key \"$columnKey\" does not exist in array");
+            return false;
+        }
+        if (is_null($indexKey)) {
+            $array[] = $value[$columnKey];
+        }
+        else {
+            if ( !array_key_exists($indexKey, $value)) {
+                trigger_error("Key \"$indexKey\" does not exist in array");
+                return false;
+            }
+            if ( ! is_scalar($value[$indexKey])) {
+                trigger_error("Key \"$indexKey\" does not contain scalar value");
+                return false;
+            }
+            $array[$value[$indexKey]] = $value[$columnKey];
+        }
+    }
+    return $array;
+}
+
 // ログイン状態チェック
 if (!isset($_SESSION["NAME"])) {
     header("Location: Logout.php");
@@ -38,12 +63,10 @@ $eSeq = $_POST['eSeq'];
 
         }else{
 
-
-            //
             $stmt = $pdo->prepare("SELECT officer_seq FROM officer where employee_seq=?");
             $stmt->execute(array($eSeq));
             $officersX = $stmt->fetchAll();
-            $officers = array_column($officersX, 0);
+            $officers = array_column2($officersX, 0);
 
             $stmt = $pdo->prepare('SELECT * FROM employee where employee_level=99 order by employee_seq');
             $stmt->execute(array());
@@ -71,7 +94,6 @@ $eSeq = $_POST['eSeq'];
                 
                     
             }
-
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
