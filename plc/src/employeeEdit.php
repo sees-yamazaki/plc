@@ -26,6 +26,7 @@
             if(isset($_POST['editEmp'])){
 
                 $employee_id = $_POST['employee_id'];
+                $old_employee_id = $_POST['old_employee_id'];
                 $status = $_POST['status'];
                 $group_seq = $_POST['group_seq'];
                 $kind = $_POST['kind'];
@@ -110,91 +111,112 @@
                 
                 if(!empty($eSeq)){
  
-                    $sql = "UPDATE `employee` SET `status`=?,`group_seq`=?,`kind`=?,`insurance`=?,`name_kana`=?,`name`=?,`sex`=?,`birthday`=?,`post`=?,`address_kana`=?,`address`=?,`tel1`=?,`tel2`=?,`answering`=?,`fax`=?,`email1`=?,`email2`=?,`priority_email`=?,`route`=?,`station`=?,`bus`=?,`bus_name`=?,`bus_stop`=?,`bank_kana`=?,`bank`=?,`branch_code`=?,`branch_kana`=?,`branch`=?,`account`=?,`education_from`=?,`education_to`=?,`school`=?,`graduate`=?,`recruit`=?,`work1_from`=?,`work1_to`=?,`work1_status`=?,`work1_company`=?,`work1_location`=?,`work1_job`=?,`work2_from`=?,`work2_to`=?,`work2_status`=?,`work2_company`=?,`work2_location`=?,`work2_job`=?,`work3_from`=?,`work3_to`=?,`work3_status`=?,`work3_company`=?,`work3_location`=?,`work3_job`=?,`work4_from`=?,`work4_to`=?,`work4_status`=?,`work4_company`=?,`work4_location`=?,`work4_job`=?,`work5_from`=?,`work5_to`=?,`work5_status`=?,`work5_company`=?,`work5_location`=?,`work5_job`=?,`work_remarks`=?,`emergency_kana`=?,`emergency`=?,`tel10`=?,`tel11`=?,`priority_tel`=?,`post2`=?,`address2`=?,`remarks`=?,`alert_time`=?,`pay_type`=?,`pay_unitcost`=?,`sales_unitcost`=?,`transport_unitcosts`=?,`pass_cost`=?,`user_seq`=? WHERE `employee_seq`=?";
 
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->execute(array(
-                        $status,
-                        $group_seq,
-                        $kind,
-                        $insurance,
-                        $name_kana,
-                        $name,
-                        $sex,
-                        $birthday,
-                        $post,
-                        $address_kana,
-                        $address,
-                        $tel1,
-                        $tel2,
-                        $answering,
-                        $fax,
-                        $email1,
-                        $email2,
-                        $priority_email,
-                        $route,
-                        $station,
-                        $bus,
-                        $bus_name,
-                        $bus_stop,
-                        $bank_kana,
-                        $bank,
-                        $branch_code,
-                        $branch_kana,
-                        $branch,
-                        $account,
-                        $education_from,
-                        $education_to,
-                        $school,
-                        $graduate,
-                        $recruit,
-                        $work1_from,
-                        $work1_to,
-                        $work1_status,
-                        $work1_company,
-                        $work1_location,
-                        $work1_job,
-                        $work2_from,
-                        $work2_to,
-                        $work2_status,
-                        $work2_company,
-                        $work2_location,
-                        $work2_job,
-                        $work3_from,
-                        $work3_to,
-                        $work3_status,
-                        $work3_company,
-                        $work3_location,
-                        $work3_job,
-                        $work4_from,
-                        $work4_to,
-                        $work4_status,
-                        $work4_company,
-                        $work4_location,
-                        $work4_job,
-                        $work5_from,
-                        $work5_to,
-                        $work5_status,
-                        $work5_company,
-                        $work5_location,
-                        $work5_job,
-                        $work_remarks,
-                        $emergency_kana,
-                        $emergency,
-                        $tel10,
-                        $tel11,
-                        $priority_tel,
-                        $post2,
-                        $address2,
-                        $remarks,
-                        $alert_time,
-                        $pay_type,
-                        $pay_unitcost,
-                        $sales_unitcost,
-                        $transport_unitcosts,
-                        $pass_cost,
-                        $user_seq,
-                        $eSeq));
+                    //社員番号の確認
+                    if(empty($employee_id)){
+                        require_once './db/counting.php';
+                        $no = getEmployeeNo();
+                        $employee_id = sprintf('%04d', $no);
+                    }
+
+                    $employee_id = sprintf('%04d', $employee_id);
+                    $stmt = $pdo->prepare('SELECT * FROM employee where employee_id = ? and employee_id <> ?');
+                    $stmt->execute(array($employee_id,$old_employee_id));
+
+                    if($row = $stmt->fetch()){
+                        $errorMessage = "社員番号(".$employee_id.")はすでに使用されています。";
+                    }else{
+
+
+                        $sql = "UPDATE `employee` SET `employee_id`=?,`status`=?,`group_seq`=?,`kind`=?,`insurance`=?,`name_kana`=?,`name`=?,`sex`=?,`birthday`=?,`post`=?,`address_kana`=?,`address`=?,`tel1`=?,`tel2`=?,`answering`=?,`fax`=?,`email1`=?,`email2`=?,`priority_email`=?,`route`=?,`station`=?,`bus`=?,`bus_name`=?,`bus_stop`=?,`bank_kana`=?,`bank`=?,`branch_code`=?,`branch_kana`=?,`branch`=?,`account`=?,`education_from`=?,`education_to`=?,`school`=?,`graduate`=?,`recruit`=?,`work1_from`=?,`work1_to`=?,`work1_status`=?,`work1_company`=?,`work1_location`=?,`work1_job`=?,`work2_from`=?,`work2_to`=?,`work2_status`=?,`work2_company`=?,`work2_location`=?,`work2_job`=?,`work3_from`=?,`work3_to`=?,`work3_status`=?,`work3_company`=?,`work3_location`=?,`work3_job`=?,`work4_from`=?,`work4_to`=?,`work4_status`=?,`work4_company`=?,`work4_location`=?,`work4_job`=?,`work5_from`=?,`work5_to`=?,`work5_status`=?,`work5_company`=?,`work5_location`=?,`work5_job`=?,`work_remarks`=?,`emergency_kana`=?,`emergency`=?,`tel10`=?,`tel11`=?,`priority_tel`=?,`post2`=?,`address2`=?,`remarks`=?,`alert_time`=?,`pay_type`=?,`pay_unitcost`=?,`sales_unitcost`=?,`transport_unitcosts`=?,`pass_cost`=?,`user_seq`=? WHERE `employee_seq`=?";
+
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->execute(array(
+                            $employee_id,
+                            $status,
+                            $group_seq,
+                            $kind,
+                            $insurance,
+                            $name_kana,
+                            $name,
+                            $sex,
+                            $birthday,
+                            $post,
+                            $address_kana,
+                            $address,
+                            $tel1,
+                            $tel2,
+                            $answering,
+                            $fax,
+                            $email1,
+                            $email2,
+                            $priority_email,
+                            $route,
+                            $station,
+                            $bus,
+                            $bus_name,
+                            $bus_stop,
+                            $bank_kana,
+                            $bank,
+                            $branch_code,
+                            $branch_kana,
+                            $branch,
+                            $account,
+                            $education_from,
+                            $education_to,
+                            $school,
+                            $graduate,
+                            $recruit,
+                            $work1_from,
+                            $work1_to,
+                            $work1_status,
+                            $work1_company,
+                            $work1_location,
+                            $work1_job,
+                            $work2_from,
+                            $work2_to,
+                            $work2_status,
+                            $work2_company,
+                            $work2_location,
+                            $work2_job,
+                            $work3_from,
+                            $work3_to,
+                            $work3_status,
+                            $work3_company,
+                            $work3_location,
+                            $work3_job,
+                            $work4_from,
+                            $work4_to,
+                            $work4_status,
+                            $work4_company,
+                            $work4_location,
+                            $work4_job,
+                            $work5_from,
+                            $work5_to,
+                            $work5_status,
+                            $work5_company,
+                            $work5_location,
+                            $work5_job,
+                            $work_remarks,
+                            $emergency_kana,
+                            $emergency,
+                            $tel10,
+                            $tel11,
+                            $priority_tel,
+                            $post2,
+                            $address2,
+                            $remarks,
+                            $alert_time,
+                            $pay_type,
+                            $pay_unitcost,
+                            $sales_unitcost,
+                            $transport_unitcosts,
+                            $pass_cost,
+                            $user_seq,
+                            $eSeq));
+
+                    }
+
                 }else{
 
                     //社員番号の確認
@@ -204,6 +226,7 @@
                         $employee_id = sprintf('%04d', $no);
                     }
 
+                    $employee_id = sprintf('%04d', $employee_id);
                     $stmt = $pdo->prepare('SELECT * FROM employee where employee_id = ?');
                     $stmt->execute(array($employee_id));
 
@@ -559,17 +582,13 @@
             <tr>
                 <th>社員番号<span class="f50P"> (4)</span></th>
                 <td>
-                    <?php if(empty($employee_id) || !empty($errorMessage)){ ?>
-                        <input type="number" id="employee_id" name="employee_id" class="f130P wdtSS"  oninput="sliceMaxLength(this, 4)" style="ime-mode:disabled" pattern="[0-9]+" title="半角数字" value="<?php echo $employee_id; ?>">
-                        未入力の場合は自動的に採番されます
-                    <?php }else{ ?>
-                        <?php echo $employee_id; ?>
-                    <?php } ?>
+                    <input type="number" id="employee_id" name="employee_id" class="f130P wdtSS"  oninput="sliceMaxLength(this, 4)" style="ime-mode:disabled" pattern="[0-9]+" title="半角数字" value="<?php echo $employee_id; ?>">
+                    未入力の場合は自動的に採番されます<input type="hidden" id="old_employee_id" name="old_employee_id" value="<?php echo $employee_id; ?>">
                 </td>
             </tr>
             <tr>
                 <th>フリガナ<span class="f50P"> (30)</span></th>
-                <td><input type="text" id="name_kana" name="name_kana" class="f130P wdtL" maxlength=30  style="ime-mode: active;" pattern="[ァ-ヴー\s　]+" title="カタカナ" required placeholder="全角カタカナ" onblur="harf2wide(this);" value="<?php echo $name_kana; ?>"></td>
+                <td><input type="text" id="name_kana" name="name_kana" class="f130P wdtL" maxlength=30  style="ime-mode: active;" pattern="[ァ-ヴー\s　]+" title="カタカナ" placeholder="全角カタカナ" onblur="harf2wide(this);" value="<?php echo $name_kana; ?>"></td>
             </tr>
             <tr>
                 <th><span class="required">氏名<span class="f50P"> (30)</span></span></th>

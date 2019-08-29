@@ -24,6 +24,7 @@ if (!empty($_SESSION["LEVEL"])) {
             
             $name = $_POST['name'];
             $employee_id = $_POST['employee_id'];
+            $old_employee_id = $_POST['old_employee_id'];
             $employee_level = $_POST['employee_level'];
             $group_seq = $_POST['group_seq'];
             $alert_mail_0 = $_POST['alert_mail_0'];
@@ -34,19 +35,39 @@ if (!empty($_SESSION["LEVEL"])) {
 
             
             if(!empty($eSeq)){
-                $sql = "UPDATE `employee` SET `name`=?,`employee_level`=?,`group_seq`=?,`alert_mail_0`=?,`alert_mail_1`=?,`alert_mail_2`=?,`alert_mail_3`=?,`alert_mail_4`=? WHERE `employee_seq`=?";
 
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute(array(
-                    $name,
-                    $employee_level,
-                    $group_seq,
-                    $alert_mail_0,
-                    $alert_mail_1,
-                    $alert_mail_2,
-                    $alert_mail_3,
-                    $alert_mail_4,
-                    $eSeq));
+
+                //社員番号の確認
+                if(empty($employee_id)){
+                    require_once './db/counting.php';
+                    $no = getEmployeeNo();
+                    $employee_id = sprintf('%04d', $no);
+                }
+
+                $employee_id = sprintf('%04d', $employee_id);
+
+                $stmt = $pdo->prepare('SELECT * FROM employee where employee_id = ? and employee_id <> ?');
+                $stmt->execute(array($employee_id,$old_employee_id));
+
+                if($row = $stmt->fetch()){
+                    $errorMessage = "社員番号(".$employee_id.")はすでに使用されています。";
+                }else{
+
+                    $sql = "UPDATE `employee` SET `employee_id`=?,`name`=?,`employee_level`=?,`group_seq`=?,`alert_mail_0`=?,`alert_mail_1`=?,`alert_mail_2`=?,`alert_mail_3`=?,`alert_mail_4`=? WHERE `employee_seq`=?";
+
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute(array(
+                        $employee_id,
+                        $name,
+                        $employee_level,
+                        $group_seq,
+                        $alert_mail_0,
+                        $alert_mail_1,
+                        $alert_mail_2,
+                        $alert_mail_3,
+                        $alert_mail_4,
+                        $eSeq));
+                }
 
             }else{
                 //社員番号の確認
@@ -56,6 +77,7 @@ if (!empty($_SESSION["LEVEL"])) {
                     $employee_id = sprintf('%04d', $no);
                 }
 
+                $employee_id = sprintf('%04d', $employee_id);
                 $stmt = $pdo->prepare('SELECT * FROM employee where employee_id = ?');
                 $stmt->execute(array($employee_id));
 
@@ -189,12 +211,8 @@ if (!empty($_SESSION["LEVEL"])) {
             <tr>
                 <th>社員番号<span class="f50P"> (4)</span></th>
                 <td>
-                    <?php if(empty($employee_id) || !empty($errorMessage)){ ?>
                     <input type="number" id="employee_id" name="employee_id" class="f130P wdtSS" oninput="sliceMaxLength(this, 4)" style="ime-mode: disabled;" pattern="[0-9][0-9][0-9][0-9]" title="数字" placeholder="" value="<?php echo $employee_id; ?>">
-                    未入力の場合は自動的に採番されます
-                    <?php }else{ ?>
-                        <?php echo $employee_id; ?>
-                    <?php } ?>
+                    未入力の場合は自動的に採番されます<input type="hidden" id="old_employee_id" name="old_employee_id" value="<?php echo $employee_id; ?>">
                 </td>
             </tr>
             <tr>

@@ -65,6 +65,21 @@ function rePWcheck() {
     }
 }
 
+function submitChk() {
+    var element = document.getElementById("employee_id");
+    var element2 = document.getElementById("old_employee_id");
+    if ("" != element2.value) {
+        if (element.value != element2.value) {
+            if (window.confirm('社員番号が変更されています。　社員番号を更新してもよろしいですか？')) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 function pwcheck() {
     var element = document.getElementById("password");
     var element2 = document.getElementById("pass");
