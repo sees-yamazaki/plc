@@ -14,7 +14,7 @@ if (!isset($_SESSION["NAME"])) {
 
         require_once 'dns.php';
         
-        $stmt = $pdo->prepare('SELECT * FROM employee where (employee_level=2 or employee_level=3)  order by employee_seq');
+        $stmt = $pdo->prepare('SELECT * FROM employee where (employee_level=2 or employee_level=3)  order by employee_id desc');
         $stmt->execute(array());
 
         $html="";

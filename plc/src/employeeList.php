@@ -20,7 +20,7 @@ $ini = parse_ini_file('../common.ini', FALSE);
 
             require_once 'dns.php';
             
-            $stmt = $pdo->prepare('SELECT * FROM employee where employee_level=99 order by employee_seq');
+            $stmt = $pdo->prepare('SELECT * FROM employee where employee_level=99 order by employee_id desc');
             $stmt->execute(array($userlvl));
 
             $html="";
@@ -36,6 +36,8 @@ $ini = parse_ini_file('../common.ini', FALSE);
                     $html .= "<td>CP</td>";
                 }elseif($row['kind']=="2"){
                     $html .= "<td>派遣社員</td>";
+                }elseif($row['kind']=="9"){
+                    $html .= "<td>退職</td>";
                 }else{
                     $html .= "<td>社員</td>";
                 }

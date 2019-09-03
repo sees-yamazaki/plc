@@ -535,19 +535,28 @@
                         $kind1 = "checked";
                         $kind2 = "";
                         $kind3 = "";
+                        $kind4 = "";
                     }elseif($kind=="2"){
                         $kind1 = "";
                         $kind2 = "checked";
                         $kind3 = "";
+                        $kind4 = "";
                     }elseif($kind=="3"){
                         $kind1 = "";
                         $kind2 = "";
                         $kind3 = "checked";
+                        $kind4 = "";
+                    }elseif($kind=="9"){
+                        $kind1 = "";
+                        $kind2 = "";
+                        $kind3 = "";
+                        $kind4 = "checked";
                     }
                     ?>
                     <input type="radio" id="kind1" name="kind" value="1" required <?php echo $kind1; ?>>CP
                     <input type="radio" name="kind" value="2" <?php echo $kind2; ?>>派遣社員
-                    <input type="radio" name="kind" value="3" <?php echo $kind3; ?>>社員
+                    <input type="radio" name="kind" value="3" <?php echo $kind3; ?>>社員&nbsp;&nbsp;
+                    <input type="radio" name="kind" value="9" <?php echo $kind4; ?>>退職
                 </td>
             </tr>
             <tr>

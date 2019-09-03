@@ -190,8 +190,10 @@
                     CP
                     <?php }elseif($kind=="2"){ ?>
                     派遣社員
-                    <?php }else{ ?>
+                    <?php }elseif($kind=="3"){ ?>
                     社員
+                    <?php }else{ ?>
+                    退職
                     <?php } ?>
                 </td>
             </tr>
