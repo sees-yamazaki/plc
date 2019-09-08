@@ -14,7 +14,7 @@ if (!isset($_SESSION["NAME"])) {
 
         require_once 'dns.php';
         
-        $stmt = $pdo->prepare('SELECT * FROM employee where (employee_level=2 or employee_level=3)  order by employee_id desc');
+        $stmt = $pdo->prepare('SELECT * FROM employee where (employee_level=2 or employee_level=3 or employee_level=9)  order by employee_id desc');
         $stmt->execute(array());
 
         $html="";
@@ -27,11 +27,13 @@ if (!isset($_SESSION["NAME"])) {
             $html .= "<td width='300px'>".$row['name']."</td>";
             if ($row['employee_level']=="2"){
                 $lvl = "管理者";
+            }elseif ($row['employee_level']=="9"){
+                $lvl = "退職";
             } else {
                 $lvl = "社員";
             } 
             $html .= "<td width='100px'>".$lvl."</td>";
-            $html .= "<td width='180px'><button type='submit' name='edit'>編集</button>　<button type='submit' name='officer'>担当</button></td>";
+            $html .= "<td width='180px'><button type='submit' name='edit'>編集</button>　<button type='submit' name='view'>閲覧</button>　<button type='submit' name='officer'>担当</button></td>";
             $html .= "</form></tr>";
                 
         }

@@ -115,6 +115,13 @@
                 $transport_unitcosts = $row['transport_unitcosts'];
                 $pass_cost = $row['pass_cost'];
                 $user_seq = $row['user_seq'];
+                $employee_level = $row['employee_level'];
+                $group_seq = $row['group_seq'];
+                $alert_mail_0 = $row['alert_mail_0'];
+                $alert_mail_1 = $row['alert_mail_1'];
+                $alert_mail_2 = $row['alert_mail_2'];
+                $alert_mail_3 = $row['alert_mail_3'];
+                $alert_mail_4 = $row['alert_mail_4'];
             }
 
 
@@ -157,7 +164,7 @@
     <?php include('./menu.php'); ?>
 
     <div class="nav">
-        <button type="button" onclick="location.href='employeeList.php'" class="back">戻る</button>
+        <button type="button" onclick="location.href='userList.php'" class="back">戻る</button>
         <font color="#ff0000"><?php echo htmlspecialchars($errorMessage, ENT_QUOTES); ?></font>
     </div><br>
 
@@ -168,12 +175,26 @@
 
         <table class="edit">
             <tr>
-                <th>ステータス</th>
+                <th>フリガナ</th>
+                <td><?php echo $name_kana; ?></td>
+            </tr>
+            <tr>
+                <th>氏名</th>
+                <td><?php echo $name; ?></td>
+            </tr>
+            <tr>
+                <th>社員番号</th>
+                <td><?php echo $employee_id; ?></td>
+            </tr>
+            <tr>
+                <th>アカウント種別</th>
                 <td>
-                    <?php if(!isset($status) || $status=="1"){ ?>
-                    稼動
+                    <?php if(!isset($employee_level) || $employee_level=="1"){ ?>
+                    管理者
+                    <?php }elseif($employee_level=="9"){ ?>
+                    退職
                     <?php }else{ ?>
-                    非稼動
+                    社員
                     <?php } ?>
                 </td>
             </tr>
@@ -184,47 +205,39 @@
                 </td>
             </tr>
             <tr>
-                <th>属性</th>
+                <th>アラート送信先(共通)</th>
                 <td>
-                    <?php if(!isset($kind) || $kind=="1"){ ?>
-                    CP
-                    <?php }elseif($kind=="2"){ ?>
-                    派遣社員
-                    <?php }elseif($kind=="3"){ ?>
-                    社員
-                    <?php }else{ ?>
-                    退職
-                    <?php } ?>
+                    <?php echo $alert_mail_0; ?>
                 </td>
             </tr>
             <tr>
-                <th>社会保険有無</th>
+                <th>アラート送信先1</th>
                 <td>
-                    <?php if(!isset($insurance) || $insurance=="1"){ ?>
-                    加入
-                    <?php }else{ ?>
-                    未加入
-                    <?php } ?>
+                    <?php echo $alert_mail_1; ?>
                 </td>
             </tr>
             <tr>
-                <th>アラート</th>
-                <td><?php echo $alert_time; ?>分前</td>
+                <th>アラート送信先2</th>
+                <td>
+                    <?php echo $alert_mail_2; ?>
+                </td>
             </tr>
-        </table>
+            <tr>
+                <th>アラート送信先3</th>
+                <td>
+                    <?php echo $alert_mail_3; ?>
+                </td>
+            </tr>
+            <tr>
+                <th>アラート送信先4</th>
+                <td>
+                    <?php echo $alert_mail_4; ?>
+                </td>
+            </tr>
+            </table>
 
-
-
-        <table class="edit">
+            <table class="edit">
             <caption>基本情報</caption>
-            <tr>
-                <th>フリガナ</th>
-                <td><?php echo $name_kana; ?></td>
-            </tr>
-            <tr>
-                <th>氏名</th>
-                <td><?php echo $name; ?></td>
-            </tr>
             <tr>
                 <th>性別</th>
                 <td>
@@ -299,232 +312,8 @@
                 </td>
             </tr>
         </table>
+<br><br><br>&nbsp;
 
-
-
-        <table class="edit">
-            <caption>コスト情報</caption>
-            <tr>
-                <th>契約携帯</th>
-                <td>
-                    <?php if($pay_type=="1"){ ?>
-                    時給
-                    <?php }elseif($pay_type=="3"){ ?>
-                    日給
-                    <?php }else{ ?>
-                    月給
-                    <?php } ?>
-                </td>
-            </tr>
-            <tr>
-                <th>契約単価</th>
-                <td><?php echo number_format(intval($pay_unitcost)); ?></td>
-            </tr>
-            <tr>
-                <th>売上単価</th>
-                <td><?php echo number_format(intval($sales_unitcost)); ?></td>
-            </tr>
-            <tr>
-                <th>交通費</th>
-                <td>1日（往復）：<?php echo number_format(intval($transport_unitcosts)); ?><br>１ヶ月定期：<?php echo number_format(intval($pass_cost)); ?></td>
-            </tr>
-        </table>
-
-
-
-        <table class="edit">
-            <caption>交通情報</caption>
-            <tr>
-                <th>最寄りの路線・駅</th>
-                <td><?php echo $route."線"; ?><br><?php echo $station."駅"; ?></td>
-            </tr>
-            <tr>
-                <th>バス利用</th>
-                <td>
-                    <?php if($bus=="1"){ ?>
-                    有
-                    <?php }else{ ?>
-                    無
-                    <?php } ?>
-                </td>
-            </tr>
-            <tr>
-                <th>バスの路線名</th>
-                <td><?php echo $bus_name; ?></td>
-            </tr>
-            <tr>
-                <th>バス停名</th>
-                <td><?php echo $bus_stop; ?></td>
-            </tr>
-        </table>
-
-
-        <table class="edit">
-            <caption>銀行口座</caption>
-            <tr>
-                <th>フリガナ</th>
-                <td><?php echo $bank_kana; ?></td>
-            </tr>
-            <tr>
-                <th>銀行名</th>
-                <td><?php echo $bank; ?></td>
-            </tr>
-            <tr>
-                <th>支店番号</th>
-                <td><?php echo $branch_code; ?></td>
-            </tr>
-            <tr>
-                <th>フリガナ</th>
-                <td><?php echo $branch_kana; ?></td>
-            </tr>
-            <tr>
-                <th>支店名</th>
-                <td><?php echo $branch; ?></td>
-            </tr>
-            <tr>
-                <th>口座番号</th>
-                <td><?php echo $account; ?></td>
-            </tr>
-        </table>
-
-
-        <table class="edit">
-            <caption>学歴</caption>
-            <tr>
-                <th>学歴</th>
-                <td><?php echo $education_from; ?>　〜　<?php echo $education_to; ?></td>
-            </tr>
-            <tr>
-                <th>学校名</th>
-                <td><?php echo $school; ?></td>
-            </tr>
-            <tr>
-                <th>卒業予定年月日</th>
-                <td><<?php echo $graduate; ?></td>
-            </tr>
-        </table>
-
-
-        <table class="edit">
-            <caption>応募媒体</caption>
-            <tr>
-                <th>応募媒体</th>
-                <td><?php echo $recruit; ?></td>
-            </tr>
-        </table>
-
-        <table class="edit">
-            <caption>職歴</caption>
-            <tr>
-                <th>職歴１</th>
-                <td>
-                    期間：<?php echo $work1_from; ?>　〜　<?php echo $work1_to; ?><br>
-                    雇用形態：<?php echo $work1_status; ?><br>
-                    会社名称：<?php echo $work1_company; ?><br>
-                    就業場所：<?php echo $work1_location; ?><br>
-                    業務内容：<?php echo $work1_job; ?><br>
-                </td>
-            </tr>
-            <tr>
-                <th>職歴２</th>
-                <td>
-                    期間：<?php echo $work2_from; ?>　〜　<?php echo $work2_to ?><br>
-                    雇用形態：<?php echo $work2_status; ?><br>
-                    会社名称：<?php echo $work2_company; ?><br>
-                    就業場所：<?php echo $work2_location; ?><br>
-                    業務内容：<?php echo $work2_job; ?><br>
-                </td>
-            </tr>
-            <tr>
-                <th>職歴３</th>
-                <td>
-                    期間：<?php echo $work3_from; ?>　〜　<?php echo $work3_to; ?><br>
-                    雇用形態：<?php echo $work3_status; ?><br>
-                    会社名称：<?php echo $work3_company; ?><br>
-                    就業場所：<?php echo $work3_location; ?><br>
-                    業務内容：<?php echo $work3_job; ?><br>
-                </td>
-            </tr>
-            <tr>
-                <th>職歴４</th>
-                <td>
-                    期間：<?php echo $work4_from; ?>　〜　<?php echo $work4_to; ?><br>
-                    雇用形態：<?php echo $work4_status; ?><br>
-                    会社名称：<?php echo $work4_company; ?><br>
-                    就業場所：<?php echo $work4_location; ?><br>
-                    業務内容：<?php echo $work4_job; ?><br>
-                </td>
-            </tr>
-            <tr>
-                <th>職歴５</th>
-                <td>
-                    期間：<?php echo $work5_from; ?>　〜　<?php echo $work5_to; ?><br>
-                    雇用形態：<?php echo $work5_status; ?><br>
-                    会社名称：<?php echo $work5_company; ?><br>
-                    就業場所：<?php echo $work5_location; ?><br>
-                    業務内容：<?php echo $work5_job; ?><br>
-                </td>
-            </tr>
-            <tr>
-                <th>備考</th>
-                <td><?php echo nl2br($work_remarks); ?></td>
-            </tr>
-        </table>
-
-
-
-
-        <table class="edit">
-            <caption>緊急連絡先</caption>
-            <tr>
-                <th>フリガナ</th>
-                <td><?php echo $emergency_kana; ?></td>
-            </tr>
-            <tr>
-                <th>連絡人</th>
-                <td><?php echo $emergency; ?></td>
-            </tr>
-            <tr>
-                <th>郵便番号</th>
-                <td><?php echo $post2; ?></td>
-            </tr>
-            <tr>
-                <th>現住所</th>
-                <td><?php echo $address2; ?></td>
-            </tr>
-            <tr>
-                <th>固定回線</th>
-                <td><?php echo $tel10; ?></td>
-            </tr>
-            <tr>
-                <th>携帯電話</th>
-                <td><?php echo $tel11; ?></td>
-            </tr>
-            <tr>
-                <th>指定連絡先</th>
-                <td>
-                    <?php if(!isset($priority_tel)){ ?>
-                    <?php }elseif($priority_tel=="1"){ ?>
-                    固定
-                    <?php }else{ ?>
-                    携帯
-                    <?php } ?>
-                </td>
-            </tr>
-        </table>
-
-
-
-
-        <table class="edit">
-            <caption>その他</caption>
-            <tr>
-                <th>備考</th>
-                <td><?php echo nl2br($remarks); ?></td>
-            </tr>
-        </table>
-
-        <br><br><br>&nbsp;
         
     </form>
 
