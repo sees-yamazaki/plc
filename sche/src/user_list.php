@@ -9,14 +9,24 @@ $users = getUsers();
 
 
 $html = "";
-$js = "";
-foreach ($groups as $group) {
-    $html .= "<option name='gSeq' value='".$group->groups_seq."'>".$group->groups_name."</option>";
-    if($group->parent_groups_seq=="0"){
-        $js .= "[{v: '".$group->groups_seq."', f: '".$group->groups_name."'}, null, ''],";
-    }else{
-        $js .= "[{v: '".$group->groups_seq."', f: '".$group->groups_name."'}, '".$group->parent_groups_seq."', ''],";
-    }
+foreach ($users as $user) {
+        
+        $html .= '<tr><form id="useredit" action="user_edit.php" method="POST">';
+        $html .= "<input type='hidden' name='uSeq' value='".$user->users_seq."'>";
+        $html .= "<input type='hidden' name='users_name' value='".$user->users_name."'>";
+        $html .= "<input type='hidden' name='groups_seq' value='".$user->groups_seq."'>";
+        $html .= "<td width='100px'>".$user->users_id."</td>";
+        $html .= "<td width='300px'>".$user->users_name."</td>";
+        $html .= "<td width='300px'>".$user->groups_name."</td>";
+        if ($user->users_level=="1"){
+            $lvl = "管理者";
+        } else {
+            $lvl = "一般";
+        } 
+        $html .= "<td width='100px'>".$lvl."</td>";
+        $html .= "<td width='180px'><button type='submit' name='edit'>編集</button></td>";
+        $html .= "</form></tr>";
+            
 }
 $js = substr($js ,0,-1);
 
@@ -27,7 +37,7 @@ $js = substr($js ,0,-1);
 
 <head>
     <meta charset="utf-8">
-    <title>組織図</title>
+    <title>ユーザ一覧</title>
     <link rel="stylesheet" href="../css/main.css" />
 </head>
 
@@ -36,40 +46,18 @@ $js = substr($js ,0,-1);
     <?php include('./menu.php'); ?>
 
     <div id="content">
-        <form action="groupEdit.php" method="POST">
-            <select name="gSeq" class="f130P">
-                <option value="0">新規作成</option>
-                <?php echo $html; ?>
-            </select>
-            <input type="image" width=25px src="../img/pen.svg">
-            <br>
-        </form>
 
+        <table class="vw">
+            <tr>
+                <th>ID</th>
+                <th>名前</th>
+                <th>グループ</th>
+                <th>権限</th>
+                <th class="add"><button type='button' onclick="location.href='user_edit.php'">新規登録</button></th>
+            </tr>
+            <?php echo $html; ?>
+        </table>
 
-        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-        <script type="text/javascript">
-        google.load('visualization', '1', {
-            packages: ['orgchart']
-        });
-        google.setOnLoadCallback(
-            function() {
-                // Create and populate the data table.
-                var data = google.visualization.arrayToDataTable([
-                    ['TITLE', 'TITLE', 'TIP'],
-                    <?php echo $js; ?>
-                ]);
-
-                // Create and draw the visualization.
-                new google.visualization.OrgChart(
-                    document.getElementById('group_map')).
-                draw(data, {
-                    allowHtml: true
-                });
-            }
-        );
-        </script>
-        <p class="group">グループ構成図</p>
-        <div id="group_map"></div>
     </div>
 </body>
 

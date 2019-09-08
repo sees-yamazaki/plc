@@ -127,9 +127,9 @@
                         <select class="f130P" name="parent_groups_seq" required>
                             <option value="">選択して下さい</option>
                             <?php if(0==$parent_group_seq){ ?>
-                               <option value="0" selected>TOP</option>
+                            <option value="0" selected>TOP</option>
                             <?php }else{ ?>
-                                <option value="0">TOP</option>
+                            <option value="0">TOP</option>
                             <?php } ?>
                             <?php echo $html; ?>
                         </select>
@@ -142,8 +142,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="text-align:center;"><button type=submit name="groupEdit"
-                            class="sbmt f110P">登録</button>
+                    <td colspan="2" style="text-align:center;">
+                        <button type=submit name="groupEdit" class="sbmt f110P">登録</button>
                     </td>
                 </tr>
             </table>
