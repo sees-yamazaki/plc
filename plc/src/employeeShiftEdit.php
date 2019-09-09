@@ -2,6 +2,9 @@
 
     session_start();
 
+    // タイムゾーンを設定
+    date_default_timezone_set('Asia/Tokyo');
+
     // ログイン状態チェック
     if (!isset($_SESSION["NAME"])) {
         header("Location: Logout.php");
@@ -19,6 +22,7 @@
     $eName = $_SESSION['eName'];
 
     $tgtTime = getTimestamp_LastDate($ty,$tm);
+    $firstday =  getTimestamp($ty,$tm);
 
 
     if (!empty($_SESSION["LEVEL"])) {

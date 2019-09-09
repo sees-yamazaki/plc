@@ -2,6 +2,9 @@
 
     session_start();
 
+// タイムゾーンを設定
+date_default_timezone_set('Asia/Tokyo');
+
     // ログイン状態チェック
     if (!isset($_SESSION["NAME"])) {
         header("Location: Logout.php");
