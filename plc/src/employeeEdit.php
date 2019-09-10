@@ -591,17 +591,17 @@
             <tr>
                 <th>社員番号<span class="f50P"> (4)</span></th>
                 <td>
-                    <input type="number" id="employee_id" name="employee_id" class="f130P wdtSS"  oninput="sliceMaxLength(this, 4)" style="ime-mode:disabled" pattern="[0-9]+" title="半角数字" value="<?php echo $employee_id; ?>">
+                    <input type="number" id="employee_id" name="employee_id" class="f130P wdtSS"  oninput="sliceMaxLength(this, 4)" style="ime-mode:disabled" pattern="[0-9]+" title="半角数字" value="<?php echo $employee_id; ?>" autocomplete="off">
                     未入力の場合は自動的に採番されます<input type="hidden" id="old_employee_id" name="old_employee_id" value="<?php echo $employee_id; ?>">
                 </td>
             </tr>
             <tr>
                 <th>フリガナ<span class="f50P"> (30)</span></th>
-                <td><input type="text" id="name_kana" name="name_kana" class="f130P wdtL" maxlength=30  style="ime-mode: active;" pattern="[ァ-ヴー\s　]+" title="カタカナ" placeholder="全角カタカナ" onblur="harf2wide(this);" value="<?php echo $name_kana; ?>"></td>
+                <td><input type="text" id="name_kana" name="name_kana" class="f130P wdtL" maxlength=30  style="ime-mode: active;" pattern="[ァ-ヴー\s　]+" title="カタカナ" placeholder="全角カタカナ" onblur="harf2wide(this);" value="<?php echo $name_kana; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th><span class="required">氏名<span class="f50P"> (30)</span></span></th>
-                <td><input type="text" id="name" name="name" class="f130P wdtL" maxlength=30 style="ime-mode: active;" required placeholder="" value="<?php echo $name; ?>">
+                <td><input type="text" id="name" name="name" class="f130P wdtL" maxlength=30 style="ime-mode: active;" required placeholder="" value="<?php echo $name; ?>" autocomplete="off">
                 </td>
             </tr>
             <tr>
@@ -622,23 +622,23 @@
             </tr>
             <tr>
                 <th>郵便番号<span class="f50P"> (8)</span></th>
-                <td><input type="text" id="post" name="post" class="f130P wdtSS" maxlength=8 style="ime-mode:disabled" placeholder="123-4567" pattern="\d{3}-?\d{4}" title="郵便番号" value="<?php echo $post; ?>"></td>
+                <td><input type="text" id="post" name="post" class="f130P wdtSS" maxlength=8 style="ime-mode:disabled" placeholder="123-4567" pattern="\d{3}-?\d{4}" title="郵便番号" value="<?php echo $post; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>フリガナ<span class="f50P"> (100)</span></th>
-                <td><input type="text" id="address_kana" name="address_kana" class="f130P wdtL" maxlength=100 pattern="[-ァ-ヴー\s　０-９0-9a-zA-Z]+" title="カタカナ、数字、スペース、英字" placeholder="全角カタカナ、数字、英字、スペース" onblur="harf2wide(this);" value="<?php echo $address_kana; ?>"></td>
+                <td><input type="text" id="address_kana" name="address_kana" class="f130P wdtL" maxlength=100 pattern="[-ァ-ヴー\s　０-９0-9a-zA-Z]+" title="カタカナ、数字、スペース、英字" placeholder="全角カタカナ、数字、英字、スペース" onblur="harf2wide(this);" value="<?php echo $address_kana; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>現住所<span class="f50P"> (100)</span></th>
-                <td><input type="text" id="address" name="address" class="f130P wdtL" maxlength=100 value="<?php echo $address; ?>"></td>
+                <td><input type="text" id="address" name="address" class="f130P wdtL" maxlength=100 value="<?php echo $address; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th><span class="required">連絡先<span class="f50P"> (13)</span></span></th>
-                <td><input type="tel" id="tel1" name="tel1" class="f130P wdtS" maxlength=13  style="ime-mode:disabled" placeholder="090-1234-5678" pattern="\d{2,4}-?\d{3,4}-?\d{3,4}" title="電話番号" required value="<?php echo $tel1; ?>"></td>
+                <td><input type="tel" id="tel1" name="tel1" class="f130P wdtS" maxlength=13  style="ime-mode:disabled" placeholder="090-1234-5678" pattern="\d{2,4}-?\d{3,4}-?\d{3,4}" title="電話番号" required value="<?php echo $tel1; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>携帯電話<span class="f50P"> (13)</span></th>
-                <td><input type="tel" id="tel2" name="tel2" class="f130P wdtS" maxlength=13  style="ime-mode:disabled" placeholder="090-1234-5678" pattern="\d{2,4}-?\d{3,4}-?\d{3,4}" title="電話番号" value="<?php echo $tel2; ?>"></td>
+                <td><input type="tel" id="tel2" name="tel2" class="f130P wdtS" maxlength=13  style="ime-mode:disabled" placeholder="090-1234-5678" pattern="\d{2,4}-?\d{3,4}-?\d{3,4}" title="電話番号" value="<?php echo $tel2; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>留守電の有無</th>
@@ -666,11 +666,11 @@
             </tr>
             <tr>
                 <th><span class="required">E-mail：携帯<span class="f50P"> (50)</span></span></th>
-                <td><input type="email" id="email1" name="email1" style="ime-mode:disabled" class="f130P wdtM" maxlength=50 placeholder="localname@domain.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="メールアドレス" required value="<?php echo $email1; ?>"></td>
+                <td><input type="email" id="email1" name="email1" style="ime-mode:disabled" class="f130P wdtM" maxlength=50 placeholder="localname@domain.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="メールアドレス" required value="<?php echo $email1; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>E-mail：PC<span class="f50P"> (50)</span></th>
-                <td><input type="email" id="email2" name="email2" style="ime-mode:disabled" class="f130P wdtM" maxlength=50 placeholder="localname@domain.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="メールアドレス" value="<?php echo $email2; ?>"></td>
+                <td><input type="email" id="email2" name="email2" style="ime-mode:disabled" class="f130P wdtM" maxlength=50 placeholder="localname@domain.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="メールアドレス" value="<?php echo $email2; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th><span class="required">指定アドレス</span></th>
@@ -707,16 +707,16 @@
             </tr>
             <tr>
                 <th><span class="required">給与単価<span class="f50P"> (7)</span></span></th>
-                <td><input type="number" id="pay_unitcost" name="pay_unitcost" class="f130P wdtS"  oninput="sliceMaxLength(this, 7)" style="ime-mode: disabled;"  value="<?php echo $pay_unitcost; ?>"></td>
+                <td><input type="number" id="pay_unitcost" name="pay_unitcost" class="f130P wdtS"  oninput="sliceMaxLength(this, 7)" style="ime-mode: disabled;"  value="<?php echo $pay_unitcost; ?>" required><span class="f50P"> 　未使用の場合は０を入力してください</span></td>
             </tr>
             <tr>
                 <th><span class="required">売上単価<span class="f50P"> (7)</span></span></th>
-                <td><input type="number" id="sales_unitcost" name="sales_unitcost" class="f130P wdtS"   oninput="sliceMaxLength(this, 7)" style="ime-mode: disabled;"  value="<?php echo $sales_unitcost; ?>"></td>
+                <td><input type="number" id="sales_unitcost" name="sales_unitcost" class="f130P wdtS"   oninput="sliceMaxLength(this, 7)" style="ime-mode: disabled;"  value="<?php echo $sales_unitcost; ?>" required><span class="f50P"> 　未使用の場合は０を入力してください</span></td>
             </tr>
             <tr>
                 <th><span class="required">交通費<span class="f50P"> (7)</span></span></th>
-                <td>1日（往復）：<input type="number" id="transport_unitcosts" class="f130P wdtS"   oninput="sliceMaxLength(this, 7)" name="transport_unitcosts" style="ime-mode: disabled;"  value="<?php echo $transport_unitcosts; ?>"><br>
-                    １ヶ月定期：<input type="number" id="pass_cost" name="pass_cost" class="f130P wdtS"   oninput="sliceMaxLength(this, 7)" style="ime-mode: disabled;"  value="<?php echo $pass_cost; ?>"></td>
+                <td>1日（往復）：<input type="number" id="transport_unitcosts" class="f130P wdtS"   oninput="sliceMaxLength(this, 7)" name="transport_unitcosts" style="ime-mode: disabled;"  value="<?php echo $transport_unitcosts; ?>" required><span class="f50P"> 　未使用の場合は０を入力してください</span><br>
+                    １ヶ月定期：<input type="number" id="pass_cost" name="pass_cost" class="f130P wdtS"   oninput="sliceMaxLength(this, 7)" style="ime-mode: disabled;"  value="<?php echo $pass_cost; ?>" required><span class="f50P"> 　未使用の場合は０を入力してください</span></td>
             </tr>
         </table>
 
@@ -754,7 +754,7 @@
             <caption>銀行口座</caption>
             <tr>
                 <th>フリガナ<span class="f50P"> (30)</span></th>
-                <td><input type="text" id="bank_kana" name="bank_kana" class="f130P wdtM" maxlength=30 style="ime-mode: active;" pattern="[ァ-ヴー\s　]+" title="カタカナ" placeholder="全角カタカナ" onblur="harf2wide(this);" value="<?php echo $bank_kana; ?>"></td>
+                <td><input type="text" id="bank_kana" name="bank_kana" class="f130P wdtM" maxlength=30 style="ime-mode: active;" pattern="[ァ-ヴー\s　]+" title="カタカナ" placeholder="全角カタカナ" onblur="harf2wide(this);" value="<?php echo $bank_kana; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>銀行名<span class="f50P"> (30)</span></th>
@@ -762,19 +762,19 @@
             </tr>
             <tr>
                 <th>支店番号<span class="f50P"> (3)</span></th>
-                <td><input type="number" id="branch_code" name="branch_code" class="f130P wdtSS"  oninput="sliceMaxLength(this, 3)" style="ime-mode:disabled" pattern="[0-9]+" title="半角数字" value="<?php echo $branch_code; ?>"></td>
+                <td><input type="number" id="branch_code" name="branch_code" class="f130P wdtSS"  oninput="sliceMaxLength(this, 3)" style="ime-mode:disabled" pattern="[0-9]+" title="半角数字" value="<?php echo $branch_code; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>フリガナ<span class="f50P"> (30)</span></th>
-                <td><input type="text" id="branch_kana" name="branch_kana" class="f130P wdtM" maxlength=30 style="ime-mode: active;" pattern="[ァ-ヴー\s　]+" title="カタカナ" placeholder="全角カタカナ" onblur="harf2wide(this);" value="<?php echo $branch_kana; ?>"></td>
+                <td><input type="text" id="branch_kana" name="branch_kana" class="f130P wdtM" maxlength=30 style="ime-mode: active;" pattern="[ァ-ヴー\s　]+" title="カタカナ" placeholder="全角カタカナ" onblur="harf2wide(this);" value="<?php echo $branch_kana; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>支店名<span class="f50P"> (30)</span></th>
-                <td><input type="text" id="branch" name="branch" class="f130P wdtM" maxlength=30 style="ime-mode: active;" value="<?php echo $branch; ?>"></td>
+                <td><input type="text" id="branch" name="branch" class="f130P wdtM" maxlength=30 style="ime-mode: active;" value="<?php echo $branch; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>口座番号<span class="f50P"> (7)</span></th>
-                <td><input type="number" id="account" name="account" class="f130P wdtS"  oninput="sliceMaxLength(this, 7)" style="ime-mode:disabled" pattern="[0-9]+" title="半角数字" value="<?php echo $account; ?>"></td>
+                <td><input type="number" id="account" name="account" class="f130P wdtS"  oninput="sliceMaxLength(this, 7)" style="ime-mode:disabled" pattern="[0-9]+" title="半角数字" value="<?php echo $account; ?>" autocomplete="off"></td>
             </tr>
         </table>
 
@@ -787,11 +787,11 @@
             </tr>
             <tr>
                 <th>学校名<span class="f50P"> (30)</span></th>
-                <td><input type="text" id="school" name="school" class="f130P wdtL" maxlength=30 style="ime-mode: active;"  value="<?php echo $school; ?>"></td>
+                <td><input type="text" id="school" name="school" class="f130P wdtL" maxlength=30 style="ime-mode: active;"  value="<?php echo $school; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>卒業予定年月日<span class="f50P"> (30)</span></th>
-                <td><input type="text" id="graduate" name="graduate" class="f130P wdtS" maxlength=30 style="ime-mode: active;"  value="<?php echo $graduate; ?>">※在学中の方のみご記入下さい</td>
+                <td><input type="text" id="graduate" name="graduate" class="f130P wdtS" maxlength=30 style="ime-mode: active;"  value="<?php echo $graduate; ?>" autocomplete="off">※在学中の方のみご記入下さい</td>
             </tr>
         </table>
 
@@ -811,9 +811,9 @@
                 <td>
                     期間：<input type="month" id="work1_from" name="work1_from" class="f130P" value="<?php echo $work1_from; ?>">　〜　<input type="month" id="work1_to" name="work1_to" class="f130P" value="<?php echo $work1_to; ?>"><br>
                     雇用形態<span class="f50P"> (20)</span>：<input type="text" id="work1_status" name="work1_status"  class="f130P wdtM" maxlength=20 style="ime-mode: active;"  value="<?php echo $work1_status; ?>"><br>
-                    会社名称<span class="f50P"> (30)</span>：<input type="text" id="work1_company" name="work1_company" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work1_company; ?>"><br>
-                    就業場所<span class="f50P"> (30)</span>：<input type="text" id="work1_location" name="work1_location" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work1_location; ?>"><br>
-                    業務内容<span class="f50P"> (30)</span>：<input type="text" id="work1_job" name="work1_job" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work1_job; ?>"><br>
+                    会社名称<span class="f50P"> (30)</span>：<input type="text" id="work1_company" name="work1_company" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work1_company; ?>" autocomplete="off"><br>
+                    就業場所<span class="f50P"> (30)</span>：<input type="text" id="work1_location" name="work1_location" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work1_location; ?>" autocomplete="off"><br>
+                    業務内容<span class="f50P"> (30)</span>：<input type="text" id="work1_job" name="work1_job" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work1_job; ?>" autocomplete="off"><br>
                 </td>
             </tr>
             <tr>
@@ -821,9 +821,9 @@
                 <td>
                     期間：<input type="month" id="work2_from" name="work2_from" class="f130P" value="<?php echo $work2_from; ?>">　〜　<input type="month" id="work2_to" name="work2_to" class="f130P" value="<?php echo $work2_to; ?>"><br>
                     雇用形態<span class="f50P"> (20)</span>：<input type="text" id="work2_status" name="work2_status"  class="f130P wdtM" maxlength=20 style="ime-mode: active;"  value="<?php echo $work2_status; ?>"><br>
-                    会社名称<span class="f50P"> (30)</span>：<input type="text" id="work2_company" name="work2_company" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work2_company; ?>"><br>
-                    就業場所<span class="f50P"> (30)</span>：<input type="text" id="work2_location" name="work2_location" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work2_location; ?>"><br>
-                    業務内容<span class="f50P"> (30)</span>：<input type="text" id="work2_job" name="work2_job" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work2_job; ?>"><br>
+                    会社名称<span class="f50P"> (30)</span>：<input type="text" id="work2_company" name="work2_company" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work2_company; ?>" autocomplete="off"><br>
+                    就業場所<span class="f50P"> (30)</span>：<input type="text" id="work2_location" name="work2_location" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work2_location; ?>" autocomplete="off"><br>
+                    業務内容<span class="f50P"> (30)</span>：<input type="text" id="work2_job" name="work2_job" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work2_job; ?>" autocomplete="off"><br>
                 </td>
             </tr>
             <tr>
@@ -831,9 +831,9 @@
                 <td>
                     期間：<input type="month" id="work3_from" name="work3_from" class="f130P" value="<?php echo $work3_from; ?>">　〜　<input type="month" id="work3_to" name="work3_to" class="f130P" value="<?php echo $work3_to; ?>"><br>
                     雇用形態<span class="f50P"> (20)</span>：<input type="text" id="work3_status" name="work3_status"  class="f130P wdtM" maxlength=20 style="ime-mode: active;"  value="<?php echo $work3_status; ?>"><br>
-                    会社名称<span class="f50P"> (30)</span>：<input type="text" id="work3_company" name="work3_company" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work3_company; ?>"><br>
-                    就業場所<span class="f50P"> (30)</span>：<input type="text" id="work3_location" name="work3_location" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work3_location; ?>"><br>
-                    業務内容<span class="f50P"> (30)</span>：<input type="text" id="work3_job" name="work3_job" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work3_job; ?>"><br>
+                    会社名称<span class="f50P"> (30)</span>：<input type="text" id="work3_company" name="work3_company" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work3_company; ?>" autocomplete="off"><br>
+                    就業場所<span class="f50P"> (30)</span>：<input type="text" id="work3_location" name="work3_location" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work3_location; ?>" autocomplete="off"><br>
+                    業務内容<span class="f50P"> (30)</span>：<input type="text" id="work3_job" name="work3_job" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work3_job; ?>" autocomplete="off"><br>
                 </td>
             </tr>
             <tr>
@@ -841,9 +841,9 @@
                 <td>
                     期間：<input type="month" id="work4_from" name="work4_from" class="f130P" value="<?php echo $work4_from; ?>">　〜　<input type="month" id="work4_to" name="work4_to" class="f130P" value="<?php echo $work4_to; ?>"><br>
                     雇用形態<span class="f50P"> (20)</span>：<input type="text" id="work4_status" name="work4_status"  class="f130P wdtM" maxlength=20 style="ime-mode: active;"  value="<?php echo $work4_status; ?>"><br>
-                    会社名称<span class="f50P"> (30)</span>：<input type="text" id="work4_company" name="work4_company" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work4_company; ?>"><br>
-                    就業場所<span class="f50P"> (30)</span>：<input type="text" id="work4_location" name="work4_location" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work4_location; ?>"><br>
-                    業務内容<span class="f50P"> (30)</span>：<input type="text" id="work4_job" name="work4_job" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work4_job; ?>"><br>
+                    会社名称<span class="f50P"> (30)</span>：<input type="text" id="work4_company" name="work4_company" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work4_company; ?>" autocomplete="off"><br>
+                    就業場所<span class="f50P"> (30)</span>：<input type="text" id="work4_location" name="work4_location" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work4_location; ?>" autocomplete="off"><br>
+                    業務内容<span class="f50P"> (30)</span>：<input type="text" id="work4_job" name="work4_job" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work4_job; ?>" autocomplete="off"><br>
                 </td>
             </tr>
             <tr>
@@ -851,9 +851,9 @@
                 <td>
                     期間：<input type="month" id="work5_from" name="work5_from" class="f130P" value="<?php echo $work5_from; ?>">　〜　<input type="month" id="work5_to" name="work5_to" class="f130P" value="<?php echo $work5_to; ?>"><br>
                     雇用形態<span class="f50P"> (20)</span>：<input type="text" id="work5_status" name="work5_status"  class="f130P wdtM" maxlength=20 style="ime-mode: active;"  value="<?php echo $work5_status; ?>"><br>
-                    会社名称<span class="f50P"> (30)</span>：<input type="text" id="work5_company" name="work5_company" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work5_company; ?>"><br>
-                    就業場所<span class="f50P"> (30)</span>：<input type="text" id="work5_location" name="work5_location" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work5_location; ?>"><br>
-                    業務内容<span class="f50P"> (30)</span>：<input type="text" id="work5_job" name="work5_job" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work5_job; ?>"><br>
+                    会社名称<span class="f50P"> (30)</span>：<input type="text" id="work5_company" name="work5_company" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work5_company; ?>" autocomplete="off"><br>
+                    就業場所<span class="f50P"> (30)</span>：<input type="text" id="work5_location" name="work5_location" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work5_location; ?>" autocomplete="off"><br>
+                    業務内容<span class="f50P"> (30)</span>：<input type="text" id="work5_job" name="work5_job" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $work5_job; ?>" autocomplete="off"><br>
                 </td>
             </tr>
             <tr>
@@ -869,27 +869,27 @@
             <caption>緊急連絡先</caption>
             <tr>
                 <th>フリガナ<span class="f50P"> (30)</span></th>
-                <td><input type="text" id="emergency_kana" name="emergency_kana" class="f130P wdtM" maxlength=30 style="ime-mode: active;" pattern="[ァ-ヴー\s　]+" title="カタカナ" placeholder="全角カタカナ" onblur="harf2wide(this);"  value="<?php echo $emergency_kana; ?>"></td>
+                <td><input type="text" id="emergency_kana" name="emergency_kana" class="f130P wdtM" maxlength=30 style="ime-mode: active;" pattern="[ァ-ヴー\s　]+" title="カタカナ" placeholder="全角カタカナ" onblur="harf2wide(this);"  value="<?php echo $emergency_kana; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>連絡人<span class="f50P"> (30)</span></th>
-                <td><input type="text" id="emergency" name="emergency" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $emergency; ?>"></td>
+                <td><input type="text" id="emergency" name="emergency" class="f130P wdtM" maxlength=30 style="ime-mode: active;"  value="<?php echo $emergency; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>郵便番号<span class="f50P"> (8)</span></th>
-                <td><input type="text" id="post2" name="post2" class="f130P wdtSS" maxlength=8 style="ime-mode:disabled" placeholder="123-4567" pattern="\d{3}-?\d{4}" title="郵便番号"  value="<?php echo $post2; ?>"></td>
+                <td><input type="text" id="post2" name="post2" class="f130P wdtSS" maxlength=8 style="ime-mode:disabled" placeholder="123-4567" pattern="\d{3}-?\d{4}" title="郵便番号"  value="<?php echo $post2; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>現住所<span class="f50P"> (100)</span></th>
-                <td><input type="text" id="address2" name="address2" class="f130P wdtL" maxlength=100 style="ime-mode: active;"  value="<?php echo $address2; ?>"></td>
+                <td><input type="text" id="address2" name="address2" class="f130P wdtL" maxlength=100 style="ime-mode: active;"  value="<?php echo $address2; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>固定回線<span class="f50P"> (13)</span></th>
-                <td><input type="tel" id="tel10" name="tel10" class="f130P wdtS" maxlength=13 style="ime-mode:disabled" placeholder="090-1234-5678" pattern="\d{2,4}-?\d{3,4}-?\d{3,4}"  value="<?php echo $tel10; ?>"></td>
+                <td><input type="tel" id="tel10" name="tel10" class="f130P wdtS" maxlength=13 style="ime-mode:disabled" placeholder="090-1234-5678" pattern="\d{2,4}-?\d{3,4}-?\d{3,4}"  value="<?php echo $tel10; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>携帯電話<span class="f50P"> (13)</span></th>
-                <td><input type="tel" id="tel11" name="tel11" class="f130P wdtS" maxlength=13 style="ime-mode:disabled" placeholder="090-1234-5678" pattern="\d{2,4}-?\d{3,4}-?\d{3,4}"  value="<?php echo $tel11; ?>"></td>
+                <td><input type="tel" id="tel11" name="tel11" class="f130P wdtS" maxlength=13 style="ime-mode:disabled" placeholder="090-1234-5678" pattern="\d{2,4}-?\d{3,4}-?\d{3,4}"  value="<?php echo $tel11; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>指定連絡先</th>

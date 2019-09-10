@@ -87,7 +87,7 @@ if (!empty($_SESSION["LEVEL"])) {
                 <td><input type="password" id="pass" name="pass" class="f130P wdtL"  style="ime-mode: disabled;" required>
                 </td>
             </tr>
-            <tr><td colspan="2"><button type=submit name="empShift" class="cal2">登録</button></td></tr>
+            <tr><td colspan="2"><button type=submit name="userEdit" class="cal2">登録</button></td></tr>
         </table>
 
     </form>

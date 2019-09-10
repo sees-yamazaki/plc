@@ -139,7 +139,7 @@
             <caption>クライアント情報</caption>
             <tr>
                 <th><span class="required">クライアント名<span class="f50P"> (30)</span></span></th>
-                <td><input type="text" id="name" name="name" class="f130P wdtL" maxlength=30  style="ime-mode: active;" required placeholder="" value="<?php echo $name; ?>">
+                <td><input type="text" id="name" name="name" class="f130P wdtL" maxlength=30  style="ime-mode: active;" required placeholder="" value="<?php echo $name; ?>" autocomplete="off">
                 </td>
             </tr>
             <tr>
@@ -149,11 +149,11 @@
             </tr>
             <tr>
                 <th>住所<span class="f50P"> (100)</span></th>
-                <td><input type="text" id="address" name="address" class="f130P wdtL" maxlength=100 value="<?php echo $address; ?>"></td>
+                <td><input type="text" id="address" name="address" class="f130P wdtL" maxlength=100 value="<?php echo $address; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>電話番号<span class="f50P"> (13)</span></th>
-                <td><input type="tel" id="tel" name="tel" style="ime-mode:disabled" class="f130P wdtS" maxlength=13  placeholder="090-1234-5678" pattern="\d{2,4}-?\d{3,4}-?\d{3,4}" title="電話番号"  value="<?php echo $tel; ?>"></td>
+                <td><input type="tel" id="tel" name="tel" style="ime-mode:disabled" class="f130P wdtS" maxlength=13  placeholder="090-1234-5678" pattern="\d{2,4}-?\d{3,4}-?\d{3,4}" title="電話番号"  value="<?php echo $tel; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>担当者名<span class="f50P"> (30)</span></th>
@@ -162,7 +162,7 @@
             </tr>
             <tr>
                 <th>E-mail<span class="f50P"> (50)</span></th>
-                <td><input type="email" id="email" name="email" style="ime-mode:disabled" class="f130P wdtM" maxlength=50  placeholder="localname@domain.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="メールアドレス"  value="<?php echo $email; ?>"></td>
+                <td><input type="email" id="email" name="email" style="ime-mode:disabled" class="f130P wdtM" maxlength=50  placeholder="localname@domain.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="メールアドレス"  value="<?php echo $email; ?>" autocomplete="off"></td>
             </tr>
             <tr>
                 <th>備考</th>
