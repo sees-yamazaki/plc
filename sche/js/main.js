@@ -15,8 +15,6 @@ function rePWcheck() {
 }
 
 
-
-function sliceMaxLength(elem, maxLength) {  
-    elem.value = elem.value.slice(0, maxLength);  
-} 
-
+function sliceMaxLength(elem, maxLength) {
+    elem.value = elem.value.slice(0, maxLength);
+}

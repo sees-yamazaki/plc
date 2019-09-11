@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="133" height="121" viewBox="0 0 133 121">
+  <g id="グループ_6" data-name="グループ 6" transform="translate(-232 -619)">
+    <rect id="長方形_8" data-name="長方形 8" width="133" height="121" transform="translate(232 619)" fill="#fff"/>
+    <g id="グループ_4" data-name="グループ 4" transform="translate(-3)">
+      <g id="長方形_1" data-name="長方形 1" transform="translate(248 632)" fill="#fff" stroke="#707070" stroke-linejoin="round" stroke-width="5">
+        <rect width="90" height="98" rx="10" stroke="none"/>
+        <rect x="2.5" y="2.5" width="85" height="93" rx="7.5" fill="none"/>
+      </g>
+      <line id="線_1" data-name="線 1" x2="2" transform="translate(265.5 663.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="6"/>
+      <line id="線_2" data-name="線 2" x2="41" transform="translate(278.5 663.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="6"/>
+      <line id="線_3" data-name="線 3" x2="2" transform="translate(265.5 681.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="6"/>
+      <line id="線_4" data-name="線 4" x2="41" transform="translate(278.5 681.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="6"/>
+      <line id="線_5" data-name="線 5" x2="2" transform="translate(265.5 699.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="6"/>
+      <line id="線_6" data-name="線 6" x2="41" transform="translate(278.5 699.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="6"/>
+      <g id="楕円形_5" data-name="楕円形 5" transform="translate(296 672)" fill="#fff" stroke="#707070" stroke-width="5">
+        <circle cx="31.5" cy="31.5" r="31.5" stroke="none"/>
+        <circle cx="31.5" cy="31.5" r="29" fill="none"/>
+      </g>
+      <line id="線_7" data-name="線 7" y2="24" transform="translate(327.5 681.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="5"/>
+      <line id="線_8" data-name="線 8" x1="11" y1="10" transform="translate(327.5 705.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="5"/>
+      <rect id="長方形_2" data-name="長方形 2" width="14" height="12" transform="translate(271 628)" fill="#fff"/>
+      <line id="線_10" data-name="線 10" y2="19" transform="translate(278.5 624.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="5"/>
+      <rect id="長方形_3" data-name="長方形 3" width="14" height="12" transform="translate(307 628)" fill="#fff"/>
+      <line id="線_11" data-name="線 11" y2="19" transform="translate(314.5 624.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="5"/>
+    </g>
+  </g>
+</svg>

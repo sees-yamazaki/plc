@@ -27,6 +27,7 @@ $js = substr($js ,0,-1);
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
     <title>組織図</title>
     <link rel="stylesheet" href="../css/main.css" />
 </head>

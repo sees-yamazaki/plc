@@ -17,7 +17,12 @@ foreach ($users as $user) {
         $html .= "<input type='hidden' name='groups_seq' value='".$user->groups_seq."'>";
         $html .= "<td width='100px'>".$user->users_id."</td>";
         $html .= "<td width='300px'>".$user->users_name."</td>";
-        $html .= "<td width='300px'>".$user->groups_name."</td>";
+        $tip = "";
+        foreach( $user->user_group as $ug ){
+            $tip .= $ug->groups_name.", ";
+        }
+        $tip = substr($tip,0,-2);
+        $html .= "<td width='300px'>".$tip."</td>";
         if ($user->users_level=="1"){
             $lvl = "管理者";
         } else {
@@ -37,6 +42,7 @@ $js = substr($js ,0,-1);
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
     <title>ユーザ一覧</title>
     <link rel="stylesheet" href="../css/main.css" />
 </head>

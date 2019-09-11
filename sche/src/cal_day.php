@@ -107,20 +107,51 @@ for($i = 0; $i <= 23.5; $i = $i + 0.5 ){
         $sche_day .= "<td class='hm2'>&nbsp;</td>";
     }
     $sche_day .= "<td class='sche'>";
+
     foreach ($schedules as $schedule) {
 
         //当時間帯
         $sTime = sprintf('%04d', $i * 100);
         $eTime = sprintf('%04d', ($i * 100)+30);
 
-        if(($schedule->sche_start_hm >= $sTime)&& ($schedule->sche_start_hm < $eTime)){
+        if(
+            ($schedule->sche_start_ymd == $tYMD)
+             && ($schedule->sche_start_hm >= $sTime)
+             && ($schedule->sche_start_hm < $eTime)
+            ){
             //開始時間が当時間帯の場合
-            $sche_day .= "<img src='../img/sche_icon".$schedule->sche_type.".svg'>";
+            $sche_day .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$tYMD."'>";
+//            $sche_day .= "<img src='../img/sche_icon".$schedule->sche_type.".svg'>";
+            $sche_day .= "<span style='color:#".$schedule->sche_color."'>".$schedule->sche_mark."<span>";
             $sche_day .= $schedule->sche_title;
-        }elseif(($schedule->sche_start_ymd < $tYMD) ||
-         (($schedule->sche_start_ymd == $tYMD)  && ($schedule->sche_start_hm < $eTime)  && ($schedule->sche_end_hm > $eTime))){
+            $sche_day .= "</a>&nbsp;&nbsp;";
+        }elseif(
+            (
+                ($schedule->sche_start_ymd == $tYMD)
+             && ($schedule->sche_start_hm < $eTime)
+             && ($schedule->sche_end_ymd == $tYMD)
+             && ($schedule->sche_end_hm > $eTime)
+            ) ||
+            (
+                ($schedule->sche_start_ymd == $tYMD)
+             && ($schedule->sche_start_hm < $eTime)
+             && ($schedule->sche_end_ymd > $tYMD)
+            ) ||
+            (
+                ($schedule->sche_start_ymd < $tYMD)
+             && ($schedule->sche_end_ymd == $tYMD)
+             && ($schedule->sche_end_hm > $eTime)
+            )  ||
+            (
+                ($schedule->sche_start_ymd < $tYMD)
+             && ($schedule->sche_end_ymd > $tYMD)
+            ) 
+            ){
             //開始時間が過去の場合
-            $sche_day .= "<img src='../img/sche_icon".$schedule->sche_type.".svg'>";
+            $sche_day .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$tYMD."'>";
+            $sche_day .= "<span style='color:#".$schedule->sche_color."'>".$schedule->sche_mark."<span>";
+            $sche_day .= "<span class='titleS'>".$schedule->sche_title_s."<span>";
+            $sche_day .= "</a>&nbsp;&nbsp;";
         }
 
     }
@@ -136,27 +167,12 @@ for($i = 0; $i <= 23.5; $i = $i + 0.5 ){
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
     <title>カレンダー</title>
     <link rel="stylesheet" href="../css/main.css" />
     <link rel="stylesheet" href="../css/calendar.css" />
-    <style type="text/css">
-    table.miniCal {
-        width: 100%;
-    }
-
-    table.miniCal th {
-        background: #EEEEEE;
-    }
-
-    table.miniCal th,
-    table.miniCal td {
-        border: 0px solid #CCCCCC;
-        text-align: center;
-        padding: 5px;
-        font-size: 0.5rem;
-    }
-    </style>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+    <script src="../js/main.js"></script>
 </head>
 
 <body>
@@ -164,60 +180,78 @@ for($i = 0; $i <= 23.5; $i = $i + 0.5 ){
     <?php include('./menu.php'); ?>
 
     <div class="ly">
-    <div class="l-cnt">
+
+        <div id="l-cnt" class="l-cnt">
+
+            <div class="l-cnt-cal">
+                <table class="miniCal">
+                    <tr>
+                        <td><a href="?ymd=<?php echo $prev; ?>">&lt;</a></td>
+                        <td colspan=3><?php echo $html_title; ?></td>
+                        <td><a href="?ymd=<?php echo $next; ?>">&gt;</a></td>
+                        <td colspan=2><a href="?ymd=<?php echo $today; ?>">TODAY</a></td>
+                    </tr>
+                    <tr>
+                        <th>日</th>
+                        <th>月</th>
+                        <th>火</th>
+                        <th>水</th>
+                        <th>木</th>
+                        <th>金</th>
+                        <th>土</th>
+                    </tr>
+
+                    <tr>
+                        <?php $cnt = 0; ?>
+                        <?php foreach ($calendar as $key => $value): ?>
+                        <?php $cnt++; ?>
+
+                        <?php if($value['day']==$day){ ?>
+                        <td class="tgtDay">
+                            <?php echo $value['day']; ?>
+                        </td>
+                        <?php }else{ ?>
+                        <td>
+                            <a class="day" href="?ymd=<?php echo $ym.$value['day']; ?>"><?php echo $value['day']; ?></a>
+                        </td>
+                        <?php } ?>
 
 
-        <table class="miniCal">
-            <tr>
-                <td colspan=3><?php echo $html_title; ?></td>
-                <td><a href="?ymd=<?php echo $prev; ?>">&lt;</a></td>
-                <td colspan=2><a href="?ymd=<?php echo $today; ?>">TODAY</a></td>
-                <td><a href="?ymd=<?php echo $next; ?>">&gt;</a></td>
-            </tr>
-            <tr>
-                <th>日</th>
-                <th>月</th>
-                <th>火</th>
-                <th>水</th>
-                <th>木</th>
-                <th>金</th>
-                <th>土</th>
-            </tr>
+                        <?php if ($cnt == 7): ?>
+                    </tr>
+                    <tr>
+                        <?php $cnt = 0; ?>
+                        <?php endif; ?>
 
-            <tr>
-                <?php $cnt = 0; ?>
-                <?php foreach ($calendar as $key => $value): ?>
-                <?php $cnt++; ?>
-
-                <?php if($value['day']==$day){ ?>
-                    <td class="tgtDay">
-                    <?php echo $value['day']; ?>
-                    </td>
-                <?php }else{ ?>
-                    <td>
-                    <a class="day" href="?ymd=<?php echo $ym.$value['day']; ?>"><?php echo $value['day']; ?></a>
-                    </td>
-                <?php } ?>
-
-
-                <?php if ($cnt == 7): ?>
-            </tr>
-            <tr>
-                <?php $cnt = 0; ?>
-                <?php endif; ?>
-
-                <?php endforeach; ?>
-            </tr>
-        </table>
-        <a href='cal_day.php?ymd=<?php echo date('Y-m-d', $timestamp); ?>'><img width=40px src="../img/eventstore.svg"></a>
-        <a href='cal_day_list.php?ymd=<?php echo date('Y-m-d', $timestamp); ?>'><img width=40px src="../img/wheniwork.svg"></a>
-        <img width=40px src="../img/pen.svg">
-    </div>
-    <div class="r-cnt">
-        <table class="hm">
-            <?php echo $sche_day; ?>
-        </table>
-    </div>
+                        <?php endforeach; ?>
+                    </tr>
+                </table>
+            </div>
+            <div class="l-cnt-txt">
+                <span class="title">
+                    ●・・自分のスケジュール<br>
+                    ◆・・他者のスケジュール<br><br>
+                </span>
+            </div>
+            <div class="l-cnt-btn1">
+                <a href='cal_day_list.php?ymd=<?php echo date('Y-m-d', $timestamp); ?>'><img width=50px
+                        src="../img/clock.svg" onmouseover="this.src='../img/list.svg'"
+                        onmouseout="this.src='../img/clock.svg'"></a>
+                <br><br>
+            </div>
+            <div class="l-cnt-btn2">
+                <form action="sche_edit.php" method="POST">
+                    <input type="hidden" name="ymd" value="<?php echo date('Y-m-d', $timestamp); ?>">
+                    <input type="image" name="btn_submit" width=50px src="../img/pen.svg"
+                        onmouseover="this.src='../img/wheniwork.svg'" onmouseout="this.src='../img/pen.svg'" />
+                </form>
+            </div>
+        </div>
+        <div class="r-cnt">
+            <table class="hm">
+                <?php echo $sche_day; ?>
+            </table>
+        </div>
     </div>
 </body>
 

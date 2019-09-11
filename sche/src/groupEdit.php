@@ -14,8 +14,8 @@
 
         if(isset($_POST['groupEdit'])){
             
-            $group->groups_seq=$_POST['gSeq'];;
-            $group->parent_groups_seq=$_POST['parent_groups_seq'];;
+            $group->groups_seq=$_POST['gSeq'];
+            $group->parent_groups_seq=$_POST['parent_groups_seq'];
             $group->groups_name=$_POST['groups_name'];
             $group->create_users_seq =$_SESSION['SEQ'];
             $group->create_users_name =$_SESSION['NAME'];
@@ -36,7 +36,7 @@
                 updateGroup($group);
 
             }else{
-                //ERR
+                //none
             }
 
             if(empty($errorMessage)){
@@ -49,15 +49,19 @@
             require './db/user_group.php';
             $ug = array();
             $ug = getUserGroupListByGID($gSeq);
+            $ug2 = array();
+            $ug2 = getUnderGroups($gSeq);
 
             if(count($ug)<>0){
                 $errorMessage = "このグループには社員が存在します。先に社員を編集してください。";
-
+            }elseif(count($ug2)<>0){
+                $errorMessage = "このグループには下位グループが存在します。先に下位グループを編集してください。";
             }else{
-                $errorMessage = "削除可能。";
-                    //sakujo
 
-                //header("Location: ./groupList.php");
+                $group->groups_seq=$_POST['gSeq'];
+                deleteGroup($group);
+                
+                header("Location: ./groupList.php");
             } 
         }else{
             // 指定のグループを取得
@@ -99,6 +103,7 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
     <title>組織図</title>
     <link rel="stylesheet" href="../css/main.css">
     <script src="../js/main.js"></script>

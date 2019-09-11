@@ -37,21 +37,14 @@ session_start();
                 header("Location: ./user_list.php");
             }
 
-            /*
         }else if(isset($_POST['userDel'])){
+
+            $user->users_seq = $_POST['uSeq'];
             
-                    $sql = "DELETE FROM `employee` WHERE `employee_seq`=?";
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->execute(array($eSeq));
+            deleteUser($user);
 
-                    $sql = "DELETE FROM `officer` WHERE `employee_seq`=?";
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->execute(array($eSeq));
+            header("Location: ./user_list.php");
 
-
-
-                header("Location: ./userList.php");
-*/
         }else{
             
             $user = getUser($uSeq);
@@ -66,7 +59,15 @@ session_start();
 
         $html="";
         foreach ($groups as $group) {
-            if($user->groups_seq==$group->groups_seq){
+
+            $flg = false;
+            foreach( $user->user_group as $ug ){
+                if($group->groups_seq == $ug->groups_seq){
+                    $flg = true;
+                }
+            }
+
+            if($flg==true){
                 $html .= "<option value='".$group->groups_seq."' selected>".$group->groups_name."</option>";
             }else{
                 $html .= "<option value='".$group->groups_seq."'>".$group->groups_name."</option>";
@@ -87,8 +88,10 @@ session_start();
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
     <title>ユーザ編集</title>
     <link rel="stylesheet" href="../css/main.css" />
+    <script src="../js/main.js"></script>
 </head>
 
 <body>
@@ -107,11 +110,10 @@ session_start();
             <input type="hidden" name="uSeq" value="<?php echo $uSeq; ?>">
 
             <table class="edit">
-                <caption>ユーザ情報</caption>
                 <tr>
                     <th><span class="required">*</span>ユーザID<span class="f50P"> (20)</span></th>
                     <td>
-                        <input type="number" id="users_id" name="users_id" class="f130P wdtS"
+                        <input type="text" id="users_id" name="users_id" class="f130P wdtS"
                             oninput="sliceMaxLength(this, 20)" style="ime-mode: disabled;" pattern="^[0-9A-Za-z]+$"
                             title="半角英数字" placeholder="半角英数字" value="<?php echo $user->users_id; ?>" required>
                     </td>
@@ -145,8 +147,7 @@ session_start();
                 <tr>
                     <th><span class="required">*</span>グループ</th>
                     <td>
-                        <select name="groups_seq" class="f130P" required>
-                            <option value="">選択してください</option>
+                        <select name="groups_seq[]" class="f130P wdtL" required multiple>
                             <?php echo $html; ?>
                         </select>
                     </td>
@@ -162,7 +163,7 @@ session_start();
 
 
         <?php if(!empty($uSeq)){ ?>
-        <form action="userEdit.php" method="POST" onsubmit="return delcheck()">
+        <form action="user_edit.php" method="POST" onsubmit="return delcheck()">
 
             <input type="hidden" name="uSeq" value="<?php echo $uSeq; ?>">
 

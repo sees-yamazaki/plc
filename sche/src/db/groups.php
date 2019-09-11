@@ -13,14 +13,52 @@
 
   }
 
-  function getGroups(){
 
-    try {
+    function getGroups(){
+
+        try {
         
             $results = array();
 
             require $_SESSION["MY_ROOT"].'/src/db/dns.php';
             $stmt = $pdo->prepare("SELECT * FROM groups ORDER BY groups_id");
+            $stmt->execute(array());
+
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $result = new cls_groups();
+                $result->groups_seq = $row['groups_seq'];
+                $result->groups_id = $row['groups_id'];
+                $result->groups_name = $row['groups_name'];
+                $result->parent_groups_seq = $row['parent_groups_seq'];
+                $result->create_date = $row['create_date'];
+                $result->create_users_seq = $row['create_users_seq'];
+                $result->create_users_name = $row['create_users_name'];
+
+                array_push($results,$result);
+            }
+
+        } catch (PDOException $e) {
+            $errorMessage = 'データベースエラー';
+            //$errorMessage = $sql;
+            if(strcmp("1",$ini['debug'])==0){
+                echo $e->getMessage();
+            }
+        }
+
+        return $results;
+    }
+
+
+    function getUnderGroups($groupsSeq){
+
+        $results = array();
+
+        try {
+
+            $tmpGroup = getGroup($groupsSeq);
+
+            require $_SESSION["MY_ROOT"].'/src/db/dns.php';
+            $stmt = $pdo->prepare("SELECT * FROM groups WHERE groups_seq <> ".$groupsSeq." AND  groups_id LIKE '".$tmpGroup->groups_id."%' ORDER BY groups_id");
             $stmt->execute(array());
 
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -197,4 +235,31 @@
     }
 
 
+    function deleteGroup($group){
+
+        try {
+    
+            require $_SESSION["MY_ROOT"].'/src/db/dns.php';
+    
+            // ユーザを削除する
+            $sql = "DELETE FROM `groups` WHERE `groups_seq`=?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(array($group->groups_seq));
+    
+            // グループとユーザの紐付きを削除する
+            // 基本的には存在しないが念の為
+            $sql = "DELETE FROM `user_group` WHERE `groups_seq`=?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(array($group->groups_seq));
+    
+        } catch (PDOException $e) {
+            $errorMessage = 'データベースエラー';
+            //$errorMessage = $sql;
+            if(strcmp("1",$ini['debug'])==0){
+                echo $e->getMessage();
+            }
+        }
+    
+    }
+    
 ?>

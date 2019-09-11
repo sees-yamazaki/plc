@@ -98,12 +98,12 @@ $schedules = getSchedulesYMD(date('Y', $timestamp),date('m', $timestamp),date('d
 $sche_day = "";
 foreach ($schedules as $schedule) {
     $sche_day .= "<div class='boxSche'><p>";
-    $sche_day .= "".$schedule->sche_start_dt." - ";
-    $sche_day .= "".$schedule->sche_end_dt."<br>";
-    $sche_day .= "[".$schedule->users_name."]<br>";
-    $sche_day .= "<u>".$schedule->sche_title."</u><br>";
-    $sche_day .= "".nl2br($schedule->sche_note)."<br>";
-    $sche_day .= "</></div>";
+    $sche_day .= "<span class='title'>期間：</span>".date('Y-m-d H:i',strtotime($schedule->sche_start_dt))."　〜　";
+    $sche_day .= "".date('Y-m-d H:i',strtotime($schedule->sche_end_dt))."<br>";
+    $sche_day .= "<span class='title'>作成者：</span>".$schedule->users_name."<br>";
+    $sche_day .= "<span class='title'>タイトル：</span>".$schedule->sche_title."<br>";
+    $sche_day .= "<span class='title'>内容：</span>".nl2br($schedule->sche_note)."<br>";
+    $sche_day .= "</p></div>";
 }
 
 
@@ -114,26 +114,10 @@ foreach ($schedules as $schedule) {
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
     <title>カレンダー</title>
     <link rel="stylesheet" href="../css/main.css" />
     <link rel="stylesheet" href="../css/calendar.css" />
-    <style type="text/css">
-    table.miniCal {
-        width: 100%;
-    }
-
-    table.miniCal th {
-        background: #EEEEEE;
-    }
-
-    table.miniCal th,
-    table.miniCal td {
-        border: 0px solid #CCCCCC;
-        text-align: center;
-        padding: 5px;
-        font-size: 0.5rem;
-    }
-    </style>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
 </head>
 
@@ -142,58 +126,70 @@ foreach ($schedules as $schedule) {
     <?php include('./menu.php'); ?>
 
     <div class="ly">
-    <div class="l-cnt">
+
+        <div class="l-cnt">
 
 
-        <table class="miniCal">
-            <tr>
-                <td colspan=3><?php echo $html_title; ?></td>
-                <td><a href="?ymd=<?php echo $prev; ?>">&lt;</a></td>
-                <td colspan=2><a href="?ymd=<?php echo $today; ?>">TODAY</a></td>
-                <td><a href="?ymd=<?php echo $next; ?>">&gt;</a></td>
-            </tr>
-            <tr>
-                <th>日</th>
-                <th>月</th>
-                <th>火</th>
-                <th>水</th>
-                <th>木</th>
-                <th>金</th>
-                <th>土</th>
-            </tr>
+            <div class="l-cnt-cal">
+                <table class="miniCal">
+                    <tr>
+                        <td><a href="?ymd=<?php echo $prev; ?>">&lt;</a></td>
+                        <td colspan=3><?php echo $html_title; ?></td>
+                        <td><a href="?ymd=<?php echo $next; ?>">&gt;</a></td>
+                        <td colspan=2><a href="?ymd=<?php echo $today; ?>">TODAY</a></td>
+                    </tr>
+                    <tr>
+                        <th>日</th>
+                        <th>月</th>
+                        <th>火</th>
+                        <th>水</th>
+                        <th>木</th>
+                        <th>金</th>
+                        <th>土</th>
+                    </tr>
 
-            <tr>
-                <?php $cnt = 0; ?>
-                <?php foreach ($calendar as $key => $value): ?>
-                <?php $cnt++; ?>
+                    <tr>
+                        <?php $cnt = 0; ?>
+                        <?php foreach ($calendar as $key => $value): ?>
+                        <?php $cnt++; ?>
 
-                <?php if($value['day']==$day){ ?>
-                    <td class="tgtDay">
-                    <?php echo $value['day']; ?>
-                    </td>
-                <?php }else{ ?>
-                    <td>
-                    <a class="day" href="?ymd=<?php echo $ym.$value['day']; ?>"><?php echo $value['day']; ?></a>
-                    </td>
-                <?php } ?>
+                        <?php if($value['day']==$day){ ?>
+                        <td class="tgtDay">
+                            <?php echo $value['day']; ?>
+                        </td>
+                        <?php }else{ ?>
+                        <td>
+                            <a class="day" href="?ymd=<?php echo $ym.$value['day']; ?>"><?php echo $value['day']; ?></a>
+                        </td>
+                        <?php } ?>
 
 
-                <?php if ($cnt == 7): ?>
-            </tr>
-            <tr>
-                <?php $cnt = 0; ?>
-                <?php endif; ?>
+                        <?php if ($cnt == 7): ?>
+                    </tr>
+                    <tr>
+                        <?php $cnt = 0; ?>
+                        <?php endif; ?>
 
-                <?php endforeach; ?>
-            </tr>
-        </table>
-        <a href='cal_day.php?ymd=<?php echo date('Y-m-d', $timestamp); ?>'><img width=40px src="../img/eventstore.svg"></a>
-        <a href='cal_day_list.php?ymd=<?php echo date('Y-m-d', $timestamp); ?>'><img width=40px src="../img/wheniwork.svg"></a>
-        <img width=40px src="../img/pen.svg">
-    </div>
-    <div class="r-cnt">
+                        <?php endforeach; ?>
+                    </tr>
+                </table>
+            </div>
+            <div class="l-cnt-btn1">
+                <a href='cal_day.php?ymd=<?php echo date('Y-m-d', $timestamp); ?>'><img width=50px src="../img/list.svg"
+                        onmouseover="this.src='../img/clock.svg'" onmouseout="this.src='../img/list.svg'"></a>
+                <br><br>
+            </div>
+            <div class="l-cnt-btn2">
+                <form action="sche_edit.php" method="POST">
+                    <input type="hidden" name="ymd" value="<?php echo date('Y-m-d', $timestamp); ?>">
+                    <input type="image" name="btn_submit" width=50px src="../img/pen.svg"
+                        onmouseover="this.src='../img/wheniwork.svg'" onmouseout="this.src='../img/pen.svg'" />
+                </form>
+            </div>
+        </div>
+        <div class="r-cnt">
             <?php echo $sche_day; ?>
-    </div>
+        </div>
     </div>
 </body>
 

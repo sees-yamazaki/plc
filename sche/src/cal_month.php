@@ -52,27 +52,46 @@ $week = '';
 // 例）１日が水曜日だった場合、日曜日から火曜日の３つ分の空セルを追加する
 $week .= str_repeat('<td></td>', $youbi);
 
+
+// 指定月のスケジュール取得
+require './db/schedules.php';
+$schedules = array();
+$schedules = getSchedulesYM(date('Y', $timestamp),date('m', $timestamp));
+
 for ( $day = 1; $day <= $day_count; $day++, $youbi++) {
 
     // 2017-07-3
     $date = $ym . '-' . $day;
+    // 2017-07-03
+    $date2 = str_replace("-","", $ym) .  sprintf('%02d', $day);
 
     if ($today == $date) {
         // 今日の日付の場合は、class="today"をつける
-        $week .= '<td class="today">' . $day . "&nbsp;&nbsp;<a href='cal_day.php?ymd=".$date."'><img width=20px src='../img/pen.svg'></a>";
+        $week .= '<td class="today">';
     } else {
-        $week .= '<td>' . $day . "&nbsp;&nbsp;<a href='cal_day.php?ymd=".$date."'><img width=20px src='../img/pen.svg'></a>";
+        $week .= '<td>';
     }
-    if ("2019-08-5" == $date) {
-      $week .= "<br><span><span style='color:blue'>●</span>ミーティング</span>";
+
+
+    $week .= "<a href='cal_day.php?ymd=".$date."'><span class='nrlDay'>&nbsp;". $day . "&nbsp;</span></a><br>";
+
+
+    foreach ($schedules as $schedule) {
+
+        if($schedule->sche_start_ymd==$date2){
+            $week .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$date2."'>";
+            $week .= "<span style='color:#".$schedule->sche_color."'>".$schedule->sche_mark;
+            $week .= $schedule->sche_title;
+            $week .= "</span></a><br>";
+        }elseif(($schedule->sche_start_ymd<$date2) && ($schedule->sche_end_ymd>$date2)){
+            $week .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$date2."'>";
+            $week .= "<span style='color:#".$schedule->sche_color."'>".$schedule->sche_mark."....";
+            $week .= "</span></a><br>";
+        }
+
+
     }
-    if ("2019-08-7" == $date) {
-      $week .= "<br><span><span style='color:red'>●</span>静岡出張</span>";
-      $week .= "<br><span><span style='color:green'>●</span>北海道出張</span>";
-    }
-    if ("2019-08-15" == $date) {
-      $week .= "<br><span><span style='color:blue'>●</span>ミーティング</span>";
-    }
+
     $week .= '</td>';
 
     // 週終わり、または、月終わりの場合
@@ -98,10 +117,11 @@ for ( $day = 1; $day <= $day_count; $day++, $youbi++) {
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
     <title>カレンダー</title>
     <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/cal2.css" />
     <link rel="stylesheet" href="../css/calendar.css" />
-    <link rel="stylesheet" href="../css/normalize.css" />
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
 </head>
 
@@ -109,10 +129,11 @@ for ( $day = 1; $day <= $day_count; $day++, $youbi++) {
     <?php include('./menu.php'); ?>
 
     <div>
-        <span class="hgt"><br><br><br><br></span>
+        <span class="hgt"><br><br></span>
     <div class="container" id="mini-calendar">
         <h3><a href="?ym=<?php echo $prev; ?>">&lt;</a> <?php echo $html_title; ?> <a
                 href="?ym=<?php echo $next; ?>">&gt;</a></h3>
+                <span class="title">日付をタップするとデイリーに切り替わります</span>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -135,7 +156,6 @@ for ( $day = 1; $day <= $day_count; $day++, $youbi++) {
         </table>
         </div>
     </div>
-    <?php echo $_SESSION["NAME"]."@"; ?>
 </body>
 
 </html>
