@@ -2,11 +2,11 @@
 
   class cls_users{
     public $users_seq=0;
-    public $users_id="";
-    public $users_pw="";
-    public $users_name="";
-    public $groups_seq=””;
-    public $groups_name="";
+    public $users_id;
+    public $users_pw;
+    public $users_name;
+    public $groups_seq;
+    public $groups_name;
     public $users_level=0;
     public $user_group;
   }

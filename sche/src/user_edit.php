@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+// タイムゾーンを設定
+date_default_timezone_set('Asia/Tokyo');
+
 
     $uSeq = $_POST['uSeq'];
 
@@ -61,7 +64,7 @@ session_start();
         foreach ($groups as $group) {
 
             $flg = false;
-            foreach( $user->user_group as $ug ){
+            foreach((array) $user->user_group as $ug ){
                 if($group->groups_seq == $ug->groups_seq){
                     $flg = true;
                 }
@@ -145,7 +148,7 @@ session_start();
                     </td>
                 </tr>
                 <tr>
-                    <th><span class="required">*</span>グループ</th>
+                    <th><span class="required">*</span>グループ<br><span class="f50P">複数選択可</span></th>
                     <td>
                         <select name="groups_seq[]" class="f130P wdtL" required multiple>
                             <?php echo $html; ?>

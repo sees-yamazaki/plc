@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+// タイムゾーンを設定
+date_default_timezone_set('Asia/Tokyo');
+
  
 // 全てのグループを取得
 require_once './db/users.php';

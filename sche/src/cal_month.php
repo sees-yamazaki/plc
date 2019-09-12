@@ -22,26 +22,20 @@ if ($timestamp === false) {
 // 今日の日付 フォーマット　例）2018-07-3
 $today = date('Y-m-j', time());
 
-// カレンダーのタイトルを作成　例）2017年7月
+// カレンダーのタイトルを作成　例）2017年7月 2017-7
 $html_title = date('Y年n月', $timestamp);
+$this_month = date('Y-m', $timestamp);
 
 // 前月・次月の年月を取得
-// 方法１：mktimeを使う mktime(hour,minute,second,month,day,year)
 $prev = date('Y-m', mktime(0, 0, 0, date('m', $timestamp)-1, 1, date('Y', $timestamp)));
 $next = date('Y-m', mktime(0, 0, 0, date('m', $timestamp)+1, 1, date('Y', $timestamp)));
 
-// 方法２：strtotimeを使う
-// $prev = date('Y-m', strtotime('-1 month', $timestamp));
-// $next = date('Y-m', strtotime('+1 month', $timestamp));
 
 // 該当月の日数を取得
 $day_count = date('t', $timestamp);
 
 // １日が何曜日か　0:日 1:月 2:火 ... 6:土
-// 方法１：mktimeを使う
 $youbi = date('w', mktime(0, 0, 0, date('m', $timestamp), 1, date('Y', $timestamp)));
-// 方法２：strtotimeを使う
-// $youbi = date('w', $timestamp);
 
 
 // カレンダー作成の準備
@@ -72,19 +66,24 @@ for ( $day = 1; $day <= $day_count; $day++, $youbi++) {
         $week .= '<td>';
     }
 
-
+    // 日付からデイリー表示へリンクできるようにする
     $week .= "<a href='cal_day.php?ymd=".$date."'><span class='nrlDay'>&nbsp;". $day . "&nbsp;</span></a><br>";
 
-
+    // 日付に該当するスケジュールがあるか確認する
     foreach ($schedules as $schedule) {
 
         if($schedule->sche_start_ymd==$date2){
-            $week .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$date2."'>";
-            $week .= "<span style='color:#".$schedule->sche_color."'>".$schedule->sche_mark;
-            $week .= $schedule->sche_title;
+            // 当日が開始日の場合は閲覧へのリンクとタイトル表示を設定する
+            $week .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$date2."&mCal=".$this_month."'>";
+            $week .= "<span class='block' style='color:#".$schedule->sche_color."'>".$schedule->sche_mark;
+            $week .= $schedule->sche_title_m;
             $week .= "</span></a><br>";
-        }elseif(($schedule->sche_start_ymd<$date2) && ($schedule->sche_end_ymd>$date2)){
-            $week .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$date2."'>";
+        }elseif(
+            // 当日が開始日では無い期間中または最終日の場合は閲覧へのリンクを設定する
+            ($schedule->sche_start_ymd<$date2) && ($schedule->sche_end_ymd>$date2)
+            || ($schedule->sche_end_ymd==$date2)
+            ){
+            $week .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$date2."&mCal=".$this_month."'>";
             $week .= "<span style='color:#".$schedule->sche_color."'>".$schedule->sche_mark."....";
             $week .= "</span></a><br>";
         }
@@ -120,7 +119,7 @@ for ( $day = 1; $day <= $day_count; $day++, $youbi++) {
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
     <title>カレンダー</title>
     <link rel="stylesheet" href="../css/main.css" />
-    <link rel="stylesheet" href="../css/cal2.css" />
+    <link rel="stylesheet" href="../css/cal_month.css" />
     <link rel="stylesheet" href="../css/calendar.css" />
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
 </head>

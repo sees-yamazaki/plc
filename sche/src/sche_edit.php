@@ -10,6 +10,11 @@ session_start();
         $ymd = $_GET['ymd'];
     }
 
+    $mCal = $_POST['mCal'];
+    if(empty($mCal)){
+        $mCal = $_GET['mCal'];
+    }
+
     $hm = date('H:i', time());
 
     require './db/schedules.php';
@@ -48,7 +53,11 @@ session_start();
             }
                 
             if(empty($errorMessage)){
-                header("Location: ./cal_day.php?ymd=".$tmpSYMD);
+                if(empty($mCal)){
+                    header("Location: ./cal_day.php?ymd=".$tmpSYMD);
+                }else{
+                    header("Location: ./cal_month.php?ym=".$mCal);
+                }
             }
 
             
@@ -59,13 +68,17 @@ session_start();
             
             deleteSchedule($sche);
 
-            header("Location: ./cal_day.php?ymd=".$tmpSYMD);
+            if(empty($mCal)){
+                header("Location: ./cal_day.php?ymd=".$tmpSYMD);
+            }else{
+                header("Location: ./cal_month.php?ym=".$mCal);
+            }
 
         }else{
             
             $sche = getSchedules($sSeq);
 
-            if($sche->users_seq<>$_SESSION['SEQ']){
+            if((!empty($sSeq)) && ($sche->users_seq<>$_SESSION['SEQ'])){
                 $sche = new cls_schedules();
                 $errorMessage = 'この情報を編集することができません';
             }
@@ -104,7 +117,11 @@ session_start();
     <div id="content">
 
         <div class="nav">
-            <button type="button" onclick="location.href='cal_day.php?ymd=<?php echo $ymd; ?>'" class="back">戻る</button>
+            <?php if(empty($mCal)){ ?>
+                <button type="button" onclick="location.href='cal_day.php?ymd=<?php echo $ymd; ?>'" class="back">戻る</button>
+            <?php }else{ ?>
+                <button type="button" onclick="location.href='cal_month.php?ym=<?php echo $mCal; ?>'" class="back">戻る</button>
+            <?php }?>    
             <span class="err"><?php echo htmlspecialchars($errorMessage, ENT_QUOTES); ?></span>
         </div><br>
 
@@ -112,6 +129,7 @@ session_start();
 
             <input type="hidden" name="sSeq" value="<?php echo $sSeq; ?>">
             <input type="hidden" name="ymd" value="<?php echo $ymd; ?>">
+            <input type="hidden" name="mCal" value="<?php echo $mCal; ?>">
 
             <table class="edit">
                 <tr>
@@ -169,6 +187,7 @@ session_start();
 
             <input type="hidden" name="sSeq" value="<?php echo $sSeq; ?>">
             <input type="hidden" name="ymd" value="<?php echo $ymd; ?>">
+            <input type="hidden" name="mCal" value="<?php echo $mCal; ?>">
 
             <table class="del">
                 <tr>

@@ -2,20 +2,21 @@
 
   class cls_schedules{
     public $sche_seq=0;
-    public $users_seq="";
-    public $users_name="";
-    public $sche_start_dt="";
-    public $sche_start_ymd="";
-    public $sche_start_hm="";
-    public $sche_end_dt="";
-    public $sche_end_ymd="";
-    public $sche_end_hm="";
-    public $sche_title="";
-    public $sche_title_s="";
-    public $sche_note="";
-    public $sche_type="";
-    public $sche_color="";
-    public $sche_mark="";
+    public $users_seq;
+    public $users_name;
+    public $sche_start_dt;
+    public $sche_start_ymd;
+    public $sche_start_hm;
+    public $sche_end_dt;
+    public $sche_end_ymd;
+    public $sche_end_hm;
+    public $sche_title;
+    public $sche_title_m;
+    public $sche_title_s;
+    public $sche_note;
+    public $sche_type;
+    public $sche_color;
+    public $sche_mark;
 
 
 
@@ -114,6 +115,10 @@
                 $result->sche_end_ymd = $row['sche_end_ymd'];
                 $result->sche_end_hm = $row['sche_end_hm'];
                 $result->sche_title = $row['sche_title'];
+                $result->sche_title_m = mb_substr($row['sche_title'],0,7);
+                if($result->sche_title<>$result->sche_title_m){
+                    $result->sche_title_m .= "..";
+                }
                 $result->sche_title_s = mb_substr($row['sche_title'],0,5);
                 $result->sche_note = $row['sche_note'];
                 $result->sche_type = $row['sche_type'];
@@ -196,6 +201,10 @@
                 $result->sche_end_ymd = $row['sche_end_ymd'];
                 $result->sche_end_hm = $row['sche_end_hm'];
                 $result->sche_title = $row['sche_title'];
+                $result->sche_title_m = mb_substr($row['sche_title'],0,7);
+                if($result->sche_title<>$result->sche_title_m){
+                    $result->sche_title_m .= "..";
+                }
                 $result->sche_title_s = mb_substr($row['sche_title'],0,5);
                 $result->sche_note = $row['sche_note'];
                 $result->sche_type = $row['sche_type'];

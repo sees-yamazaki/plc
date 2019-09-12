@@ -7,6 +7,12 @@ session_start();
     $sSeq = $_GET['sSeq'];
     $ymd = $_GET['ymd'];
 
+    $mCal = $_POST['mCal'];
+    if(empty($mCal)){
+        $mCal = $_GET['mCal'];
+    }
+
+    
     try {
         
         require './db/schedules.php';
@@ -44,7 +50,11 @@ session_start();
     <div id="content">
 
         <div class="nav">
-            <button type="button" onclick="location.href='cal_day.php?ymd=<?php echo $ymd; ?>'" class="back">戻る</button>
+            <?php if(empty($mCal)){ ?>
+                <button type="button" onclick="location.href='cal_day.php?ymd=<?php echo $ymd; ?>'" class="back">戻る</button>
+            <?php }else{ ?>
+                <button type="button" onclick="location.href='cal_month.php?ym=<?php echo $mCal; ?>'" class="back">戻る</button>
+            <?php }?>
             <span class="err"><?php echo htmlspecialchars($errorMessage, ENT_QUOTES); ?></span>
         </div><br>
 
@@ -52,6 +62,7 @@ session_start();
 
             <input type="hidden" name="sSeq" value="<?php echo $sSeq; ?>">
             <input type="hidden" name="ymd" value="<?php echo $ymd; ?>">
+            <input type="hidden" name="mCal" value="<?php echo $mCal; ?>">
 
             <table class="edit">
                 <tr>

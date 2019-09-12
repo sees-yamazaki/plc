@@ -3,7 +3,7 @@
   class cls_user_group{
     public $users_seq=0;
     public $groups_seq=0;
-    public $groups_id="";
+    public $groups_id;
 
   }
 

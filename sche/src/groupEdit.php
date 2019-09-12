@@ -2,6 +2,9 @@
 
     session_start();
 
+    // タイムゾーンを設定
+    date_default_timezone_set('Asia/Tokyo');
+
     //引数を取得
     $gSeq = $_POST['gSeq'];
 
@@ -40,7 +43,7 @@
             }
 
             if(empty($errorMessage)){
-                header("Location: ./groupList.php");
+                //header("Location: ./groupList.php");
             }
 
         }else if(isset($_POST['groupDel'])){

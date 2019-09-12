@@ -32,7 +32,7 @@ table {
 
 .table>thead>tr>th {
     vertical-align: bottom;
-    border-bottom: 2px solid #ddd
+    border-bottom: 2px solid #ddd;
 }
 
 .table>caption+thead>tr:first-child>td,
@@ -52,23 +52,12 @@ table {
     background-color: #fff
 }
 
-.table-condensed>tbody>tr>td,
-.table-condensed>tbody>tr>th,
-.table-condensed>tfoot>tr>td,
-.table-condensed>tfoot>tr>th,
-.table-condensed>thead>tr>td,
-.table-condensed>thead>tr>th {
-    padding: 5px
-}
-
 .table-bordered {
     border: 1px solid #ddd
 }
 
 .table-bordered>tbody>tr>td,
 .table-bordered>tbody>tr>th,
-.table-bordered>tfoot>tr>td,
-.table-bordered>tfoot>tr>th,
 .table-bordered>thead>tr>td,
 .table-bordered>thead>tr>th {
     border: 1px solid #ddd
@@ -76,7 +65,7 @@ table {
 
 .table-bordered>thead>tr>td,
 .table-bordered>thead>tr>th {
-    border-bottom-width: 2px
+    border-bottom-width: 2px;
 }
 
 table col[class*=col-] {
@@ -106,31 +95,6 @@ table th[class*=col-] {
     margin-left: auto
 }
 
-@media (min-width:768px) {
-    .container {
-        width: 750px
-    }
-}
-
-@media (min-width:992px) {
-    .container {
-        width: 970px
-    }
-}
-
-@media (min-width:1200px) {
-    .container {
-        width: 1170px
-    }
-}
-
-.container-fluid {
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto
-}
-
 h3 {
     font-family: inherit;
     font-weight: 500;
@@ -138,4 +102,8 @@ h3 {
     color: inherit;
     font-size: 65%;
     font-size: 24px;
+}
+
+div.block {
+    word-wrap: break-word;
 }
