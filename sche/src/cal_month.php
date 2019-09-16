@@ -76,7 +76,7 @@ for ( $day = 1; $day <= $day_count; $day++, $youbi++) {
             // 当日が開始日の場合は閲覧へのリンクとタイトル表示を設定する
             $week .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$date2."&mCal=".$this_month."'>";
             $week .= "<span class='block' style='color:#".$schedule->sche_color."'>".$schedule->sche_mark;
-            $week .= $schedule->sche_title_m;
+            $week .= substr($schedule->sche_start_hm,0,2)."時 ".$schedule->sche_title_m;
             $week .= "</span></a><br>";
         }elseif(
             // 当日が開始日では無い期間中または最終日の場合は閲覧へのリンクを設定する

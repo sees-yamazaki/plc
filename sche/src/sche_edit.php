@@ -149,7 +149,7 @@ session_start();
                 <tr>
                     <th><span class="required">*</span>タイトル<span class="f50P"> (50)</span></th>
                     <td><input type="text" name="sche_title" class="f130P wdtL" maxlength=50
-                            style="ime-mode: active;" required placeholder="" value="<?php echo $sche->sche_title; ?>">
+                            style="ime-mode: active;" required placeholder="" value="<?php echo $sche->sche_title; ?>" autocomplete="off">
                     </td>
                 </tr>
                 <tr>

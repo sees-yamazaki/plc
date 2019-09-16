@@ -186,7 +186,6 @@ function insertGroup($group){
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array("", $group->groups_name , $group->parent_groups_seq  , $group->create_users_seq , $group->create_users_name ));
         
-        var_dump($stmt->lastInsertId('groups_seq'));
         // 画面で指定した親グループSEQからグループ情報を取得する
         $parentGroup = getGroup($group->parent_groups_seq);
 

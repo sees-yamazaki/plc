@@ -231,6 +231,71 @@
         return $results;
     }
     
+    function getMySchedulesYM($y,$m){
+
+        try {
+            
+            $results = array();
+
+            $ym = $y."".$m;
+
+            $timestamp = strtotime($y . '-' . $m . '-' . $d);
+            $ymd = date('Ymd', $timestamp);
+
+            $result = new cls_schedules();
+
+            require $_SESSION["MY_ROOT"].'/src/db/dns.php';
+            $uSeq = $_SESSION['SEQ'];
+
+            // 自分のスケジュールを取得
+            $stmt = $pdo->prepare("SELECT * FROM schedules WHERE users_seq=? ORDER BY sche_start_dt");
+            $stmt->execute(array($uSeq));
+
+            require_once $_SESSION["MY_ROOT"].'/src/colors.php';
+            $i = 0;
+
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $result = new cls_schedules();
+                $result->sche_seq = $row['sche_seq'];
+                $result->users_seq = $row['users_seq'];
+                $result->users_name = $row['users_name'];
+                $result->sche_start_dt = $row['sche_start_dt'];
+                $result->sche_start_ymd = $row['sche_start_ymd'];
+                $result->sche_start_hm = $row['sche_start_hm'];
+                $result->sche_end_dt = $row['sche_end_dt'];
+                $result->sche_end_ymd = $row['sche_end_ymd'];
+                $result->sche_end_hm = $row['sche_end_hm'];
+                $result->sche_title = $row['sche_title'];
+                $result->sche_title_m = mb_substr($row['sche_title'],0,7);
+                if($result->sche_title<>$result->sche_title_m){
+                    $result->sche_title_m .= "..";
+                }
+                $result->sche_title_s = mb_substr($row['sche_title'],0,5);
+                $result->sche_note = $row['sche_note'];
+                $result->sche_type = $row['sche_type'];
+                if($uSeq==$result->users_seq){
+                    $result->sche_mark = "●";
+                }else{
+                    $result->sche_mark = "◆";
+                }
+                $result->sche_color = getColor($i);
+                $i++;
+
+                array_push($results,$result);
+            }
+
+
+        } catch (PDOException $e) {
+            $errorMessage = 'データベースエラー';
+            //$errorMessage = $sql;
+            if(strcmp("1",$ini['debug'])==0){
+                echo $e->getMessage();
+            }
+        }
+
+        return $results;
+    }
+    
 
     function insertSchedule($sche){
 
@@ -240,8 +305,9 @@
             $sql = "INSERT INTO `schedules`(`users_seq`, `sche_start_dt`, `sche_start_ymd`, `sche_start_ym`, `sche_start_hm`, `sche_end_dt`, `sche_end_ymd`, `sche_end_ym`, `sche_end_hm`, `sche_title`, `sche_note`, `sche_type`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
     
             $stmt = $pdo->prepare($sql);
+            var_dump($sche);
             $stmt->execute(array( $sche->users_seq , $sche->sche_start_dt  , $sche->sche_start_ymd  , $sche->sche_start_ym , $sche->sche_start_hm , $sche->sche_end_dt  , $sche->sche_end_ymd  , $sche->sche_end_ym  , $sche->sche_end_hm , $sche->sche_title  , $sche->sche_note  , $sche->sche_type ));
-    
+    echo "E";
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
             //$errorMessage = $sql;

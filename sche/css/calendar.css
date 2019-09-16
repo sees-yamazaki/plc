@@ -36,7 +36,7 @@ div.r-cnt {
 }
 
 span.hm {
-    font-size: 0.4rem;
+    font-size: 0.8rem;
     color: gray;
 }
 
@@ -203,11 +203,15 @@ table.miniCal td {
 }
 
 span.title {
-    font-size: 0.6rem;
+    font-size: 0.9rem;
     color: gray;
 }
 
 span.titleS {
     font-size: 0.6rem;
     color: #d3cfd9;
+}
+
+span.hasSchedule {
+    color: #d3381c;
 }

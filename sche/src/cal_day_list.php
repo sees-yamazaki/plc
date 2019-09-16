@@ -94,6 +94,8 @@ for ($i = 1; $i < $day_count + 1; $i++) {
 require_once './db/schedules.php';
 $schedules = array();
 $schedules = getSchedulesYMD(date('Y', $timestamp),date('m', $timestamp),date('d', $timestamp));
+$mySchedules = array();
+$mySchedules = getMySchedulesYM(date('Y', $timestamp),date('m', $timestamp));
 
 $sche_day = "";
 foreach ($schedules as $schedule) {
@@ -152,14 +154,23 @@ foreach ($schedules as $schedule) {
                         <?php $cnt = 0; ?>
                         <?php foreach ($calendar as $key => $value): ?>
                         <?php $cnt++; ?>
+                        <?php
+                            $hasShedule="";
+                            foreach ($mySchedules as $schedule) {
+                                $tDay = intval(substr($schedule->sche_start_ymd,-2));
+                                if($value['day']==$tDay){
+                                    $hasShedule=" hasSchedule";
+                                }
+                            }
+                        ?>
 
                         <?php if($value['day']==$day){ ?>
                         <td class="tgtDay">
-                            <?php echo $value['day']; ?>
+                            <span class="<?php echo $hasShedule; ?>"><?php echo $value['day']; ?></span>
                         </td>
                         <?php }else{ ?>
                         <td>
-                            <a class="day" href="?ymd=<?php echo $ym.$value['day']; ?>"><?php echo $value['day']; ?></a>
+                            <a class="day" href="?ymd=<?php echo $ym.$value['day']; ?>"><span class="<?php echo $hasShedule; ?>"><?php echo $value['day']; ?></span></a>
                         </td>
                         <?php } ?>
 

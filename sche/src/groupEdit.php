@@ -43,7 +43,7 @@
             }
 
             if(empty($errorMessage)){
-                //header("Location: ./groupList.php");
+                header("Location: ./groupList.php");
             }
 
         }else if(isset($_POST['groupDel'])){
@@ -146,7 +146,7 @@
                 <tr>
                     <th><span class="required">*</span>グループ名<span class="f50P"> (30)</span></th>
                     <td><input type="text" id="groups_name" name="groups_name" class="f130P wdtL" maxlength=30
-                            style="ime-mode: active;" required placeholder="" value="<?php echo $groups_name; ?>">
+                            style="ime-mode: active;" required placeholder="" value="<?php echo $groups_name; ?>" autocomplete="off">
                     </td>
                 </tr>
                 <tr>

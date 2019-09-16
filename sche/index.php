@@ -6,7 +6,7 @@ session_start();
 $ini = parse_ini_file('./common.ini', FALSE);
 $_SESSION["INI"] = $ini;
 
-$_SESSION["MY_ROOT"] = $_SERVER['DOCUMENT_ROOT'].'/sche';
+$_SESSION["MY_ROOT"] = $_SERVER['DOCUMENT_ROOT'].$ini['schema'];
 
 // エラーメッセージの初期化
 $errorMessage = "";
