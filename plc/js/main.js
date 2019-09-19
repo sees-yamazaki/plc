@@ -65,6 +65,14 @@ function rePWcheck() {
     }
 }
 
+function coverCheck() {
+    if (window.confirm('代行登録してもよろしいですか？')) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function submitChk() {
     var element = document.getElementById("employee_id");
     var element2 = document.getElementById("old_employee_id");

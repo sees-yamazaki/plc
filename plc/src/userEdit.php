@@ -124,7 +124,7 @@ if (!empty($_SESSION["LEVEL"])) {
                 if($row = $stmt->fetch()){
                     $errorMessage = "社員番号(".$employee_id.")はすでに使用されています。";
                 }else{
-                    $sql = "UPDATE `employee` SET `employee_id`=?,`name_kana`=?,`name`=?,`sex`=?,`birthday`=?,`post`=?,`address_kana`=?,`address`=?,`tel1`=?,`tel2`=?,`answering`=?,`fax`=?,`email1`=?,`email2`=?,`priority_email`=?,`route`=?,`station`=?,`bus`=?,`bus_name`=?,`bus_stop`=?,`bank_kana`=?,`bank`=?,`branch_code`=?,`branch_kana`=?,`branch`=?,`account`=?,`education_from`=?,`education_to`=?,`school`=?,`graduate`=?,`recruit`=?,`work1_from`=?,`work1_to`=?,`work1_status`=?,`work1_company`=?,`work1_location`=?,`work1_job`=?,`work2_from`=?,`work2_to`=?,`work2_status`=?,`work2_company`=?,`work2_location`=?,`work2_job`=?,`work3_from`=?,`work3_to`=?,`work3_status`=?,`work3_company`=?,`work3_location`=?,`work3_job`=?,`work4_from`=?,`work4_to`=?,`work4_status`=?,`work4_company`=?,`work4_location`=?,`work4_job`=?,`work5_from`=?,`work5_to`=?,`work5_status`=?,`work5_company`=?,`work5_location`=?,`work5_job`=?,`work_remarks`=?,`emergency_kana`=?,`emergency`=?,`tel10`=?,`tel11`=?,`priority_tel`=?,`post2`=?,`address2`=?,`remarks`=?,`alert_time`=?,`pay_type`=?,`pay_unitcost`=?,`sales_unitcost`=?,`transport_unitcosts`=?,`pass_cost`=?,`employee_level`=?,`group_seq`=?,`alert_mail_0`=?,`alert_mail_1`=?,`alert_mail_2`=?,`alert_mail_3`=?,`alert_mail_4`=? WHERE `employee_seq`=?";
+                    $sql = "UPDATE `employee` SET `employee_id`=?,`name_kana`=?,`name`=?,`sex`=?,`birthday`=?,`post`=?,`address_kana`=?,`address`=?,`tel1`=?,`tel2`=?,`answering`=?,`fax`=?,`email1`=?,`email2`=?,`priority_email`=?,`route`=?,`station`=?,`bus`=?,`bus_name`=?,`bus_stop`=?,`bank_kana`=?,`bank`=?,`branch_code`=?,`branch_kana`=?,`branch`=?,`account`=?,`education_from`=?,`education_to`=?,`school`=?,`graduate`=?,`recruit`=?,`work1_from`=?,`work1_to`=?,`work1_status`=?,`work1_company`=?,`work1_location`=?,`work1_job`=?,`work2_from`=?,`work2_to`=?,`work2_status`=?,`work2_company`=?,`work2_location`=?,`work2_job`=?,`work3_from`=?,`work3_to`=?,`work3_status`=?,`work3_company`=?,`work3_location`=?,`work3_job`=?,`work4_from`=?,`work4_to`=?,`work4_status`=?,`work4_company`=?,`work4_location`=?,`work4_job`=?,`work5_from`=?,`work5_to`=?,`work5_status`=?,`work5_company`=?,`work5_location`=?,`work5_job`=?,`work_remarks`=?,`emergency_kana`=?,`emergency`=?,`tel10`=?,`tel11`=?,`priority_tel`=?,`post2`=?,`address2`=?,`remarks`=?,`alert_time`=?,`employee_level`=?,`group_seq`=?,`alert_mail_0`=?,`alert_mail_1`=?,`alert_mail_2`=?,`alert_mail_3`=?,`alert_mail_4`=? WHERE `employee_seq`=?";
 
                     $stmt = $pdo->prepare($sql);
                     $stmt->execute(array(
@@ -199,11 +199,6 @@ if (!empty($_SESSION["LEVEL"])) {
                         $address2,
                         $remarks,
                         $alert_time,
-                        $pay_type,
-                        $pay_unitcost,
-                        $sales_unitcost,
-                        $transport_unitcosts,
-                        $pass_cost,
                         $employee_level,
                         $group_seq,
                         $alert_mail_0,
@@ -229,7 +224,7 @@ if (!empty($_SESSION["LEVEL"])) {
                 if($row = $stmt->fetch()){
                     $errorMessage = "社員番号(".$employee_id.")はすでに使用されています。";
                 }else{
-                    $sql = "INSERT INTO `employee`(`employee_id`, `name_kana`, `name`, `sex`, `birthday`, `post`, `address_kana`, `address`, `tel1`, `tel2`, `answering`, `fax`, `email1`, `email2`, `priority_email`, `route`, `station`, `bus`, `bus_name`, `bus_stop`, `bank_kana`, `bank`, `branch_code`, `branch_kana`, `branch`, `account`, `education_from`, `education_to`, `school`, `graduate`, `recruit`, `work1_from`, `work1_to`, `work1_status`, `work1_company`, `work1_location`, `work1_job`, `work2_from`, `work2_to`, `work2_status`, `work2_company`, `work2_location`, `work2_job`, `work3_from`, `work3_to`, `work3_status`, `work3_company`, `work3_location`, `work3_job`, `work4_from`, `work4_to`, `work4_status`, `work4_company`, `work4_location`, `work4_job`, `work5_from`, `work5_to`, `work5_status`, `work5_company`, `work5_location`, `work5_job`, `work_remarks`, `emergency_kana`, `emergency`, `tel10`, `tel11`, `priority_tel`, `post2`, `address2`, `remarks`,`alert_time`, `pay_type`,`pay_unitcost`,`sales_unitcost`,`transport_unitcosts`,`pass_cost`, `employee_level`, `employee_pw`, `group_seq`, `alert_mail_0`, `alert_mail_1`, `alert_mail_2`, `alert_mail_3`, `alert_mail_4`,`user_seq`)  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    $sql = "INSERT INTO `employee`(`employee_id`, `name_kana`, `name`, `sex`, `birthday`, `post`, `address_kana`, `address`, `tel1`, `tel2`, `answering`, `fax`, `email1`, `email2`, `priority_email`, `route`, `station`, `bus`, `bus_name`, `bus_stop`, `bank_kana`, `bank`, `branch_code`, `branch_kana`, `branch`, `account`, `education_from`, `education_to`, `school`, `graduate`, `recruit`, `work1_from`, `work1_to`, `work1_status`, `work1_company`, `work1_location`, `work1_job`, `work2_from`, `work2_to`, `work2_status`, `work2_company`, `work2_location`, `work2_job`, `work3_from`, `work3_to`, `work3_status`, `work3_company`, `work3_location`, `work3_job`, `work4_from`, `work4_to`, `work4_status`, `work4_company`, `work4_location`, `work4_job`, `work5_from`, `work5_to`, `work5_status`, `work5_company`, `work5_location`, `work5_job`, `work_remarks`, `emergency_kana`, `emergency`, `tel10`, `tel11`, `priority_tel`, `post2`, `address2`, `remarks`,`alert_time`, `employee_level`, `employee_pw`, `group_seq`, `alert_mail_0`, `alert_mail_1`, `alert_mail_2`, `alert_mail_3`, `alert_mail_4`,`user_seq`)  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
                     $stmt = $pdo->prepare($sql);
                     $stmt->execute(array(
@@ -304,11 +299,6 @@ if (!empty($_SESSION["LEVEL"])) {
                         $address2,
                         $remarks,
                         $alert_time,
-                        $pay_type,
-                        $pay_unitcost,
-                        $sales_unitcost,
-                        $transport_unitcosts,
-                        $pass_cost,
                         $employee_level,
                         $employee_id,
                         $group_seq,
@@ -659,34 +649,6 @@ if (!empty($_SESSION["LEVEL"])) {
             </tr>
         </table>
 
-
-        <table class="edit">
-            <caption>コスト情報</caption>
-
-            <tr>
-                <th><span class="required">契約形態</span></th>
-                <td>
-                    <select id="pay_type" name="pay_type"  class="f130P" required>
-                        <option value="1" <?php echo $pt1; ?>>時給</option>
-                        <option value="2" <?php echo $pt2; ?>>日給</option>
-                        <option value="3" <?php echo $pt3; ?>>月給</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th><span class="required">給与単価<span class="f50P"> (7)</span></span></th>
-                <td><input type="number" id="pay_unitcost" name="pay_unitcost" class="f130P wdtS"  oninput="sliceMaxLength(this, 7)" style="ime-mode: disabled;"  value="<?php echo $pay_unitcost; ?>" required><span class="f50P"> 　未使用の場合は０を入力してください</span></td>
-            </tr>
-            <tr>
-                <th><span class="required">売上単価<span class="f50P"> (7)</span></span></th>
-                <td><input type="number" id="sales_unitcost" name="sales_unitcost" class="f130P wdtS"   oninput="sliceMaxLength(this, 7)" style="ime-mode: disabled;"  value="<?php echo $sales_unitcost; ?>" required><span class="f50P"> 　未使用の場合は０を入力してください</span></td>
-            </tr>
-            <tr>
-                <th><span class="required">交通費<span class="f50P"> (7)</span></span></th>
-                <td>1日（往復）：<input type="number" id="transport_unitcosts" class="f130P wdtS"   oninput="sliceMaxLength(this, 7)" name="transport_unitcosts" style="ime-mode: disabled;"  value="<?php echo $transport_unitcosts; ?>" required><span class="f50P"> 　未使用の場合は０を入力してください</span><br>
-                    １ヶ月定期：<input type="number" id="pass_cost" name="pass_cost" class="f130P wdtS"   oninput="sliceMaxLength(this, 7)" style="ime-mode: disabled;"  value="<?php echo $pass_cost; ?>" required><span class="f50P"> 　未使用の場合は０を入力してください</span></td>
-            </tr>
-        </table>
 
         <table class="edit">
             <caption>交通情報</caption>

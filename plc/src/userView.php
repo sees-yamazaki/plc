@@ -314,37 +314,6 @@
         </table>
 
 
-
-        <table class="edit">
-            <caption>コスト情報</caption>
-            <tr>
-                <th>契約携帯</th>
-                <td>
-                    <?php if($pay_type=="1"){ ?>
-                    時給
-                    <?php }elseif($pay_type=="3"){ ?>
-                    日給
-                    <?php }else{ ?>
-                    月給
-                    <?php } ?>
-                </td>
-            </tr>
-            <tr>
-                <th>契約単価</th>
-                <td><?php echo number_format(intval($pay_unitcost)); ?></td>
-            </tr>
-            <tr>
-                <th>売上単価</th>
-                <td><?php echo number_format(intval($sales_unitcost)); ?></td>
-            </tr>
-            <tr>
-                <th>交通費</th>
-                <td>1日（往復）：<?php echo number_format(intval($transport_unitcosts)); ?><br>１ヶ月定期：<?php echo number_format(intval($pass_cost)); ?></td>
-            </tr>
-        </table>
-
-
-
         <table class="edit">
             <caption>交通情報</caption>
             <tr>

@@ -157,19 +157,24 @@ button.del:hover {
     color: #045095;
 }
 
-input[type="number"]::-webkit-outer-spin-button,  
-input[type="number"]::-webkit-inner-spin-button {  
-  -webkit-appearance: none;  
-  margin: 0;  
-}  
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
-input[type="number"] {  
-  -moz-appearance:textfield;  
+input[type="number"] {
+    -moz-appearance: textfield;
 }
 
 .f50P {
     font-size: 50%;
 }
+
+.f100P {
+    font-size: 100%;
+}
+
 .f130P {
     font-size: 130%;
 }
@@ -181,6 +186,7 @@ input[type="number"] {
 .wdtSS {
     width: 30%;
 }
+
 .wdtS {
     width: 50%;
 }

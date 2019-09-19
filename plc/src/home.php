@@ -34,6 +34,15 @@ try {
         $info3 ="未承認のシフト申請があります。　<a class='link' href='employeeAuth.php'>[確認する]</a>";
     }
 
+    $stmt = $pdo->prepare('SELECT * FROM alerting ');
+    $stmt->execute(array());
+    if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        if(!empty($info3)){
+            $info3 .="<br>";
+        }
+        $info3 .="アラートメールが送信されています。　<a class='link' href='employeeAlert.php'>[確認する]</a>";
+    }
+
 
 
 } catch (PDOException $e) {

@@ -334,6 +334,10 @@
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute(array($eSeq));
 
+                $sql = "DELETE FROM `auth_work` WHERE employee_seq = ?";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute(array($eSeq));
+
                 $sql = "DELETE FROM `schedule` WHERE user_seq = ?";
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute(array($eSeq));
