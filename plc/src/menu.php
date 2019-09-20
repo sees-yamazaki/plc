@@ -44,6 +44,8 @@
             <li><a class="head" href="#" style="color:white;">.</a></li>
             <li><a class="head" href="employeeAlert.php">アラート一覧</a></li>
             <li><a class="head" href="#" style="color:white;">.</a></li>
+            <li><a class="head" href="employeeAnalysis.php">Analysis</a></li>
+            <li><a class="head" href="#" style="color:white;">.</a></li>
             <li><a class="head" href="employeePW.php?side=0">パスワードの初期化</a></li>
         </ul>
         <!-- menu-submenu accordon-content-->
