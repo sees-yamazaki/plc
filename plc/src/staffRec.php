@@ -2,6 +2,10 @@
 
 session_start();
 
+
+// タイムゾーンを設定
+date_default_timezone_set('Asia/Tokyo');
+
 require_once 'date.php';
 
     // ログイン状態チェック
@@ -262,7 +266,7 @@ require_once 'date.php';
 
 
 
-            $wk = intval(date("w",  $firstday));
+            $wk = intval(date("w",  $nextTime));
             $week_name = array("日", "月", "火", "水", "木", "金", "土");
             
 
