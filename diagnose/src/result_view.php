@@ -19,7 +19,7 @@ date_default_timezone_set('Asia/Tokyo');
 
         require './db/answers.php';
         $answered_notes = array();
-        $answered_notes = getAnsweredNote($uSeq,$an_id);
+        $answered_notes = getAnsweredNoteResult($uSeq,$an_id);
             
 
 

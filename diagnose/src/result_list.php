@@ -29,25 +29,21 @@ $users = getUsersWithResult();
         <table class="vw">
             <tr>
                 <th style="width:70px;">ID</th>
-                <th style="width:300px;">名前</th>
-                <th style="width:100px;">権限</th>
+                <th style="width:200px;">名前</th>
+                <th style="width:300px;">最終実施アンケート名</th>
                 <th style="width:200px;">最終実施日時</th>
-                <th class="add" style="width:150px;"><button type='button' onclick="location.href='users_edit.php'">新規登録</button></th>
+                <th style="width:100px;"></th>
             </tr>
             <?php foreach ($users as $user) { ?>
                 <tr>
-                    <form  action='result_view.php' method='POST'>
+                    <form  action='result_user.php' method='POST'>
                     <input type='hidden' name='uSeq' value='<?php echo $user->users_seq; ?>'>
                     <td><?php echo $user->users_id; ?></td>
                     <td><?php echo $user->users_name; ?></td>
-                    <?php if($user->users_level=="1"){ ?>
-                        <td>管理者</td>
-                    <?php }else{ ?>
-                        <td>一般</td>
-                    <?php } ?>
+                    <td><?php echo $user->aq_title; ?></td>
                     <?php if(!empty($user->answered_time)){ ?>
                     <td><?php echo $user->answered_time; ?></td>
-                    <td><button class='edit' type='submit'>詳細</button></td>
+                    <td><button class='editM wdtS' type='submit'>詳細</button></td>
                     <?php }else{ ?>
                     <td>- -</td>
                     <td></td>

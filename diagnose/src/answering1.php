@@ -6,13 +6,14 @@ session_start();
 date_default_timezone_set('Asia/Tokyo');
 
 
+    $aqSeq = $_POST['aqSeq'];
+    $queSeq = $_POST['queSeq'];
     $qSeq = $_POST['qSeq'];
 
     require './db/questions.php';
     $questions = array();
 
     try {
-
         
         if(isset($_POST['answering'])){
             
@@ -21,7 +22,7 @@ date_default_timezone_set('Asia/Tokyo');
             $startTime = $_POST['startTime'];
 
             require './db/answers.php';
-            insertAnsweredNote($an_id,$startTime);
+            insertAnsweredNote($an_id,$startTime,$aqSeq,$queSeq);
 
             foreach($_POST as $key => $value) {
                 if(substr($key,0,3)=="ans"){
@@ -40,7 +41,13 @@ date_default_timezone_set('Asia/Tokyo');
             $startTime = date("Y/m/d H:i:s");
         }
 
-        $questions = getQuestionsRand();
+        //acceptionQue情報を取得する
+        require './db/accepting.php';
+        $accepting = new cls_accepting();
+        $accepting = getAcceptingQue($aqSeq);
+
+        //Question情報を取得する
+        $questions = getQuestionsRand($accepting->que_seq);
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
@@ -94,6 +101,8 @@ date_default_timezone_set('Asia/Tokyo');
                 <?php } ?>
                 <tr>
                     <td colspan="5" style="text-align:center;">
+                        <input type="hidden" name="aqSeq" value="<?php echo $aqSeq; ?>">
+                        <input type="hidden" name="queSeq" value="<?php echo $queSeq; ?>">
                         <input type="hidden" name="startTime" value="<?php echo $startTime; ?>">
                         <button type=submit name="answering" class="sbmt f110P">登録</button>
                     </td>

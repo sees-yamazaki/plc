@@ -7,6 +7,10 @@
     public $users_level=0;
     public $users_name;
     public $answered_time;
+    public $aq_seq;
+    public $aq_title;
+    public $que_seq;
+    public $que_title;
   }
 
 
@@ -115,6 +119,11 @@ function getUsersWithResult(){
             $result->users_name = $row['users_name'];
             $result->users_level = $row['users_level'];
             $result->answered_time = $row['an_answered_time'];
+            $result->aq_seq = $row['aq_seq'];
+            $result->aq_title = $row['aq_title'];
+            $result->que_seq = $row['que_seq'];
+            $result->que_title = $row['que_title'];
+
 
             array_push($results,$result);
         }

@@ -6,6 +6,7 @@ date_default_timezone_set('Asia/Tokyo');
 
 
     $tSeq = $_POST['tSeq'];
+    $queSeq = $_POST['queSeq'];
 
     require './db/types.php';
     $type = new cls_types();
@@ -19,6 +20,7 @@ date_default_timezone_set('Asia/Tokyo');
             $type->types_id = $_POST['types_id'];
             $type->types_name = $_POST['types_name'];
             $type->types_note = $_POST['types_note'];
+            $type->que_seq = $_POST['queSeq'];
 
             
             if(!empty($tSeq)){
@@ -89,6 +91,7 @@ date_default_timezone_set('Asia/Tokyo');
         <form action="types_edit.php" method="POST" onsubmit="return submitChk()">
 
             <input type="hidden" name="tSeq" value="<?php echo $tSeq; ?>">
+            <input type="hidden" name="queSeq" value="<?php echo $queSeq; ?>">
             <input type="hidden" name="types_id" value="<?php echo $type->types_id; ?>">
 
             <table class="edit">
@@ -119,7 +122,7 @@ date_default_timezone_set('Asia/Tokyo');
 
             <table class="del">
                 <tr>
-                    <td><button type=submit name="typeDel" class="del">このタイプを削除する</button></td>
+                    <td><button type=submit name="typeDel" class="del wdtLL">この結果タイプを削除する</button></td>
                 </tr>
             </table>
 

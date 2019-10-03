@@ -11,17 +11,6 @@ $questionnaires = array();
 $questionnaires = getQuestionnaires();
 
 
-$html = "";
-foreach ($questionnaires as $questionnaire) {
-    $html .= "<tr><form  action='questionnaires_edit.php' method='POST'>";
-    $html .= "<input type='hidden' name='queSeq' value='".$questionnaire->que_seq."'>";
-    $html .= "<td>".$questionnaire->que_title."</td>";
-    $html .= "<td>".$questionnaire->que_editable."</td>";
-    $html .= "<td class='f80P' style='text-align:left;'>".nl2br($questionnaire->que_text)."</td>";
-    $html .= "<td><button class='edit' type='submit'>編集</button></td>";
-    $html .= "</form></tr>";
-}
-
 
 ?>
 <!DOCTYPE html>
@@ -42,12 +31,48 @@ foreach ($questionnaires as $questionnaire) {
 
         <table class="vw">
             <tr>
-                <th style="width:300px;">アンケート名</th>
-                <th style="width:70px;">編集</th>
-                <th style="width:300px;">説明</th>
-                <th style="width:100px;" class="add"><button type='button' onclick="location.href='questionnaires_edit.php'">新規登録</button></th>
+                <th style="width:300px;">問題集</th>
+                <th style="width:100px;">結果タイプ</th>
+                <th style="width:100px;">質問</th>
+                <th style="width:100px;" class="add"><button type='button' class='addM' onclick="location.href='questionnaires_edit.php'">&nbsp;新規登録&nbsp;</button></th>
             </tr>
-            <?php echo $html; ?>
+            <?php foreach ($questionnaires as $questionnaire) { ?>
+                <tr>
+
+                    <td><?php echo $questionnaire->que_title; ?></td>
+
+                    <form  action='types_list.php' method='POST'>
+                    <input type='hidden' name='queSeq' value='<?php echo $questionnaire->que_seq; ?>'>
+                    <input type='hidden' name='que_title' value='<?php echo $questionnaire->que_title; ?>'>
+                    <input type='hidden' name='que_editable' value='<?php echo $questionnaire->que_editable; ?>'>
+                    <?php if(empty($questionnaire->tCnt)){ ?>
+                        <td>登録なし 
+                    <?php }else{ ?>
+                        <td>登録あり <span class='f50P'>(<?php echo $questionnaire->tCnt; ?>) </span>
+                    <?php } ?>
+                        <input type="submit" name="btn_submit" value="" style="background:url('../img/edit_s.png');width:25px;height:25px;border:0px solid;cursor:pointer;" /></td>
+                    </form>
+
+                    <form  action='questions_list.php' method='POST'>
+                    <input type='hidden' name='queSeq' value='<?php echo $questionnaire->que_seq; ?>'>
+                    <input type='hidden' name='que_title' value='<?php echo $questionnaire->que_title; ?>'>
+                    <input type='hidden' name='que_editable' value='<?php echo $questionnaire->que_editable; ?>'>
+                    <?php if(empty($questionnaire->qCnt)){ ?>
+                        <td>登録なし 
+                    <?php }else{ ?>
+                        <td>登録あり <span class='f50P'>(<?php echo $questionnaire->qCnt; ?>) </span>
+                    <?php } ?>
+                        <input type="submit" name="btn_submit" value="" style="background:url('../img/edit_s.png');width:25px;height:25px;border:0px solid;cursor:pointer;" /></td>
+                    </form>
+
+                    <form  action='questionnaires_edit.php' method='POST'>
+                    <input type='hidden' name='queSeq' value='<?php echo $questionnaire->que_seq; ?>'>
+                    <input type='hidden' name='que_title' value='<?php echo $questionnaire->que_title; ?>'>
+                    <td><button class='editM wdtS' type='submit'>編集</button></td>
+                    </form>
+
+                </tr>
+            <?php } ?>
         </table>
 
     </div>

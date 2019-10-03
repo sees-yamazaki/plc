@@ -54,6 +54,9 @@ date_default_timezone_set('Asia/Tokyo');
             
             $user = getUser($uSeq);
 
+            require './db/answers.php';
+            $answers = getAnsweredNote($uSeq);
+
         }
 
 
@@ -135,7 +138,7 @@ date_default_timezone_set('Asia/Tokyo');
 
             <table class="del">
                 <tr>
-                    <td><button type=submit name="userPw" class="del">パスワードを初期化する</button></td>
+                    <td><button type=submit name="userPw" class="ntc">パスワードを初期化する</button></td>
                 </tr>
             </table>
 
@@ -147,7 +150,23 @@ date_default_timezone_set('Asia/Tokyo');
 
             <table class="del">
                 <tr>
-                    <td><button type=submit name="userDel" class="del">このユーザを削除する</button></td>
+                    <td colspan=2><button type=submit name="userDel" class="del wdtLL">このユーザを削除する</button></td>
+                </tr>
+
+                <tr>
+                    <td colspan=2 style="background-color: #c53d43;color:white;">関連する情報も削除されます</td>
+                </tr>
+                <tr>
+                    <td style="text-align:right; width:70%;background-color: #c53d43;color:white;">
+                        回答済みのアンケート　：　<br>
+                    </td>
+                    <td style="text-align:left;background-color: #c53d43;color:white;">
+                        <?php echo count($answers); ?><br>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan=2><button type=submit name="userDel" class="del wdtLL">このユーザを削除する</button></td>
                 </tr>
             </table>
 

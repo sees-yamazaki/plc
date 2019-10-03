@@ -17,7 +17,7 @@ session_destroy();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-    <title>ログアウト</title>
+    <title>DIAGNOSE</title>
     <link rel="stylesheet" href="../css/main.css" />
     <link rel="stylesheet" href="../css/login.css" />
 </head>
@@ -25,8 +25,7 @@ session_destroy();
 <body>
 
     <div class="pen-title">
-        <img src="../img/logo.png" height="40"><br><br>
-        <h1>ログアウト画面</h1>
+        <br><br><img src="../img/logo.png"><br><br>
     </div>
     <div class="module form-module">
         <div class=""></div>

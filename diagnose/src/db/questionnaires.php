@@ -6,6 +6,8 @@
     public $que_text;
     public $que_create_time;
     public $que_editable;
+    public $qCnt;
+    public $tCnt;
   }
 
 
@@ -16,7 +18,7 @@
         $results = array();
 
         require $_SESSION["MY_ROOT"].'/src/db/dns.php';
-        $stmt = $pdo->prepare("SELECT * FROM questionnaires ORDER BY que_create_time DESC ");
+        $stmt = $pdo->prepare("SELECT * FROM v_questionnaires ORDER BY que_create_time DESC ");
         $stmt->execute(array());
 
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -26,6 +28,8 @@
             $result->que_text = $row['que_text'];
             $result->que_create_time = $row['que_create_time'];
             $result->que_editable = $row['que_editable'];
+            $result->qCnt = $row['qCnt'];
+            $result->tCnt = $row['tCnt'];
 
             array_push($results,$result);
         }
@@ -74,8 +78,8 @@ function insertQuestionnaire($questionnaires){
     try {
     
         require $_SESSION["MY_ROOT"].'/src/db/dns.php';
-        $stmt = $pdo->prepare("INSERT INTO `questionnaires`(`que_title`, `que_text`) VALUES (?,?) ");
-        $stmt->execute(array($questionnaires->que_title, $questionnaires->que_text ));
+        $stmt = $pdo->prepare("INSERT INTO `questionnaires`(`que_title`, `que_text`,`que_editable`, `que_create_time`) VALUES (?,?,?, NOW()) ");
+        $stmt->execute(array($questionnaires->que_title, $questionnaires->que_text, $questionnaires->que_editable ));
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
@@ -90,8 +94,8 @@ function updateQuestionnaire($questionnaires){
     try {
     
         require $_SESSION["MY_ROOT"].'/src/db/dns.php';
-        $stmt = $pdo->prepare("UPDATE `questionnaires` SET `que_title`=?,`que_text`=? WHERE `que_seq`=? ");
-        $stmt->execute(array($questionnaires->que_title, $questionnaires->que_text, $questionnaires->que_seq ));
+        $stmt = $pdo->prepare("UPDATE `questionnaires` SET `que_title`=?,`que_text`=?,`que_editable`=? WHERE `que_seq`=? ");
+        $stmt->execute(array($questionnaires->que_title, $questionnaires->que_text, $questionnaires->que_editable, $questionnaires->que_seq ));
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
@@ -102,12 +106,12 @@ function updateQuestionnaire($questionnaires){
     }
 }
 
-function deleteQuestionnaire($question){
+function deleteQuestionnaire($queSeq){
     try {
     
         require $_SESSION["MY_ROOT"].'/src/db/dns.php';
         $stmt = $pdo->prepare("DELETE FROM `questionnaires` WHERE `que_seq`=? ");
-        $stmt->execute(array($question->q_seq));
+        $stmt->execute(array($queSeq));
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';

@@ -6,6 +6,7 @@ date_default_timezone_set('Asia/Tokyo');
 
 
     $qSeq = $_POST['qSeq'];
+    $queSeq = $_POST['queSeq'];
 
     require './db/questions.php';
     $question = new cls_questions();
@@ -19,6 +20,7 @@ date_default_timezone_set('Asia/Tokyo');
             $question->q_id = $_POST['q_id'];
             $question->q_text = $_POST['q_text'];
             $question->types_seq = $_POST['types_seq'];
+            $question->que_seq = $_POST['queSeq'];
 
             
             if(!empty($qSeq)){
@@ -38,7 +40,7 @@ date_default_timezone_set('Asia/Tokyo');
             
             deleteQuestion($question);
 
-            header("Location: ./types_list.php");
+            header("Location: ./questions_list.php");
 
         }else{
             
@@ -48,7 +50,7 @@ date_default_timezone_set('Asia/Tokyo');
 
         require './db/types.php';
         $types = array();
-        $types = getTypes();
+        $types = getTypes($queSeq);
 
         foreach ($types as $type) {
             if($type->types_seq == $question->types_seq ){
@@ -92,6 +94,7 @@ date_default_timezone_set('Asia/Tokyo');
         <form action="questions_edit.php" method="POST" onsubmit="return submitChk()">
 
             <input type="hidden" name="qSeq" value="<?php echo $qSeq; ?>">
+            <input type="hidden" name="queSeq" value="<?php echo $queSeq; ?>">
             <input type="hidden" name="q_id" value="<?php echo $question->q_id; ?>">
 
             <table class="edit">
@@ -121,11 +124,11 @@ date_default_timezone_set('Asia/Tokyo');
         <?php if(!empty($qSeq)){ ?>
         <form action="questions_edit.php" method="POST" onsubmit="return delcheck()">
 
-            <input type="hidden" name="tSeq" value="<?php echo $tSeq; ?>">
+            <input type="hidden" name="qSeq" value="<?php echo $qSeq; ?>">
 
             <table class="del">
                 <tr>
-                    <td><button type=submit name="questionDel" class="del">このタイプを削除する</button></td>
+                    <td><button type=submit name="questionDel" class="del wdtLL">この質問を削除する</button></td>
                 </tr>
             </table>
 

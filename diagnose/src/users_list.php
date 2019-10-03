@@ -32,7 +32,7 @@ $users = getUsers();
                 <th style="width:70px;">ID</th>
                 <th style="width:300px;">名前</th>
                 <th style="width:100px;">権限</th>
-                <th class="add" style="width:150px;"><button type='button' onclick="location.href='users_edit.php'">新規登録</button></th>
+                <th class="add" style="width:150px;"><button type='button' class="addM" onclick="location.href='users_edit.php'">&nbsp;新規登録&nbsp;</button></th>
             </tr>
             <?php foreach ($users as $user) { ?>
                 <tr>
@@ -45,7 +45,7 @@ $users = getUsers();
                     <?php }else{ ?>
                         <td>一般</td>
                     <?php } ?>
-                    <td><button class='edit' type='submit'>編集</button></td>
+                    <td><button class='editM wdtS' type='submit'>編集</button></td>
                     </form>
                 </tr>
             <?php } ?>

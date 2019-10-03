@@ -58,6 +58,14 @@ ul.topnav li.right {
     float: right;
 }
 
+ul.topnav li.user {
+    display: block;
+    padding: 14px 16px;
+    text-align: center;
+    text-decoration: none;
+    color: rgb(65, 86, 182);
+}
+
 input.answer {
     width: 80%;
 }
@@ -183,7 +191,6 @@ table.del td {
 button.del {
     cursor: pointer;
     background: #950404;
-    width: 100%;
     border: 0;
     padding: 5px;
     color: #ffffff;
@@ -201,6 +208,75 @@ button.edit {
     border: 0;
     padding: 5px;
     color: #ffffff;
+}
+
+button.add {
+    cursor: pointer;
+    background: #c96b00;
+    font-size: 1rem;
+    width: 50%;
+    border: 0;
+    padding: 5px;
+    color: #ffffff;
+}
+
+button.editM {
+    cursor: pointer;
+    background: #010b94;
+    font-size: 0.9rem;
+    border: 0;
+    padding: 4px;
+    color: #ffffff;
+}
+
+button.addM {
+    cursor: pointer;
+    background: #eb7303;
+    font-size: 0.9rem;
+    border: 0;
+    padding: 4px;
+    color: #ffffff;
+}
+
+button.editS {
+    cursor: pointer;
+    background: #010b94;
+    font-size: 0.8rem;
+    border: 0;
+    padding: 3px;
+    color: #ffffff;
+}
+
+button.ntc {
+    cursor: pointer;
+    background: #049559;
+    width: 100%;
+    border: 0;
+    padding: 5px;
+    color: #ffffff;
+}
+
+button.ntc:hover {
+    background: #148d1a;
+}
+
+.homeInfo {
+    padding: 0.5em 1em;
+    margin: 2em 0;
+    width: 70%;
+    color: #474747;
+    background: whitesmoke;
+    /*背景色*/
+    border-left: double 7px #4ec4d3;
+    /*左線*/
+    border-right: double 7px #4ec4d3;
+    /*右線*/
+    margin: 0 auto;
+}
+
+.homeInfo p {
+    margin: 0;
+    padding: 0;
 }
 
 .yes {
@@ -249,6 +325,10 @@ button.edit {
 
 .wdtL {
     width: 90%;
+}
+
+.wdtLL {
+    width: 100%;
 }
 
 div.nav {
