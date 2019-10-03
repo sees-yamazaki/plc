@@ -22,7 +22,7 @@
         <ul class="menu-submenu accordion-content">
             <li><a class="head" href="employeeList.php">派遣社員・正社員情報一覧</a></li>
             <li><a class="head" href="#" style="color:white;">.</a></li>
-            <li><a class="head" href="employeeWork.php">勤務状況一覧</a></li>
+            <li><a class="head" href="employeeWork2.php">勤務状況一覧</a></li>
             <li><a class="head" href="#" style="color:white;">.</a></li>
             <li><a class="head" href="employeePW.php?side=99">パスワードの初期化</a></li>
         </ul>
