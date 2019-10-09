@@ -35,12 +35,11 @@ date_default_timezone_set('Asia/Tokyo');
 
         }else if(isset($_POST['aqDel'])){
 
-            $accepting->que_seq  = $_POST['aqSeq'];
-            
-            deleteAcceptingQue($accepting);
+
+            deleteAcceptingQueWithAnsQueSeq($_POST['aqSeq']);
 
             require './db/answers.php';
-            deleteAnswersNoteWithQueSeq($accepting->que_seq);
+            deleteAnswersNoteWithAnsQueSeq($_POST['aqSeq']);
 
             header("Location: ./accepting_list.php");
 
@@ -49,7 +48,7 @@ date_default_timezone_set('Asia/Tokyo');
             $accepting = getAcceptingQue($aqSeq);
 
             require './db/answers.php';
-            $cntAnswered = countAnsweredNote($accepting->que_seq);
+            $cntAnswered = countAnsweredNote($accepting->aq_seq);
 
         }
 

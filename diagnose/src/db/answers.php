@@ -56,7 +56,7 @@ function countAnsweredNote($queSeq){
         $result = 0;
 
         require $_SESSION["MY_ROOT"].'/src/db/dns.php';
-        $stmt = $pdo->prepare("SELECT COUNT(*) as cnt FROM answered_note WHERE que_seq=?");
+        $stmt = $pdo->prepare("SELECT COUNT(*) as cnt FROM answered_note WHERE aq_seq=?");
         $stmt->execute(array($queSeq));
 
         if ($row = $stmt->fetch()) {
@@ -212,6 +212,34 @@ function deleteAnswersNoteWithQueSeq($queSeq){
         }
     }
 }
+
+function deleteAnswersNoteWithAnsQueSeq($aqSeq){
+
+    try {
+    
+        require $_SESSION["MY_ROOT"].'/src/db/dns.php';
+        $stmt = $pdo->prepare("SELECT * FROM answered_note WHERE aq_seq=?");
+        $stmt->execute(array($aqSeq));
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+
+            $stmt2 = $pdo->prepare("DELETE FROM answers WHERE an_id=?");
+            $stmt2->execute(array($row['an_id']));
+
+        }
+
+        $stmt = $pdo->prepare("DELETE FROM `answered_note` WHERE aq_seq=?");
+        $stmt->execute(array($aqSeq));
+
+    } catch (PDOException $e) {
+        $errorMessage = 'データベースエラー';
+        //$errorMessage = $sql;
+        if(strcmp("1",$ini['debug'])==0){
+            echo $e->getMessage();
+        }
+    }
+}
+
 
 function deleteAnswersNoteWithANID($an_id){
 

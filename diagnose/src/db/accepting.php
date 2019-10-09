@@ -141,7 +141,7 @@ function getAcceptingQue($aqSeq){
 function insertAcceptingQue($accepting){
 
     try {
-    var_dump($accepting);
+
         require $_SESSION["MY_ROOT"].'/src/db/dns.php';
 
         $stmt = $pdo->prepare("INSERT INTO `accepting_que`( `aq_title`, `aq_start_time`, `aq_end_time`, `aq_text`, `que_seq`) VALUES (?,?,?,?,?) ");
@@ -182,6 +182,24 @@ function deleteAcceptingQueWithQueSeq($queSeq){
 
         $stmt = $pdo->prepare("DELETE FROM `accepting_que` WHERE `que_seq`=?");
         $stmt->execute(array($queSeq));
+
+    } catch (PDOException $e) {
+        $errorMessage = 'データベースエラー';
+        //$errorMessage = $sql;
+        if(strcmp("1",$ini['debug'])==0){
+            echo $e->getMessage();
+        }
+    }
+}
+
+function deleteAcceptingQueWithAnsQueSeq($aqSeq){
+
+    try {
+    
+        require $_SESSION["MY_ROOT"].'/src/db/dns.php';
+
+        $stmt = $pdo->prepare("DELETE FROM `accepting_que` WHERE `aq_seq`=?");
+        $stmt->execute(array($aqSeq));
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
