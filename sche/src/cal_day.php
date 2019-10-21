@@ -12,6 +12,7 @@ if (isset($_GET['ymd'])) {
     // 今月の年月を表示
     $ymd = date('Y-m-d');
 }
+$uSeq = $_GET['uSeq'];
 
 // タイムスタンプを作成し、フォーマットをチェックする
 $timestamp = strtotime($ymd);
@@ -96,9 +97,12 @@ $schedules = array();
 $schedules = getSchedulesYMD(date('Y', $timestamp),date('m', $timestamp),date('d', $timestamp));
 $mySchedules = array();
 $mySchedules = getMySchedulesYM(date('Y', $timestamp),date('m', $timestamp));
+$roomSchedules = array();
+$roomSchedules = getSchedulesYMDwithRoom(date('Y', $timestamp),date('m', $timestamp),date('d', $timestamp));
 
 
 
+$uList = array("[<a href='?ymd=".$tYMD."'>All</a>]　");
 
 $sche_day = "";
 for($i = 0; $i <= 23.5; $i = $i + 0.5 ){
@@ -110,51 +114,117 @@ for($i = 0; $i <= 23.5; $i = $i + 0.5 ){
     }
     $sche_day .= "<td class='sche'>";
 
+    //当時間帯
+    if(fmod($i,1)==0){
+        $sTime = sprintf('%04d', $i * 100);  ;
+        $eTime = sprintf('%04d', ($i * 100)+30);
+    }else{
+        $sTime = sprintf('%04d', (floor($i) * 100) + 30)  ;
+        $eTime = sprintf('%04d', ((floor($i)+1) * 100));
+    }
+
     foreach ($schedules as $schedule) {
 
-        //当時間帯
-        $sTime = sprintf('%04d', $i * 100);
-        $eTime = sprintf('%04d', ($i * 100)+30);
+        array_push($uList,"[<a href='?ymd=".$tYMD."&uSeq=".$schedule->users_seq."'>".$schedule->users_name_short."</a>]　");
 
+        if(!isset($uSeq) || $schedule->users_seq==$uSeq){    
+            
+            //$sTime = sprintf('%04d', $i * 100);
+            //$eTime = sprintf('%04d', ($i * 100)+30);
+            if(
+                ($schedule->sche_start_ymd == $tYMD)
+                && ($schedule->sche_start_hm >= $sTime)
+                && ($schedule->sche_start_hm < $eTime)
+                ){
+                //開始時間が当時間帯の場合
+                $sche_day .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$tYMD."'>";
+    //            $sche_day .= "<img src='../img/sche_icon".$schedule->sche_type.".svg'>";
+    //            $sche_day .= "<span style='color:#".$schedule->sche_color."'>".$schedule->sche_mark."<span>";
+                $sche_day .= "<span style='color:#393e4f'>".$schedule->users_name_short." ";
+                $sche_day .= $schedule->sche_title;
+                $sche_day .= "</span></a>&nbsp;&nbsp;";
+            }elseif(
+                (
+                    ($schedule->sche_start_ymd == $tYMD)
+                && ($schedule->sche_start_hm < $eTime)
+                && ($schedule->sche_end_ymd == $tYMD)
+                && ($schedule->sche_end_hm > $eTime)
+                ) ||
+                (
+                    ($schedule->sche_start_ymd == $tYMD)
+                && ($schedule->sche_end_ymd == $tYMD)
+                && ($schedule->sche_end_hm > $sTime)
+                && ($schedule->sche_end_hm < $eTime)
+                ) ||
+                (
+                    ($schedule->sche_start_ymd == $tYMD)
+                && ($schedule->sche_start_hm < $eTime)
+                && ($schedule->sche_end_ymd > $tYMD)
+                ) ||
+                (
+                    ($schedule->sche_start_ymd < $tYMD)
+                && ($schedule->sche_end_ymd == $tYMD)
+                && ($schedule->sche_end_hm > $eTime)
+                )  ||
+                (
+                    ($schedule->sche_start_ymd < $tYMD)
+                && ($schedule->sche_end_ymd > $tYMD)
+                ) 
+                ){
+                    //開始時間が過去の場合
+                $sche_day .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$tYMD."'>";
+    //            $sche_day .= "<span style='color:#".$schedule->sche_color."'>".$schedule->sche_mark."<span>";
+                $sche_day .= "<span class='titleS'>".$schedule->users_name_short." ".$schedule->sche_title."<span>";
+                $sche_day .= "</a>&nbsp;&nbsp;";
+            }
+
+        }
+    }
+
+    foreach ($roomSchedules as $roomSchedule) {
         if(
-            ($schedule->sche_start_ymd == $tYMD)
-             && ($schedule->sche_start_hm >= $sTime)
-             && ($schedule->sche_start_hm < $eTime)
+            ($roomSchedule->sche_start_ymd == $tYMD)
+            && ($roomSchedule->sche_start_hm >= $sTime)
+            && ($roomSchedule->sche_start_hm < $eTime)
             ){
             //開始時間が当時間帯の場合
-            $sche_day .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$tYMD."'>";
-//            $sche_day .= "<img src='../img/sche_icon".$schedule->sche_type.".svg'>";
-            $sche_day .= "<span style='color:#".$schedule->sche_color."'>".$schedule->sche_mark."<span>";
-            $sche_day .= $schedule->sche_title;
-            $sche_day .= "</a>&nbsp;&nbsp;";
+            $sche_day .= "<a href='room_view.php?sSeq=".$roomSchedule->sche_seq."&ymd=".$tYMD."'>";
+            $sche_day .= "<span style='color:red'> [".$roomSchedule->rooms_name."]";
+            $sche_day .= "</span></a>&nbsp;&nbsp;";
         }elseif(
             (
-                ($schedule->sche_start_ymd == $tYMD)
-             && ($schedule->sche_start_hm < $eTime)
-             && ($schedule->sche_end_ymd == $tYMD)
-             && ($schedule->sche_end_hm > $eTime)
+                ($roomSchedule->sche_start_ymd == $tYMD)
+            && ($roomSchedule->sche_start_hm < $eTime)
+            && ($roomSchedule->sche_end_ymd == $tYMD)
+            && ($roomSchedule->sche_end_hm > $eTime)
             ) ||
             (
-                ($schedule->sche_start_ymd == $tYMD)
-             && ($schedule->sche_start_hm < $eTime)
-             && ($schedule->sche_end_ymd > $tYMD)
+                ($roomSchedule->sche_start_ymd == $tYMD)
+            && ($roomSchedule->sche_end_ymd == $tYMD)
+            && ($roomSchedule->sche_end_hm > $sTime)
+            && ($roomSchedule->sche_end_hm < $eTime)
             ) ||
             (
-                ($schedule->sche_start_ymd < $tYMD)
-             && ($schedule->sche_end_ymd == $tYMD)
-             && ($schedule->sche_end_hm > $eTime)
+                ($roomSchedule->sche_start_ymd == $tYMD)
+            && ($roomSchedule->sche_start_hm < $eTime)
+            && ($roomSchedule->sche_end_ymd > $tYMD)
+            ) ||
+            (
+                ($roomSchedule->sche_start_ymd < $tYMD)
+            && ($roomSchedule->sche_end_ymd == $tYMD)
+            && ($roomSchedule->sche_end_hm > $eTime)
             )  ||
             (
-                ($schedule->sche_start_ymd < $tYMD)
-             && ($schedule->sche_end_ymd > $tYMD)
+                ($roomSchedule->sche_start_ymd < $tYMD)
+            && ($roomSchedule->sche_end_ymd > $tYMD)
             ) 
             ){
-            //開始時間が過去の場合
-            $sche_day .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$tYMD."'>";
-            $sche_day .= "<span style='color:#".$schedule->sche_color."'>".$schedule->sche_mark."<span>";
-            $sche_day .= "<span class='titleS'>".$schedule->sche_title_s."<span>";
+                //開始時間が過去の場合
+            $sche_day .= "<a href='room_view.php?sSeq=".$roomSchedule->sche_seq."&ymd=".$tYMD."'>";
+            $sche_day .= "<span class='titleS'>".$roomSchedule->rooms_name."<span>";
             $sche_day .= "</a>&nbsp;&nbsp;";
         }
+
 
     }
     $sche_day .= "</td>";
@@ -162,6 +232,7 @@ for($i = 0; $i <= 23.5; $i = $i + 0.5 ){
 
 }
 
+$unqList = array_unique($uList);
 
 ?>
 <!DOCTYPE html>
@@ -238,12 +309,14 @@ for($i = 0; $i <= 23.5; $i = $i + 0.5 ){
                     </tr>
                 </table>
             </div>
+            <!--
             <div class="l-cnt-txt">
                 <span class="title">
                     ●・・自分のスケジュール<br>
                     ◆・・他者のスケジュール<br><br>
                 </span>
             </div>
+            -->
             <div class="l-cnt-btn1">
                 <a href='cal_day_list.php?ymd=<?php echo date('Y-m-d', $timestamp); ?>'><img width=50px
                         src="../img/clock.svg" onmouseover="this.src='../img/list.svg'"
@@ -257,8 +330,17 @@ for($i = 0; $i <= 23.5; $i = $i + 0.5 ){
                         onmouseover="this.src='../img/wheniwork.svg'" onmouseout="this.src='../img/pen.svg'" />
                 </form>
             </div>
+            <div class="l-cnt-user">
+                <span class="title">表示ユーザ　→　</span>
+                <?php foreach ($unqList as $u) { ?>
+                <?php echo $u; ?>
+                <?php } ?>
+            </div>
         </div>
         <div class="r-cnt">
+            <!--
+            <div class="r-cnt-top">上部固定</div>
+                -->
             <table class="hm">
                 <?php echo $sche_day; ?>
             </table>

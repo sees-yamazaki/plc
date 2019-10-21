@@ -105,6 +105,11 @@ foreach ($schedules as $schedule) {
     $sche_day .= "<span class='title'>作成者：</span>".$schedule->users_name."<br>";
     $sche_day .= "<span class='title'>タイトル：</span>".$schedule->sche_title."<br>";
     $sche_day .= "<span class='title'>内容：</span>".nl2br($schedule->sche_note)."<br>";
+    if($schedule->rooms_seq==0){
+        $sche_day .= "<span class='title'>会議室：</span>使用なし<br>";
+    }else{
+        $sche_day .= "<span class='title'>会議室：</span>".$schedule->rooms_name."<br>";
+    }
     $sche_day .= "</p></div>";
 }
 

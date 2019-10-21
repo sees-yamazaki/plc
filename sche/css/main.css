@@ -285,6 +285,9 @@ table.vw tr:last-child td:last-child {
     table.edit {
         width: 100%;
     }
+    ul.topnav li a {
+        font-size: small;
+    }
     button.sbmt {
         width: 100%;
     }

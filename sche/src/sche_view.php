@@ -68,13 +68,21 @@ session_start();
                 <tr>
                     <th>開始日時</th>
                     <td>
-                        <?php echo date('Y-m-d H:i',  strtotime($sche->sche_start_dt)); ?>
+                        <?php if($sche->sche_allday=="0"){ ?>
+                            <?php echo date('Y-m-d H:i',  strtotime($sche->sche_start_dt)); ?>
+                        <?php }else{ ?>
+                            <?php echo date('Y-m-d',  strtotime($sche->sche_start_dt)); ?>
+                        <?php } ?>
                     </td>
                 </tr>
                 <tr>
                     <th>終了日時</th>
                     <td>
-                    <?php echo date('Y-m-d H:i',  strtotime($sche->sche_end_dt)); ?>
+                    <?php if($sche->sche_allday=="0"){ ?>
+                        <?php echo date('Y-m-d H:i',  strtotime($sche->sche_end_dt)); ?>
+                    <?php }else{ ?>
+                        <?php echo date('Y-m-d',  strtotime($sche->sche_end_dt)); ?>
+                        <?php } ?>
                     </td>
                 </tr>
                 <tr>
@@ -99,6 +107,16 @@ session_start();
                 <tr>
                     <th>スケジュール</th>
                     <td><?php echo nl2br($sche->sche_note); ?></td>
+                </tr>
+                <tr>
+                    <th>会議室</th>
+                    <td>
+                        <?php if($sche->rooms_seq==0){ ?>
+                            使用無し
+                        <?php }else{ ?>
+                            <?php echo $sche->rooms_name; ?>
+                        <?php } ?>
+                    </td>
                 </tr>
                 <?php if($sche->users_seq==$_SESSION['SEQ']){  ?>
                 <tr>

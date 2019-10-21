@@ -11,6 +11,7 @@ if (isset($_GET['ym'])) {
     // 今月の年月を表示
     $ym = date('Y-m');
 }
+$uSeq = $_GET['uSeq'];
 
 // タイムスタンプを作成し、フォーマットをチェックする
 $timestamp = strtotime($ym . '-01');
@@ -51,6 +52,10 @@ $week .= str_repeat('<td></td>', $youbi);
 require './db/schedules.php';
 $schedules = array();
 $schedules = getSchedulesYM(date('Y', $timestamp),date('m', $timestamp));
+$roomSchedules = array();
+$roomSchedules = getSchedulesYMwithRoom(date('Y', $timestamp),date('m', $timestamp));
+
+$uList = array("[<a href='?ym=".$this_month."'>All</a>]　");
 
 for ( $day = 1; $day <= $day_count; $day++, $youbi++) {
 
@@ -69,27 +74,67 @@ for ( $day = 1; $day <= $day_count; $day++, $youbi++) {
     // 日付からデイリー表示へリンクできるようにする
     $week .= "<a href='cal_day.php?ymd=".$date."'><span class='nrlDay'>&nbsp;". $day . "&nbsp;</span></a><br>";
 
+
     // 日付に該当するスケジュールがあるか確認する
     foreach ($schedules as $schedule) {
 
-        if($schedule->sche_start_ymd==$date2){
-            // 当日が開始日の場合は閲覧へのリンクとタイトル表示を設定する
-            $week .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$date2."&mCal=".$this_month."'>";
-            $week .= "<span class='block' style='color:#".$schedule->sche_color."'>".$schedule->sche_mark;
-            $week .= substr($schedule->sche_start_hm,0,2)."時 ".$schedule->sche_title_m;
-            $week .= "</span></a><br>";
-        }elseif(
-            // 当日が開始日では無い期間中または最終日の場合は閲覧へのリンクを設定する
-            ($schedule->sche_start_ymd<$date2) && ($schedule->sche_end_ymd>$date2)
-            || ($schedule->sche_end_ymd==$date2)
-            ){
-            $week .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$date2."&mCal=".$this_month."'>";
-            $week .= "<span style='color:#".$schedule->sche_color."'>".$schedule->sche_mark."....";
-            $week .= "</span></a><br>";
+        array_push($uList,"[<a href='?ym=".$this_month."&uSeq=".$schedule->users_seq."'>".$schedule->users_name_short."</a>]　");
+
+        if(!isset($uSeq) || $schedule->users_seq==$uSeq){    
+
+            if($schedule->sche_start_ymd==$date2){
+                // 当日が開始日の場合は閲覧へのリンクとタイトル表示を設定する
+                $week .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$date2."&mCal=".$this_month."'>";
+                $week .= "<span class='block' style='color:#393e4f'>";
+                if($schedule->sche_allday=="0"){
+                    $week .= substr($schedule->sche_start_hm,0,2)."時 ".$schedule->users_name_short." ".$schedule->sche_title_m;
+                }else{
+                    $week .= "終日 ".$schedule->users_name_short." ".$schedule->sche_title_m;
+                }
+                $week .= "</span></a><br>";
+            }elseif(
+                // 当日が開始日では無い期間中または最終日の場合は閲覧へのリンクを設定する
+                ($schedule->sche_start_ymd<$date2) && ($schedule->sche_end_ymd>$date2)
+                || ($schedule->sche_end_ymd==$date2)
+                ){
+                $week .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$date2."&mCal=".$this_month."'>";
+                $week .= "<span style='color:#7b7c7d'>◀︎".$schedule->users_name_short." ".$schedule->sche_title_m;
+                $week .= "</span></a><br>";
+            }
+
         }
+
+    }
+
+
+    // 日付に該当するスケジュールがあるか確認する
+    foreach ($roomSchedules as $roomSchedule) {
+
+
+            if($roomSchedule->sche_start_ymd==$date2){
+                // 当日が開始日の場合は閲覧へのリンクとタイトル表示を設定する
+                $week .= "<a href='room_view.php?sSeq=".$roomSchedule->sche_seq."&ymd=".$date2."&mCal=".$this_month."'>";
+                $week .= "<span class='block' style='color:red'>";
+                if($roomSchedule->sche_allday=="0"){
+                    $week .= substr($roomSchedule->sche_start_hm,0,2)."時 ".$roomSchedule->rooms_name;
+                }else{
+                    $week .= "終日 ".$roomSchedule->rooms_name;
+                }
+                $week .= "</span></a><br>";
+            }elseif(
+                // 当日が開始日では無い期間中または最終日の場合は閲覧へのリンクを設定する
+                ($roomSchedule->sche_start_ymd<$date2) && ($roomSchedule->sche_end_ymd>$date2)
+                || ($roomSchedule->sche_end_ymd==$date2)
+                ){
+                $week .= "<a href='room_view.php?sSeq=".$roomSchedule->sche_seq."&ymd=".$date2."&mCal=".$this_month."'>";
+                $week .= "<span style='color:red'>◀︎ ".$roomSchedule->rooms_name;
+                $week .= "</span></a><br>";
+            }
 
 
     }
+
+
 
     $week .= '</td>';
 
@@ -109,6 +154,7 @@ for ( $day = 1; $day <= $day_count; $day++, $youbi++) {
         $week = '';
 	}
 }
+$unqList = array_unique($uList);
 
 ?>
 <!DOCTYPE html>
@@ -132,7 +178,10 @@ for ( $day = 1; $day <= $day_count; $day++, $youbi++) {
     <div class="container" id="mini-calendar">
         <h3><a href="?ym=<?php echo $prev; ?>">&lt;</a> <?php echo $html_title; ?> <a
                 href="?ym=<?php echo $next; ?>">&gt;</a></h3>
-                <span class="title">日付をタップするとデイリーに切り替わります</span>
+                <span class="title">日付をタップするとデイリーに切り替わります<br>表示ユーザ　→　</span>
+                <?php foreach ($unqList as $u) { ?>
+                <?php echo $u; ?>
+                <?php } ?>
         <table class="table table-bordered">
             <thead>
                 <tr>

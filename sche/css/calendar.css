@@ -32,7 +32,12 @@ div.r-cnt {
     background: #fefefe;
     width: 100%;
     padding-left: 215px;
-    margin-top: 70px;
+    margin-top: 80px;
+}
+
+div.r-cnt-top {
+    background: #ebebeb;
+    border-bottom: thin solid #969696;
 }
 
 span.hm {
@@ -147,7 +152,7 @@ table.miniCal td {
     }
     div.l-cnt-cal {
         grid-column: 2/4;
-        grid-row: 1/3;
+        grid-row: 1/4;
     }
     div.l-cnt-btn1 {
         grid-column: 1/2;
@@ -160,8 +165,13 @@ table.miniCal td {
         text-align: center;
     }
     div.l-cnt-txt {
-        grid-column: 1/4;
+        grid-column: 1/2;
+        grid-row: 2/4;
+    }
+    div.l-cnt-user {
+        grid-column: 1/2;
         grid-row: 3/4;
+        word-wrap: break-word;
     }
     div.r-cnt {
         width: 100%;
