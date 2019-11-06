@@ -163,6 +163,37 @@
                 $eTime31 = $_POST['eTime31'];
                 $sSeq31 = $_POST['sSeq31'];
                 $job_seq = $_POST['job_seq'];
+                if(!empty($_POST['delChk1'])){ $sTime1=""; $eTime1="";}
+                if(!empty($_POST['delChk2'])){ $sTime2=""; $eTime2="";}
+                if(!empty($_POST['delChk3'])){ $sTime3=""; $eTime3="";}
+                if(!empty($_POST['delChk4'])){ $sTime4=""; $eTime4="";}
+                if(!empty($_POST['delChk5'])){ $sTime5=""; $eTime5="";}
+                if(!empty($_POST['delChk6'])){ $sTime6=""; $eTime6="";}
+                if(!empty($_POST['delChk7'])){ $sTime7=""; $eTime7="";}
+                if(!empty($_POST['delChk8'])){ $sTime8=""; $eTime8="";}
+                if(!empty($_POST['delChk9'])){ $sTime9=""; $eTime9="";}
+                if(!empty($_POST['delChk10'])){ $sTime10=""; $eTime10="";}
+                if(!empty($_POST['delChk11'])){ $sTime11=""; $eTime11="";}
+                if(!empty($_POST['delChk12'])){ $sTime12=""; $eTime12="";}
+                if(!empty($_POST['delChk13'])){ $sTime13=""; $eTime13="";}
+                if(!empty($_POST['delChk14'])){ $sTime14=""; $eTime14="";}
+                if(!empty($_POST['delChk15'])){ $sTime15=""; $eTime15="";}
+                if(!empty($_POST['delChk16'])){ $sTime16=""; $eTime16="";}
+                if(!empty($_POST['delChk17'])){ $sTime17=""; $eTime17="";}
+                if(!empty($_POST['delChk18'])){ $sTime18=""; $eTime18="";}
+                if(!empty($_POST['delChk19'])){ $sTime19=""; $eTime19="";}
+                if(!empty($_POST['delChk20'])){ $sTime20=""; $eTime20="";}
+                if(!empty($_POST['delChk21'])){ $sTime21=""; $eTime21="";}
+                if(!empty($_POST['delChk22'])){ $sTime22=""; $eTime22="";}
+                if(!empty($_POST['delChk23'])){ $sTime23=""; $eTime23="";}
+                if(!empty($_POST['delChk24'])){ $sTime24=""; $eTime24="";}
+                if(!empty($_POST['delChk25'])){ $sTime25=""; $eTime25="";}
+                if(!empty($_POST['delChk26'])){ $sTime26=""; $eTime26="";}
+                if(!empty($_POST['delChk27'])){ $sTime27=""; $eTime27="";}
+                if(!empty($_POST['delChk28'])){ $sTime28=""; $eTime28="";}
+                if(!empty($_POST['delChk29'])){ $sTime29=""; $eTime29="";}
+                if(!empty($_POST['delChk30'])){ $sTime30=""; $eTime30="";}
+                if(!empty($_POST['delChk31'])){ $sTime31=""; $eTime31="";}
                 
                 $times=array(
                     array(1,$pTime1,$sTime1,$eTime1,$sSeq1),
@@ -257,7 +288,7 @@
 
                 
 
-                header('Location: employeeShift.php?ty='.$ty.'&tm='.$tm, true, 307);
+                //header('Location: employeeShift.php?ty='.$ty.'&tm='.$tm, true, 307);
 
             }
 
@@ -274,12 +305,12 @@
                 $str="";
                 foreach ($rows as $row) {
                     if($row['work_d']==$i){
-                        $str="<td><input type='hidden' name='sSeq".$i."' value='".$row['sche_seq']."'>".date('H:i',  strtotime($row['plan_leave_time']))."</td><td><input type='time' name='sTime".$i."' value='".date('H:i',  strtotime($row['plan_start_time']))."'></td><td><input type='time' name='eTime".$i."' value='".date('H:i',  strtotime($row['plan_end_time']))."'></td>";
+                        $str="<td><input type='hidden' name='sSeq".$i."' value='".$row['sche_seq']."'>".date('H:i',  strtotime($row['plan_leave_time']))."</td><td><input type='time' name='sTime".$i."' value='".date('H:i',  strtotime($row['plan_start_time']))."'></td><td><input type='time' name='eTime".$i."' value='".date('H:i',  strtotime($row['plan_end_time']))."'></td><td><input type='checkbox' name='delChk".$i."'></td>";
                     }
                     $jSeq=$row['job_seq'];
                 }
                 if($str==""){
-                    $str="<td>--:--<input type='hidden' name='pTime".$i."' value=''><input type='hidden' name='sSeq".$i."' value=''></td><td><input type='time' id='sTime".$i."' name='sTime".$i."'></td><td><input type='time' id='eTime".$i."' name='eTime".$i."'></td>";
+                    $str="<td>--:--<input type='hidden' name='pTime".$i."' value=''><input type='hidden' name='sSeq".$i."' value=''></td><td><input type='time' id='sTime".$i."' name='sTime".$i."'></td><td><input type='time' id='eTime".$i."' name='eTime".$i."'></td><td>&nbsp;</td>";
                 }
                 $x = ($wk + $i - 1) % 7;
                 $html.="<tr><th>".$tm." / ".$i." (" . ($week_name[$x]) . ")"."</th>".$str."</tr>";
@@ -402,9 +433,10 @@
             <th>出発</th>
             <th>出勤</th>
             <th>退勤</th>
+            <th>削除</th>
         </tr>
         <?php echo $html; ?>
-        <tr><td colspan="4"><button type=submit name="empShift" class="cal">登録</button></td></tr>
+        <tr><td colspan="5"><button type=submit name="empShift" class="cal">登録</button></td></tr>
         <input type="hidden" name="ty" value="<?php echo $ty; ?>">
         <input type="hidden" name="tm" value="<?php echo $tm; ?>">
     </table>
