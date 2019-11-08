@@ -85,7 +85,12 @@ for ( $day = 1; $day <= $day_count; $day++, $youbi++) {
             if($schedule->sche_start_ymd==$date2){
                 // 当日が開始日の場合は閲覧へのリンクとタイトル表示を設定する
                 $week .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$date2."&mCal=".$this_month."'>";
-                $week .= "<span class='block' style='color:#393e4f'>";
+
+                if($schedule->rooms_seq=="0"){
+                    $week .= "<span class='block' style='color:#393e4f'>";
+                }else{
+                    $week .= "<span class='block' style='color:#ba2636'>";
+                }
                 if($schedule->sche_allday=="0"){
                     $week .= substr($schedule->sche_start_hm,0,2)."時 ".$schedule->users_name_short." ".$schedule->sche_title_m;
                 }else{
@@ -114,7 +119,7 @@ for ( $day = 1; $day <= $day_count; $day++, $youbi++) {
             if($roomSchedule->sche_start_ymd==$date2){
                 // 当日が開始日の場合は閲覧へのリンクとタイトル表示を設定する
                 $week .= "<a href='room_view.php?sSeq=".$roomSchedule->sche_seq."&ymd=".$date2."&mCal=".$this_month."'>";
-                $week .= "<span class='block' style='color:red'>";
+                $week .= "<span class='block' style='font-size:0.9rem;color:#007bbb'>";
                 if($roomSchedule->sche_allday=="0"){
                     $week .= substr($roomSchedule->sche_start_hm,0,2)."時 ".$roomSchedule->rooms_name;
                 }else{
@@ -127,7 +132,7 @@ for ( $day = 1; $day <= $day_count; $day++, $youbi++) {
                 || ($roomSchedule->sche_end_ymd==$date2)
                 ){
                 $week .= "<a href='room_view.php?sSeq=".$roomSchedule->sche_seq."&ymd=".$date2."&mCal=".$this_month."'>";
-                $week .= "<span style='color:red'>◀︎ ".$roomSchedule->rooms_name;
+                $week .= "<span style='color:#007bbb'>◀︎ ".$roomSchedule->rooms_name;
                 $week .= "</span></a><br>";
             }
 

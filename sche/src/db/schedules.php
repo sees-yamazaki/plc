@@ -164,68 +164,68 @@
 
         try {
             
-                $results = array();
-    
-                $timestamp = strtotime($y . '-' . $m . '-' . $d);
-                $ymd = date('Ymd', $timestamp);
-    
-                $result = new cls_schedules();
-    
-                require $_SESSION["MY_ROOT"].'/src/db/dns.php';
-                $uSeq = $_SESSION['SEQ'];
-                $stmt = $pdo->prepare("SELECT * FROM schedules WHERE sche_start_ymd<=? AND sche_end_ymd>=? AND rooms_seq<>0");
-                $stmt->execute(array($ymd,$ymd ));
-                while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                    $sql .= " OR  sche_seq=".$row['sche_seq'];     
-                }
+            $results = array();
 
-                // OR句を用いてスケジュールを取得
-                $sql = substr($sql,4);
-    
-                $stmt = $pdo->prepare("SELECT * FROM v_schedules_user WHERE ".$sql." ORDER BY sche_start_dt");
-                $stmt->execute(array());
-            
-                while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                    $result = new cls_schedules();
-                    $result->sche_seq = $row['sche_seq'];
-                    $result->users_seq = $row['users_seq'];
-                    $result->users_name = $row['users_name'];
-                    $uName = $result->users_name;
-                    $fNames = explode(" ", $uName);
-                    $fName = explode("　", $fNames[0]);
-                    $result->users_name_short = $fName[0];
-                    $result->sche_start_dt = $row['sche_start_dt'];
-                    $result->sche_start_ymd = $row['sche_start_ymd'];
-                    $result->sche_start_hm = $row['sche_start_hm'];
-                    $result->sche_end_dt = $row['sche_end_dt'];
-                    $result->sche_end_ymd = $row['sche_end_ymd'];
-                    $result->sche_end_hm = $row['sche_end_hm'];
-                    $result->sche_title = $row['sche_title'];
-                    $result->sche_title_m = mb_substr($row['sche_title'],0,7);
-                    if($result->sche_title<>$result->sche_title_m){
-                        $result->sche_title_m .= "..";
-                    }
-                    $result->sche_title_s = mb_substr($row['sche_title'],0,5);
-                    $result->sche_note = $row['sche_note'];
-                    $result->sche_type = $row['sche_type'];
-                    $result->sche_allday = $row['sche_allday'];
-                    $result->rooms_seq = $row['rooms_seq'];
-                    $result->rooms_name = $row['rooms_name'];
-                    $i++;
-    
-                    array_push($results,$result);
-                }
-    
-            } catch (PDOException $e) {
-                $errorMessage = 'データベースエラー';
-                //$errorMessage = $sql;
-                if(strcmp("1",$ini['debug'])==0){
-                    echo $e->getMessage();
-                }
+            $timestamp = strtotime($y . '-' . $m . '-' . $d);
+            $ymd = date('Ymd', $timestamp);
+
+            $result = new cls_schedules();
+
+            require $_SESSION["MY_ROOT"].'/src/db/dns.php';
+            $uSeq = $_SESSION['SEQ'];
+            $stmt = $pdo->prepare("SELECT * FROM schedules WHERE sche_start_ymd<=? AND sche_end_ymd>=? AND rooms_seq<>0");
+            $stmt->execute(array($ymd,$ymd ));
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $sql .= " OR  sche_seq=".$row['sche_seq'];     
             }
 
-            return $results;
+            // OR句を用いてスケジュールを取得
+            $sql = substr($sql,4);
+
+            $stmt = $pdo->prepare("SELECT * FROM v_schedules_user WHERE ".$sql." ORDER BY sche_start_dt");
+            $stmt->execute(array());
+        
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $result = new cls_schedules();
+                $result->sche_seq = $row['sche_seq'];
+                $result->users_seq = $row['users_seq'];
+                $result->users_name = $row['users_name'];
+                $uName = $result->users_name;
+                $fNames = explode(" ", $uName);
+                $fName = explode("　", $fNames[0]);
+                $result->users_name_short = $fName[0];
+                $result->sche_start_dt = $row['sche_start_dt'];
+                $result->sche_start_ymd = $row['sche_start_ymd'];
+                $result->sche_start_hm = $row['sche_start_hm'];
+                $result->sche_end_dt = $row['sche_end_dt'];
+                $result->sche_end_ymd = $row['sche_end_ymd'];
+                $result->sche_end_hm = $row['sche_end_hm'];
+                $result->sche_title = $row['sche_title'];
+                $result->sche_title_m = mb_substr($row['sche_title'],0,7);
+                if($result->sche_title<>$result->sche_title_m){
+                    $result->sche_title_m .= "..";
+                }
+                $result->sche_title_s = mb_substr($row['sche_title'],0,5);
+                $result->sche_note = $row['sche_note'];
+                $result->sche_type = $row['sche_type'];
+                $result->sche_allday = $row['sche_allday'];
+                $result->rooms_seq = $row['rooms_seq'];
+                $result->rooms_name = $row['rooms_name'];
+                $i++;
+
+                array_push($results,$result);
+            }
+
+        } catch (PDOException $e) {
+            $errorMessage = 'データベースエラー';
+            //$errorMessage = $sql;
+            if(strcmp("1",$ini['debug'])==0){
+                echo $e->getMessage();
+            }
         }
+
+        return $results;
+    }
     
 
     function getSchedulesYM($y,$m){
@@ -504,6 +504,79 @@
                 echo $e->getMessage();
             }
         }
+    
+    }
+
+    function checkRoomSchedule($sche){
+
+        try {
+            
+            $results = array();
+    
+            require $_SESSION["MY_ROOT"].'/src/db/dns.php';
+    
+            $sql = "SELECT * FROM schedules WHERE rooms_seq<>0 AND rooms_seq=:roomSeq AND sche_seq<>:scheSeq AND ";
+            $sql .= "(";
+            $sql .= "(sche_start_dt <= :endDt AND sche_end_dt >= :startDt ) OR ";
+            $sql .= "(:startDt BETWEEN sche_start_dt AND sche_end_dt ) OR ";
+            $sql .= "(:endDt BETWEEN sche_start_dt AND sche_end_dt ) OR ";
+            $sql .= "(sche_start_dt >= :startDt AND sche_end_dt <= :endDt ) ";
+            $sql .= ")";
+                
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':scheSeq', $sche->sche_seq, PDO::PARAM_INT);
+            $stmt->bindValue(':roomSeq', $sche->rooms_seq, PDO::PARAM_INT);
+            $stmt->bindValue(':startDt', $sche->sche_start_dt, PDO::PARAM_STR);
+            $stmt->bindValue(':endDt', $sche->sche_end_dt, PDO::PARAM_STR);
+            $stmt->execute();
+    
+
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $result = new cls_schedules();
+                $result->sche_seq = $row['sche_seq'];
+                $result->users_seq = $row['users_seq'];
+                $result->users_name = $row['users_name'];
+                $uName = $result->users_name;
+                $fNames = explode(" ", $uName);
+                $fName = explode("　", $fNames[0]);
+                $result->users_name_short = $fName[0];
+                $result->sche_start_dt = $row['sche_start_dt'];
+                $result->sche_start_ymd = $row['sche_start_ymd'];
+                $result->sche_start_hm = $row['sche_start_hm'];
+                $result->sche_end_dt = $row['sche_end_dt'];
+                $result->sche_end_ymd = $row['sche_end_ymd'];
+                $result->sche_end_hm = $row['sche_end_hm'];
+                $result->sche_title = $row['sche_title'];
+                $result->sche_title_m = mb_substr($row['sche_title'],0,7);
+                if($result->sche_title<>$result->sche_title_m){
+                    $result->sche_title_m .= "..";
+                }
+                $result->sche_title_s = mb_substr($row['sche_title'],0,5);
+                $result->sche_note = $row['sche_note'];
+                $result->sche_type = $row['sche_type'];
+                $result->sche_allday = $row['sche_allday'];
+                $result->rooms_seq = $row['rooms_seq'];
+                if($uSeq==$result->users_seq){
+                    $result->sche_mark = "●";
+                }else{
+                    $result->sche_mark = "◆";
+                }
+                $i++;
+
+                array_push($results,$result);
+            }
+
+
+
+        } catch (PDOException $e) {
+            $errorMessage = 'データベースエラー';
+            //$errorMessage = $sql;
+            if(strcmp("1",$ini['debug'])==0){
+                echo $e->getMessage();
+            }
+        }
+
+        return $results;
     
     }
     

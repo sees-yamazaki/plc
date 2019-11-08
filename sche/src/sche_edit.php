@@ -53,12 +53,22 @@ session_start();
             if($sche->sche_start_dt > $sche->sche_end_dt  ){
                 $errorMessage = '開始日時と終了日時の指定が間違っています';
             }else{
-                if(!empty($sSeq)){
-                    updateSchedule($sche);
-                }else{
-                    insertSchedule($sche);
-                }
 
+                $roomSchedules = array();
+                $roomSchedules = checkRoomSchedule($sche);
+
+                if(count($roomSchedules)==0){
+                    if(!empty($sSeq)){
+                        updateSchedule($sche);
+                    }else{
+                        insertSchedule($sche);
+                    }
+                }else{
+                    $errorMessage = '会議室の予約時間が重複しています。　予約済->';
+                    foreach ($roomSchedules as $roomSchedule) {
+                        $errorMessage .= '('.mb_substr($roomSchedule->sche_start_dt,11,5)."-".mb_substr($roomSchedule->sche_end_dt,11,5).") ";
+                    }
+                }
             }
                 
             if(empty($errorMessage)){
@@ -68,8 +78,6 @@ session_start();
                     header("Location: ./cal_month.php?ym=".$mCal);
                 }
             }
-
-            
 
         }else if(isset($_POST['scheDel'])){
 

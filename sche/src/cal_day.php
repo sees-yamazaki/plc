@@ -140,7 +140,11 @@ for($i = 0; $i <= 23.5; $i = $i + 0.5 ){
                 $sche_day .= "<a href='sche_view.php?sSeq=".$schedule->sche_seq."&ymd=".$tYMD."'>";
     //            $sche_day .= "<img src='../img/sche_icon".$schedule->sche_type.".svg'>";
     //            $sche_day .= "<span style='color:#".$schedule->sche_color."'>".$schedule->sche_mark."<span>";
-                $sche_day .= "<span style='color:#393e4f'>".$schedule->users_name_short." ";
+                if($schedule->rooms_seq=="0"){
+                    $sche_day .= "<span style='color:#393e4f'>".$schedule->users_name_short." ";
+                }else{
+                    $sche_day .= "<span style='color:#ba2636'>".$schedule->users_name_short." ";
+                }
                 $sche_day .= $schedule->sche_title;
                 $sche_day .= "</span></a>&nbsp;&nbsp;";
             }elseif(
@@ -189,7 +193,7 @@ for($i = 0; $i <= 23.5; $i = $i + 0.5 ){
             ){
             //開始時間が当時間帯の場合
             $sche_day .= "<a href='room_view.php?sSeq=".$roomSchedule->sche_seq."&ymd=".$tYMD."'>";
-            $sche_day .= "<span style='color:red'> [".$roomSchedule->rooms_name."]";
+            $sche_day .= "<span style='cfont-size:0.9rem;color:#007bbb'> [".$roomSchedule->rooms_name."]";
             $sche_day .= "</span></a>&nbsp;&nbsp;";
         }elseif(
             (
