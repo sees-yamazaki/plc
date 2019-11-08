@@ -1,0 +1,132 @@
+table.prg {
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+table.prg td,
+table.prg th {
+    border: 1px solid #ccc;
+    padding: 4px 10px;
+    text-align: left;
+}
+
+table.prg tr:first-child th {
+    border-bottom: 5px solid #d2dac8;
+}
+
+button.sysL {
+    cursor: pointer;
+    background: #00552e;
+    width: 170px;
+    border: 0;
+    padding: 4px 4px;
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+button.sysL:hover {
+    background: #cccccc;
+}
+
+th.sys,
+td.sys,
+button.sys {
+    background: #00552e;
+    color: #ffffff;
+}
+
+.sys,
+.bus,
+.wk {
+    width: 30px;
+}
+
+.tsk {
+    width: 300px;
+}
+
+.kiden,
+.its {
+    width: 30px;
+}
+
+th.bus,
+td.bus,
+button.bus {
+    background: #47885e;
+    color: #ffffff;
+}
+
+th.wk,
+td.wk,
+button.wk {
+    background: #69b076;
+    color: #ffffff;
+}
+
+th.tsk,
+td.tsk,
+button.tsk {
+    background: #dde4cf;
+    color: #767c6b;
+}
+
+button.add {
+    cursor: pointer;
+    width: 120px;
+    border: 0;
+    padding: 4px 4px;
+    color: #ffffff;
+    font-size: 0.6rem;
+    margin-left: 20px;
+}
+
+button.add:hover {
+    background: #cccccc;
+}
+
+th.kiden,
+th.its {
+    font-size: 0.7rem;
+    text-align: center;
+}
+
+.sml {
+    font-size: 0.5rem;
+}
+
+.lvl_SSS {
+    color: red;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.lvl_SS {
+    color: red;
+    font-weight: bold;
+}
+
+.lvl_S {
+    color: red;
+}
+
+.lvl_A {
+    color: #1e50a2;
+    font-weight: bold;
+}
+
+.lvl_B,
+.lvl_C {
+    color: #1e50a2;
+}
+
+.undone {
+    font-size: 0.7rem;
+    color: lightgray;
+}
+
+.done {
+    font-size: 0.7rem;
+    color: rgb(68, 68, 68);
+    background-color: #a0a0a0;
+}

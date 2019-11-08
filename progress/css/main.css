@@ -1,0 +1,344 @@
+span.err {
+    color: red;
+    font-size: 1rem;
+}
+
+div#content {
+    text-align: center;
+    padding-top: 70px;
+}
+
+.required {
+    color: red;
+}
+
+div.menu {
+    position: fixed;
+    width: 100%;
+    z-index: 999;
+}
+
+input.answer {
+    width: 400px;
+    padding: 14px 16px;
+    font-size: 3rem;
+    background-color: #045095;
+    color: white;
+}
+
+ul.topnav {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    background-color: #1b2538;
+}
+
+ul.topnav li {
+    float: left;
+}
+
+ul.topnav li a {
+    display: block;
+    padding: 14px 16px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
+
+ul.topnav li a:hover:not(.active) {
+    background-color: #a9bce2;
+}
+
+ul.topnav li a.active {
+    background-color: #da3c41;
+}
+
+ul.topnav li.right {
+    float: right;
+}
+
+ul.topnav li.user {
+    display: block;
+    padding: 14px 16px;
+    text-align: center;
+    text-decoration: none;
+    color: rgb(65, 86, 182);
+}
+
+input.answer {
+    width: 80%;
+}
+
+table.vw {
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0 auto;
+}
+
+table.vw th:first-child {
+    border-radius: 5px 0 0 0;
+}
+
+table.vw th:last-child {
+    border-radius: 0 5px 0 0;
+    border-right: 1px solid #3c6690;
+}
+
+table.vw th {
+    text-align: center;
+    color: white;
+    background: linear-gradient(#829ebc, #225588);
+    border-left: 1px solid #3c6690;
+    border-top: 1px solid #3c6690;
+    border-bottom: 1px solid #3c6690;
+    box-shadow: 0px 1px 1px rgba(255, 255, 255, 0.3) inset;
+    padding: 5px;
+}
+
+table.vw th.add {
+    text-align: center;
+    color: white;
+    background: linear-gradient(#f8b862, #f39800);
+    border-left: 1px solid #3c6690;
+    border-top: 1px solid #3c6690;
+    border-bottom: 1px solid #3c6690;
+    box-shadow: 0px 1px 1px rgba(255, 255, 255, 0.3) inset;
+}
+
+table.vw td {
+    text-align: center;
+    border-left: 1px solid #a8b7c5;
+    border-bottom: 1px solid #a8b7c5;
+    border-top: none;
+    box-shadow: 0px -3px 5px 1px #eee inset;
+    padding: 5px 0;
+    background-color: white;
+    vertical-align: middle;
+}
+
+table.vw td:last-child {
+    border-right: 1px solid #a8b7c5;
+}
+
+table.vw tr:last-child td:first-child {
+    border-radius: 0 0 0 5px;
+}
+
+table.vw tr:last-child td:last-child {
+    border-radius: 0 0 5px 0;
+}
+
+table.edit {
+    width: 80%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+table.edit caption {
+    text-align: left;
+}
+
+table.edit tr {
+    border-bottom: solid 2px white;
+}
+
+table.edit tr:last-child {
+    border-bottom: none;
+}
+
+table.edit th {
+    position: relative;
+    text-align: left;
+    width: 200px;
+    background-color: #045095;
+    color: white;
+    text-align: center;
+    padding: 5px 0;
+}
+
+table.edit th:after {
+    display: block;
+    content: "";
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    top: calc(50% - 10px);
+    right: -10px;
+    border-left: 10px solid #045095;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+}
+
+table.edit td {
+    text-align: left;
+    background-color: #eee;
+    padding: 5px 30px;
+}
+
+table.del {
+    width: 40%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+table.del td {
+    background-color: #eee;
+}
+
+button.del {
+    cursor: pointer;
+    background: #950404;
+    border: 0;
+    padding: 5px;
+    color: #ffffff;
+}
+
+button.del:hover {
+    background: #9b2929;
+}
+
+button.edit {
+    cursor: pointer;
+    background: #010b94;
+    font-size: 1rem;
+    width: 50%;
+    border: 0;
+    padding: 5px;
+    color: #ffffff;
+}
+
+button.add {
+    cursor: pointer;
+    background: #c96b00;
+    font-size: 1rem;
+    width: 50%;
+    border: 0;
+    padding: 5px;
+    color: #ffffff;
+}
+
+button.editM {
+    cursor: pointer;
+    background: #010b94;
+    font-size: 0.9rem;
+    border: 0;
+    padding: 4px;
+    color: #ffffff;
+}
+
+button.addM {
+    cursor: pointer;
+    background: #eb7303;
+    font-size: 0.9rem;
+    border: 0;
+    padding: 4px;
+    color: #ffffff;
+}
+
+button.editS {
+    cursor: pointer;
+    background: #010b94;
+    font-size: 0.8rem;
+    border: 0;
+    padding: 3px;
+    color: #ffffff;
+}
+
+button.ntc {
+    cursor: pointer;
+    background: #049559;
+    width: 100%;
+    border: 0;
+    padding: 5px;
+    color: #ffffff;
+}
+
+button.ntc:hover {
+    background: #148d1a;
+}
+
+.yes {
+    background-color: #f8b862 !important;
+}
+
+.soso {
+    background-color: #d4c499 !important;
+}
+
+.no {
+    background-color: #c8c8c2 !important;
+}
+
+.f50P {
+    font-size: 50%;
+}
+
+.f80P {
+    font-size: 80%;
+}
+
+.f110P {
+    font-size: 110%;
+}
+
+.f130P {
+    font-size: 130%;
+}
+
+.f150P {
+    font-size: 150%;
+}
+
+.wdtSS {
+    width: 30%;
+}
+
+.wdtS {
+    width: 50%;
+}
+
+.wdtM {
+    width: 70%;
+}
+
+.wdtL {
+    width: 90%;
+}
+
+.wdtLL {
+    width: 100%;
+}
+
+div.nav {
+    margin: 1em 5em 0em 0em;
+    width: 80%;
+    background: #cccccc;
+    margin: 0 auto;
+    text-align: left;
+}
+
+button.back {
+    cursor: pointer;
+    background: #888888;
+    width: 70px;
+    border: 0;
+    padding: 4px 4px;
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+button.back:hover {
+    background: #cccccc;
+}
+
+button.sbmt {
+    cursor: pointer;
+    background: #045095;
+    width: 400px;
+    border: 0;
+    padding: 10px;
+    color: #ffffff;
+}
