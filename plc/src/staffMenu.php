@@ -16,17 +16,17 @@
         </tr>
         <tr>
             <td><a href="staffWork.php" class="btn-flat-simple">
-                    <i class="fa fa-caret-right"></i> シフト登録
+                    <i class="fa fa-caret-right"></i> 出発・入店・退勤報告
                 </a></td>
         </tr>
         <tr>
             <td><a href="staffCal.php" class="btn-flat-simple">
-                    <i class="fa fa-caret-right"></i> シフト確認
+                    <i class="fa fa-caret-right"></i> 今月の稼働シフト
                 </a></td>
         </tr>
         <tr>
             <td><a href="staffRec.php" class="btn-flat-simple">
-                    <i class="fa fa-caret-right"></i> シフト申請
+                    <i class="fa fa-caret-right"></i> 翌月のシフト申請
                 </a></td>
         </tr>
         <tr>

@@ -86,7 +86,7 @@ session_start();
                 if(isset($row['plan_start_time'])){
                     $pTime = date('H:i',  strtotime($row['plan_start_time']))." - ".date('H:i',  strtotime($row['plan_end_time']));
                 }else{
-                    $pTime = "未登録";
+                    $pTime = "未登録　※シフト入力がされてない場合は担当営業に連絡してください。";
                     $stts = 99;
                 }
                 if(isset($row['leave_time'])){
@@ -111,7 +111,7 @@ session_start();
 
             } else {
                 //作業データ無し
-                $pTime = "未登録";
+                $pTime = "未登録　※シフト入力がされてない場合は担当営業に連絡してください。";
                 $stts = 99;
                 $errorMessage = '情報の取得に失敗しました。';
             }
