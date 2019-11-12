@@ -4,6 +4,7 @@ class cls_meetings{
     public $meet_seq=0;
     public $meet_date;
     public $meet_title;
+    public $resetFlg;
     public $gSeqs;
 }
 
@@ -15,6 +16,9 @@ class cls_members{
     public $users_seq;
     public $groups_name;
     public $users_name;
+    public $meet_date;
+    public $meet_title;
+    public $mngr_seq;
 }
 
 
@@ -25,7 +29,7 @@ function getMembers($mSeq){
         $result = new cls_members();
 
         require $_SESSION["MY_ROOT"].'/src/db/dns.php';
-        $stmt = $pdo->prepare("SELECT mm.*,g.groups_name,u.users_name FROM `meeting_menbers` mm LEFT JOIN groups g ON mm.groups_seq=g.groups_seq LEFT JOIN users u ON mm.users_seq=u.users_seq WHERE meet_seq=?");
+        $stmt = $pdo->prepare("SELECT mm.*,g.groups_name,u.users_name FROM `meeting_members` mm LEFT JOIN groups g ON mm.groups_seq=g.groups_seq LEFT JOIN users u ON mm.users_seq=u.users_seq WHERE meet_seq=?");
         $stmt->execute(array($mSeq));
 
         if ($row = $stmt->fetch()) {
@@ -47,6 +51,42 @@ function getMembers($mSeq){
     }
 
     return $result;
+}
+
+function getMeetingView($mSeq){
+
+    try {
+    
+        $results = array();
+
+        require $_SESSION["MY_ROOT"].'/src/db/dns.php';
+        $stmt = $pdo->prepare("SELECT * FROM `meeting_view` WHERE meet_seq=?");
+        $stmt->execute(array($mSeq));
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $result = new cls_meetings();
+            $result->mm_seq = $row['mm_seq'];
+            $result->meet_seq = $row['meet_seq'];
+            $result->groups_seq = $row['groups_seq'];
+            $result->mm_status = $row['mm_status'];
+            $result->users_seq = $row['users_seq'];
+            $result->groups_name = $row['groups_name'];
+            $result->users_name = $row['users_name'];
+            $result->meet_date = $row['meet_date'];
+            $result->meet_title = $row['meet_title'];
+            $result->mngr_seq = $row['mngr_seq'];
+            array_push($results,$result);
+        }
+
+    } catch (PDOException $e) {
+        $errorMessage = 'データベースエラー';
+        //$errorMessage = $sql;
+        if(strcmp("1",$ini['debug'])==0){
+            echo $e->getMessage();
+        }
+    }
+
+    return $results;
 }
 
 
@@ -120,6 +160,12 @@ function insertMeeting($meeting){
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array( $meeting->meet_date , $meeting->meet_title));
 
+        foreach ($meeting->gSeqs as $gSeq) {
+            $sql = "INSERT INTO `meeting_members`(`meet_seq`, `groups_seq`, `mm_status`, `users_seq`) VALUES (?,?,?,?)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(array($meeting->meet_seq, $gSeq,0,0));
+        }
+
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
         //$errorMessage = $sql;
@@ -133,7 +179,6 @@ function insertMeeting($meeting){
 function updateMeeting($meeting){
 
     try {
-
         require $_SESSION["MY_ROOT"].'/src/db/dns.php';
 
         $sql = "UPDATE `meetings` SET `meet_date`=?,`meet_title`=? WHERE `meet_seq`=?";
@@ -141,16 +186,41 @@ function updateMeeting($meeting){
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array($meeting->meet_date, $meeting->meet_title, $meeting->meet_seq));
 
-        $sql = "DELETE FROM `meeting_menbers` WHERE `meet_seq`=?";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(array($meeting->meet_seq));
+        if(empty($meeting->resetFlg)){
 
-        foreach ($meeting->gSeqs as $gSeq) {
-            $sql = "INSERT INTO `meeting_menbers`(`meet_seq`, `group_seq`, `status`, `users_seq`) VALUES (?,?,0,0)";
+            $sql = "DELETE FROM `meeting_members` WHERE `meet_seq`=?";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute(array($meeting->meet_seq, $gSeq));
+            $stmt->execute(array($meeting->meet_seq));
+    
+            foreach ($meeting->gSeqs as $gSeq) {
+                $sql = "INSERT INTO `meeting_members`(`meet_seq`, `groups_seq`, `mm_status`, `users_seq`) VALUES (?,?,?,?)";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute(array($meeting->meet_seq, $gSeq,0,0));
+            }
+    
         }
 
+
+    } catch (PDOException $e) {
+        $errorMessage = 'データベースエラー';
+        //$errorMessage = $sql;
+        if(strcmp("1",$ini['debug'])==0){
+            echo $e->getMessage();
+        }
+    }
+
+}
+
+
+function updateMember($mm){
+
+    try {
+        require $_SESSION["MY_ROOT"].'/src/db/dns.php';
+
+        $sql = "UPDATE `meeting_members` SET `mm_status`=?,`users_seq`=? WHERE `mm_seq`=?";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array($mm->mm_status, $mm->users_seq, $mm->mm_seq));
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';

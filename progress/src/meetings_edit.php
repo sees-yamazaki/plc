@@ -15,6 +15,7 @@ date_default_timezone_set('Asia/Tokyo');
         $meeting->meet_seq = $_POST['mSeq'];
         $meeting->meet_date = $_POST['meet_date'];
         $meeting->meet_title = $_POST['meet_title'];
+        $meeting->resetFlg = $_POST['resetFlg'];
         $meeting->gSeqs =  $_POST['gSeq'];
         
         if(isset($_POST['meetEdit'])){
@@ -38,7 +39,11 @@ date_default_timezone_set('Asia/Tokyo');
         }else{
             
             $meeting = getMeeting($mSeq);
-
+            $members = getMeetingView($mSeq);
+            $grps=[];
+            foreach($members as $member){
+                $grps[]=$member->groups_seq;
+            }
         }
 
 
@@ -93,10 +98,17 @@ date_default_timezone_set('Asia/Tokyo');
                     </td>
                 </tr>
                 <tr>
-                    <th><span class="required">*</span>マネージャー<span class="f50P"> (10)</span></th>
+                    <th>参加グループ</th>
                     <td>
                     <?php foreach ($groups as $group) { ?>
-                        <input type="checkbox" name="gSeq[]" value="<?php echo $group->groups_seq; ?>"><?php echo $group->groups_name; ?>　
+                        <?php if(in_array($group->groups_seq,$grps)  ){ ?>
+                        <input type="checkbox" name="gSeq[]" value="<?php echo $group->groups_seq; ?>" checked><?php echo $group->groups_name; ?>　
+                        <?php }else{ ?>
+                            <input type="checkbox" name="gSeq[]" value="<?php echo $group->groups_seq; ?>"><?php echo $group->groups_name; ?>　
+                        <?php } ?>
+                    <?php } ?>
+                    <?php if(!empty($mSeq)){ ?>
+                    <br><br><input type="checkbox" name="resetFlg" value="1" checked>参加グループを更新しない　
                     <?php } ?>
                     </td>
                 </tr>

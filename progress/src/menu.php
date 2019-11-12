@@ -1,19 +1,16 @@
 <?php
 
 $url = basename($_SERVER['REQUEST_URI']);
+$url3 = substr($url,0,3);
 
-if($url=="answering0.php" || $url=="answering1.php"){
-    $A = " class='active' ";
-}elseif($url=="progress.php" || $url=="questionnaires_list.php" || 
-        $url=="questions_edit.php" || $url=="questions_list.php" ||
-        $url=="types_edit.php" || $url=="types_list.php" ){
+if($url3=="pro" || $url3=="sys" || $url3=="bus" || $url3=="wor" ){
     $P = " class='active' ";
-}elseif($url=="users_edit.php" || $url=="users_list.php"){
+}elseif($url3=="gro" ){
+    $G = " class='active' ";
+}elseif($url3=="use"){
     $U = " class='active' ";
-}elseif($url=="result_edit.php" || $url=="result_list.php" || $url=="result_user.php"){
-    $R = " class='active' ";
-}elseif($url=="accepting_edit.php" || $url=="accepting_list.php"){
-    $AC = " class='active' ";
+}elseif($url3=="mee"){
+    $M = " class='active' ";
 }else{
     $H = " class='active' ";   
 }
@@ -28,7 +25,7 @@ if($_SESSION['LEVEL']==1){
 //    echo "        <li><a ".$R." href='result_list.php'>Result</a></li>";
 echo "        <li><a ".$G." href='groups_list.php'>Grp</a></li>";
 echo "        <li><a ".$U." href='users_list.php'>User</a></li>";
-echo "        <li><a ".$U." href='meetings_list.php'>Mtng</a></li>";
+echo "        <li><a ".$M." href='meetings_list.php'>Mtng</a></li>";
 //    echo "        <li><a ".$QU." href='questionnaires_list.php'>Questionnaire</a></li>";
 }
 echo "        <li class='user'>".$_SESSION['NAME']."</li>";

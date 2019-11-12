@@ -8,7 +8,15 @@ date_default_timezone_set('Asia/Tokyo');
 
     $uSeq = $_SESSION['SEQ'];
 
+
+
     try {
+
+
+        require_once './db/meetings.php';
+        $meetings = array();
+        $meetings = getMeeintgs();
+
 
     } catch (PDOException $e) {
 
@@ -37,8 +45,42 @@ date_default_timezone_set('Asia/Tokyo');
 
     <div id="content">
 
-
-
+    <?php foreach ($meetings as $meeting) { ?>
+    <table class='vw'>
+        <tr>
+            <th style='width:120px;'>開催日</th>
+            <th style='width:400px;'>会議名</th>
+            <th style='width:150px;' class='f80P'>出席</th>
+            <th style='width:150px;' class='f80P'>欠席</th>
+            <th style='width:150px;' class='f80P'>未定</th>
+        </tr>
+        <?php 
+            $vMeetings = getMeetingView($meeting->meet_seq);
+            foreach ($vMeetings as $vMeeting) {
+                if($vMeeting->mm_status==1){
+                    $html1 .= $vMeeting->groups_name.", ";
+                }else if($vMeeting->mm_status==3){
+                    $html1 .= "【".$vMeeting->groups_name."】, ";
+                }else if($vMeeting->mm_status==2){
+                    $html2 .= $vMeeting->groups_name.":".$vMeeting->users_name.", ";
+                }else{
+                    $html0 .= $vMeeting->groups_name.", ";
+                }
+                
+            }
+        ?>
+        <tr>
+            <form action='meetings_attend.php' name="attend" method='POST'>
+                <input type='hidden' name='mSeq' value='<?php echo $meeting->meet_seq;?>'>
+                <td><?php echo $meeting->meet_date; ?></td>
+                <td><a href="javascript:attend.submit()"><?php echo $meeting->meet_title;  ?></a></td>
+                <td class="f80P"><?php echo $html1; ?></td>
+                <td class="f80P"><?php echo $html2; ?></td>
+                <td class="f80P"><?php echo $html0; ?></td>
+            </form>
+        </tr>
+    </table>
+    <?php }  ?>
 
 
     </div>
