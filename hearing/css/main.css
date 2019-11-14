@@ -1,0 +1,143 @@
+.f50P {
+    font-size: 50%;
+}
+
+.f80P {
+    font-size: 80%;
+}
+
+.f110P {
+    font-size: 110%;
+}
+
+.f130P {
+    font-size: 130%;
+}
+
+.f150P {
+    font-size: 150%;
+}
+
+.wdtSS {
+    width: 40%;
+}
+
+.wdtS {
+    width: 50%;
+}
+
+.wdtM {
+    width: 70%;
+}
+
+.wdtL {
+    width: 90%;
+}
+
+.wdtLL {
+    width: 100%;
+}
+
+div.menu {
+    position: fixed;
+    width: 100%;
+    z-index: 999;
+}
+
+body {
+    margin: 0;
+}
+
+ul.topnav {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    background-color: #333333;
+}
+
+ul.topnav li {
+    float: left;
+}
+
+ul.topnav li a {
+    display: block;
+    padding: 14px 16px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
+
+ul.topnav li a:hover:not(.active) {
+    background-color: #dddddd;
+    color: #111111;
+}
+
+ul.topnav li a.active {
+    background-color: #777777;
+    color: #111111;
+}
+
+ul.topnav li.right {
+    float: right;
+}
+
+ul.topnav li.user {
+    display: block;
+    padding: 14px 16px;
+    text-align: center;
+    text-decoration: none;
+    color: rgb(65, 86, 182);
+}
+
+#content {
+    padding-top: 60px;
+}
+
+.hs {
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+.hs td,
+.hs th {
+    border-width: 1px 0px;
+    border-color: #ccc;
+    border-style: solid;
+    padding: 10px;
+    text-align: left;
+}
+
+.hs th {
+    border-left: 5px solid #eeeeee;
+    color: #005ab3;
+}
+
+.hs td input {
+    font-size: 130%;
+}
+
+.areaA {
+    width: 150px;
+    background-color: #eeeeee;
+}
+
+.areaB {
+    width: 200px;
+    background-color: #eeeeee;
+}
+
+.areaC {
+    width: 150px;
+    background-color: #eeeeee;
+}
+
+.areaD {
+    width: 150px;
+    background-color: #eeeeee;
+}
+
+.ff {
+    width: 100%;
+    height: 100%;
+}
