@@ -18,7 +18,7 @@ date_default_timezone_set('Asia/Tokyo');
     <link rel="stylesheet" href="../css/main.css" />
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="../js/main.js"></script>
-    <script src="../js/calc.js"></script>
+    <script src="../js/cal.js"></script>
     <script src="../js/test.js"></script>
 </head>
 
@@ -33,10 +33,15 @@ date_default_timezone_set('Asia/Tokyo');
             <colgroup span="1" class="areaB"></colgroup>
             <colgroup span="1" class="areaC"></colgroup>
             <colgroup span="1" class="areaD"></colgroup>
+            <!--
+            <tr>
+                <td colspan=4><input type="text" id="d0" name="d0"></td>
+            </tr>
+            -->
             <tr>
                 <th colspan=2>（入）売上規模／年</th>
                 <td><input type="text" class="number" id="d2" name="d2"></td>
-                <td>万円<input type="button" onclick="demo()"></td>
+                <td>万円<!-- <input type="button" onclick="demo()"> --></td>
             </tr>
             <tr>
                 <th colspan=2>（出）労務費／年</th>
@@ -162,25 +167,25 @@ date_default_timezone_set('Asia/Tokyo');
             <colgroup span="1" class="areaD"></colgroup>
             <tr>
                 <th>売上成長</th>
-                <td><input type="text" class="number" id="d29" name="d29"></td>
+                <td><input type="number" class="number" id="d29" name="d29" min="100" max="200" step="0.5"></td>
                 <td>%</td>
-                <td></td>
+                <td><input type="range" value="1" min="100" max="200" step="1"  oninput="document.getElementById('d29').value=this.value"></td>
             </tr>
             <tr>
                 <th>製造原価低減</th>
-                <td>マイナス<input type="text" class="number wdtS" id="d30" name="d30"></td>
+                <td>マイナス<input type="number" class="number wdtS" id="d30" name="d30" min="0" max="100"></td>
                 <td>%</td>
                 <td></td>
             </tr>
             <tr>
                 <th>製造　増員数</th>
-                <td>プラス<input type="text" class="number wdtS" id="d31" name="d31"></td>
+                <td>プラス<input type="number" class="number wdtS" id="d31" name="d31" min="0" max="999"></td>
                 <td>名</td>
                 <td></td>
             </tr>
             <tr>
                 <th>生菓子：焼菓子　＝</th>
-                <td><label id="d32">：<label id="f32">aa</td>
+                <td><label id="d32"></td>
                 <td></td>
                 <td></td>
             </tr>
@@ -404,6 +409,54 @@ date_default_timezone_set('Asia/Tokyo');
                 <td></td>
             </tr>
         </table>
+
+
+
+
+
+
+        <h1>≪判定≫</h1>
+        <h3>１．もの補助要件</h3>
+        <table class='hs'>
+            <colgroup span="1" class="areaA"></colgroup>
+            <colgroup span="1" class="areaB"></colgroup>
+            <colgroup span="1" class="areaC"></colgroup>
+            <colgroup span="1" class="areaD"></colgroup>
+            <tr>
+                <th>要件</th>
+                <th>年率（毎年平均）</th>
+                <th>計算値（５年後）</th>
+                <th>もの補助要件チェック結果</th>
+            </tr>
+            <tr>
+                <td>経常利益 成長</td>
+                <td><input type="number" class="number wdtSS" id="c68" name="c68">%</td>
+                <td><label id="d68"></td>
+                <td><label id="g68"></td>
+            </tr>
+            <tr>
+                <td>付加価値額 成長</td>
+                <td><input type="number" class="number wdtSS" id="c69" name="c69">%</td>
+                <td><label id="d69"></td>
+                <td><label id="g69"></td>
+            </tr>
+        </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     </div>
 

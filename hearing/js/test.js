@@ -23,4 +23,7 @@ function demo() {
     document.getElementById("d49").value = 450;
     document.getElementById("d50").value = 250;
     document.getElementById("e51").value = 31;
+    
+    document.getElementById("c68").value = 1;
+    document.getElementById("c69").value = 3;
 }

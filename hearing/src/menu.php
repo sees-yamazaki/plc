@@ -17,8 +17,8 @@ if ($url3 == 'pro' || $url3 == 'sys' || $url3 == 'bus' || $url3 == 'wor') {
 
 echo "<div class='menu'>";
 echo "    <ul class='topnav'>";
-echo '        <li><a '.$H." href='home.php'>設備導入前</a></li>";
-echo '        <li><a '.$P." href='progress.php'>Progress</a></li>";
+echo '        <li><a '.$H." href='home.php'>入力シート</a></li>";
+//echo '        <li><a '.$P." href='progress.php'>Progress</a></li>";
 if ($_SESSION['LEVEL'] == 1) {
 //    echo "        <li><a ".$AC." href='accepting_list.php'>Accepting</a></li>";
 //    echo "        <li><a ".$R." href='result_list.php'>Result</a></li>";

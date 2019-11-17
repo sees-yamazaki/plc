@@ -726,11 +726,12 @@ $(function() {
 
             d42 = (d40 * (d4 / d2) * 0.92);
             //==============================
-
+alert("W1");
             d32 = document.getElementById("d32").value.replace(",", "");
             d32 = parseInt(d32);
-            d49 = document.getElementById("d11").value.replace(",", "");
+            d49 = document.getElementById("d49").value.replace(",", "");
             d49 = parseInt(d49);
+            alert("W2");
 
             y1 = document.getElementById("d58");
 
@@ -738,10 +739,12 @@ $(function() {
             i46 = d40 * d32 / 10;
             //I49 --> =TRUNC(I46*10000/D49)
             i49 = Math.trunc(i46 * 10000 / d49);
+            alert("W3");
 
             //=TRUNC(SUM(D42)*D32*0.1*10000/I49,1)
             z1 = Math.trunc((d42 * d32 * 0.1 * 10000) / i49 * 10) / 10;
 
+            alert("W4");
 
             if (isNaN(z1)) {
                 y1.innerText = "";
@@ -802,37 +805,37 @@ $(function() {
     function d61() {
 
         //合計値の計算
-        d52 = document.getElementById("d52").innerText;
-        d52 = parseFloat(d52);
-        d55 = document.getElementById("d55").innerText;
-        d55 = parseFloat(d55);
-        d58 = document.getElementById("d58").innerText;
-        d58 = parseFloat(d58);
-        y1 = document.getElementById("d61");
-        z1 = d52 + d55 + d58;
-        if (isNaN(z1)) {
-            y1.innerText = "";
-        } else {
-            y1.innerText = z1;
-        }
+        // d52 = document.getElementById("d52").innerText;
+        // d52 = parseFloat(d52);
+        // d55 = document.getElementById("d55").innerText;
+        // d55 = parseFloat(d55);
+        // d58 = document.getElementById("d58").innerText;
+        // d58 = parseFloat(d58);
+        // y1 = document.getElementById("d61");
+        // z1 = d52 + d55 + d58;
+        // if (isNaN(z1)) {
+        //     y1.innerText = "";
+        // } else {
+        //     y1.innerText = z1;
+        // }
     }
 
     function d62() {
 
         //合計値の計算
-        d53 = document.getElementById("d53").innerText;
-        d53 = parseFloat(d53);
-        d56 = document.getElementById("d56").innerText;
-        d56 = parseFloat(d56);
-        d59 = document.getElementById("d59").innerText;
-        d59 = parseFloat(d59);
-        y1 = document.getElementById("d62");
-        z1 = d53 + d56 + d59;
-        if (isNaN(z1)) {
-            y1.innerText = "";
-        } else {
-            y1.innerText = z1;
-        }
+        // d53 = document.getElementById("d53").innerText;
+        // d53 = parseFloat(d53);
+        // d56 = document.getElementById("d56").innerText;
+        // d56 = parseFloat(d56);
+        // d59 = document.getElementById("d59").innerText;
+        // d59 = parseFloat(d59);
+        // y1 = document.getElementById("d62");
+        // z1 = d53 + d56 + d59;
+        // if (isNaN(z1)) {
+        //     y1.innerText = "";
+        // } else {
+        //     y1.innerText = z1;
+        // }
     }
 
 
