@@ -23,7 +23,31 @@ function demo() {
     document.getElementById("d49").value = 450;
     document.getElementById("d50").value = 250;
     document.getElementById("e51").value = 31;
-    
+
     document.getElementById("c68").value = 1;
     document.getElementById("c69").value = 3;
+
+
+    document.getElementById("l73").value = 195862263;
+
+    document.getElementById("c88").value = 27.8;
+    document.getElementById("c89").value = 10;
+
 }
+
+
+
+// // 足し算
+// BigNumber(0.1).plus(0.2);  // '0.3'
+// // 引き算
+// BigNumber(0.4).minus(0.1); // '0.3'
+// // 掛け算
+// BigNumber(0.6).times(0.5); // '0.3'
+// // 割り算
+// BigNumber(0.15).div(0.5);  // '0.3'
+// // 割り算の整数部
+// BigNumber(5).idiv(2);      // '2'
+// // 割り算の剰余
+// BigNumber(1).mod(0.9);     // '0.1'
+// // べき乗
+// BigNumber(0.1).pow(2);     // '0.01'

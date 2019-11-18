@@ -33,15 +33,13 @@ date_default_timezone_set('Asia/Tokyo');
             <colgroup span="1" class="areaB"></colgroup>
             <colgroup span="1" class="areaC"></colgroup>
             <colgroup span="1" class="areaD"></colgroup>
-            <!--
             <tr>
-                <td colspan=4><input type="text" id="d0" name="d0"></td>
+                <td colspan=4><input type="text" style="width:500px;" id="d0" name="d0"></td>
             </tr>
-            -->
             <tr>
                 <th colspan=2>（入）売上規模／年</th>
                 <td><input type="text" class="number" id="d2" name="d2"></td>
-                <td>万円<!-- <input type="button" onclick="demo()"> --></td>
+                <td>万円<input type="button" onclick="demo()"></td>
             </tr>
             <tr>
                 <th colspan=2>（出）労務費／年</th>
@@ -169,7 +167,8 @@ date_default_timezone_set('Asia/Tokyo');
                 <th>売上成長</th>
                 <td><input type="number" class="number" id="d29" name="d29" min="100" max="200" step="0.5"></td>
                 <td>%</td>
-                <td><input type="range" value="1" min="100" max="200" step="1"  oninput="document.getElementById('d29').value=this.value"></td>
+                <td><input type="range" value="1" min="100" max="200" step="1"
+                        oninput="document.getElementById('d29').value=this.value"></td>
             </tr>
             <tr>
                 <th>製造原価低減</th>
@@ -415,7 +414,7 @@ date_default_timezone_set('Asia/Tokyo');
 
 
 
-        <h1>≪判定≫</h1>
+        <h1>≪判定≫<input type="button" onclick="demo()"></h1>
         <h3>１．もの補助要件</h3>
         <table class='hs'>
             <colgroup span="1" class="areaA"></colgroup>
@@ -443,17 +442,215 @@ date_default_timezone_set('Asia/Tokyo');
         </table>
 
 
+        <h3>２．労働生産性</h3>
+        <table class='hs'>
+            <colgroup span="1" class="areaA"></colgroup>
+            <colgroup span="1" class="areaB"></colgroup>
+            <colgroup span="1" class="areaC"></colgroup>
+            <colgroup span="1" class="areaD"></colgroup>
+            <tr>
+                <th colspan=2>有形固定資産</th>
+                <td colspan=2><input type="text" class="number" id="l73" name="l73"></td>
+            </tr>
+        </table>
+
+        <table class='hs'>
+            <colgroup span="1" class="areaA"></colgroup>
+            <colgroup span="1" class="areaB"></colgroup>
+            <colgroup span="1" class="areaC"></colgroup>
+            <colgroup span="1" class="areaD"></colgroup>
+            <tr>
+                <th>現状</th>
+                <th>５年後</th>
+                <th>伸び率</th>
+                <th>判定</th>
+            </tr>
+            <tr>
+                <td><label id="c73"></td>
+                <td><label id="d73"></td>
+                <td><label id="e73"></td>
+                <td><label id="f73"></td>
+            </tr>
+        </table>
 
 
 
 
+        <h3>３．損益分岐点の推移</h3>
+
+        <table class='hs'>
+            <colgroup span="1" class="areaA"></colgroup>
+            <colgroup span="1" class="areaB"></colgroup>
+            <colgroup span="1" class="areaC"></colgroup>
+            <colgroup span="4" class="areaD"></colgroup>
+            <tr>
+                <th></th>
+                <th>前期実績</th>
+                <th>1年目</th>
+                <th>2年目</th>
+                <th>3年目</th>
+                <th>4年目</th>
+                <th>5年目</th>
+                <th></th>
+            </tr>
+            <tr>
+                <th>売上高</th>
+                <td><label id="c77"></td>
+                <td><label id="d77"></td>
+                <td><label id="e77"></td>
+                <td><label id="f77"></td>
+                <td><label id="g77"></td>
+                <td><label id="h77"></td>
+                <td><label id="j77"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>損益分岐点売上高</th>
+                <td><label id="c78"></td>
+                <td><label id="d78"></td>
+                <td><label id="e78"></td>
+                <td><label id="f78"></td>
+                <td><label id="g78"></td>
+                <td><label id="h78"></td>
+                <td><label id="j78"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>損益分岐点比率</th>
+                <td><label id="c79"></td>
+                <td><label id="d79"></td>
+                <td><label id="e79"></td>
+                <td><label id="f79"></td>
+                <td><label id="g79"></td>
+                <td><label id="h79"></td>
+                <td><label id="j79"></td>
+                <td></td>
+            </tr>
+        </table>
 
 
 
 
+        <h3>４．投資判断としての妥当性</h3>
+        <table class='hs'>
+            <colgroup span="1" class="areaA"></colgroup>
+            <colgroup span="1" class="areaB"></colgroup>
+            <colgroup span="1" class="areaC"></colgroup>
+            <colgroup span="1" class="areaD"></colgroup>
+            <tr>
+                <th colspan=2>判定</th>
+                <td colspan=2><label id="c83"></td>
+            </tr>
+            <tr>
+                <td colspan=4></td>
+            </tr>
+            <tr>
+                <th colspan=2>法人税率</th>
+                <td><input type="number" class="number wdtSS" id="c88" name="c88">%</td>
+            </tr>
+            <tr>
+                <th colspan=2>資本コスト</th>
+                <td><input type="number" class="number wdtSS" id="c89" name="c89">%</td>
+            </tr>
+        </table>
 
 
-
+        <table class='hs'>
+            <colgroup span="1" class="areaA"></colgroup>
+            <colgroup span="1" class="areaB"></colgroup>
+            <colgroup span="1" class="areaC"></colgroup>
+            <colgroup span="4" class="areaD"></colgroup>
+            <tr>
+                <th></th>
+                <th>投資時点</th>
+                <th>1年目</th>
+                <th>2年目</th>
+                <th>3年目</th>
+                <th>4年目</th>
+                <th>5年目</th>
+            </tr>
+            <tr>
+                <th>①CIF（営業CF）</th>
+                <td rowspan=6></td>
+                <td><label id="d93"></td>
+                <td><label id="e93"></td>
+                <td><label id="f93"></td>
+                <td><label id="g93"></td>
+                <td><label id="h93"></td>
+            </tr>
+            <tr>
+                <th>①'税引き後CIF（営業CF）</th>
+                <td><label id="d94"></td>
+                <td><label id="e94"></td>
+                <td><label id="f94"></td>
+                <td><label id="g94"></td>
+                <td><label id="h94"></td>
+            </tr>
+            <tr>
+                <th>　設備の減価償却費</th>
+                <td><label id="d95"></td>
+                <td><label id="e95"></td>
+                <td><label id="f95"></td>
+                <td><label id="g95"></td>
+                <td><label id="h95"></td>
+            </tr>
+            <tr>
+                <th>②減価償却費のﾀｯｸｽｼｰﾙﾄﾞ</th>
+                <td><label id="d96"></td>
+                <td><label id="e96"></td>
+                <td><label id="f96"></td>
+                <td><label id="g96"></td>
+                <td><label id="h96"></td>
+            </tr>
+            <tr>
+                <th>正味CF計（①'＋②）</th>
+                <td><label id="d97"></td>
+                <td><label id="e97"></td>
+                <td><label id="f97"></td>
+                <td><label id="g97"></td>
+                <td><label id="h97"></td>
+            </tr>
+            <tr>
+                <th>割引率</th>
+                <td><label id="d98"></td>
+                <td><label id="e98"></td>
+                <td><label id="f98"></td>
+                <td><label id="g98"></td>
+                <td><label id="h98"></td>
+            </tr>
+            <tr>
+                <th>①”税引後CIF（営業CF）</th>
+                <td><label id="c99"></td>
+                <td><label id="d99"></td>
+                <td><label id="e99"></td>
+                <td><label id="f99"></td>
+                <td><label id="g99"></td>
+                <td><label id="h99"></td>
+            </tr>
+            <tr>
+                <th>②'タックスシールド</th>
+                <td><label id="c100"></td>
+                <td><label id="d100"></td>
+                <td><label id="e100"></td>
+                <td><label id="f100"></td>
+                <td><label id="g100"></td>
+                <td><label id="h100"></td>
+            </tr>
+            <tr>
+                <th>割引現在価値合計（①"＋②'）</th>
+                <td><label id="c101"></td>
+                <td><label id="d101"></td>
+                <td><label id="e101"></td>
+                <td><label id="f101"></td>
+                <td><label id="g101"></td>
+                <td><label id="h101"></td>
+            </tr>
+            <tr>
+                <th>投資額</th>
+                <td><label id="c102"></td>
+                <td colspan=5></td>
+            </tr>
+        </table>
 
 
 
