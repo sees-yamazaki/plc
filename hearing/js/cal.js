@@ -69,11 +69,12 @@ function myTrunc(val, val2) {
     pls = Math.pow(10, val2);
     mns = Math.pow(10, (val2 * -1));
 
-    tmp = val * pls;
+    tmp = myMultiply(val, pls);
     tmp = Math.trunc(tmp);
-    return tmp * mns;
-    //return tmp / pls;
+    //return tmp * mns;
+    return tmp / pls;
 }
+
 
 function myRound(val, val2) {
 
@@ -84,6 +85,103 @@ function myRound(val, val2) {
     tmp = Math.round(tmp);
     //return tmp * mns;
     return tmp / pls;
+}
+
+function roundCalc(value, digit, method) {
+    if (value == "" || digit == "" || method == "") {
+        return value;
+    }
+    var v = Number(value)
+    if (isNaN(v))
+        return value;
+    var d = Number(digit)
+    if (isNaN(d))
+        return value;
+    var t = "1";
+    for (i = 0; i < Number(d); i++) {
+        t += "0";
+    }
+    var digits = Number(t);
+    // 四捨五入
+    if (method == "1")
+        return Math.round(parseFloat(value) * digits) / digits;
+    // 切り上げ
+    if (method == "2")
+        return Math.ceil(parseFloat(value) * digits) / digits;
+    // 切り捨て
+    if (method == "3")
+        return Math.floor(parseFloat(value) * digits) / digits;
+    return value;
+}
+// /**
+//  * 数値を指定した桁数に四捨五入した値を返します。
+//  * 
+//  * @param value 数値
+//  * @param digit 桁数
+//  * @return 四捨五入した値
+//  */
+// function round(value, digit) {
+//     return roundCalc(value, digit, "1");
+// }
+/**
+ * 数値を切り上げます。
+ * 
+ * @param value 数値
+ * @param digit 桁数
+ * @return 切り上げした値
+ */
+function myRoundUp(value, digit) {
+    return roundCalc(value, digit, "2");
+}
+/**
+ * 数値を切り捨てます。
+ * 
+ * @param value 数値
+ * @param digit 桁数
+ * @return 切り捨てした値
+ */
+function myRoundDown(value, digit) {
+    return roundCalc(value, digit, "3");
+}
+
+
+function getDecimalLength(value) {
+    var list = (value + '').split('.');
+    result = 0;
+    if (list[1] !== undefined && list[1].length > 0) {
+        result = list[1].length;
+    }
+    return result;
+}
+
+function myPlus(value1, value2) {
+    var max = Math.max(getDecimalLength(value1), getDecimalLength(value2));
+    k = Math.pow(10, max);
+
+    return (myMultiply(value1, k) + myMultiply(value2, k)) / k;
+}
+
+function myPlus3(value1, value2, value3) {
+    return myPlus(myPlus(value1, value2), value3);
+}
+
+function mySubtract(value1, value2) {
+    var max = Math.max(getDecimalLength(value1), getDecimalLength(value2));
+    k = Math.pow(10, max);
+
+    return (myMultiply(value1, k) - myMultiply(value2, k)) / k;
+}
+
+
+function myMultiply(value1, value2) {
+    var intValue1 = +(value1 + '').replace('.', ''),
+        intValue2 = +(value2 + '').replace('.', ''),
+        decimalLength = getDecimalLength(value1) + getDecimalLength(value2);
+    result;
+
+    result = (intValue1 * intValue2) / Math.pow(10, decimalLength);
+
+    return result;
 }
 
 function test(obj, val) {
@@ -156,16 +254,14 @@ function xxx() {
     //生菓子平均材料原価
     //=TRUNC(SUM(D11)*E13*1.05,1)
     _d14 = document.getElementById("d14");
-    d14 = d11 * (e13 / 100) * 1.05;
-    tmp1 = Math.trunc(d14 * 10) / 10;
-    writeValue(_d14, tmp1, "");
+    d14 = myTrunc(d11 * (e13 / 100) * 1.05, 1);
+    writeValue(_d14, d14, "");
 
 
     //焼菓子平均材料原価
     //=TRUNC(SUM(D12)*E13*0.9,1)
     _d15 = document.getElementById("d15");
-    d15 = d12 * (e13 / 100) * 0.9;
-    tmp1 = Math.trunc(d15 * 10) / 10;
+    d15 = myTrunc(d12 * (e13 / 100) * 0.9, 1);
     writeValue(_d15, tmp1, "");
 
     //生菓子平均労務費
@@ -178,11 +274,12 @@ function xxx() {
     i8 = d2 * d8 / 10;
 
     //I11 --> =TRUNC(I8*10000/D11)
-    i11 = Math.trunc(i8 * 10000 / d11);
+    i11 = myTrunc(i8 * 10000 / d11, 0);
 
     //=TRUNC(SUM(D3)*D8*0.1*10000/I11,1)*1.1
-    d17 = Math.trunc((d3 * d8 * 0.1 * 10000) / i11 * 10) / 10 * 1.1;
-    tmp1 = Math.trunc(d17 * 10) / 10;
+    d17 = myMultiply(myTrunc((d3 * d8 * 1000) / i11, 1), 1.1);
+    d17 = myTrunc(d17, 2);
+    tmp1 = myTrunc(d17, 1);
 
     writeValue(_d17, tmp1, "");
 
@@ -208,7 +305,7 @@ function xxx() {
     //生菓子平均販管費
     //=TRUNC(SUM(D4)*D8*0.1*10000/I11,1)
     _d20 = document.getElementById("d20");
-    d20 = Math.trunc((d4 * d8 * 0.1 * 10000) / i11 * 10) / 10;
+    d20 = myTrunc((d4 * d8 * 1000) / i11, 1);
 
     writeValue(_d20, d20, "");
 
@@ -216,7 +313,7 @@ function xxx() {
     //焼菓子平均販管費
     //=TRUNC(SUM(D4)*F8*0.1*10000/I12,1)
     _d21 = document.getElementById("d21");
-    d21 = Math.trunc((d4 * f8 * 0.1 * 10000) / i12 * 10) / 10;
+    d21 = myTrunc((d4 * f8 * 1000) / i12, 1);
 
     writeValue(_d21, d21, "");
 
@@ -224,17 +321,17 @@ function xxx() {
     //生菓子平均総原価
     //=SUM(D14)+D17+D20
     _d23 = document.getElementById("d23");
-    d23 = d14 + d17 + d20;
+    d23 = myPlus3(d14, d17, d20);
+    //test(_d0, "d23-" + (d23) + "  d14-" + d14 + "  d17-" + d17 + "   d20-" + d20 + "");
 
     writeValue(_d23, d23, "");
 
     //焼菓子平均総原価
     //=SUM(D15)+D18+D21
     _d24 = document.getElementById("d24");
-    d24 = d15 + d18 + d21;
+    d24 = myPlus3(d15, d18, d21);
 
     writeValue(_d24, d24, "");
-
 
 
     //####################################
@@ -256,15 +353,23 @@ function xxx() {
 
     //生菓子：焼菓子　＝
     _d32 = document.getElementById("d32");
-    _d32.innerText = d8 + "：" + f8;
+    // _d32.innerText = d8 + "：" + f8;
+    d32 = d8;
+    writeValue(_d32, d32, "");
+
+    _f32 = document.getElementById("f32");
+    f32 = f8;
+    writeValue(_f32, f32, "");
 
     //生菓子平均
     _i31 = document.getElementById("i31");
-    _i31.innerText = d11;
+    i31 = d11;
+    writeValue(_i31, i31, "");
 
     //焼菓子平均単価
     _i32 = document.getElementById("i32");
-    _i32.innerText = d12;
+    i32 = d12;
+    writeValue(_i32, i32, "");
 
 
     //設備①
@@ -415,17 +520,15 @@ function xxx() {
     //生菓子平均材料原価
     //=TRUNC(SUM(D49)*E51*1.05,1)
     _d52 = document.getElementById("d52");
-    d52 = d49 * (e51 / 100) * 1.05;
-    tmp1 = Math.trunc(d52 * 10) / 10;
-    writeValue(_d52, tmp1, "");
+    d52 = myTrunc(d49 * (e51 / 100) * 1.05, 1);
+    writeValue(_d52, d52, "");
 
 
     //焼菓子平均材料原価
     //=TRUNC(SUM(D50)*E51*0.9,1)
     _d53 = document.getElementById("d53");
-    d53 = d50 * (e51 / 100) * 0.9;
-    tmp1 = Math.trunc(d53 * 10) / 10;
-    writeValue(_d53, tmp1, "");
+    d53 = myTrunc(d50 * (e51 / 100) * 0.9, 1);
+    writeValue(_d53, d53, "");
 
     //生菓子平均労務費
     //=TRUNC(SUM(D41)*D32*0.1*10000/I49,1)*1.1
@@ -435,14 +538,15 @@ function xxx() {
 
     //I46  --> =TRUNC(D40*D32/10,1)
     //d32 = d8
-    i46 = d40 * d8 / 10;
+    i46 = myTrunc(d40 * d8 / 10, 1);
 
     //I49 --> =TRUNC(I46*10000/D49)
-    i49 = Math.trunc(i46 * 10000 / d49);
+    i49 = myTrunc(i46 * 10000 / d49, 0);
+    //test(_d0, " i46-" + i46 + " d49-" + d49);
 
     //=TRUNC(SUM(D41)*D32*0.1*10000/I49,1)*1.1
-    d55 = Math.trunc((d41 * d8 * 0.1 * 10000) / i49 * 10) / 10 * 1.1;
-    tmp1 = Math.trunc(d55 * 10) / 10;
+    d55 = myTrunc((d41 * d8 * 0.1 * 10000) / i49, 1) * 1.1;
+    tmp1 = myTrunc(d55, 0);
 
     writeValue(_d55, tmp1, "");
 
@@ -454,13 +558,13 @@ function xxx() {
     _d56 = document.getElementById("d56");
 
     //I47  --> =TRUNC(D40*F32/10,1)
-    i47 = d40 * f8 / 10;
+    i47 = myTrunc(d40 * f8 / 10, 1);
 
     //I50 --> =TRUNC(I47*10000/D50)
-    i50 = Math.trunc(i47 * 10000 / d50);
+    i50 = myTrunc(i47 * 10000 / d50, 0);
 
     //=TRUNC(SUM(D41)*F32*0.1*10000/I50,1)
-    d56 = Math.trunc((d41 * f8 * 0.1 * 10000) / i50 * 10) / 10;
+    d56 = myTrunc((d41 * f8 * 0.1 * 10000) / i50, 1);
 
     writeValue(_d56, d56, "");
 
@@ -468,7 +572,7 @@ function xxx() {
     //生菓子平均販管費
     //=TRUNC(SUM(D42)*D32*0.1*10000/I49,1)
     _d58 = document.getElementById("d58");
-    d58 = Math.trunc((d42 * d8 * 0.1 * 10000) / i49 * 10) / 10;
+    d58 = myTrunc((d42 * d8 * 0.1 * 10000) / i49, 1);
 
     writeValue(_d58, d58, "");
 
@@ -476,7 +580,7 @@ function xxx() {
     //焼菓子平均販管費
     //=TRUNC(SUM(D42)*F32*0.1*10000/I50,1)
     _d59 = document.getElementById("d59");
-    d59 = Math.trunc((d42 * f8 * 0.1 * 10000) / i50 * 10) / 10;
+    d59 = myTrunc((d42 * f8 * 0.1 * 10000) / i50, 1);
 
     writeValue(_d59, d59, "");
 
@@ -485,8 +589,8 @@ function xxx() {
     //=SUM(D52)+D55+D58
     _d61 = document.getElementById("d61");
     d61 = d52 + d55 + d58;
-
-    writeValue(_d61, d61, "");
+    tmp1 = myRound(d61, 1);
+    writeValue(_d61, tmp1, "");
 
     //焼菓子平均総原価
     //=SUM(D53)+D56+D59
@@ -1003,11 +1107,22 @@ function xxx() {
     tmp1 = myTrunc(d68 * 100, 1);
     writeValue(_d68, tmp1, "%");
 
+    //成長を設定ブロック
+    _d35 = document.getElementById("d35");
+    d35 = d68;
+    writeValue(_d35, tmp1, "%");
+
+
     //経常利益 成長      もの補助要件チェック結果
     //=計算ワーク!E122
     _g68 = document.getElementById("g68");
     g68 = e122c;
     writeText(_g68, g68, "");
+
+    //成長を設定ブロック
+    _f35 = document.getElementById("f35");
+    f35 = g68;
+    writeText(_f35, f35, "");
 
 
 
@@ -1018,11 +1133,22 @@ function xxx() {
     tmp1 = myTrunc(d69 * 100, 1);
     writeValue(_d69, tmp1, "%");
 
+    //成長を設定ブロック
+    _d36 = document.getElementById("d36");
+    d36 = d69;
+    writeValue(_d36, tmp1, "%");
+
+
     //付加価値額 成長      もの補助要件チェック結果
     //=計算ワーク!E123
     _g69 = document.getElementById("g69");
     g69 = e123c;
     writeText(_g69, g69, "");
+
+    //成長を設定ブロック
+    _f36 = document.getElementById("f36");
+    f36 = g69;
+    writeText(_f36, f36, "");
 
 
 
@@ -1047,11 +1173,24 @@ function xxx() {
     tmp1 = myRound(e73 * 100, 1);
     writeValue(_e73, tmp1, "%");
 
+
+    //成長を設定ブロック
+    _d37 = document.getElementById("d37");
+    d37 = e73;
+    writeValue(_d37, tmp1, "%");
+
+
     //判定
     //=計算ワーク!F202
     _f73 = document.getElementById("f73");
     f73 = f202c;
     writeText(_f73, f73, "");
+
+    //成長を設定ブロック
+    _f37 = document.getElementById("f37");
+    f37 = f73;
+    writeText(_f37, f37, "");
+
 
     //３．損益分岐点の推移
     //売上高
@@ -1068,12 +1207,12 @@ function xxx() {
     f77 = f184c;
     g77 = g184c;
     h77 = h184c;
-    writeValue(_c77, c77, "");
-    writeValue(_d77, d77, "");
-    writeValue(_e77, e77, "");
-    writeValue(_f77, f77, "");
-    writeValue(_g77, g77, "");
-    writeValue(_h77, h77, "");
+    writeValue(_c77, myRound(c77, 0), "");
+    writeValue(_d77, myRound(d77, 0), "");
+    writeValue(_e77, myRound(e77, 0), "");
+    writeValue(_f77, myRound(f77, 0), "");
+    writeValue(_g77, myRound(g77, 0), "");
+    writeValue(_h77, myRound(h77, 0), "");
 
     //損益分岐点売上高
     //=計算ワーク!C185
@@ -1362,11 +1501,683 @@ function xxx() {
     //判定 
     //=IF(C101>ABS(C102),"投資に値する","投資に値しない")
     _c83 = document.getElementById("c83");
-    g69 = e123c;
-    writeText(_g69, g69, "");
+    c83 = (c101 > Math.abs(c102)) ? "投資に値する" : "投資に値しない";
+    writeText(_c83, c83, "");
+
+
+    //=============================================
+    //計算結果シート
+    //=============================================
+
+    //設備導入前
+
+    //売上高／人
+    //=TRUNC(D2/D6,1)
+    _i6 = document.getElementById("i6");
+    i6 = myTrunc(d2 / d6, 1);
+    writeValue(_i6, i6, "");
+
+    //生菓子売上
+    //=TRUNC(D2*D8/10,1)
+    _i8 = document.getElementById("i8");
+    i8 = myTrunc(d2 * d8 / 10, 1);
+    writeValue(_i8, i8, "");
+
+    //焼菓子売上
+    //=TRUNC(D2*F8/10,1)
+    _i9 = document.getElementById("i9");
+    i9 = myTrunc(d2 * f8 / 10, 1);
+    writeValue(_i9, i9, "");
+
+    //（総合年産）
+    //生菓子商品点数
+    //計算済み
+    _i11 = document.getElementById("i11");
+    writeValue(_i11, i11, "");
+
+    //焼菓子商品点数
+    //計算済み
+    _i12 = document.getElementById("i12");
+    writeValue(_i12, i12, "");
+
+    //（一人当たり年産）
+    //生菓子商品点数
+    //=TRUNC(SUM(I11)/D6)
+    _m11 = document.getElementById("m11");
+    m11 = myTrunc(i11 / d6, 0);
+    writeValue(_m11, m11, "");
+
+    //焼菓子商品点数
+    //=TRUNC(SUM(I12)/D6)
+    _m12 = document.getElementById("m12");
+    m12 = myTrunc(i12 / d6, 0);
+    writeValue(_m12, m12, "");
+
+
+    //（総合月産）
+    //生菓子商品点数
+    //=TRUNC(SUM(I11)/12)
+    _i15 = document.getElementById("i15");
+    i15 = myTrunc(i11 / 12, 0);
+    writeValue(_i15, i15, "");
+
+    //焼菓子商品点数
+    //=TRUNC(SUM(I12)/12)
+    _i16 = document.getElementById("i16");
+    i16 = myTrunc(i12 / 12, 0);
+    writeValue(_i16, i16, "");
+
+
+    //（一人当たり月産）
+    //生菓子商品点数
+    //=TRUNC(SUM(I15)/D6)
+    _m15 = document.getElementById("m15");
+    m15 = myTrunc(i15 / d6, 0);
+    writeValue(_m15, m15, "");
+
+    //焼菓子商品点数
+    //=TRUNC(SUM(I16)/D6)
+    _m16 = document.getElementById("m16");
+    m16 = myTrunc(i16 / d6, 0);
+    writeValue(_m16, m16, "");
+
+    //稼働日
+    _i18 = document.getElementById("i18");
+    i18 = getValue(_i18);
+
+    //test(_d0, " i15-" + i15 + " i18-" + i18 + " i19-" + "");
+    _m18 = document.getElementById("m18");
+    m18 = i18;
+    writeValue(_m18, m18, "営業日");
+
+
+    //（総合日産）
+    //生菓子商品点数
+    //=TRUNC(SUM(I15)/I18)
+    _i19 = document.getElementById("i19");
+    i19 = myTrunc(i15 / i18, 0);
+    writeValue(_i19, i19, "");
+
+    //焼菓子商品点数
+    //=TRUNC(SUM(I16)/I18)
+    _i20 = document.getElementById("i20");
+    i20 = myTrunc(i16 / i18, 0);
+    writeValue(_i20, i20, "");
+
+
+    //（一人当たり日産）
+    //生菓子商品点数
+    //=TRUNC(SUM(I19)/D6)
+    _m19 = document.getElementById("m19");
+    m19 = myTrunc(i19 / d6, 0);
+    writeValue(_m19, m19, "");
+
+    //焼菓子商品点数
+    //=TRUNC(SUM(I20)/D6)
+    _m20 = document.getElementById("m20");
+    m20 = myTrunc(i20 / d6, 0);
+    writeValue(_m20, m20, "");
 
 
 
+
+    //生）/個
+    _q6 = document.getElementById("q6");
+    q6 = d11;
+    writeValue(_q6, q6, "");
+
+    _s6 = document.getElementById("s6");
+    s6 = d23;
+    tmp1 = myRound(s6, 1);
+    writeValue(_s6, tmp1, "");
+
+    //=SUM(Q6)-S6
+    _u6 = document.getElementById("u6");
+    u6 = mySubtract(q6, s6);
+    tmp1 = myRound(u6, 1);
+    writeValue(_u6, tmp1, "");
+
+
+    //焼）/個
+    _q7 = document.getElementById("q7");
+    q7 = d12;
+    writeValue(_q7, q7, "");
+
+    _s7 = document.getElementById("s7");
+    s7 = d24;
+    tmp1 = myRound(s7, 1);
+    writeValue(_s7, tmp1, "");
+
+    //=SUM(Q7)-S7
+    _u7 = document.getElementById("u7");
+    u7 = mySubtract(q7, s7);
+    tmp1 = myRound(u7, 1);
+    writeValue(_u7, tmp1, "");
+
+
+
+    //（総合年産）
+    //生菓子商品実収益
+    //=TRUNC(SUM(I11)*U6)
+    _q11 = document.getElementById("q11");
+    q11 = myTrunc(i11 * u6, 0);
+    writeValue(_q11, q11, "");
+
+    //test(_d0, "i11-" + i11 + "   u6-" + u6 + "   s6-" + s6 + "");
+
+
+    //焼菓子商品実収益
+    //=TRUNC(SUM(I12)*U7)
+    _q12 = document.getElementById("q12");
+    q12 = myTrunc(i12 * u7, 0);
+    writeValue(_q12, q12, "");
+
+
+
+    //（一人当たり年産）
+    //生菓子商品実収益
+    //=TRUNC(SUM(Q11)/D6)
+    _u11 = document.getElementById("u11");
+    u11 = myTrunc(q11 / d6, 0);
+    writeValue(_u11, u11, "");
+
+
+    //焼菓子商品実収益
+    //=TRUNC(SUM(Q12)/D6)
+    _u12 = document.getElementById("u12");
+    u12 = myTrunc(q12 / d6, 0);
+    writeValue(_u12, u12, "");
+
+
+
+    //（総合月産）
+    //生菓子商品実収益
+    //=TRUNC(SUM(Q11)/12)
+    _q15 = document.getElementById("q15");
+    q15 = myTrunc(q11 / 12, 0);
+    writeValue(_q15, q15, "");
+
+    //焼菓子商品実収益
+    //=TRUNC(SUM(Q12)/12)
+    _q16 = document.getElementById("q16");
+    q16 = myTrunc(q12 / 12, 0);
+    writeValue(_q16, q16, "");
+
+
+
+    //（一人当たり月産）
+    //生菓子商品実収益
+    //=TRUNC(SUM(Q15)/D6)
+    _u15 = document.getElementById("u15");
+    u15 = myTrunc(q15 / d6, 0);
+    writeValue(_u15, u15, "");
+
+    //焼菓子商品実収益
+    //=TRUNC(SUM(Q16)/D6)
+    _u16 = document.getElementById("u16");
+    u16 = myTrunc(q16 / d6, 0);
+    writeValue(_u16, u16, "");
+
+
+    _q18 = document.getElementById("q18");
+    q18 = i18;
+    writeValue(_q18, q18, "営業日");
+
+    _u18 = document.getElementById("u18");
+    u18 = m18;
+    writeValue(_u18, u18, "営業日");
+
+
+    //（総合日産）
+    //生菓子商品点数
+    //=TRUNC(SUM(Q15)/Q18)
+    _q19 = document.getElementById("q19");
+    q19 = myTrunc(q15 / q18, 0);
+    writeValue(_q19, q19, "");
+
+    //焼菓子商品点数
+    //=TRUNC(SUM(Q16)/Q18)
+    _q20 = document.getElementById("q20");
+    q20 = myTrunc(q16 / q18, 0);
+    writeValue(_q20, q20, "");
+
+
+    //（一人当たり日産）
+    //生菓子商品点数
+    //=TRUNC(SUM(Q19)/D6)
+    _u19 = document.getElementById("u19");
+    u19 = myTrunc(q19 / d6, 0);
+    writeValue(_u19, u19, "");
+
+    //焼菓子商品点数
+    //=TRUNC(SUM(Q20)/D6)
+    _u20 = document.getElementById("u20");
+    u20 = myTrunc(q20 / d6, 0);
+    writeValue(_u20, u20, "");
+
+
+
+    // //------------------------------------
+    // //設備導入後
+
+    //売上高／人
+    //=TRUNC(D40/D44,1)
+    _i44 = document.getElementById("i44");
+    i44 = myTrunc(d40 / d44, 1);
+    writeValue(_i44, i44, "");
+
+    //生菓子売上
+    //=TRUNC(D40*D32/10,1)
+    _i46 = document.getElementById("i46");
+    i46 = myTrunc(d40 * d8 / 10, 1);
+    writeValue(_i46, i46, "");
+
+    //焼菓子売上
+    //=TRUNC(D40*F32/10,1)
+    _i47 = document.getElementById("i47");
+    i47 = myTrunc(d40 * f8 / 10, 1);
+    writeValue(_i47, i47, "");
+
+    //（総合年産）
+    //生菓子商品点数
+    //計算済み
+    _i49 = document.getElementById("i49");
+    writeValue(_i49, i49, "");
+
+    //焼菓子商品点数
+    //計算済み
+    _i50 = document.getElementById("i50");
+    writeValue(_i50, i50, "");
+
+    //（一人当たり年産）
+    //生菓子商品点数
+    //=TRUNC(SUM(I49)/D44)
+    _m49 = document.getElementById("m49");
+    m49 = myTrunc(i49 / d44, 0);
+    writeValue(_m49, m49, "");
+
+    //焼菓子商品点数
+    //=TRUNC(SUM(I50)/D44)
+    _m50 = document.getElementById("m50");
+    m50 = myTrunc(i50 / d44, 0);
+    writeValue(_m50, m50, "");
+
+
+    //（総合月産）
+    //生菓子商品点数
+    //=TRUNC(SUM(I49)/12)
+    _i53 = document.getElementById("i53");
+    i53 = myTrunc(i49 / 12, 0);
+    writeValue(_i53, i53, "");
+
+    //焼菓子商品点数
+    //=TRUNC(SUM(I50)/12)
+    _i54 = document.getElementById("i54");
+    i54 = myTrunc(i50 / 12, 0);
+    writeValue(_i54, i54, "");
+
+
+    //（一人当たり月産）
+    //生菓子商品点数
+    //=TRUNC(SUM(I53)/D44)
+    _m53 = document.getElementById("m53");
+    m53 = myTrunc(i53 / d44, 0);
+    writeValue(_m53, m53, "");
+
+    //焼菓子商品点数
+    //=TRUNC(SUM(I54)/D44)
+    _m54 = document.getElementById("m54");
+    m54 = myTrunc(i54 / d44, 0);
+    writeValue(_m54, m54, "");
+
+    //稼働日
+    _i56 = document.getElementById("i56");
+    i56 = getValue(_i56);
+
+    _m56 = document.getElementById("m56");
+    m56 = i56;
+    writeValue(_m56, m56, "営業日");
+
+
+    //（総合日産）
+    //生菓子商品点数
+    //=TRUNC(SUM(I53)/I56)
+    _i57 = document.getElementById("i57");
+    i57 = myTrunc(i53 / i56, 0);
+    writeValue(_i57, i57, "");
+
+    //焼菓子商品点数
+    //=TRUNC(SUM(I54)/I56)
+    _i58 = document.getElementById("i58");
+    i58 = myTrunc(i54 / i56, 0);
+    writeValue(_i58, i58, "");
+
+
+    //（一人当たり日産）
+    //生菓子商品点数
+    //=TRUNC(SUM(I57)/D44)
+    _m57 = document.getElementById("m57");
+    m57 = myTrunc(i57 / d44, 0);
+    writeValue(_m57, m57, "");
+
+    //焼菓子商品点数
+    //=TRUNC(SUM(I58)/D44)
+    _m58 = document.getElementById("m58");
+    m58 = myTrunc(i58 / d44, 0);
+    writeValue(_m58, m58, "");
+
+
+
+
+    //生）/個
+    _q44 = document.getElementById("q44");
+    q44 = d49;
+    writeValue(_q44, q44, "");
+
+    _s44 = document.getElementById("s44");
+    s44 = d61;
+    tmp1 = myRound(s44, 1);
+    writeValue(_s44, tmp1, "");
+
+    //=SUM(Q44)-S44
+    _u44 = document.getElementById("u44");
+    u44 = mySubtract(q44, s44);
+    tmp1 = myRound(u44, 1);
+    writeValue(_u44, tmp1, "");
+
+
+    //焼）/個
+    _q45 = document.getElementById("q45");
+    q45 = d50;
+    writeValue(_q45, q45, "");
+
+    _s45 = document.getElementById("s45");
+    s45 = d62;
+    tmp1 = myRound(s45, 1);
+    writeValue(_s45, tmp1, "");
+
+    //=SUM(Q45)-S45
+    _u45 = document.getElementById("u45");
+    u45 = mySubtract(q45, s45);
+    tmp1 = myRound(u45, 1);
+    writeValue(_u45, tmp1, "");
+
+
+
+    //（総合年産）
+    //生菓子商品実収益
+    //=TRUNC(SUM(I49)*U44)
+    _q49 = document.getElementById("q49");
+    q49 = myTrunc(i49 * u44, 0);
+    writeValue(_q49, q49, "");
+
+    //test(_d0, "i11-" + i11 + "   u6-" + u6 + "   s6-" + s6 + "");
+
+
+    //焼菓子商品実収益
+    //=TRUNC(SUM(I50)*U45)
+    _q50 = document.getElementById("q50");
+    q50 = myTrunc(i50 * u45, 0);
+    writeValue(_q50, q50, "");
+
+
+
+    //（一人当たり年産）
+    //生菓子商品実収益
+    //=TRUNC(SUM(Q49)/D44)
+    _u49 = document.getElementById("u49");
+    u49 = myTrunc(q49 / d44, 0);
+    writeValue(_u49, u49, "");
+
+
+    //焼菓子商品実収益
+    //=TRUNC(SUM(Q50)/D44)
+    _u50 = document.getElementById("u50");
+    u50 = myTrunc(q50 / d44, 0);
+    writeValue(_u50, u50, "");
+
+
+
+    //（総合月産）
+    //生菓子商品実収益
+    //=TRUNC(SUM(Q49)/12)
+    _q53 = document.getElementById("q53");
+    q53 = myTrunc(q49 / 12, 0);
+    writeValue(_q53, q53, "");
+
+    //焼菓子商品実収益
+    //=TRUNC(SUM(Q50)/12)
+    _q54 = document.getElementById("q54");
+    q54 = myTrunc(q50 / 12, 0);
+    writeValue(_q54, q54, "");
+
+
+
+    //（一人当たり月産）
+    //生菓子商品実収益
+    //=TRUNC(SUM(Q53)/D44)
+    _u53 = document.getElementById("u53");
+    u53 = myTrunc(q53 / d44, 0);
+    writeValue(_u53, u53, "");
+
+    //焼菓子商品実収益
+    //=TRUNC(SUM(Q54)/D44)
+    _u54 = document.getElementById("u54");
+    u54 = myTrunc(q54 / d44, 0);
+    writeValue(_u54, u54, "");
+
+
+    _q56 = document.getElementById("q56");
+    q56 = i56;
+    writeValue(_q56, q56, "営業日");
+
+    _u56 = document.getElementById("u56");
+    u56 = m56;
+    writeValue(_u56, u56, "営業日");
+
+
+    //（総合日産）
+    //生菓子商品点数
+    //=TRUNC(SUM(Q53)/Q56)
+    _q57 = document.getElementById("q57");
+    q57 = myTrunc(q53 / q56, 0);
+    writeValue(_q57, q57, "");
+
+    //焼菓子商品点数
+    //=TRUNC(SUM(Q54)/Q56)
+    _q58 = document.getElementById("q58");
+    q58 = myTrunc(q54 / q56, 0);
+    writeValue(_q58, q58, "");
+
+
+    //（一人当たり日産）
+    //生菓子商品点数
+    //=TRUNC(SUM(Q57)/D44)
+    _u57 = document.getElementById("u57");
+    u57 = myTrunc(q57 / d44, 0);
+    writeValue(_u57, u57, "");
+
+    //焼菓子商品点数
+    //=TRUNC(SUM(Q58)/D44)
+    _u58 = document.getElementById("u58");
+    u58 = myTrunc(q58 / d44, 0);
+    writeValue(_u58, u58, "");
+
+
+    kaisyu();
+
+}
+
+function kaisyu() {
+    //割引現在価値合計
+    //=TRUNC(D99+D101)
+    _d101 = document.getElementById("d101");
+    _e101 = document.getElementById("e101");
+    _f101 = document.getElementById("f101");
+    _g101 = document.getElementById("g101");
+    _h101 = document.getElementById("h101");
+    d101 = getValue(_d101);
+    e101 = getValue(_e101);
+    f101 = getValue(_f101);
+    g101 = getValue(_g101);
+    h101 = getValue(_h101);
+    var lngCIF = [d101, e101, f101, g101, h101];
+
+
+    //lngToushigaku
+    //投資額をセット（符号も計算用に変える）
+    //lngToushigaku = Range(cnToushigaku) * (-1)
+    _c102 = document.getElementById("c102");
+    c102 = getValue(_c102);
+    lngToushigaku = c102 * -1;
+
+    //NPVをセット
+    //strNPV = Format(CStr(Range(cnNPV).Value), "#,##0")
+    _c101 = document.getElementById("c101");
+    c101 = getValue(_c101);
+    strNPV = c101;
+
+    //------------------------------------------
+    //fnKaisyu------------
+    //------------------------------------------
+
+    // For i = 0 To 4
+    // If lngToushigakuWk > lngCIFwk(i) Then
+    //     '年ごとの回収額分を減算
+    //     lngToushigakuWk = lngToushigakuWk - lngCIFwk(i)
+    // Else
+    //     '回収期間の計算
+    //     dblKaisyu = i + lngToushigakuWk / lngCIFwk(i)
+    //     Exit For
+    // End If
+    // Next i
+
+    dblKaisyu = 0;
+
+    for (var i = 0; i < lngCIF.length; i++) {
+        if (lngToushigaku > lngCIF[i]) {
+            lngToushigaku = lngToushigaku - lngCIF[i];
+        } else {
+            dblKaisyu = i + (lngToushigaku / lngCIF[i]);
+            break;
+        }
+    }
+    console.log(" lngCIF-" + lngCIF);
+    test(_d0, " lngCIF-" + lngCIF + " lngCIF-" + lngCIF + "");
+    // '計算済み回収期間の表示
+    // If dblKaisyu <> 0 Then
+    //     strKaisyuWk = Application.WorksheetFunction.RoundDown(dblKaisyu, 2)
+
+    // Else
+    //     '５年内回収不可の場合はメッセージ表示
+    //     strKaisyuWk = "５年以内の回収不可"
+    //     Exit Function
+    // End If
+
+    if (dblKaisyu > 0) {
+        strKaisyuWk = myRoundDown(dblKaisyu, 2);
+    } else {
+        strKaisyuWk = "５年以内の回収不可"
+        return;
+    }
+
+    // '回収コメントの編集
+    // strwk = strwk & "本事業では、以下のように５か年計画表の"
+    // strwk = strwk & "営業キャッシュフローと減価償却のタックスシールド効果を"
+    // strwk = strwk & "得ることができ、その正味キャッシュフローを現在価値に"
+    // strwk = strwk & "割り引いた場合の現在価値が"
+
+
+    // strwk = strwk & strNPVwk    '回収期間のセット
+
+    // strwk = strwk & "円となり､投資額以上となるため「投資に値する」と言える｡" & vbCrLf
+    // strwk = strwk & "また、回収期間も" & strKaisyuWk
+
+    strwk = "本事業では、以下のように５か年計画表の" +
+        "営業キャッシュフローと減価償却のタックスシールド効果を" +
+        "得ることができ、その正味キャッシュフローを現在価値に" +
+        "割り引いた場合の現在価値が" +
+        strNPV +
+        "円となり､投資額以上となるため「投資に値する」と言える｡<br>" +
+        "また、回収期間も" +
+        strKaisyuWk;
+
+    // '回収期間によりコメントを場合分け
+    // If IsNumeric(strKaisyuWk) = False Then
+    //     strwk = strwk & "当社の規定内であり、"
+    // ElseIf CInt(strKaisyuWk) <= 2 Then
+    //     strwk = strwk & "年となっており短期回収が可能であること、"
+    // ElseIf CInt(strKaisyuWk) > 2 And CInt(strKaisyuWk) <= 5 Then
+    //     strwk = strwk & "年となっており想定期間内での回収が可能であること、"
+    // ElseIf CInt(strKaisyuWk) > 5 And CInt(strKaisyuWk) <= 10 Then
+    //     strwk = strwk & "年となっており耐用年数以下での回収が可能であること、"
+    // End If
+
+    if (isNaN(strKaisyuWk) == true) {
+        strwk += "当社の規定内であり、";
+    } else if (strKaisyuWk <= 2) {
+        strwk += "年となっており短期回収が可能であること、";
+    } else if (strKaisyuWk <= 5) {
+        strwk += "年となっており想定期間内での回収が可能であること、";
+    } else if (strKaisyuWk <= 10) {
+        strwk += "年となっており耐用年数以下での回収が可能であること、";
+    }
+
+
+    // strwk = strwk & "さらに残りの期間で新商品開発による"
+    // strwk = strwk & "キャッシュインフローの向上も見込むことができる｡"
+    strwk += "さらに残りの期間で新商品開発による" +
+        "キャッシュインフローの向上も見込むことができる｡";
+
+    // '回収期間の表示
+    // Range(cnKaisyu).Value = strKaisyu
+    _c85 = document.getElementById("c85");
+    c85 = strKaisyuWk;
+    writeValue(_c85, c85, "");
+
+
+}
+
+function btning() {
+    demo();
+    //'リセット
+    //Range(cnUriSeityou).Value = 100
+    //Public Const cnUriSeityou As String = "D29"             '売上成長率
+    _d29 = document.getElementById("d29");
+    writeValue(_d29, 100, "");
+
+    // 'もの補助要件を満たすまで「売上成長」をインクリメント
+    // For i = 0 To 100
+    //     Range(cnUriSeityou).Value = Range(cnUriSeityou).Value + 1
+    //     If Range(cnYouken_Keijo).Value = "OK" _
+    //         And Range(cnYouken_Hukakati).Value = "OK" _
+    //         And Range(cnYouken_Roudouseisansei).Value = "OK" Then
+    //         Exit For
+    //     End If
+    // Next
+
+    // Public Const cnYouken_Keijo As String = "G68"       '要件チェック　経常利益の成長率
+    // Public Const cnYouken_Hukakati As String = "G69"    '要件チェック　付加価値額の成長率
+    // Public Const cnYouken_Roudouseisansei As String = "G73" '要件チェック　経常利益の成長
+
+    _g68 = document.getElementById("g68");
+    _g69 = document.getElementById("g69");
+    _g73 = document.getElementById("g73");
+
+    for (i = 0; i < 100; i++) {
+        alert(i);
+        writeValue(_d29, 100 + i, "");
+        xxx();
+
+        g68 = getValue(_g68);
+        g69 = getValue(_g69);
+        g73 = getValue(_g73);
+
+        if (g68 == "OK" && g69 == "OK" && g73 == "OK") {
+            break;
+        }
+
+    }
 
 
 

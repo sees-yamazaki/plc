@@ -70,12 +70,4 @@ window.onload = function() {
         elements[i].onfocus = function() { offComma(this); }
         elements[i].onblur = function() { toComma(this); }
     }
-}
-Math._getDecimalLength = function(value) {
-    var list = (value + '').split('.'),
-        result = 0;
-    if (list[1] !== undefined && list[1].length > 0) {
-        result = list[1].length;
-    }
-    return result;
 };

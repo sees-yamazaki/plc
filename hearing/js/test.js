@@ -33,6 +33,9 @@ function demo() {
     document.getElementById("c88").value = 27.8;
     document.getElementById("c89").value = 10;
 
+    document.getElementById("i18").value = 25;
+    document.getElementById("i56").value = 25;
+
 }
 
 
