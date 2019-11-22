@@ -17,11 +17,11 @@ $(function() {
 });
 
 function getValue(obj) {
-    if (obj.type == null) {
-        txt = obj.innerText.replace(",", "");
-    } else {
-        txt = obj.value.replace(",", "");
-    }
+    // if (obj.type == null) {
+    //     txt = obj.innerText.replace(",", "");
+    // } else {
+    txt = obj.value.replace(",", "");
+    //    }
     if (Number.isInteger()) {
         return parseInt(txt);
     } else {
@@ -43,6 +43,7 @@ function writeValue(obj, val, val2) {
     if (isNaN(val)) {
         txt = "";
     } else {
+        val = addCmm(val);
         txt = val + val2;
     }
 
@@ -52,6 +53,13 @@ function writeValue(obj, val, val2) {
         obj.value = txt;
     }
 
+}
+
+function addCmm(val) {
+    var arr;
+    arr = String(val).split('.');
+    arr[0] = arr[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    return arr.join('.');
 }
 
 function writeText(obj, val, val2) {
@@ -255,6 +263,9 @@ function xxx() {
     //=TRUNC(SUM(D11)*E13*1.05,1)
     _d14 = document.getElementById("d14");
     d14 = myTrunc(d11 * (e13 / 100) * 1.05, 1);
+    console.log("d11-" + d11);
+    console.log("e13-" + e13);
+    console.log("d14-" + d14);
     writeValue(_d14, d14, "");
 
 
@@ -262,7 +273,10 @@ function xxx() {
     //=TRUNC(SUM(D12)*E13*0.9,1)
     _d15 = document.getElementById("d15");
     d15 = myTrunc(d12 * (e13 / 100) * 0.9, 1);
-    writeValue(_d15, tmp1, "");
+    console.log("d12-" + d12);
+    console.log("e13-" + e13);
+    console.log("d15-" + d15);
+    writeValue(_d15, d15, "");
 
     //生菓子平均労務費
     //=TRUNC(SUM(D3)*D8*0.1*10000/I11,1)*1.1
@@ -323,8 +337,8 @@ function xxx() {
     _d23 = document.getElementById("d23");
     d23 = myPlus3(d14, d17, d20);
     //test(_d0, "d23-" + (d23) + "  d14-" + d14 + "  d17-" + d17 + "   d20-" + d20 + "");
-
-    writeValue(_d23, d23, "");
+    tmp1 = myTrunc(d23, 1);
+    writeValue(_d23, tmp1, "");
 
     //焼菓子平均総原価
     //=SUM(D15)+D18+D21
@@ -546,7 +560,7 @@ function xxx() {
 
     //=TRUNC(SUM(D41)*D32*0.1*10000/I49,1)*1.1
     d55 = myTrunc((d41 * d8 * 0.1 * 10000) / i49, 1) * 1.1;
-    tmp1 = myTrunc(d55, 0);
+    tmp1 = myTrunc(d55, 1);
 
     writeValue(_d55, tmp1, "");
 
@@ -1182,13 +1196,13 @@ function xxx() {
 
     //判定
     //=計算ワーク!F202
-    _f73 = document.getElementById("f73");
-    f73 = f202c;
-    writeText(_f73, f73, "");
+    _g73 = document.getElementById("g73");
+    g73 = f202c;
+    writeText(_g73, g73, "");
 
     //成長を設定ブロック
     _f37 = document.getElementById("f37");
-    f37 = f73;
+    f37 = g73;
     writeText(_f37, f37, "");
 
 
@@ -1198,75 +1212,75 @@ function xxx() {
     _c77 = document.getElementById("c77");
     _d77 = document.getElementById("d77");
     _e77 = document.getElementById("e77");
-    _f77 = document.getElementById("f77");
     _g77 = document.getElementById("g77");
     _h77 = document.getElementById("h77");
+    _i77 = document.getElementById("i77");
     c77 = c184c;
     d77 = d184c;
     e77 = e184c;
-    f77 = f184c;
-    g77 = g184c;
-    h77 = h184c;
+    g77 = f184c;
+    h77 = g184c;
+    i77 = h184c;
     writeValue(_c77, myRound(c77, 0), "");
     writeValue(_d77, myRound(d77, 0), "");
     writeValue(_e77, myRound(e77, 0), "");
-    writeValue(_f77, myRound(f77, 0), "");
     writeValue(_g77, myRound(g77, 0), "");
     writeValue(_h77, myRound(h77, 0), "");
+    writeValue(_i77, myRound(i77, 0), "");
 
     //損益分岐点売上高
     //=計算ワーク!C185
     _c78 = document.getElementById("c78");
     _d78 = document.getElementById("d78");
     _e78 = document.getElementById("e78");
-    _f78 = document.getElementById("f78");
     _g78 = document.getElementById("g78");
     _h78 = document.getElementById("h78");
+    _i78 = document.getElementById("i78");
     c78 = c185c;
     d78 = d185c;
     e78 = e185c;
-    f78 = f185c;
-    g78 = g185c;
-    h78 = h185c;
+    g78 = f185c;
+    h78 = g185c;
+    i78 = h185c;
     tmp1 = myRound(c78, 0);
     tmp2 = myRound(d78, 0);
     tmp3 = myRound(e78, 0);
-    tmp4 = myRound(f78, 0);
-    tmp5 = myRound(g78, 0);
-    tmp6 = myRound(h78, 0);
+    tmp4 = myRound(g78, 0);
+    tmp5 = myRound(h78, 0);
+    tmp6 = myRound(i78, 0);
     writeValue(_c78, tmp1, "");
     writeValue(_d78, tmp2, "");
     writeValue(_e78, tmp3, "");
-    writeValue(_f78, tmp4, "");
-    writeValue(_g78, tmp5, "");
-    writeValue(_h78, tmp6, "");
+    writeValue(_g78, tmp4, "");
+    writeValue(_h78, tmp5, "");
+    writeValue(_i78, tmp6, "");
 
     //損益分岐点比率
     //=計算ワーク!C186
     _c79 = document.getElementById("c79");
     _d79 = document.getElementById("d79");
     _e79 = document.getElementById("e79");
-    _f79 = document.getElementById("f79");
     _g79 = document.getElementById("g79");
     _h79 = document.getElementById("h79");
+    _i79 = document.getElementById("i79");
     c79 = c186c;
     d79 = d186c;
     e79 = e186c;
-    f79 = f186c;
-    g79 = g186c;
-    h79 = h186c;
+    g79 = f186c;
+    h79 = g186c;
+    i79 = h186c;
     tmp1 = myRound(c79 * 100, 1);
     tmp2 = myRound(d79 * 100, 1);
     tmp3 = myRound(e79 * 100, 1);
-    tmp4 = myRound(f79 * 100, 1);
-    tmp5 = myRound(g79 * 100, 1);
-    tmp6 = myRound(h79 * 100, 1);
+    tmp4 = myRound(g79 * 100, 1);
+    tmp5 = myRound(h79 * 100, 1);
+    tmp6 = myRound(i79 * 100, 1);
     writeValue(_c79, tmp1, "%");
     writeValue(_d79, tmp2, "%");
     writeValue(_e79, tmp3, "%");
-    writeValue(_f79, tmp4, "%");
-    writeValue(_g79, tmp5, "%");
-    writeValue(_h79, tmp6, "%");
+    writeValue(_g79, tmp4, "%");
+    writeValue(_h79, tmp5, "%");
+    writeValue(_i79, tmp6, "%");
 
 
     //４．投資判断としての妥当性
@@ -2063,7 +2077,7 @@ function kaisyu() {
         }
     }
     console.log(" lngCIF-" + lngCIF);
-    test(_d0, " lngCIF-" + lngCIF + " lngCIF-" + lngCIF + "");
+    //test(_d0, " lngCIF-" + lngCIF + " lngCIF-" + lngCIF + "");
     // '計算済み回収期間の表示
     // If dblKaisyu <> 0 Then
     //     strKaisyuWk = Application.WorksheetFunction.RoundDown(dblKaisyu, 2)
@@ -2164,14 +2178,21 @@ function btning() {
     _g69 = document.getElementById("g69");
     _g73 = document.getElementById("g73");
 
-    for (i = 0; i < 100; i++) {
-        alert(i);
-        writeValue(_d29, 100 + i, "");
-        xxx();
+    for (cnt = 0; cnt < 10; cnt++) {
 
-        g68 = getValue(_g68);
-        g69 = getValue(_g69);
-        g73 = getValue(_g73);
+        writeValue(_d29, 100 + cnt, "");
+        sleep(100);
+        xxx();
+        console.log("ste1" + cnt);
+        //g68 = getValue(_g68);
+        g68 = _g68.value;
+        console.log("ste2:" + g68);
+        //g69 = getValue(_g69);
+        g69 = _g69.value;
+        console.log("ste3:" + g69);
+        //g73 = getValue(_g73);
+        g73 = _g73.value;
+        console.log("ste4:" + g73);
 
         if (g68 == "OK" && g69 == "OK" && g73 == "OK") {
             break;
@@ -2182,4 +2203,11 @@ function btning() {
 
 
 
+}
+
+function sleep(waitMsec) {
+    var startMsec = new Date();
+
+    // 指定ミリ秒間だけループさせる（CPUは常にビジー状態）
+    while (new Date() - startMsec < waitMsec);
 }
