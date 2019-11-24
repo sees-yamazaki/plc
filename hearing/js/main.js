@@ -71,3 +71,42 @@ window.onload = function() {
         elements[i].onblur = function() { toComma(this); }
     }
 };
+
+
+function page1(){
+    const p1 = document.getElementById("inputsheet");
+    const p2 = document.getElementById("calcsheet");
+    const p3 = document.getElementById("report");
+    p1.style.display ="block";
+    p2.style.display ="none";
+    p3.style.display ="none";
+    p1.classList.add("active");
+    p2.classList.remove("active");
+    p3.classList.remove("active");
+
+}
+
+function page2(){
+    const p1 = document.getElementById("inputsheet");
+    const p2 = document.getElementById("calcsheet");
+    const p3 = document.getElementById("report");
+    p1.style.display ="none";
+    p2.style.display ="block";
+    p3.style.display ="none";
+    p1.classList.remove("active");
+    p2.classList.add("active");
+    p3.classList.remove("active");
+
+}
+function page3(){
+    const p1 = document.getElementById("inputsheet");
+    const p2 = document.getElementById("calcsheet");
+    const p3 = document.getElementById("report");
+    p1.style.display ="none";
+    p2.style.display ="none";
+    p3.style.display ="block";
+    p1.classList.remove("active");
+    p2.classList.remove("active");
+    p3.classList.add("active");
+
+}

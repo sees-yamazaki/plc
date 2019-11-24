@@ -52,6 +52,31 @@ body {
     margin: 0;
 }
 
+div#inputsheet{
+    display :block;
+}
+
+div#calcsheet{
+    display :none;
+}
+div#report{
+    display :none;
+}
+
+input.number{
+    text-align: right;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+div#report table tr td div{
+    text-align: left;;
+}
+
 input.lbl {
     border: none;
     background: none;
@@ -129,12 +154,12 @@ ul.topnav li.user {
 }
 
 .areaA {
-    width: 150px;
+    width: 200px;
     background-color: #eeeeee;
 }
 
 .areaB {
-    width: 200px;
+    width: 150px;
     background-color: #eeeeee;
 }
 

@@ -1,23 +1,33 @@
 function getValueExt(rng, dp) {
-    tmp0 = document.getElementById(rng).value.replace(",", "");
-    return tmp0;
+    tmp0 = document.getElementById(rng).value.replace(/,/g, '').replace('%', '');
+    nf = new Intl.NumberFormat("ja-JP", { useGrouping: true, style: 'decimal', minimumFractionDigits: dp, maximumFractionDigits: dp });
+    rtn = nf.format(tmp0);
+    return rtn;
 }
 
 function getValueExt2(rng, dp, mlp) {
-    console.log(rng);
-    tmp0 = document.getElementById(rng).value.replace(",", "");
+    tmp0 = document.getElementById(rng).value.replace(/,/g, '').replace('%', '');
     tmp0 = tmp0 * mlp;
-    return tmp0;
+    nf = new Intl.NumberFormat("ja-JP", { useGrouping: true, style: 'decimal', minimumFractionDigits: dp, maximumFractionDigits: dp });
+    rtn = nf.format(tmp0);
+    return rtn;
 }
 
 function numFormat(vlu, dp) {
-    return vlu;
+    vlu = myCnvNum(vlu);
+    nf = new Intl.NumberFormat("ja-JP", { useGrouping: true, style: 'decimal', minimumFractionDigits: dp, maximumFractionDigits: dp });
+    rtn = nf.format(vlu);
+    return rtn;
+}
+function myCnvNum(vlu) {
+    tmp = '' + vlu;
+    tmp = tmp.replace(/,/g, '');
+    tmp = tmp.replace('%', '');
+    return tmp * 1;
 }
 
 
 function sakubun() {
-
-    console.log("sakubun-start");
 
     _g68 = document.getElementById("g68");
     _g69 = document.getElementById("g69");
@@ -84,11 +94,11 @@ function sakubun() {
     RoumuhiB = getValueExt(cnRoumuhiB, 0); //労務費
     HankanhiB = getValueExt(cnHankanhiB, 0); //販管費
     JyugyoinB = getValueExt(cnJyugyoinB, 0); //従業員数
-    KashiHirituB_Yaki = getValueExt2(cnKashiHirituB_Yaki, 1, 10); //焼菓子比率
-    KashiHirituB_Nama = getValueExt2(cnKashiHirituB_Nama, 1, 10); //生菓子比率
+    KashiHirituB_Yaki = getValueExt2(cnKashiHirituB_Yaki, 1, 10) + "%"; //焼菓子比率
+    KashiHirituB_Nama = getValueExt2(cnKashiHirituB_Nama, 1, 10) + "%"; //生菓子比率
     NamaAveTanB = getValueExt(cnNamaAveTanB, 0); //生菓子平均単価
     YakiAveTanB = getValueExt(cnYakiAveTanB, 0); //焼菓子平均単価
-    ZairyoGenkarituB = getValueExt2(cnZairyoGenkarituB, 1, 100); //材料原価率
+    ZairyoGenkarituB = getValueExt(cnZairyoGenkarituB, 1) + "%"; //材料原価率 *調整*
     NamaAveZaiB = getValueExt(cnNamaAveZaiB, 1); //生：材料原価平均
     YakiAveZaiB = getValueExt(cnYakiAveZaiB, 1); //焼：材料原価平均
     NamaAveRoumuB = getValueExt(cnNamaAveRoumuB, 1); //生：労務費平均
@@ -140,8 +150,8 @@ function sakubun() {
     // Hojoritu = Range(cnHojoritu).Value            '補助率
     // If Range(cnSyokyaku).Value = "する" Then Syokyaku = True          '一括償却
     // GenkaSyokyakuhi = Format(Range(cnGenkaSyokyakuhi).Value, "#,##0")
-    UriSeityou = getValueExt(cnUriSeityou, 1); //売上成長率
-    GenkaTeigen = getValueExt(cnGenkaTeigen, 1); //原価低減
+    UriSeityou = getValueExt(cnUriSeityou, 1) + "%"; //売上成長率
+    GenkaTeigen = getValueExt(cnGenkaTeigen, 1) + "%"; //原価低減
     Zouin = getValueExt(cnZouin, 0); //増員数
     KashiHirituA_Yaki = getValueExt2(cnKashiHirituA_Yaki, 1), 10; //焼菓子比率
     KashiHirituA_Nama = getValueExt2(cnKashiHirituA_Nama, 1, 10); //生菓子比率
@@ -257,13 +267,14 @@ function sakubun() {
     // RoudouseisanChk = Format(Range(cnRoudouseisanChk).Value * 100, "#,##0.0") & "%"    '労働生産性（伸び率）
     // SBEP_Before = Format(Range(cnSBEP_Before).Value * 100, "#,##0.0") & "%"            '損益分岐点（現状）
     // SBEP_After = Format(Range(cnSBEP_After).Value * 100, "#,##0.0") & "%"              '損益分岐点（５年後）
-    KeijoChk = getValueExt2(cnKeijoChk, 1, 100); //経常利益率（成長要件）
-    HukaChk = getValueExt2(cnHukaChk, 1, 100); //付加価値成長率（成長要件）
+    KeijoChk = getValueExt(cnKeijoChk, 1) + "%"; //経常利益率（成長要件）*調整*
+    //    console.log("KeijoChk:" + KeijoChk);
+    HukaChk = getValueExt(cnHukaChk, 1) + "%"; //付加価値成長率（成長要件）*調整*
     RoudouseisanseiB = getValueExt(cnRoudouseisanseiB, 0); //労働生産性（現状）
     RoudouseisanseiA = getValueExt(cnRoudouseisanseiA, 0); //労働生産性（５年後）
-    RoudouseisanChk = getValueExt2(cnRoudouseisanChk, 1, 100); //労働生産性（伸び率）
-    SBEP_Before = getValueExt2(cnSBEP_Before, 1, 100); //損益分岐点（現状）
-    SBEP_After = getValueExt2(cnSBEP_After, 1, 100); //損益分岐点（５年後）
+    RoudouseisanChk = getValueExt(cnRoudouseisanChk, 1) + "%"; //労働生産性（伸び率）*調整*
+    SBEP_Before = getValueExt(cnSBEP_Before, 1) + "%"; //損益分岐点（現状）*調整*
+    SBEP_After = getValueExt(cnSBEP_After, 1) + "%"; //損益分岐点（５年後）*調整*
 
     // If Range(cnTousiHantei).Value = "投資に値する" Then TousiHantei = True  '投資判定
     // Kaisyu = Range(cnKaisyu).Value                      '推定回収期間
@@ -323,7 +334,7 @@ function sakubun() {
     //     strwk = strwk & "なっており、生産性としては業界平均を下回る水準となっている。"
     // End If
     // strwk = strwk & vbCrLf
-    strwk = '' + "■生産の状況　〜新商品開発を停滞させる生産性要因〜<br>" + br +
+    strwk = '' + "■生産の状況　〜新商品開発を停滞させる生産性要因〜" + br +
         "　当社は生菓子と焼菓子の製造比率を生菓子が" + KashiHirituB_Nama +
         "、焼菓子が" + KashiHirituB_Yaki + "にて生産しており、" +
         "生菓子の年間売上が" + NamaUriageB + "万円（売上点数約" + NamaTensuNenB + "個）、" +
@@ -332,32 +343,32 @@ function sakubun() {
         "また、菓子製造に携わる従業員数は現在" + JyugyoinB + "名であり、一人当たりの売上金額は、" +
         UriageB_Hitori + "万円／年と";
 
-    console.log("KashiHirituB_Nama:" + KashiHirituB_Nama);
-    console.log("KashiHirituB_Yaki:" + KashiHirituB_Yaki);
-    console.log("NamaUriageB:" + NamaUriageB);
-    console.log("NamaTensuNenB:" + NamaTensuNenB);
-    console.log("YakiUriageB:" + YakiUriageB);
-    console.log("YakiTensuNenB:" + YakiTensuNenB);
-    console.log("UriageB:" + UriageB);
-    console.log("JyugyoinB:" + JyugyoinB);
-    console.log("UriageB_Hitori:" + UriageB_Hitori);
+    // console.log("KashiHirituB_Nama:" + KashiHirituB_Nama);
+    // console.log("KashiHirituB_Yaki:" + KashiHirituB_Yaki);
+    // console.log("NamaUriageB:" + NamaUriageB);
+    // console.log("NamaTensuNenB:" + NamaTensuNenB);
+    // console.log("YakiUriageB:" + YakiUriageB);
+    // console.log("YakiTensuNenB:" + YakiTensuNenB);
+    // console.log("UriageB:" + UriageB);
+    // console.log("JyugyoinB:" + JyugyoinB);
+    // console.log("UriageB_Hitori:" + UriageB_Hitori);
 
     if (UriageB_Hitori > 2000 && JyugyoinB < 20) {
-        strwk += "なっており、小規模ながら能率高い運営ができており業界でもトップクラスの水準となっている。<br>" + br;
+        strwk += "なっており、小規模ながら能率高い運営ができており業界でもトップクラスの水準となっている。" + br;
     } else if (UriageB_Hitori > 2000) {
-        strwk = strwk + "業界でもトップクラスの生産性水準となっている。<br>" + br;
+        strwk = strwk + "業界でもトップクラスの生産性水準となっている。" + br;
     } else if (UriageB_Hitori > 1500) {
-        strwk = strwk + "なっており、中小規模ながら能率高い経営にて運営を行っている。<br>" + br;
+        strwk = strwk + "なっており、中小規模ながら能率高い経営にて運営を行っている。" + br;
     } else if (UriageB_Hitori > 700 && JyugyoinB > 100) {
-        strwk = strwk + "なっており、従業員数は充実しているものの、生産性は業界中位の水準に留まっている。<br>" + br;
+        strwk = strwk + "なっており、従業員数は充実しているものの、生産性は業界中位の水準に留まっている。" + br;
     } else if (UriageB_Hitori > 700) {
-        strwk = strwk + "業界中位の水準となっている。<br>" + br;
+        strwk = strwk + "業界中位の水準となっている。" + br;
     } else if (JyugyoinB > 100) {
-        strwk = strwk + "なっており、従業員数は充実しているものの、生産性は不十分な状況である。<br>" + br;
+        strwk = strwk + "なっており、従業員数は充実しているものの、生産性は不十分な状況である。" + br;
     } else if (JyugyoinB > 30) {
-        strwk = strwk + "なっており、比較的従業員は確保できているものの、生産性は不十分な状況である。<br>" + br;
+        strwk = strwk + "なっており、比較的従業員は確保できているものの、生産性は不十分な状況である。" + br;
     } else {
-        strwk = strwk + "なっており、生産性としては業界平均を下回る水準となっている。<br>" + br;
+        strwk = strwk + "なっており、生産性としては業界平均を下回る水準となっている。" + br;
     }
 
 
@@ -400,20 +411,20 @@ function sakubun() {
     // Else
     //     strwk = strwk & "製造原価にフォーカスした改善はもちろんのこと"
     // End If
-    ZairyoGenkarituB = getValueExt(cnZairyoGenkarituB, 0);
-    UriageGenkaRituWK = (RoumuhiB + HankanhiB + (UriageB * ZairyoGenkarituB)) / UriageB;
+    //ZairyoGenkarituB = getValueExt(cnZairyoGenkarituB, 0);
+    UriageGenkaRituWK = (myCnvNum(RoumuhiB) + myCnvNum(HankanhiB) + (myCnvNum(UriageB) * (myCnvNum(ZairyoGenkarituB) / 100))) / myCnvNum(UriageB);
 
-    tmp1 = numFormat(UriageB * ZairyoGenkarituB, 1);
-    tmp2 = numFormat(RoumuhiB + HankanhiB, 0);
-    tmp3 = numFormat(UriageGenkaRituWK * 100, 1);
+    tmp1 = numFormat(myCnvNum(UriageB) * myCnvNum(ZairyoGenkarituB) / 100, 1);
+    tmp2 = numFormat(myCnvNum(RoumuhiB) + myCnvNum(HankanhiB), 0);
+    tmp3 = numFormat(myCnvNum(UriageGenkaRituWK) * 100, 1);
     strwk += "　次に売上原価であるが、材料原価率が" + ZairyoGenkarituB + "で" +
         tmp1 + "万円／年、" +
         "人件費が直接労務費（" + RoumuhiB + "万円／年）と間接労務費（" + HankanhiB + "万円／年）を合わせて" +
         tmp2 + "万円／年となり、" +
-        tmp3 + "％と";
-    console.log("tmp1:" + tmp1);
-    console.log("tmp2:" + tmp2);
-    console.log("tmp3:" + tmp3);
+        "原価率が" + tmp3 + "％と";
+    // console.log("tmp1:" + tmp1);
+    // console.log("tmp2:" + tmp2);
+    // console.log("tmp3:" + tmp3);
 
     if (UriageB_Hitori > 2000) {
         if (UriageGenkaRituWK > 0.65) {
@@ -459,15 +470,15 @@ function sakubun() {
     // strwk = strwk & "を通じてさらなる売上向上につなげると同時に、生産効率課題を解決し製造原価低減による"
     // strwk = strwk & "収益向上を図らなければならない。"
 
-    strwk += "、製造効率化を通じた原価低減の余地を多く残している状態にある。<br>" + br +
-        "　また、近年ではこの原価低減の課題に加えて、商品開発面での課題も顕在化してきている。<br>" + br +
+    strwk += "、製造効率化を通じた原価低減の余地を多く残している状態にある。" + br +
+        "　また、近年ではこの原価低減の課題に加えて、商品開発面での課題も顕在化してきている。" + br +
         "元々、当社では多様化する顧客志向、ＳＮＳ等で素早く市場浸透してしまう流行・トレンドに遅れないよう、" +
         "策として新商品開発や既存商品のカスタマイズ、地元素材を活用したコラボレーション開発を意識した運営を" +
-        "行ってきた。<br>" + br +
+        "行ってきた。" + br +
         "　例えば●●●●を使用した●●●の開発では上記のように開発時間の余力に関する問題に加えて●●を●●加工する際の" +
         "工程において●●●が●●●してしまうといった技術的な壁に当たっており＜ここでサイエンスなど＞、商品化の進捗が思わしくない状況" +
         "である。他にも、●●を使用した●●や、●●の中身を●●に変えた●●なども、機械設備の能率や機能性の" +
-        "不十分さから、構想止まりとなっている状況である。<br>" + br +
+        "不十分さから、構想止まりとなっている状況である。" + br +
         "　よって、今回の設備投資により既存商品の量産化や着想に留まっている商品の具現化など" +
         "を通じてさらなる売上向上につなげると同時に、生産効率課題を解決し製造原価低減による" +
         "収益向上を図らなければならない。";
@@ -482,10 +493,10 @@ function sakubun() {
     // JinkenhiGaku_YakiWK = CCur(YakiAveRoumuB) + CCur(YakiAveHankanB)
     // JinkenhiRitu_NamaWK = JinkenhiGaku_NamaWK / NamaAveTanB
     // JinkenhiRitu_YakiWK = JinkenhiGaku_YakiWK / YakiAveTanB
-    JinkenhiGaku_NamaWK = NamaAveRoumuB + NamaAveHankanB;
-    JinkenhiGaku_YakiWK = YakiAveRoumuB + YakiAveHankanB;
-    JinkenhiRitu_NamaWK = JinkenhiGaku_NamaWK / NamaAveTanB;
-    JinkenhiRitu_YakiWK = JinkenhiGaku_YakiWK / YakiAveTanB;
+    JinkenhiGaku_NamaWK = myCnvNum(NamaAveRoumuB) + myCnvNum(NamaAveHankanB);
+    JinkenhiGaku_YakiWK = myCnvNum(YakiAveRoumuB) + myCnvNum(YakiAveHankanB);
+    JinkenhiRitu_NamaWK = myCnvNum(JinkenhiGaku_NamaWK) / myCnvNum(NamaAveTanB);
+    JinkenhiRitu_YakiWK = myCnvNum(JinkenhiGaku_YakiWK) / myCnvNum(YakiAveTanB);
 
     // strwk = strwk & "■商品の採算性について　〜こだわるが故の不採算と技術的な壁〜　" & vbCrLf
     // strwk = strwk & "以下は、菓子分類別に当社の平均的な商品１個あたりの採算を示している。"
@@ -519,8 +530,9 @@ function sakubun() {
     document.getElementById("e9r").innerText = NamaAveHankanB;
     document.getElementById("f9r").innerText = NamaAveGenkaB;
     document.getElementById("g9r").innerText = Nama1koRiekiB;
-    tmp = numFormat(Nama1koRiekiB / NamaAveTanB * 100, 1);
-    document.getElementById("h9r").innerText = tmp & "%";
+    tmp = numFormat(myCnvNum(Nama1koRiekiB) / myCnvNum(NamaAveTanB) * 100, 1);
+    tmp = numFormat(myCnvNum(tmp), 2);
+    document.getElementById("h9r").innerText = tmp + "%";
 
     document.getElementById("b10r").innerText = YakiAveTanB;
     document.getElementById("c10r").innerText = YakiAveZaiB;
@@ -528,12 +540,14 @@ function sakubun() {
     document.getElementById("e10r").innerText = YakiAveHankanB;
     document.getElementById("f10r").innerText = YakiAveGenkaB;
     document.getElementById("g10r").innerText = Yaki1koRiekiB;
-    tmp = numFormat(Yaki1koRiekiB / YakiAveTanB * 100, 1);
-    document.getElementById("h10r").innerText = tmp & "%";
+    tmp = numFormat(myCnvNum(Yaki1koRiekiB) / myCnvNum(YakiAveTanB) * 100, 1);
+    tmp = numFormat(myCnvNum(tmp), 2);
+    document.getElementById("h10r").innerText = tmp + "%";
 
 
     //'問題判定
-    ZairyoGenkarituB_wk = document.getElementById(cnZairyoGenkarituB).Value
+    //ZairyoGenkarituB_wk = document.getElementById(cnZairyoGenkarituB).Value
+    ZairyoGenkarituB_wk = myCnvNum(getValueExt(cnZairyoGenkarituB, 1), 1) / 100;
 
     // If ZairyoGenkarituB_wk > 0.4 Then
     //     '材料費率が高いケース
@@ -560,6 +574,7 @@ function sakubun() {
     // strwk = strwk & "高めていかなければならない。"
 
     strwk = "";
+    console.log("ZairyoGenkarituB_wk:" + ZairyoGenkarituB_wk);
     if (ZairyoGenkarituB_wk > 0.4) {
         //材料費率が高いケース
         strwk = "　当社は予てより県産素材や自然素材、レア食材の入手ルートを持っているのが強みであるが、そのこだわりから" +
@@ -573,7 +588,7 @@ function sakubun() {
         strwk = "　当社は予てより国内素材や自然素材を活用しつつも、" +
             "「材料費率」を" + ZairyoGenkarituB + "程度に抑えることができる仕入先との関係性の深さが強みである。";
     } else {
-        strwk = strwk & "　当社は予てより国内産素材や自然素材など材料にこだわりつつも、" +
+        strwk += "　当社は予てより国内産素材や自然素材など材料にこだわりつつも、" +
             "「材料費率」が、" + ZairyoGenkarituB + "と年々高くなってきている。";
     }
     if (ZairyoGenkarituB_wk < 0.25) {
@@ -601,13 +616,13 @@ function sakubun() {
     tmp2 = numFormat(JinkenhiRitu_YakiWK * 100, 1);
     if (JinkenhiRitu_NamaWK > JinkenhiRitu_YakiWK) {
         strwk += "一方、「人件費」では生菓子の製造労務費が問題で、菓子一個当たりの直接労務費と間接労務費" +
-            "の合計が" + (NamaAveRoumuB + NamaAveHankanB) + "円となっており、" +
-            "その「人件費率」も" & tmp1 & "%となっている。" + br;
+            "の合計が" + (myCnvNum(NamaAveRoumuB) + myCnvNum(NamaAveHankanB)) + "円となっており、" +
+            "その「人件費率」も" + tmp1 + "%となっている。" + br;
         IssueKbn = "生菓子";
     } else {
         strwk += "一方、「人件費」では焼菓子の製造労務費が問題で、菓子一個当たりの直接労務費と間接労務費" +
-            "の合計が" + (YakiAveRoumuB + YakiAveHankanB) + "円となっており、" +
-            "その人件費率も" & tmp2 & "%となっている。" + br;
+            "の合計が" + (myCnvNum(YakiAveRoumuB) + myCnvNum(YakiAveHankanB)) + "円となっており、" +
+            "その人件費率も" + tmp2 + "%となっている。" + br;
         IssueKbn = "焼菓子";
     }
 
@@ -740,6 +755,7 @@ function sakubun() {
         //一括償却しない
         strwk += "※なお、減価償却については一括償却しないため";
     }
+    strwk += "初年度の減価償却費は" + GenkaSyokyakuhi + "円を計上する予定。" + br;
 
 
     document.getElementById("a29r").innerText = strwk;
@@ -755,34 +771,40 @@ function sakubun() {
     document.getElementById("b48r").innerText = UriageB;
     document.getElementById("c48r").innerText = RoumuhiB;
     document.getElementById("d48r").innerText = HankanhiB;
-    tmp1 = numFormat((RoumuhiB + HankanhiB) / UriageB * 100, 1);
-    document.getElementById("e48r").innerText = tmp1 + "%";
+    tmp1 = numFormat((myCnvNum(RoumuhiB) + myCnvNum(HankanhiB)) / myCnvNum(UriageB) * 100, 1);
+    document.getElementById("e48r").innerText = numFormat(tmp1, 2) + "%";
 
     // '設備導入後
     // wsSkbn.Range("B49").Value = UriageA
     // wsSkbn.Range("C49").Value = RoumuhiA
     // wsSkbn.Range("D49").Value = HankanhiA
     // wsSkbn.Range("E49").Value = Format((CCur(RoumuhiA) + CCur(HankanhiA)) / UriageA * 100, "#,##0.0") & "%"
-    console.log("->" + UriageA);
+    //console.log("->" + UriageA);
     document.getElementById("b49r").innerText = UriageA;
     document.getElementById("c49r").innerText = RoumuhiA;
     document.getElementById("d49r").innerText = HankanhiA;
-    tmp1 = numFormat((RoumuhiA + HankanhiA) / UriageA * 100, 1);
-    document.getElementById("e49r").innerText = tmp1 + "%";
+    tmp1 = numFormat((myCnvNum(RoumuhiA) + myCnvNum(HankanhiA)) / myCnvNum(UriageA) * 100, 1);
+    document.getElementById("e49r").innerText = numFormat(tmp1, 2) + "%";
 
     // '成長率/削減率
     // wsSkbn.Range("B50").Value = Format((UriageA - UriageB) / UriageB * 100, "#,##0.0") & "%" '収益率
     // wsSkbn.Range("C50").Value = Format((RoumuhiB - RoumuhiA) / RoumuhiB * 100, "#,##0.0") & "%"  '収益率
     // wsSkbn.Range("D50").Value = Format((HankanhiB - HankanhiA) / HankanhiB * 100, "#,##0.0") & "%"  '収益率
     // wsSkbn.Range("E50").Value = Format((((CCur(RoumuhiB) + CCur(HankanhiB)) / UriageB) - ((CCur(RoumuhiA) + CCur(HankanhiA)) / UriageA)) / ((CCur(RoumuhiB) + CCur(HankanhiB)) / UriageB) * 100, "#,##0.0") & "%"
-    tmp1 = numFormat((UriageA - UriageB) / UriageB * 100, 1);
+    UA = myCnvNum(UriageA, 1);
+    UB = myCnvNum(UriageB, 1);
+    RA = myCnvNum(RoumuhiA, 1);
+    RB = myCnvNum(RoumuhiB, 1);
+    HA = myCnvNum(HankanhiA, 1);
+    HB = myCnvNum(HankanhiB, 1);
+    tmp1 = numFormat((UA - UB) / UB * 100, 1);
     document.getElementById("b50r").innerText = tmp1 + "%";
-    tmp1 = numFormat((RoumuhiB - RoumuhiA) / RoumuhiB * 100, 1);
+    tmp1 = numFormat((RB - RA) / RB * 100, 1);
     document.getElementById("c50r").innerText = tmp1 + "%";
-    tmp1 = numFormat((HankanhiB - HankanhiA) / HankanhiB * 100, 1);
+    tmp1 = numFormat((HB - HA) / HB * 100, 1);
     document.getElementById("d50r").innerText = tmp1 + "%";
-    e50r = numFormat(((((RoumuhiB) + (HankanhiB)) / UriageB) - (((RoumuhiA) + (HankanhiA)) / UriageA)) / (((RoumuhiB) + (HankanhiB)) / UriageB) * 100, 1);
-    document.getElementById("e50r").innerText = e50r + "%";
+    e50r = numFormat((((RB + HB) / UB) - ((RA + HA) / UA)) / ((RB + HB) / UB) * 100, 1);
+    document.getElementById("e50r").innerText = numFormat(e50r, 2) + "%";
 
 
 
@@ -840,39 +862,32 @@ function sakubun() {
     if (Zouin > 0) {
         strwk += "自然退職とあわせて" + Zouin + "名の純増を計画しているが、";
     }
-    if ((RoumuhiB - RoumuhiA) >= 0) {
+    if ((myCnvNum(RoumuhiB) - myCnvNum(RoumuhiA)) >= 0) {
         //直接労務費が削減される場合
-        if ((HankanhiB - HankanhiA) >= 0) {
+        if ((myCnvNum(HankanhiB) - myCnvNum(HankanhiA)) >= 0) {
             //間接労務費も削減される場合
-            //TODO Mid(GenkaTeigen, 2, Len(GenkaTeigen) - 1)
-            tmp1 = 0;
             tmp2 = numFormat(e50r * 100, 1);
-            strwk += "材料費含めた製造原価全体として" + tmp1 + "削減見込みであることに加え、" +
+            strwk += "材料費含めた製造原価全体として" + GenkaTeigen + "削減見込みであることに加え、" +
                 "下表にあるように直接労務費、間接労務費ともに削減がなされ労務費全体としても労務費率が" + tmp2 + "%削減の見込みであるため";
 
         } else {
             //間接労務費は削減されない場合
-            //TODO Mid(GenkaTeigen, 2, Len(GenkaTeigen) - 1)
-            tmp1 = 0;
             tmp2 = numFormat(e50r * 100, 1);
-            strwk += "材料費含めた製造原価全体として" + tmp1 + "削減見込みであることに加え、" +
+            strwk += "材料費含めた製造原価全体として" + GenkaTeigen + "削減見込みであることに加え、" +
                 "下表にあるように直接労務費を中心に削減がなされ労務費全体として労務費率が" + tmp2 + "%削減の見込みであるため";
         }
     } else {
         //直接労務費が削減されない場合（従業員の増員が多い場合）
-        if ((HankanhiB - HankanhiA) >= 0) {
+        if ((myCnvNum(HankanhiB) - myCnvNum(HankanhiA)) >= 0) {
             //間接労務費は削減される場合
-            //TODO Mid(GenkaTeigen, 2, Len(GenkaTeigen) - 1)
-            tmp1 = 0;
             tmp2 = numFormat(e50r * 100, 1);
-            strwk += "材料費含めた製造原価全体として" + tmp1 + "削減見込みであることに加え、" +
+            strwk += "材料費含めた製造原価全体として" + GenkaTeigen + "削減見込みであることに加え、" +
                 "下表にあるように間接労務費を中心に削減がなされ労務費全体として労務費率が" + tmp2 + "%削減の見込みであるため";
 
         } else {
             //間接労務費は削減されない場合
-            tmp1 = 0;
             tmp2 = numFormat(e50r * 100, 1);
-            strwk += "材料費含めた製造原価全体として" + tmp1 + "削減見込みであることに加え、" +
+            strwk += "材料費含めた製造原価全体として" + GenkaTeigen + "削減見込みであることに加え、" +
                 "下表にあるように労務費全体として労務費率が" + tmp2 + "%削減の見込みであるため";
         }
     }
@@ -900,24 +915,684 @@ function sakubun() {
     // wsSkbn.Range("F56").Value = NamaAveGenkaA '総原価
     // wsSkbn.Range("G56").Value = Nama1koRiekiA '収益/個
     // wsSkbn.Range("H56").Value = Format(Nama1koRiekiA / NamaAveTanA * 100, "#,##0.0") & "%" '収益率
-    document.getElementById("d55r").innerText = NamaAveTanB;
-    document.getElementById("d55r").innerText = NamaAveTanB;
-    document.getElementById("d55r").innerText = NamaAveTanB;
-    document.getElementById("d55r").innerText = NamaAveTanB;
-    document.getElementById("d55r").innerText = NamaAveTanB;
-    document.getElementById("d55r").innerText = NamaAveTanB;
-    document.getElementById("d55r").innerText = NamaAveTanB;
+    document.getElementById("b55r").innerText = NamaAveTanB;
+    document.getElementById("c55r").innerText = NamaAveZaiB;
+    document.getElementById("d55r").innerText = NamaAveRoumuB;
+    document.getElementById("e55r").innerText = NamaAveHankanB;
+    document.getElementById("f55r").innerText = NamaAveGenkaB;
+    document.getElementById("g55r").innerText = Nama1koRiekiB;
+    tmp = numFormat(Nama1koRiekiB / NamaAveTanB * 100, 1);
+    document.getElementById("h55r").innerText = numFormat(tmp, 2);
+
+    document.getElementById("b56r").innerText = NamaAveTanA;
+    document.getElementById("c56r").innerText = NamaAveZaiA;
+    document.getElementById("d56r").innerText = NamaAveRoumuA;
+    document.getElementById("e56r").innerText = NamaAveHankanA;
+    document.getElementById("f56r").innerText = NamaAveGenkaA;
+    document.getElementById("g56r").innerText = Nama1koRiekiA;
+    tmp = numFormat(Nama1koRiekiA / NamaAveTanA * 100, 1);
+    document.getElementById("h56r").innerText = numFormat(tmp, 2);
+
+    // '焼菓子（Before）
+    // wsSkbn.Range("A58").Value = "【焼菓子】": wsSkbn.Range("A58").Font.Bold = True: wsSkbn.Range("A58").Font.Size = "14"
+    // wsSkbn.Range("B59").Value = YakiAveTanB '平均単価
+    // wsSkbn.Range("C59").Value = YakiAveZaiB '材料費
+    // wsSkbn.Range("D59").Value = YakiAveRoumuB '直接労務費
+    // wsSkbn.Range("E59").Value = YakiAveHankanB '間接労務費
+    // wsSkbn.Range("F59").Value = YakiAveGenkaB '総原価
+    // wsSkbn.Range("G59").Value = Yaki1koRiekiB '収益/個
+    // wsSkbn.Range("H59").Value = Format(Yaki1koRiekiB / YakiAveTanB * 100, "#,##0.0") & "%" '収益率
+    // '焼菓子（After）
+    // wsSkbn.Range("B60").Value = YakiAveTanA '平均単価
+    // wsSkbn.Range("C60").Value = YakiAveZaiA '材料費
+    // wsSkbn.Range("D60").Value = YakiAveRoumuA '直接労務費
+    // wsSkbn.Range("E60").Value = YakiAveHankanA '間接労務費
+    // wsSkbn.Range("F60").Value = YakiAveGenkaA '総原価
+    // wsSkbn.Range("G60").Value = Yaki1koRiekiA '収益/個
+    // wsSkbn.Range("H60").Value = Format(Yaki1koRiekiA / YakiAveTanA * 100, "#,##0.0") & "%" '収益率
+    document.getElementById("b59r").innerText = YakiAveTanB;
+    document.getElementById("c59r").innerText = YakiAveZaiB;
+    document.getElementById("d59r").innerText = YakiAveRoumuB;
+    document.getElementById("e59r").innerText = YakiAveHankanB;
+    document.getElementById("f59r").innerText = YakiAveGenkaB;
+    document.getElementById("g59r").innerText = Yaki1koRiekiB;
+    tmp = numFormat(Yaki1koRiekiB / YakiAveTanB * 100, 1);
+    document.getElementById("h59r").innerText = numFormat(tmp, 2);
+
+    document.getElementById("b60r").innerText = YakiAveTanA;
+    document.getElementById("c60r").innerText = YakiAveZaiA;
+    document.getElementById("d60r").innerText = YakiAveRoumuA;
+    document.getElementById("e60r").innerText = YakiAveHankanA;
+    document.getElementById("f60r").innerText = YakiAveGenkaA;
+    document.getElementById("g60r").innerText = Yaki1koRiekiA;
+    tmp = numFormat(Yaki1koRiekiA / YakiAveTanA * 100, 1);
+    document.getElementById("h60r").innerText = numFormat(tmp, 2);
+
+
+    // JinkenhiGaku_NamaWK = CCur(NamaAveRoumuA) + CCur(NamaAveHankanA)
+    // JinkenhiGaku_YakiWK = CCur(YakiAveRoumuA) + CCur(YakiAveHankanA)
+    // JinkenhiRitu_NamaWK = JinkenhiGaku_NamaWK / NamaAveTanA
+    // JinkenhiRitu_YakiWK = JinkenhiGaku_YakiWK / YakiAveTanA
+    JinkenhiGaku_NamaWK = myCnvNum(NamaAveRoumuA) + myCnvNum(NamaAveHankanA);
+    JinkenhiGaku_YakiWK = myCnvNum(YakiAveRoumuA) + myCnvNum(YakiAveHankanA);
+    JinkenhiRitu_NamaWK = myCnvNum(JinkenhiGaku_NamaWK) / myCnvNum(NamaAveTanA);
+    JinkenhiRitu_YakiWK = myCnvNum(JinkenhiGaku_YakiWK) / myCnvNum(YakiAveTanA);
+
+    // strwk = "■効果②　労務費の低下と収益率の向上" & vbCrLf
+    // strwk = strwk & "　さらに、設備導入により●●工程や●●工程における菓子製造の労務費率も大幅に低減し、"
+    strwk = "■効果②　労務費の低下と収益率の向上" + br +
+        "　さらに、設備導入により●●工程や●●工程における菓子製造の労務費率も大幅に低減し、";
+
+    //     If IssueKbn = "生菓子" Then
+    //     strwk = strwk & "特に前述で問題となっていた生菓子単価に占める人件費率(直接労務費+間接労務費)が" & Format(JinkenhiRitu_NamaWK * 100, "#,##0.0") & "%と"
+    //     strwk = strwk & "大幅に削減でき、収益率も" & Format(Nama1koRiekiA / NamaAveTanA * 100, "#,##0.0") - Format(Nama1koRiekiB / NamaAveTanB * 100, "#,##0.0") & "ポイント伸長することが期待できる。"
+    //     '赤太文字
+    //     wsSkbn.Range("D56").Font.Color = vbRed
+    //     wsSkbn.Range("E56").Font.Color = vbRed
+    //     wsSkbn.Range("H56").Font.Color = vbRed
+    //     wsSkbn.Range("D56").Font.Bold = True
+    //     wsSkbn.Range("E56").Font.Bold = True
+    //     wsSkbn.Range("H56").Font.Bold = True
+
+    //     strwk = strwk & vbCrLf
+    //     strwk = strwk & "　なお、焼菓子においても単価に占める人件費率(直接労務費+間接労務費)が" & Format(JinkenhiRitu_YakiWK * 100, "#,##0.0") & "%と削減できるとともに、"
+    //     strwk = strwk & "収益率も" & Format(Yaki1koRiekiA / YakiAveTanA * 100, "#,##0.0") - Format(Yaki1koRiekiB / YakiAveTanB * 100, "#,##0.0") & "ポイント伸長することが期待できる。"
+    // Else
+    //     strwk = strwk & "特に前述で問題となっていた焼菓子単価に占める人件費率(直接労務費+間接労務費)が" & Format(JinkenhiRitu_YakiWK * 100, "#,##0.0") & "%と"
+    //     strwk = strwk & "大幅に削減でき、収益率も" & Format(Yaki1koRiekiA / YakiAveTanA * 100, "#,##0.0") - Format(Yaki1koRiekiB / YakiAveTanB * 100, "#,##0.0") & "ポイント伸長することが期待できる。"
+    //     '赤太文字
+    //     wsSkbn.Range("D60").Font.Color = vbRed
+    //     wsSkbn.Range("E60").Font.Color = vbRed
+    //     wsSkbn.Range("H60").Font.Color = vbRed
+    //     wsSkbn.Range("D60").Font.Bold = True
+    //     wsSkbn.Range("E60").Font.Bold = True
+    //     wsSkbn.Range("H60").Font.Bold = True
+
+    //     strwk = strwk & vbCrLf
+    //     strwk = strwk & "　なお、生菓子においても単価に占める人件費率(直接労務費+間接労務費)が" & Format(JinkenhiRitu_NamaWK * 100, "#,##0.0") & "%と削減できるとともに、"
+    //     strwk = strwk & "収益率も" & Format(Nama1koRiekiA / NamaAveTanA * 100, "#,##0.0") - Format(Nama1koRiekiB / NamaAveTanB * 100, "#,##0.0") & "ポイント伸長することが期待できる。"
+    // End If
+    // console.log("JinkenhiRitu_NamaWK-" + JinkenhiRitu_NamaWK);
+    // console.log("Nama1koRiekiA-" + Nama1koRiekiA);
+    // console.log("NamaAveTanA-" + NamaAveTanA);
+    // console.log("Nama1koRiekiB-" + Nama1koRiekiB);
+    // console.log("NamaAveTanB-" + NamaAveTanB);
+    // console.log("JinkenhiRitu_YakiWK-" + JinkenhiRitu_YakiWK);
+    // console.log("Yaki1koRiekiA-" + Yaki1koRiekiA);
+    // console.log("YakiAveTanA-" + YakiAveTanA);
+    // console.log("Yaki1koRiekiB-" + Yaki1koRiekiB);
+    // console.log("YakiAveTanB-" + YakiAveTanB);
+    if (IssueKbn == "生菓子") {
+        tmp1 = numFormat(myCnvNum(JinkenhiRitu_NamaWK) * 100, 1);
+        tmp2 = numFormat((myCnvNum(Nama1koRiekiA) / myCnvNum(NamaAveTanA) * 100) - (myCnvNum(Nama1koRiekiB) / myCnvNum(NamaAveTanB) * 100), 1);
+        tmp3 = numFormat(myCnvNum(JinkenhiRitu_YakiWK) * 100, 1);
+        tmp4 = numFormat((myCnvNum(Yaki1koRiekiA) / myCnvNum(YakiAveTanA) * 100) - (myCnvNum(Yaki1koRiekiB) / myCnvNum(YakiAveTanB) * 100), 1);
+        strwk += "特に前述で問題となっていた生菓子単価に占める人件費率(直接労務費+間接労務費)が" + tmp1 + "%と" +
+            "大幅に削減でき、収益率も" + tmp2 + "ポイント伸長することが期待できる。" + br +
+            "　なお、焼菓子においても単価に占める人件費率(直接労務費+間接労務費)が" + tmp3 + "%と削減できるとともに、" +
+            "収益率も" + tmp4 + "ポイント伸長することが期待できる。";
+    } else {
+        tmp1 = numFormat(myCnvNum(JinkenhiRitu_YakiWK) * 100, 1);
+        tmp2 = numFormat((myCnvNum(Yaki1koRiekiA) / myCnvNum(YakiAveTanA) * 100) - (myCnvNum(Yaki1koRiekiB) / myCnvNum(YakiAveTanB) * 100), 1);
+        tmp3 = numFormat(myCnvNum(JinkenhiRitu_NamaWK) * 100, 1);
+        tmp4 = numFormat((myCnvNum(Nama1koRiekiA) / myCnvNum(NamaAveTanA) * 100) - (myCnvNum(Nama1koRiekiB) / myCnvNum(NamaAveTanB) * 100), 1);
+        strwk += "特に前述で問題となっていた焼菓子単価に占める人件費率(直接労務費+間接労務費)が" + tmp1 + "%と" +
+            "大幅に削減でき、収益率も" + tmp2 + "ポイント伸長することが期待できる。" + br +
+            "　なお、焼菓子においても単価に占める人件費率(直接労務費+間接労務費)が" + tmp3 + "%と削減できるとともに、" +
+            "収益率も" + tmp4 + "ポイント伸長することが期待できる。";
+
+    }
+
+
+    // strwk = strwk & vbCrLf
+    // strwk = strwk & "　以下は、菓子区分別にみた製造原価の比較表、および、" & IssueKbn & "における労務費と収益率の推移グラフである。"
+    // strwk = strwk & vbCrLf
+    strwk += br + "　以下は、菓子区分別にみた製造原価の比較表、および、" + IssueKbn + "における労務費と収益率の推移グラフである。" + br;
+
+    document.getElementById("a51r").innerText = strwk;
+
+    // strwk = "■効果③　生産性指標の向上" & vbCrLf
+    // strwk = strwk & "　本補助事業による設備投資、営業拡大により下記、生産性向上を見込むことができる。"
+    strwk = "■効果③　生産性指標の向上" + br +
+        "　本補助事業による設備投資、営業拡大により下記、生産性向上を見込むことができる。";
+
+    document.getElementById("a62r").innerText = strwk;
+
+    // If Zouin > 0 Then
+    //     strwk = "今後５年間で、当社は働き方改革を推進する中で営業日を現状の" & EigyobiB & "日から" & EigyobiA & "日にする。また、"
+    //     strwk = strwk & Zouin & "名の増員（純増）を予定しているが、"
+    // ElseIf Zouin = 0 Then
+    //     strwk = strwk & "今後５年間では自然退職と新規採用の相殺により従業員の純増はないものの、"
+    // End If
+    if (Zouin > 0) {
+        strwk = "今後５年間で、当社は働き方改革を推進する中で営業日を現状の" + EigyobiB + "日から" + EigyobiA + "日にする。また、" +
+            Zouin + "名の増員（純増）を予定しているが、";
+
+    } else if (Zouin = 0) {
+        strwk = "今後５年間では自然退職と新規採用の相殺により従業員の純増はないものの、";
+    }
+
+    document.getElementById("b66r").innerText = d6;
+    document.getElementById("c66r").innerText = d6 + d31;
+    document.getElementById("d66r").innerText = numFormat((((d6 + d31) / d6) - 1) * 100, 1) + "%";
+
+    //     wkRow = 67
+    //     wkRow2 = 148 '155まで
+    //     '付加価値額～労働装備率まで、向上率が５年間で"↑"のもののみをコピーする
+    //     Do While wkRow2 <= 155
+    //         If wsKeisan.Range("F" & CStr(wkRow2)).Value = "↑" Then
+    //             wsKeisan.Range("B" & CStr(wkRow2) & ":E" & CStr(wkRow2)).Copy wsSkbn.Range("A" & CStr(wkRow))
+    //             wsSkbn.Range("A" & CStr(wkRow) & ":D" & CStr(wkRow)).Value = wsKeisan.Range("B" & CStr(wkRow2) & ":E" & CStr(wkRow2)).Value
+    //             wsSkbn.Range("A" & CStr(wkRow)).ShrinkToFit = True
+
+    //             Select Case wkRow2
+    //             Case 148
+    //                 '付加価値額
+    //                 strwk = strwk & "従業員のコストや設備投資分の減価償却費用を上回る営業利益の確保により「付加価値額」や「一人当たり付加価値額（労働生産性）」や「売上高付加価値率」の指標が向上する。" & vbCrLf
+    //             Case 149
+    //                 '一人当たり売上高
+    //                 strwk = strwk & "一人当たり指標については、新商品開発の販売や既存チャンスロスの解消による売上増大効果により「一人当たり売上高」が向上する。" & vbCrLf
+    //             Case 150
+    //                 '一人当たり限界利益
+    //                 strwk = strwk & "また、生産効率化による製造原価低減により変動費を抑制できるため、「一人当たり限界利益」が上昇する。" & vbCrLf
+    //             Case 151
+    //                 '一人当たり貢献利益
+    //                 strwk = strwk & "さらに、設備投資による固定上昇分を大幅な受注増で吸収できるため相対的に固定費率を押し下げることにより、貢献利益が確保でき「一人当たり貢献利益」の指標が上昇する。" & vbCrLf
+    //             Case 154
+    //                 '有形固定資産回転率
+    //                 strwk = strwk & "なお、有形固定資産額が上昇するものの、新規受注増や逸失売上の回収が進むため資本効率が高まり、「有形固定資産回転率」が上昇する。" & vbCrLf
+    //             Case 155
+    //                 '労働装備率
+    //                 strwk = strwk & "また、設備投資や従業員増で生産面での合理性がさらに高まり、「労働装備率」についても上昇する。" & vbCrLf
+    //             End Select
+
+    //             wkRow = wkRow + 1
+    //         End If
+    //         wkRow2 = wkRow2 + 1
+    //     Loop
+    if (e148c > 0) {
+        document.getElementById("b67r").innerText = numFormat(c148c, 0);
+        document.getElementById("c67r").innerText = numFormat(d148c, 0);
+        document.getElementById("d67r").innerText = numFormat(myCnvNum(e148c) * 100, 1) + "%";
+        strwk += "従業員のコストや設備投資分の減価償却費用を上回る営業利益の確保により「付加価値額」や「一人当たり付加価値額（労働生産性）」や「売上高付加価値率」の指標が向上する。" + br;
+    } else {
+        document.getElementById("r67r").style.display = 'none';
+    }
+
+    if (e149c > 0) {
+        document.getElementById("b68r").innerText = numFormat(c149c, 0);
+        document.getElementById("c68r").innerText = numFormat(d149c, 0);
+        document.getElementById("d68r").innerText = numFormat(myCnvNum(e149c) * 100, 1) + "%";
+        strwk += "一人当たり指標については、新商品開発の販売や既存チャンスロスの解消による売上増大効果により「一人当たり売上高」が向上する。" + br;
+    } else {
+        document.getElementById("r68r").style.display = 'none';
+    }
+
+    if (e150c > 0) {
+        document.getElementById("b69r").innerText = numFormat(c150c, 0);
+        document.getElementById("c69r").innerText = numFormat(d150c, 0);
+        document.getElementById("d69r").innerText = numFormat(myCnvNum(e150c) * 100, 1) + "%";
+        strwk += "また、生産効率化による製造原価低減により変動費を抑制できるため、「一人当たり限界利益」が上昇する。" + br;
+    } else {
+        document.getElementById("r69r").style.display = 'none';
+    }
+
+    if (e151c > 0) {
+        document.getElementById("b70r").innerText = numFormat(c151c, 0);
+        document.getElementById("c70r").innerText = numFormat(d151c, 0);
+        document.getElementById("d70r").innerText = numFormat(myCnvNum(e151c) * 100, 1) + "%";
+        strwk += "さらに、設備投資による固定上昇分を大幅な受注増で吸収できるため相対的に固定費率を押し下げることにより、貢献利益が確保でき「一人当たり貢献利益」の指標が上昇する。" + br;
+    } else {
+        document.getElementById("r70r").style.display = 'none';
+    }
+
+    if (e152c > 0) {
+        document.getElementById("b71r").innerText = numFormat(c152c, 0);
+        document.getElementById("c71r").innerText = numFormat(d152c, 0);
+        document.getElementById("d71r").innerText = numFormat(myCnvNum(e152c) * 100, 1) + "%";
+    } else {
+        document.getElementById("r71r").style.display = 'none';
+    }
+
+    if (e153c > 0) {
+        document.getElementById("b72r").innerText = numFormat(myCnvNum(c153c) * 100, 0);
+        document.getElementById("c72r").innerText = numFormat(myCnvNum(d153c) * 100, 0);
+        document.getElementById("d72r").innerText = numFormat(myCnvNum(e153c) * 100, 1) + "%";
+    } else {
+        document.getElementById("r72r").style.display = 'none';
+    }
+
+    if (e154c > 0) {
+        document.getElementById("b73r").innerText = numFormat(c154c, 2);
+        document.getElementById("c73r").innerText = numFormat(d154c, 2);
+        document.getElementById("d73r").innerText = numFormat(myCnvNum(e154c) * 100, 1) + "%";
+        strwk += "なお、有形固定資産額が上昇するものの、新規受注増や逸失売上の回収が進むため資本効率が高まり、「有形固定資産回転率」が上昇する。" + br;
+    } else {
+        document.getElementById("r73r").style.display = 'none';
+    }
+
+    if (e155c > 0) {
+        document.getElementById("b74r").innerText = numFormat(c155c, 0);
+        document.getElementById("c74r").innerText = numFormat(d155c, 0);
+        document.getElementById("d74r").innerText = numFormat(myCnvNum(e155c) * 100, 1) + "%";
+        strwk += "また、設備投資や従業員増で生産面での合理性がさらに高まり、「労働装備率」についても上昇する。" + br;
+    } else {
+        document.getElementById("r74r").style.display = 'none';
+    }
+
+    document.getElementById("a75r").innerText = strwk;
+
+
+    //'【損益分岐点】===============================================================
+    // strwk = "■効果④　損益分岐点比率の低下" & vbCrLf
+    // strwk = strwk & "　前述のように、変動費率(主に製造原価)の低下に伴う粗利の上昇と、"
+    // strwk = strwk & "固定費の相対的低下を主要因として、損益分岐点売上高が低下し、"
+    // strwk = strwk & "損益分岐点比率も" & SBEP_Before & "から" & SBEP_After & "と大幅に低下することとなる。" & vbCrLf
+    strwk = "■効果④　損益分岐点比率の低下" + br +
+        "　前述のように、変動費率(主に製造原価)の低下に伴う粗利の上昇と、" +
+        "固定費の相対的低下を主要因として、損益分岐点売上高が低下し、" +
+        "損益分岐点比率も" + SBEP_Before + "から" + SBEP_After + "と大幅に低下することとなる。" + br;
+
+    document.getElementById("a87r").innerText = strwk;
+
+
+    //'【投資の妥当性】===============================================================
+    // wsKeisan.Range("B183:H186").Copy wsSkbn.Range("A91")
+    // wsSkbn.Range("A91:G94").Value = wsKeisan.Range("B183:H186").Value
+    document.getElementById("b92r").innerText = numFormat(c184c, 0);
+    document.getElementById("c92r").innerText = numFormat(d184c, 0);
+    document.getElementById("d92r").innerText = numFormat(e184c, 0);
+    document.getElementById("e92r").innerText = numFormat(f184c, 0);
+    document.getElementById("f92r").innerText = numFormat(g184c, 0);
+    document.getElementById("g92r").innerText = numFormat(h184c, 0);
+
+    document.getElementById("b93r").innerText = numFormat(c185c, 0);
+    document.getElementById("c93r").innerText = numFormat(d185c, 0);
+    document.getElementById("d93r").innerText = numFormat(e185c, 0);
+    document.getElementById("e93r").innerText = numFormat(f185c, 0);
+    document.getElementById("f93r").innerText = numFormat(g185c, 0);
+    document.getElementById("g93r").innerText = numFormat(h185c, 0);
+
+    document.getElementById("b94r").innerText = numFormat(myCnvNum(c186c) * 100, 1) + "%";
+    document.getElementById("c94r").innerText = numFormat(myCnvNum(d186c) * 100, 1) + "%";
+    document.getElementById("d94r").innerText = numFormat(myCnvNum(e186c) * 100, 1) + "%";
+    document.getElementById("e94r").innerText = numFormat(myCnvNum(f186c) * 100, 1) + "%";
+    document.getElementById("f94r").innerText = numFormat(myCnvNum(g186c) * 100, 1) + "%";
+    document.getElementById("g94r").innerText = numFormat(myCnvNum(h186c) * 100, 1) + "%";
+
+
+    // strwk = "■投資判断の妥当性について" & vbCrLf
+    // strwk = strwk & KaisyuComment4
+    strwk = "■投資判断の妥当性について" + br + b104;
+
+    document.getElementById("a96r").innerText = strwk;
+
+
+    // wsTmp.Range("B92:H102").Copy wsSkbn.Range("A103")
+    // wsSkbn.Range("A103:G113").Value = wsTmp.Range("B92:H102").Value
+    document.getElementById("c104r").innerText = numFormat(d93, 0);
+    document.getElementById("d104r").innerText = numFormat(e93, 0);
+    document.getElementById("e104r").innerText = numFormat(f93, 0);
+    document.getElementById("f104r").innerText = numFormat(g93, 0);
+    document.getElementById("g104r").innerText = numFormat(h93, 0);
+
+    document.getElementById("c105r").innerText = numFormat(d94, 0);
+    document.getElementById("d105r").innerText = numFormat(e94, 0);
+    document.getElementById("e105r").innerText = numFormat(f94, 0);
+    document.getElementById("f105r").innerText = numFormat(g94, 0);
+    document.getElementById("g105r").innerText = numFormat(h94, 0);
+
+    document.getElementById("c106r").innerText = numFormat(d95, 0);
+    document.getElementById("d106r").innerText = numFormat(e95, 0);
+    document.getElementById("e106r").innerText = numFormat(f95, 0);
+    document.getElementById("f106r").innerText = numFormat(g95, 0);
+    document.getElementById("g106r").innerText = numFormat(h95, 0);
+
+    document.getElementById("c107r").innerText = numFormat(d96, 0);
+    document.getElementById("d107r").innerText = numFormat(e96, 0);
+    document.getElementById("e107r").innerText = numFormat(f96, 0);
+    document.getElementById("f107r").innerText = numFormat(g96, 0);
+    document.getElementById("g107r").innerText = numFormat(h96, 0);
+
+    document.getElementById("c108r").innerText = numFormat(d97, 0);
+    document.getElementById("d108r").innerText = numFormat(e97, 0);
+    document.getElementById("e108r").innerText = numFormat(f97, 0);
+    document.getElementById("f108r").innerText = numFormat(g97, 0);
+    document.getElementById("g108r").innerText = numFormat(h97, 0);
+
+    document.getElementById("c109r").innerText = numFormat(d98, 3);
+    document.getElementById("d109r").innerText = numFormat(e98, 3);
+    document.getElementById("e109r").innerText = numFormat(f98, 3);
+    document.getElementById("f109r").innerText = numFormat(g98, 3);
+    document.getElementById("g109r").innerText = numFormat(h98, 3);
+
+    document.getElementById("b110r").innerText = numFormat(c99, 0);
+    document.getElementById("c110r").innerText = numFormat(d99, 0);
+    document.getElementById("d110r").innerText = numFormat(e99, 0);
+    document.getElementById("e110r").innerText = numFormat(f99, 0);
+    document.getElementById("f110r").innerText = numFormat(g99, 0);
+    document.getElementById("g110r").innerText = numFormat(h99, 0);
+
+    document.getElementById("b111r").innerText = numFormat(c100, 0);
+    document.getElementById("c111r").innerText = numFormat(d100, 0);
+    document.getElementById("d111r").innerText = numFormat(e100, 0);
+    document.getElementById("e111r").innerText = numFormat(f100, 0);
+    document.getElementById("f111r").innerText = numFormat(g100, 0);
+    document.getElementById("g111r").innerText = numFormat(h100, 0);
+
+    document.getElementById("b112r").innerText = numFormat(c101, 0);
+    document.getElementById("c112r").innerText = numFormat(d101, 0);
+    document.getElementById("d112r").innerText = numFormat(e101, 0);
+    document.getElementById("e112r").innerText = numFormat(f101, 0);
+    document.getElementById("f112r").innerText = numFormat(g101, 0);
+    document.getElementById("g112r").innerText = numFormat(h101, 0);
+
+    document.getElementById("b113r").innerText = numFormat(c102, 0);
 
 
 
 
+    (function () {
+        'use strict';
+
+        // パッケージのロード
+        google.charts.load('current', { packages: ['corechart'] });
+        // コールバックの登録
+        google.charts.setOnLoadCallback(drawChart);
+
+        // コールバック関数の実装
+        function drawChart() {
+
+            NamaUriageB = myCnvNum(NamaUriageB);
+            YakiUriageB = myCnvNum(YakiUriageB);
+            var data = google.visualization.arrayToDataTable([
+                ['Task', 'Hours per Day'],
+                ['生菓子売上', NamaUriageB],
+                ['焼菓子売上', YakiUriageB]
+            ]);
+
+            var options = {
+                title: '菓子分類比率',
+                width: 500,
+                height: 300
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('graph1r'));
+
+            chart.draw(data, options);
+        }
+
+
+    })();
 
 
 
+    (function () {
+        'use strict';
 
+        // パッケージのロード
+        google.charts.load('current', { packages: ['corechart'] });
+        // コールバックの登録
+        google.charts.setOnLoadCallback(drawChart);
+
+        // コールバック関数の実装
+        function drawChart() {
+
+            //     If JinkenhiRitu_NamaWK > JinkenhiRitu_YakiWK Then
+            //     '生菓子
+            //     wsGraph.Range("A11").Value = "生菓子"
+            //     wsGraph.Range("B11").Value = NamaAveTanB '平均単価
+            //     wsGraph.Range("C11").Value = NamaAveZaiB '材料費
+            //     wsGraph.Range("D11").Value = NamaAveRoumuB '直接労務費
+            //     wsGraph.Range("E11").Value = NamaAveHankanB '間接労務費
+            //     wsGraph.Range("F11").Value = Nama1koRiekiB '収益/個
+            // Else
+            //     '焼菓子
+            //     wsGraph.Range("A11").Value = "焼菓子"
+            //     wsGraph.Range("B11").Value = YakiAveTanB '平均単価
+            //     wsGraph.Range("C11").Value = YakiAveZaiB '材料費
+            //     wsGraph.Range("D11").Value = YakiAveRoumuB '直接労務費
+            //     wsGraph.Range("E11").Value = YakiAveHankanB '間接労務費
+            //     wsGraph.Range("F11").Value = Yaki1koRiekiB '収益/個
+            // End If
+            if (myCnvNum(JinkenhiRitu_NamaWK) > myCnvNum(JinkenhiRitu_YakiWK)) {
+                tmp0 = "生菓子";
+                tmp1 = myCnvNum(NamaAveTanB);
+                tmp2 = myCnvNum(NamaAveZaiB);
+                tmp3 = myCnvNum(NamaAveRoumuB);
+                tmp4 = myCnvNum(NamaAveHankanB);
+                tmp5 = myCnvNum(Nama1koRiekiB);
+            } else {
+                tmp0 = "焼菓子";
+                tmp1 = myCnvNum(YakiAveTanB);
+                tmp2 = myCnvNum(YakiAveZaiB);
+                tmp3 = myCnvNum(YakiAveRoumuB);
+                tmp4 = myCnvNum(YakiAveHankanB);
+                tmp5 = myCnvNum(Yaki1koRiekiB);
+            }
+
+            var data = google.visualization.arrayToDataTable([
+                ['Task', 'Hours per Day'],
+                ['材料費', tmp2],
+                ['直接労務費', tmp3],
+                ['間接労務費', tmp4],
+                ['収益/個', tmp5]
+            ]);
+
+            var options = {
+                title: '採算性（' + tmp0 + "）",
+                width: 500,
+                height: 300
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('graph2r'));
+
+            chart.draw(data, options);
+        }
+
+
+    })();
+
+
+    (function () {
+        'use strict';
+
+        google.charts.load('current', { packages: ['corechart'] });
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            UB = myCnvNum(UriageB);
+            RB = myCnvNum(RoumuhiB);
+            HB = myCnvNum(HankanhiB);
+            UA = myCnvNum(UriageA);
+            RA = myCnvNum(RoumuhiA);
+            HA = myCnvNum(HankanhiA);
+            var RRB = myTrunc((RB + HB) / UB * 100, 2);
+            var RRA = myTrunc((RA + HA) / UA * 100, 2);
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Year');
+            data.addColumn('number', '売上額');
+            data.addColumn({ type: 'number', role: 'annotation' });
+            data.addColumn('number', '労務費率');
+            data.addColumn({ type: 'number', role: 'annotation' });
+
+            data.addRows([
+                ['設備導入前', UB, UB, RRB, RRB],
+                ['設備導入後', UA, UA, RRA, RRA]
+            ]);
+
+            var options = {
+                title: '売上額と労務費率の推移',
+                series: [
+                    { targetAxisIndex: 0 }, // 第1系列は左のY軸を使用
+                    { targetAxisIndex: 1 }, // 第2系列は右のY時を使用
+                ],
+                legend: { position: 'bottom' },
+                width: 400,
+                height: 400,
+                annotation: {
+                    1: {
+                        style: 'none'
+                    }
+                }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('graph3r'));
+            chart.draw(data, options);
+        }
+
+
+    })();
+
+
+    (function () {
+        'use strict';
+
+        google.charts.load('current', { packages: ['corechart'] });
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var tmpB1 = myCnvNum(NamaAveRoumuB);
+            var tmpB2 = myCnvNum(NamaAveHankanB);
+            var tmpB3 = myTrunc(myCnvNum(Nama1koRiekiB) / myCnvNum(NamaAveTanB) * 100, 1);
+            var tmpA1 = myCnvNum(NamaAveRoumuA);
+            var tmpA2 = myCnvNum(NamaAveHankanA);
+            var tmpA3 = myTrunc(myCnvNum(Nama1koRiekiA) / myCnvNum(NamaAveTanA) * 100, 1);
+            if (IssueKbn != "生菓子") {
+                tmpB1 = myCnvNum(YakiAveRoumuB);
+                tmpB2 = myCnvNum(YakiAveHankanB);
+                tmpB3 = myTrunc(myCnvNum(Yaki1koRiekiB) / myCnvNum(YakiAveTanB) * 100, 1);
+                tmpA1 = myCnvNum(YakiAveRoumuA);
+                tmpA2 = myCnvNum(vAveHankanA);
+                tmpA3 = myTrunc(myCnvNum(Yaki1koRiekiA) / myCnvNum(YakiAveTanA) * 100, 1);
+            }
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Year');
+            data.addColumn('number', '直接労務費');
+            data.addColumn({ type: 'number', role: 'annotation' });
+            data.addColumn('number', '間接労務費');
+            data.addColumn({ type: 'number', role: 'annotation' });
+            data.addColumn('number', '収益率');
+            data.addColumn({ type: 'number', role: 'annotation' });
+
+            data.addRows([
+                ['設備導入前', tmpB1, tmpB1, tmpB2, tmpB2, tmpB3, tmpB3],
+                ['設備導入後', tmpA1, tmpA1, tmpA2, tmpA2, tmpA3, tmpA3]
+            ]);
+
+            var options = {
+                title: '労務費と収益率の推移(' + IssueKbn + ")",
+                series: [
+                    { targetAxisIndex: 0 }, // 第1系列は左のY軸を使用
+                    { targetAxisIndex: 0 }, // 第2系列は右のY時を使用
+                    { targetAxisIndex: 1 }, // 第2系列は右のY時を使用
+                ],
+                legend: { position: 'bottom' },
+                width: 400,
+                height: 400
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('graph4r'));
+            chart.draw(data, options);
+        }
+
+
+    })();
+
+
+
+    (function () {
+        'use strict';
+
+        google.charts.load('current', { packages: ['corechart'] });
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Year');
+            data.addColumn('number', '売上高');
+            data.addColumn({ type: 'number', role: 'annotation' });
+            data.addColumn('number', '損益分岐点売上高');
+            data.addColumn({ type: 'number', role: 'annotation' });
+            data.addColumn('number', '損益分岐点比率');
+            data.addColumn({ type: 'number', role: 'annotation' });
+
+            data.addRows([
+                ['前期実績', c184c, c184c, c185c, c185c, c186c, c186c],
+                ['1年目', d184c, d184c, d185c, d185c, d186c, d186c],
+                ['2年目', e184c, e184c, e185c, e185c, e186c, e186c],
+                ['3年目', f184c, f184c, f185c, f185c, f186c, f186c],
+                ['4年目', g184c, g184c, g185c, g185c, g186c, g186c],
+                ['5年目', h184c, h184c, h185c, h185c, h186c, h186c]
+            ]);
+
+            var options = {
+                title: '労務費と収益率の推移(' + IssueKbn + ")",
+                series: [
+                    { targetAxisIndex: 0 }, // 第1系列は左のY軸を使用
+                    { targetAxisIndex: 0 }, // 第2系列は右のY時を使用
+                    { targetAxisIndex: 1 }, // 第2系列は右のY時を使用
+                ],
+                legend: { position: 'bottom' },
+                width: 700,
+                height: 400
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('graph5r'));
+            chart.draw(data, options);
+        }
+
+
+    })();
+
+
+
+    (function () {
+        'use strict';
+
+        google.charts.load('current', { packages: ['corechart'] });
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', '');
+            data.addColumn('number', "投資額");
+            data.addColumn({ type: 'number', role: 'annotation' });
+            data.addColumn('number', "②'タックスシールド");
+            data.addColumn({ type: 'number', role: 'annotation' });
+            data.addColumn('number', '①”税引後CIF（営業CF）');
+            data.addColumn({ type: 'number', role: 'annotation' });
+
+            data.addRows([
+                ['投資時点', c102 , c102 , c100, c100, c99, c99],
+                ['1年目', 0, 0, d100, d100, d99, d99],
+                ['2年目', 0, 0, e100, e100, e99, e99],
+                ['3年目', 0, 0, f100, f100, f99, f99],
+                ['4年目', 0, 0, g100, g100, g99, g99],
+                ['5年目', 0, 0, h100, h100, h99, h99]
+            ]);
+
+
+            var options = {
+                title: 'シミュレーション(NPV)',
+                isStacked: true,
+                legend: { position: 'bottom' },
+                width: 700,
+                height: 400
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('graph6r'));
+            chart.draw(data, options);
+        }
+
+
+    })();
+
+
+    page3();
 
 
 }
+
 
 
 

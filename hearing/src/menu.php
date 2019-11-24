@@ -17,13 +17,16 @@ if ($url3 == 'pro' || $url3 == 'sys' || $url3 == 'bus' || $url3 == 'wor') {
 
 echo "<div class='menu'>";
 echo "    <ul class='topnav'>";
-echo '        <li><a '.$H." href='home.php'>入力シート</a></li>";
+echo '        <li><a id="page1" href="#" onclick="page1();">入力シート</a></li>';
+echo '        <li><a id="page2" href="#" onclick="page2();">計算結果</a></li>';
+//echo '        <li><a id="page3" href="#" onclick="page3();">作文結果</a></li>';
 //echo '        <li><a '.$P." href='progress.php'>Progress</a></li>";
 if($test==1){
-    echo '<li><input type="button" onclick="demo()" value="input">';
     echo '<li><input type="button" onclick="demo2()" value="inAndRun">';
+    echo '<li><input type="submit" value="submit">';
 }     
-echo '<li><input type="button" onclick="sakubun()" value="sakubun">';
+echo '<li><input type="button" onclick="sakubun()" value="自動作文">';
+echo '<li><input type="button" onclick="demo()" value="デモ用数値">';
 if ($_SESSION['LEVEL'] == 1) {
 //    echo "        <li><a ".$AC." href='accepting_list.php'>Accepting</a></li>";
 //    echo "        <li><a ".$R." href='result_list.php'>Result</a></li>";

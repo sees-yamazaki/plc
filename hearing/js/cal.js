@@ -1,16 +1,16 @@
-$(function() {
+$(function () {
 
     // テキストボックスにフォーカス時、フォームの背景色を変化
     $('.number')
-        .focusin(function(e) {
+        .focusin(function (e) {
             $(this).css('background-color', '#ffc');
         })
-        .focusout(function(e) {
+        .focusout(function (e) {
             $(this).css('background-color', '');
         });
 
     $('input')
-        .focusout(function(e) {
+        .focusout(function (e) {
             xxx();
         });
 
@@ -20,7 +20,7 @@ function getValue(obj) {
     // if (obj.type == null) {
     //     txt = obj.innerText.replace(",", "");
     // } else {
-    txt = obj.value.replace(",", "");
+    txt = obj.value.replace(/,/g, '');
     //    }
     if (Number.isInteger()) {
         return parseInt(txt);
@@ -263,9 +263,9 @@ function xxx() {
     //=TRUNC(SUM(D11)*E13*1.05,1)
     _d14 = document.getElementById("d14");
     d14 = myTrunc(d11 * (e13 / 100) * 1.05, 1);
-    console.log("d11-" + d11);
-    console.log("e13-" + e13);
-    console.log("d14-" + d14);
+    // console.log("d11-" + d11);
+    // console.log("e13-" + e13);
+    // console.log("d14-" + d14);
     writeValue(_d14, d14, "");
 
 
@@ -273,9 +273,9 @@ function xxx() {
     //=TRUNC(SUM(D12)*E13*0.9,1)
     _d15 = document.getElementById("d15");
     d15 = myTrunc(d12 * (e13 / 100) * 0.9, 1);
-    console.log("d12-" + d12);
-    console.log("e13-" + e13);
-    console.log("d15-" + d15);
+    // console.log("d12-" + d12);
+    // console.log("e13-" + e13);
+    // console.log("d15-" + d15);
     writeValue(_d15, d15, "");
 
     //生菓子平均労務費
@@ -715,12 +715,15 @@ function xxx() {
         h94c = 0;
         i94c = 0;
     } else {
-        //TODO ここが固定値
-        e94c = 3750000;
-        f94c = 2812500;
-        g94c = 2531250;
-        h94c = 1476562;
-        i94c = 1107422;
+        tmp = 0;
+        tmp = (!Number.isNaN(b86c)) ? tmp + b86c : 0;
+        tmp = (!Number.isNaN(b87c)) ? tmp + b87c : 0;
+        tmp = (!Number.isNaN(b88c)) ? tmp + b88c : 0;
+        e94c = tmp * 0.25;
+        f94c = (tmp - e94c) * 0.25;
+        g94c = (tmp - e94c - f94c) * 0.25;
+        h94c = (tmp - e94c - f94c - g94c) * 0.25;
+        i94c = (tmp - e94c - f94c - g94c - h94c) * 0.25;
     }
     e95c = e94c;
     f95c = f94c;
@@ -2050,6 +2053,7 @@ function kaisyu() {
     _c101 = document.getElementById("c101");
     c101 = getValue(_c101);
     strNPV = c101;
+    console.log("c101-" + c101);
 
     //------------------------------------------
     //fnKaisyu------------
@@ -2076,7 +2080,7 @@ function kaisyu() {
             break;
         }
     }
-    console.log(" lngCIF-" + lngCIF);
+    //console.log(" lngCIF-" + lngCIF);
     //test(_d0, " lngCIF-" + lngCIF + " lngCIF-" + lngCIF + "");
     // '計算済み回収期間の表示
     // If dblKaisyu <> 0 Then
@@ -2106,15 +2110,14 @@ function kaisyu() {
 
     // strwk = strwk & "円となり､投資額以上となるため「投資に値する」と言える｡" & vbCrLf
     // strwk = strwk & "また、回収期間も" & strKaisyuWk
-
     strwk = "本事業では、以下のように５か年計画表の" +
         "営業キャッシュフローと減価償却のタックスシールド効果を" +
         "得ることができ、その正味キャッシュフローを現在価値に" +
         "割り引いた場合の現在価値が" +
-        strNPV +
-        "円となり､投資額以上となるため「投資に値する」と言える｡<br>" +
+        numFormat(strNPV, 0) +
+        "円となり､投資額以上となるため「投資に値する」と言える｡" + "\r\n" +
         "また、回収期間も" +
-        strKaisyuWk;
+        numFormat(strKaisyuWk, 2);
 
     // '回収期間によりコメントを場合分け
     // If IsNumeric(strKaisyuWk) = False Then
@@ -2143,6 +2146,10 @@ function kaisyu() {
     strwk += "さらに残りの期間で新商品開発による" +
         "キャッシュインフローの向上も見込むことができる｡";
 
+    _b104 = document.getElementById("b104");
+    b104 = strwk;
+    _b104.innerText = b104;
+
     // '回収期間の表示
     // Range(cnKaisyu).Value = strKaisyu
     _c85 = document.getElementById("c85");
@@ -2153,12 +2160,20 @@ function kaisyu() {
 }
 
 function btning() {
-    demo();
+    //demo();
+
+    var res = confirm("「売上成長率」" +  "\r\n" + "もの補助要件をクリアする最低水準にリセットします。" +  "\r\n" +  "よろしいですか？");
+    if( res == false ) {
+return;
+    }
+
     //'リセット
     //Range(cnUriSeityou).Value = 100
     //Public Const cnUriSeityou As String = "D29"             '売上成長率
     _d29 = document.getElementById("d29");
     writeValue(_d29, 100, "");
+    _scrl1 = document.getElementById("scrl1");
+    writeValue(_scrl1, 100, "");
 
     // 'もの補助要件を満たすまで「売上成長」をインクリメント
     // For i = 0 To 100
@@ -2178,21 +2193,17 @@ function btning() {
     _g69 = document.getElementById("g69");
     _g73 = document.getElementById("g73");
 
-    for (cnt = 0; cnt < 10; cnt++) {
-
+    for (cnt = 0; cnt < 100; cnt++) {
         writeValue(_d29, 100 + cnt, "");
-        sleep(100);
+        writeValue(_scrl1, 100 + cnt, "");
+        sleep(10);
         xxx();
-        console.log("ste1" + cnt);
         //g68 = getValue(_g68);
         g68 = _g68.value;
-        console.log("ste2:" + g68);
         //g69 = getValue(_g69);
         g69 = _g69.value;
-        console.log("ste3:" + g69);
         //g73 = getValue(_g73);
         g73 = _g73.value;
-        console.log("ste4:" + g73);
 
         if (g68 == "OK" && g69 == "OK" && g73 == "OK") {
             break;
@@ -2210,4 +2221,22 @@ function sleep(waitMsec) {
 
     // 指定ミリ秒間だけループさせる（CPUは常にビジー状態）
     while (new Date() - startMsec < waitMsec);
+}
+function plusGenka() {
+    _d30 = document.getElementById("d30");
+    d30 = getValue(_d30);
+    console.log("d30 - " + d30);
+    if (d30 == "") { d30 = 0 };
+    d30 = myPlus(d30, 0.1);
+    _d30.value = d30;
+
+}
+function minusGenka() {
+    _d30 = document.getElementById("d30");
+    d30 = getValue(_d30);
+    console.log("d30 - " + d30);
+    if (d30 == "") { d30 = 0 };
+    d30 = mySubtract(d30, 0.1);
+    _d30.value = d30;
+
 }
