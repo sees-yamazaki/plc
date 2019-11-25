@@ -52,29 +52,37 @@ body {
     margin: 0;
 }
 
-div#inputsheet{
-    display :block;
+@media print {
+    .no_print {
+        display: none;
+    }
 }
 
-div#calcsheet{
-    display :none;
-}
-div#report{
-    display :none;
+div#inputsheet {
+    display: block;
 }
 
-input.number{
+div#calcsheet {
+    display: none;
+}
+
+div#report {
+    display: none;
+}
+
+input.number {
     text-align: right;
 }
 
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
-div#report table tr td div{
-    text-align: left;;
+div#report table tr td div {
+    text-align: left;
+    ;
 }
 
 input.lbl {
@@ -117,12 +125,38 @@ ul.topnav li.right {
     float: right;
 }
 
-ul.topnav li.user {
+ul.topnav2 {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    background-color: #24214d;
+}
+
+ul.topnav2 li {
+    float: left;
+}
+
+ul.topnav2 li a {
     display: block;
     padding: 14px 16px;
     text-align: center;
     text-decoration: none;
-    color: rgb(65, 86, 182);
+    color: white;
+}
+
+ul.topnav2 li a:hover:not(.active) {
+    background-color: #dddddd;
+    color: #202e6d;
+}
+
+ul.topnav2 li a.active {
+    background-color: #777777;
+    color: #46409b;
+}
+
+ul.topnav2 li.right {
+    float: right;
 }
 
 #content {
@@ -248,4 +282,29 @@ table.rep {
 .redBold {
     color: red;
     font-weight: bold;
+}
+
+textarea.sakubun {
+    width: 98%;
+    font-size: 11pt;
+}
+
+.btn-sakubun {
+    display: inline-block;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    background: #668ad8;
+    /*ボタン色*/
+    color: #FFF;
+    border-bottom: solid 4px #627295;
+    border-radius: 3px;
+}
+
+.btn-sakubun:active {
+    /*ボタンを押したとき*/
+    -webkit-transform: translateY(4px);
+    transform: translateY(4px);
+    /*下に動く*/
+    border-bottom: none;
+    /*線を消す*/
 }

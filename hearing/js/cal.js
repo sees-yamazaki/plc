@@ -1,17 +1,17 @@
-$(function () {
+$(function() {
 
     // テキストボックスにフォーカス時、フォームの背景色を変化
     $('.number')
-        .focusin(function (e) {
+        .focusin(function(e) {
             $(this).css('background-color', '#ffc');
         })
-        .focusout(function (e) {
+        .focusout(function(e) {
             $(this).css('background-color', '');
         });
 
     $('input')
-        .focusout(function (e) {
-            xxx();
+        .focusout(function(e) {
+            doCalc();
         });
 
 });
@@ -197,7 +197,7 @@ function test(obj, val) {
 }
 
 
-function xxx() {
+function doCalc() {
 
     _d0 = document.getElementById("d0");
 
@@ -2162,9 +2162,9 @@ function kaisyu() {
 function btning() {
     //demo();
 
-    var res = confirm("「売上成長率」" +  "\r\n" + "もの補助要件をクリアする最低水準にリセットします。" +  "\r\n" +  "よろしいですか？");
-    if( res == false ) {
-return;
+    var res = confirm("「売上成長率」" + "\r\n" + "もの補助要件をクリアする最低水準にリセットします。" + "\r\n" + "よろしいですか？");
+    if (res == false) {
+        return;
     }
 
     //'リセット
@@ -2197,7 +2197,7 @@ return;
         writeValue(_d29, 100 + cnt, "");
         writeValue(_scrl1, 100 + cnt, "");
         sleep(10);
-        xxx();
+        doCalc();
         //g68 = getValue(_g68);
         g68 = _g68.value;
         //g69 = getValue(_g69);
@@ -2222,6 +2222,7 @@ function sleep(waitMsec) {
     // 指定ミリ秒間だけループさせる（CPUは常にビジー状態）
     while (new Date() - startMsec < waitMsec);
 }
+
 function plusGenka() {
     _d30 = document.getElementById("d30");
     d30 = getValue(_d30);
@@ -2231,6 +2232,7 @@ function plusGenka() {
     _d30.value = d30;
 
 }
+
 function minusGenka() {
     _d30 = document.getElementById("d30");
     d30 = getValue(_d30);

@@ -3,8 +3,23 @@
 // セッション開始
 session_start();
 
+$ini = parse_ini_file('../common.ini', FALSE);
+$_SESSION["INI"] = $ini;
+
+$_SESSION["MY_ROOT"] = $_SERVER['DOCUMENT_ROOT'].$ini['schema'];
+
+
 // タイムゾーンを設定
 date_default_timezone_set('Asia/Tokyo');
+
+
+
+$iSeq = $_POST['iSeq'];
+ 
+
+require_once './db/infos.php';
+$info = array();
+$info = getInfo($iSeq);
 
 $test = 1;
 
@@ -27,8 +42,50 @@ $test = 1;
 </head>
 
 <body>
+    <?php if($info->title1==""){ ?>
+    <input type="hidden" id="cnt" value="0">
+    <?php }else{ ?>
+    <input type="hidden" id="cnt" value="1">
+    <input type="hidden" id="iSeq" value="<?php echo $iSeq;  ?>">
+    <input type="hidden" id="d2x" value="<?php echo $info->d2;  ?>">
+    <input type="hidden" id="d3x" value="<?php echo $info->d3;  ?>">
+    <input type="hidden" id="d4x" value="<?php echo $info->d4;  ?>">
+    <input type="hidden" id="d6x" value="<?php echo $info->d6;  ?>">
+    <input type="hidden" id="d8x" value="<?php echo $info->d8;  ?>">
+    <input type="hidden" id="f8x" value="<?php echo $info->f8;  ?>">
+    <input type="hidden" id="d11x" value="<?php echo $info->d11;  ?>">
+    <input type="hidden" id="d12x" value="<?php echo $info->d12;  ?>">
+    <input type="hidden" id="e13x" value="<?php echo $info->e13;  ?>">
+    <input type="hidden" id="d29x" value="<?php echo $info->d29;  ?>">
+    <input type="hidden" id="d30x" value="<?php echo $info->d30;  ?>">
+    <input type="hidden" id="d31x" value="<?php echo $info->d31;  ?>">
+    <input type="hidden" id="l29x" value="<?php echo $info->l29;  ?>">
+    <input type="hidden" id="l30x" value="<?php echo $info->l30;  ?>">
+    <input type="hidden" id="l31x" value="<?php echo $info->l31;  ?>">
+    <input type="hidden" id="d49x" value="<?php echo $info->d49;  ?>">
+    <input type="hidden" id="d50x" value="<?php echo $info->d50;  ?>">
+    <input type="hidden" id="e51x" value="<?php echo $info->e51;  ?>">
+    <input type="hidden" id="c68x" value="<?php echo $info->c68;  ?>">
+    <input type="hidden" id="c69x" value="<?php echo $info->c69;  ?>">
+    <input type="hidden" id="l73x" value="<?php echo $info->l73;  ?>">
+    <input type="hidden" id="c88x" value="<?php echo $info->c88;  ?>">
+    <input type="hidden" id="c89x" value="<?php echo $info->c89;  ?>">
+    <input type="hidden" id="i18x" value="<?php echo $info->i18;  ?>">
+    <input type="hidden" id="i56x" value="<?php echo $info->i56;  ?>">
+    <input type="hidden" id="a1rx" value="<?php echo $info->a1r;  ?>">
+    <input type="hidden" id="a6rx" value="<?php echo $info->a6r;  ?>">
+    <input type="hidden" id="a11rx" value="<?php echo $info->a11r;  ?>">
+    <input type="hidden" id="a26rx" value="<?php echo $info->a26r;  ?>">
+    <input type="hidden" id="a29rx" value="<?php echo $info->a29r;  ?>">
+    <input type="hidden" id="a44rx" value="<?php echo $info->a44r;  ?>">
+    <input type="hidden" id="a51rx" value="<?php echo $info->a51r;  ?>">
+    <input type="hidden" id="a62rx" value="<?php echo $info->a62r;  ?>">
+    <input type="hidden" id="a75rx" value="<?php echo $info->a75r;  ?>">
+    <input type="hidden" id="a87rx" value="<?php echo $info->a87r;  ?>">
+    <input type="hidden" id="a96rx" value="<?php echo $info->a96r;  ?>">
+    <?php } ?>
 
-    <form id="editUser" action="test.php" method="POST">
+    <form id="infos" name="infos" action="info_edit.php" method="POST">
         <?php include './menu.php'; ?>
 
         <div id="content">
@@ -178,7 +235,8 @@ $test = 1;
                     <tr>
                         <th>製造原価低減</th>
                         <td colspan=2>
-                            マイナス<input type="number" class="number wdtS" id="d30" name="d30" min="0" max="100" step="0.1">%
+                            マイナス<input type="number" class="number wdtS" id="d30" name="d30" min="0" max="100"
+                                step="0.1">%
                             &nbsp;&nbsp;&nbsp;
                             <input type="button" class="tgl" style="font-size:10pt;" value="＜" onclick="minusGenka();">
                             <input type="button" class="tgl" style="font-size:10pt;" value="＞" onclick="plusGenka();">
@@ -465,7 +523,7 @@ $test = 1;
                         <td colspan=2><input type="text" class="number" id="l73" name="l73"></td>
                     </tr>
                 </table>
-<br><br>
+                <br><br>
                 <table class='hs'>
                     <colgroup span="1" class="areaA"></colgroup>
                     <colgroup span="1" class="areaB"></colgroup>
@@ -585,7 +643,7 @@ $test = 1;
                     <colgroup span="1" class="areaD"></colgroup>
                     <tr>
                         <th>法人税率</th>
-                        <td><input type="number" class="number wdtSS" id="c88" name="c88"  step="0.1">%</td>
+                        <td><input type="number" class="number wdtSS" id="c88" name="c88" step="0.1">%</td>
                     </tr>
                     <tr>
                         <th>資本コスト</th>
@@ -691,7 +749,7 @@ $test = 1;
                         <td colspan=5></td>
                     </tr>
                 </table>
-<br><br>
+                <br><br>
                 <table class='hs'>
                     <colgroup span="1" class="areaA"></colgroup>
                     <colgroup span="1" class="areaB"></colgroup>
@@ -1305,6 +1363,10 @@ $test = 1;
 
             <div id="report">
 
+            <div class="no_print">
+            <a href="#" class="btn-sakubun" onclick="sakubun(0)" >自動作文</a><br><br>
+    </div>
+
                 <table class="rep">
                     <colgroup span="1" class="report1"></colgroup>
                     <colgroup span="1" class="report2"></colgroup>
@@ -1317,7 +1379,7 @@ $test = 1;
                     <colgroup span="1" class="report9"></colgroup>
                     <tr>
                         <td colspan=8>
-                            <div class="cmnt" id="a1r"></div>
+                            <textarea id="a1r" name="a1r" rows=30 class="sakubun"></textarea>
                         </td>
                         <td>
                             <div class="grph" id="graph1r"></div>
@@ -1328,7 +1390,7 @@ $test = 1;
                     </tr>
                     <tr>
                         <td colspan=8>
-                            <div id="a6r"></div>
+                            <textarea id="a6r" name="a6r" rows=6 class="sakubun"></textarea>
                         </td>
                         <td></td>
                     </tr>
@@ -1395,7 +1457,7 @@ $test = 1;
                     </tr>
                     <tr>
                         <td colspan=8>
-                            <div id="a11r"></div>
+                            <textarea id="a11r" name="a11r" rows=28 class="sakubun"></textarea>
                         </td>
                         <td>
                             <div class="grph" id="graph2r"></div>
@@ -1403,13 +1465,13 @@ $test = 1;
                     </tr>
                     <tr>
                         <td colspan=8>
-                            <div id="a26r"></div>
+                            <textarea id="a26r" name="a26r" rows=6 class="sakubun"></textarea>
                         </td>
                         <td></td>
                     </tr>
                     <tr>
                         <td colspan=8>
-                            <div id="a29r"></div>
+                            <textarea id="a29r" name="a29r" rows=13 class="sakubun"></textarea>
                         </td>
                         <td></td>
                     </tr>
@@ -1418,7 +1480,7 @@ $test = 1;
                     </tr>
                     <tr>
                         <td colspan=8>
-                            <div id="a44r"></div>
+                            <textarea id="a44r" name="a44r" rows=18 class="sakubun"></textarea>
                         </td>
                         <td>
                             <div class="grph" id="graph3r"></div>
@@ -1494,7 +1556,7 @@ $test = 1;
                     </tr>
                     <tr>
                         <td colspan=8>
-                            <div id="a51r"></div>
+                            <textarea id="a51r" name="a51r" rows=15 class="sakubun"></textarea>
                         </td>
                         <td>
                             <div class="grph" id="graph4r"></div>
@@ -1630,7 +1692,7 @@ $test = 1;
                     </tr>
                     <tr>
                         <td colspan=8>
-                            <div id="a62r"></div>
+                            <textarea id="a62r" name="a62r" rows=6 class="sakubun"></textarea>
                         </td>
                         <td></td>
                     </tr>
@@ -1803,13 +1865,13 @@ $test = 1;
                     </tr>
                     <tr>
                         <td colspan=8>
-                            <div id="a75r"></div>
+                            <textarea id="a75r" name="a75r" rows=20 class="sakubun"></textarea>
                         </td>
                         <td></td>
                     </tr>
                     <tr>
                         <td colspan=8>
-                            <div id="a87r"></div>
+                            <textarea id="a87r" name="a87r" rows=6 class="sakubun"></textarea>
                         </td>
                         <td>
                             <div class="grph" id="graph5r"></div>
@@ -1897,7 +1959,7 @@ $test = 1;
                     </tr>
                     <tr>
                         <td colspan=8>
-                            <div id="a96r"></div>
+                            <textarea id="a96r" name="a96r" rows=13 class="sakubun"></textarea>
                         </td>
                         <td>
                             <div class="grph" id="graph6r"></div>
@@ -2108,6 +2170,9 @@ $test = 1;
         </div>
     </form>
     <br><br><br>
+
+
+
 </body>
 
 </html>

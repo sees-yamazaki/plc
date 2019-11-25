@@ -19,6 +19,7 @@ function numFormat(vlu, dp) {
     rtn = nf.format(vlu);
     return rtn;
 }
+
 function myCnvNum(vlu) {
     tmp = '' + vlu;
     tmp = tmp.replace(/,/g, '');
@@ -27,7 +28,7 @@ function myCnvNum(vlu) {
 }
 
 
-function sakubun() {
+function sakubun(flg) {
 
     _g68 = document.getElementById("g68");
     _g69 = document.getElementById("g69");
@@ -483,8 +484,9 @@ function sakubun() {
         "を通じてさらなる売上向上につなげると同時に、生産効率課題を解決し製造原価低減による" +
         "収益向上を図らなければならない。";
 
-    _a1r = document.getElementById("a1r");
-    _a1r.innerText = strwk;
+    if (flg == 0) {
+        document.getElementById("a1r").value = strwk;
+    }
 
 
     //【採算性】==================================================================================
@@ -503,8 +505,9 @@ function sakubun() {
     strwk = "■商品の採算性について　〜こだわるが故の不採算と技術的な壁〜　" + br +
         "以下は、菓子分類別に当社の平均的な商品１個あたりの採算を示している。";
 
-    _a6r = document.getElementById("a6r");
-    _a6r.innerText = strwk;
+    if (flg == 0) {
+        document.getElementById("a6r").value = strwk;
+    }
 
     // '生菓子
     // wsSkbn.Range("A9").Value = "生菓子"
@@ -669,7 +672,9 @@ function sakubun() {
         "いかにしてこだわりを維持・商品開発に仕向けつつ、作業の効率性や全体のスループットを高めるかが課題である｡ "
 
 
-    document.getElementById("a11r").innerText = strwk;
+    if (flg == 0) {
+        document.getElementById("a11r").value = strwk;
+    }
 
     //'シズル感説明 -----------------------------------------------------------------
     // strwk = strwk & "*)シズル感…揚げ物や肉が焼ける際の「ジュージュー」と音を立てる意味を表す英語の擬音語'sizzle'(ｼｽﾞﾙ)"
@@ -679,7 +684,9 @@ function sakubun() {
         "が語源で、フルーツやグラスにつく水滴などのおいしそうなツヤ感や瑞々しさ・新鮮さ、焼成物の湯気など" +
         "人の五感に訴求して消費者の食欲や購買意欲を掻き立てる感覚・感性を表す広告用語に転じた。" + br;
 
-    document.getElementById("a26r").innerText = strwk;
+    if (flg == 0) {
+        document.getElementById("a26r").value = strwk;
+    }
 
 
 
@@ -758,7 +765,9 @@ function sakubun() {
     strwk += "初年度の減価償却費は" + GenkaSyokyakuhi + "円を計上する予定。" + br;
 
 
-    document.getElementById("a29r").innerText = strwk;
+    if (flg == 0) {
+        document.getElementById("a29r").value = strwk;
+    }
 
 
 
@@ -893,7 +902,9 @@ function sakubun() {
     }
     strwk += "売上成長幅にあわせた収益拡大も可能になる。";
 
-    document.getElementById("a44r").innerText = strwk;
+    if (flg == 0) {
+        document.getElementById("a44r").value = strwk;
+    }
 
 
 
@@ -1049,14 +1060,18 @@ function sakubun() {
     // strwk = strwk & vbCrLf
     strwk += br + "　以下は、菓子区分別にみた製造原価の比較表、および、" + IssueKbn + "における労務費と収益率の推移グラフである。" + br;
 
-    document.getElementById("a51r").innerText = strwk;
+    if (flg == 0) {
+        document.getElementById("a51r").value = strwk;
+    }
 
     // strwk = "■効果③　生産性指標の向上" & vbCrLf
     // strwk = strwk & "　本補助事業による設備投資、営業拡大により下記、生産性向上を見込むことができる。"
     strwk = "■効果③　生産性指標の向上" + br +
         "　本補助事業による設備投資、営業拡大により下記、生産性向上を見込むことができる。";
 
-    document.getElementById("a62r").innerText = strwk;
+    if (flg == 0) {
+        document.getElementById("a62r").value = strwk;
+    }
 
     // If Zouin > 0 Then
     //     strwk = "今後５年間で、当社は働き方改革を推進する中で営業日を現状の" & EigyobiB & "日から" & EigyobiA & "日にする。また、"
@@ -1180,7 +1195,9 @@ function sakubun() {
         document.getElementById("r74r").style.display = 'none';
     }
 
-    document.getElementById("a75r").innerText = strwk;
+    if (flg == 0) {
+        document.getElementById("a75r").value = strwk;
+    }
 
 
     //'【損益分岐点】===============================================================
@@ -1193,7 +1210,9 @@ function sakubun() {
         "固定費の相対的低下を主要因として、損益分岐点売上高が低下し、" +
         "損益分岐点比率も" + SBEP_Before + "から" + SBEP_After + "と大幅に低下することとなる。" + br;
 
-    document.getElementById("a87r").innerText = strwk;
+    if (flg == 0) {
+        document.getElementById("a87r").value = strwk;
+    }
 
 
     //'【投資の妥当性】===============================================================
@@ -1225,8 +1244,9 @@ function sakubun() {
     // strwk = strwk & KaisyuComment4
     strwk = "■投資判断の妥当性について" + br + b104;
 
-    document.getElementById("a96r").innerText = strwk;
-
+    if (flg == 0) {
+        document.getElementById("a96r").value = strwk;
+    }
 
     // wsTmp.Range("B92:H102").Copy wsSkbn.Range("A103")
     // wsSkbn.Range("A103:G113").Value = wsTmp.Range("B92:H102").Value
@@ -1292,7 +1312,7 @@ function sakubun() {
 
 
 
-    (function () {
+    (function() {
         'use strict';
 
         // パッケージのロード
@@ -1327,7 +1347,7 @@ function sakubun() {
 
 
 
-    (function () {
+    (function() {
         'use strict';
 
         // パッケージのロード
@@ -1394,11 +1414,12 @@ function sakubun() {
     })();
 
 
-    (function () {
+    (function() {
         'use strict';
 
         google.charts.load('current', { packages: ['corechart'] });
         google.setOnLoadCallback(drawChart);
+
         function drawChart() {
             UB = myCnvNum(UriageB);
             RB = myCnvNum(RoumuhiB);
@@ -1445,11 +1466,12 @@ function sakubun() {
     })();
 
 
-    (function () {
+    (function() {
         'use strict';
 
         google.charts.load('current', { packages: ['corechart'] });
         google.setOnLoadCallback(drawChart);
+
         function drawChart() {
             var tmpB1 = myCnvNum(NamaAveRoumuB);
             var tmpB2 = myCnvNum(NamaAveHankanB);
@@ -1501,11 +1523,12 @@ function sakubun() {
 
 
 
-    (function () {
+    (function() {
         'use strict';
 
         google.charts.load('current', { packages: ['corechart'] });
         google.setOnLoadCallback(drawChart);
+
         function drawChart() {
 
             var data = new google.visualization.DataTable();
@@ -1547,11 +1570,12 @@ function sakubun() {
 
 
 
-    (function () {
+    (function() {
         'use strict';
 
         google.charts.load('current', { packages: ['corechart'] });
         google.setOnLoadCallback(drawChart);
+
         function drawChart() {
             var data = new google.visualization.DataTable();
             data.addColumn('string', '');
@@ -1563,7 +1587,7 @@ function sakubun() {
             data.addColumn({ type: 'number', role: 'annotation' });
 
             data.addRows([
-                ['投資時点', c102 , c102 , c100, c100, c99, c99],
+                ['投資時点', c102, c102, c100, c100, c99, c99],
                 ['1年目', 0, 0, d100, d100, d99, d99],
                 ['2年目', 0, 0, e100, e100, e99, e99],
                 ['3年目', 0, 0, f100, f100, f99, f99],

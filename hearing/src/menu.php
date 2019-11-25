@@ -15,17 +15,23 @@ if ($url3 == 'pro' || $url3 == 'sys' || $url3 == 'bus' || $url3 == 'wor') {
     $H = " class='active' ";
 }
 
-echo "<div class='menu'>";
+if($url3 =="inf"){
+//
+}else{
+
+echo "<div class='menu no_print'>";
 echo "    <ul class='topnav'>";
 echo '        <li><a id="page1" href="#" onclick="page1();">入力シート</a></li>';
 echo '        <li><a id="page2" href="#" onclick="page2();">計算結果</a></li>';
+echo '        <li><a id="page3" href="#" onclick="page3();">自動作文</a></li>';
+echo '        <li><a id="infoRec"  href="javascript:sakubunCheck()">登録する</a></li>';
+echo '        <li><a id="info" href="info_list.php">登録情報</a></li>';
 //echo '        <li><a id="page3" href="#" onclick="page3();">作文結果</a></li>';
 //echo '        <li><a '.$P." href='progress.php'>Progress</a></li>";
 if($test==1){
     echo '<li><input type="button" onclick="demo2()" value="inAndRun">';
     echo '<li><input type="submit" value="submit">';
 }     
-echo '<li><input type="button" onclick="sakubun()" value="自動作文">';
 echo '<li><input type="button" onclick="demo()" value="デモ用数値">';
 if ($_SESSION['LEVEL'] == 1) {
 //    echo "        <li><a ".$AC." href='accepting_list.php'>Accepting</a></li>";
@@ -35,7 +41,9 @@ if ($_SESSION['LEVEL'] == 1) {
     // echo '        <li><a '.$M." href='meetings_list.php'>Mtng</a></li>";
 //    echo "        <li><a ".$QU." href='questionnaires_list.php'>Questionnaire</a></li>";
 }
-echo "        <li class='user'>".$_SESSION['NAME'].'</li>';
-echo "        <li class='right'><a href='logoff.php'>LogOff</a></li>";
+//echo "        <li class='user'>".$_SESSION['NAME'].'</li>';
+echo "        <li class='right'><a href='javascript:isReset()'>リセット</a></li>";
 echo '    </ul>';
 echo '</div>';
+}
+
