@@ -69,6 +69,10 @@ function ph1_rtn(){	#一覧
 		$sth = $dbh->prepare($sql);
 		$sth->execute(array($in[delid]));
 		$sth->closeCursor();
+		$sql = "delete from $glb[db_prefix]m01 where d01id= ?";
+		$sth = $dbh->prepare($sql);
+		$sth->execute(array($in[delid]));
+		$sth->closeCursor();
 	}
 	
 	
@@ -319,11 +323,47 @@ EOT;
 		$opt_pmethod.= "<option value='$i' $wk>{$glb[pmethod][$i]}</option>";
 	}
 	
+	#特産品
+	$opt_item = "<option value='0'></option>";
+	$sth = $dbh->prepare("select * from $glb[db_prefix]i01 order by i01id");
+	$sth->execute();
+    while($res = $sth->fetch(PDO::FETCH_ASSOC)){
+    	if ($res[i01name] == ""){ continue; }
+		$opt_item .= "<option value='{$res[i01id]}'>{$res[i01name]}</option>";
+    }
+    $sth->closeCursor();
+
+	#業者
+	$opt_cli1 = "<option value=''></option>";
+	$opt_cli2 = "<option value=''></option>";
+	$opt_cli3 = "<option value=''></option>";
+	$sth = $dbh->prepare("select * from $glb[db_prefix]v01 order by c01id");
+	$sth->execute();
+    while($res = $sth->fetch(PDO::FETCH_ASSOC)){
+    	if ($res[c01id] == ""){ continue; }
+		$opt_cli1 .= "<option value='{$res[c01id]}' data-i01id_1='{$res[items]}'>{$res[c01name]}</option>";
+		$opt_cli2 .= "<option value='{$res[c01id]}' data-i01id_2='{$res[items]}'>{$res[c01name]}</option>";
+		$opt_cli3 .= "<option value='{$res[c01id]}' data-i01id_3='{$res[items]}'>{$res[c01name]}</option>";
+	}
+	$sth->closeCursor();
+
+
+
     $title = "ふるさと納税台帳〔新規登録〕";
     
 $add_head = <<<EOT
 <script type="text/javascript">
-    
+$(function () {
+	$("#i01id_1").narrows("#c01id_1", {
+		allow_multiple_parent_values: true
+	});
+	$("#i01id_2").narrows("#c01id_2", {
+		allow_multiple_parent_values: true
+	});
+	$("#i01id_3").narrows("#c01id_3", {
+		allow_multiple_parent_values: true
+	});
+});
 </script>
 
 EOT;
@@ -398,6 +438,10 @@ $inner = <<<EOT
 				<td><input type="text" name="d01email" value="$in[d01email]" style="width:500px;"></td>
 			</tr>
 			<tr>
+				<th>申出書による申し込み</th>
+				<td><input type="checkbox" name="d01moushide" value="1" style="width:100px;"></td>
+			</tr>
+			<tr>
 				<th>調定</th>
 				<td><input type="text" name="d01cyotei" value="$in[d01cyotei]" class=" datepicker" style="width:100px;"></td>
 			</tr>
@@ -413,17 +457,106 @@ $inner = <<<EOT
 				<th>特産品希望</th>
 				<td>$parts_tokusan_offer</td>
 			</tr>
+
+			<!-- 特産品 -->
+
+			<tr>
+				<th colspan=2>特産品１</th>
+			</tr>
+
 			<tr>
 				<th>特産品名</th>
-				<td><input type="text" name="d01tokusan_hinmei" value="$in[d01tokusan_hinmei]" style="width:500px;"></td>
+				<td><select id="i01id_1" name="i01id_1">$opt_item</select></td>
+			</tr>
+			<tr>
+				<th>業者</th>
+				<td><select id="c01id_1" name="c01id_1">$opt_cli1</select></td>
 			</tr>
 			<tr>
 				<th>発送依頼</th>
-				<td><input type="text" name="d01hassouirai" value="$in[d01hassouirai]" class=" datepicker" style="width:100px;"></td>
+				<td><input type="text" name="m01hassouirai_1" value="" class=" datepicker" style="width:100px;"></td>
 			</tr>
 			<tr>
 				<th>発送日</th>
-				<td><input type="text" name="d01tokusanhin" value="$in[d01tokusanhin]" class=" datepicker" style="width:100px;"></td>
+				<td><input type="text" name="m01hassoubi_1" value="" class=" datepicker" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>数量</th>
+				<td><input type="number" name="m01qty_1" value="" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>箱代</th>
+				<td><input type="number" name="m01charge_1" value="" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>送料</th>
+				<td><input type="number" name="m01postage_1" value="" style="width:100px;"></td>
+			</tr>
+
+			<tr>
+				<th colspan=2>特産品２</th>
+			</tr>
+
+			<tr>
+				<th>特産品名</th>
+				<td><select id="i01id_2" name="i01id_2">$opt_item</select></td>
+			</tr>
+			<tr>
+				<th>業者</th>
+				<td><select id="c01id_2" name="c01id_2">$opt_cli2</select></td>
+			</tr>
+			<tr>
+				<th>発送依頼</th>
+				<td><input type="text" name="m01hassouirai_2" value="" class=" datepicker" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>発送日</th>
+				<td><input type="text" name="m01hassoubi_2" value="" class=" datepicker" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>数量</th>
+				<td><input type="number" name="m01qty_2" value="" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>箱代</th>
+				<td><input type="number" name="m01charge_2" value="" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>送料</th>
+				<td><input type="number" name="m01postage_2" value="" style="width:100px;"></td>
+			</tr>
+			
+			<tr>
+				<th colspan=2>特産品３</th>
+			</tr>
+
+			<tr>
+				<th>特産品名</th>
+				<td><select id="i01id_3" name="i01id_3">$opt_item</select></td>
+			</tr>
+			<tr>
+				<th>業者</th>
+				<td><select id="c01id_3" name="c01id_3">$opt_cli3</select></td>
+			</tr>
+			<tr>
+				<th>発送依頼</th>
+				<td><input type="text" name="m01hassouirai_3" value="" class=" datepicker" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>発送日</th>
+				<td><input type="text" name="m01hassoubi_3" value="" class=" datepicker" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>数量</th>
+				<td><input type="number" name="m01qty_3" value="" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>箱代</th>
+				<td><input type="number" name="m01charge_3" value="" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>送料</th>
+				<td><input type="number" name="m01postage_3" value="" style="width:100px;"></td>
 			</tr>
 			
 			<tr>
@@ -473,7 +606,7 @@ function ph12_rtn(){ #新規登録
 	$in["d01price"] += 0;
 	$in["d01tourei"] += 0;
 	$in["d01tokusan_offer"] += 0;
-    
+	
     if ($in['d01date'] == ""){ $in["d01date"] = null; }
     if ($in['d01entry_date'] == ""){ $in["d01entry_date"] = null; }
     if ($in['d01nyukin_kakunin_date'] == ""){ $in["d01nyukin_kakunin_date"] = null; }
@@ -482,8 +615,13 @@ function ph12_rtn(){ #新規登録
     if ($in['d01furikomihyo'] == ""){ $in["d01furikomihyo"] = null; }
     if ($in['d01hassouirai'] == ""){ $in["d01hassouirai"] = null; }
     if ($in['d01tokusanhin'] == ""){ $in["d01tokusanhin"] = null; }
-    if ($in['d01jyuryosyo'] == ""){ $in["d01jyuryosyo"] = null; }
-    
+	if ($in['d01jyuryosyo'] == ""){ $in["d01jyuryosyo"] = null; }
+	
+    if ($in['d01moushide'] == ""){
+		 $in["d01moushide"] = NULL; 
+	}else{
+		$in["d01moushide"] =date("Y/m/d");
+	} 
     
 //    if (($in["d01zip1"] != "") or ($in["d01zip2"] != "")){
 //    	$in["d01zip"] = sprintf("%03d-%04d",$in["d01zip1"],$in["d01zip2"]);
@@ -510,14 +648,12 @@ function ph12_rtn(){ #新規登録
 		,d01tel
 		,d01fax
 		,d01email
+		,d01moushide
 		,d01cyotei
 		,d01furikomihyo
-		,d01hassouirai
-		,d01tokusanhin
 		,d01jyuryosyo
 		,d01tokusan_offer
-		,d01tokusan_hinmei
-	) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+	) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 EOT;
 	
 	$sth = $dbh->prepare($sql);
@@ -540,13 +676,11 @@ EOT;
 		$sth->bindValue(16, $in['d01tel']);
 		$sth->bindValue(17, $in['d01fax']);
 		$sth->bindValue(18, $in['d01email']);
-		$sth->bindValue(19, $in['d01cyotei']);
-		$sth->bindValue(20, $in['d01furikomihyo']);
-		$sth->bindValue(21, $in['d01hassouirai']);
-		$sth->bindValue(22, $in['d01tokusanhin']);
-		$sth->bindValue(23, $in['d01jyuryosyo']);
-		$sth->bindValue(24, $in['d01tokusan_offer']);
-		$sth->bindValue(25, $in['d01tokusan_hinmei']);
+		$sth->bindValue(19, $in['d01moushide']);
+		$sth->bindValue(20, $in['d01cyotei']);
+		$sth->bindValue(21, $in['d01furikomihyo']);
+		$sth->bindValue(22, $in['d01jyuryosyo']);
+		$sth->bindValue(23, $in['d01tokusan_offer']);
 
 	$ret = $sth->execute(); 
 	
@@ -558,6 +692,65 @@ EOT;
 	
 	$insertid = $dbh->lastInsertId();
 	$sth->closeCursor();
+
+	
+    for ($i=1;$i<=3;$i++) {
+		//商品１
+		if(isset($in['i01id_'.$i]) && $in['i01id_'.$i]<>"0"){
+
+			$in["m01qty_".$i] += 0;
+			$in["m01charge_".$i] += 0;
+			$in["m01postage_".$i] += 0;
+
+			if ($in['c01id_'.$i] == ""){ $in["c01id_".$i] = 0; }
+			if ($in['m01hassouirai_'.$i] == ""){ $in["m01hassouirai_".$i] = null; }
+			if ($in['m01hassoubi_'.$i] == ""){ $in["m01hassoubi_".$i] = null; }
+
+			$sql =<<<EOT
+			insert into $glb[db_prefix]m01(
+				m01addtime
+				,m01edittime
+				,m01deltime
+				,d01id
+				,m01hassouirai
+				,i01id
+				,m01qty
+				,m01charge
+				,m01postage
+				,m01hassoubi
+				,c01id
+				,m01id
+			) values (?,?,?,?,?,?,?,?,?,?,?,?)
+EOT;
+
+			$sth = $dbh->prepare($sql);
+			$sth->bindValue(1, date("Y/m/d H:i:s"));
+			$sth->bindValue(2, date("Y/m/d H:i:s"));
+			$sth->bindValue(3, null);
+			
+			$sth->bindValue(4, $insertid);
+			$sth->bindValue(5, $in['m01hassouirai_'.$i]);
+			$sth->bindValue(6, $in['i01id_'.$i]);
+			$sth->bindValue(7, $in['m01qty_'.$i]);
+			$sth->bindValue(8, $in['m01charge_'.$i]);
+			$sth->bindValue(9, $in['m01postage_'.$i]);
+			$sth->bindValue(10, $in['m01hassoubi_'.$i]);
+			$sth->bindValue(11, $in['c01id_'.$i]);
+			$sth->bindValue(12, $i);
+
+			$ret = $sth->execute(); 
+			
+			if (!$ret) {
+				$arr = $sth->errorInfo();
+				print_r($arr);
+				die('INSERT 失敗');
+			}
+			
+			$sth->closeCursor();
+
+		}
+	}
+
 	
 	unset($_SESSION["spa"]);
 	$in = array();
@@ -637,9 +830,89 @@ EOT;
 		$opt_pmethod.= "<option value='$i' $wk>{$glb[pmethod][$i]}</option>";
 	}
 	
+	#申出書
+	if ($in["d01moushide"] <> ""){ $moushide="checked"; }else{ $moushide=""; }
+
+	#明細の取得
+	$d01id = array("","","");
+	$m01id = array("","","");
+	$m01hassouirai = array("","","");
+	$i01id = array("","","");
+	$m01qty = array("","","");
+	$m01charge = array("","","");
+	$m01postage = array("","","");
+	$c01id = array("","","");
+	$m01hassoubi = array("","","");
+
+    for ($i=0;$i<=2;$i++) {
+        $sth = $dbh->prepare("select * from $glb[db_prefix]m01 where d01id=? and m01id=?");
+		$sth->bindParam(1, $in[d01id], PDO::PARAM_STR);
+		$j = $i + 1;
+        $sth->bindParam(2, $j , PDO::PARAM_STR);
+        $sth->execute();
+        $res = $sth->fetch(PDO::FETCH_ASSOC);
+        $d01id[$i] = $res[d01id];
+        $m01id[$i] = $res[m01id];
+        $m01hassouirai[$i] = $res[m01hassouirai];
+        $i01id[$i] = $res[i01id];
+        $m01qty[$i] = $res[m01qty];
+        $m01charge[$i] = $res[m01charge];
+        $m01postage[$i] = $res[m01postage];
+        $c01id[$i] = $res[c01id];
+        $m01hassoubi[$i] = $res[m01hassoubi];
+    }
+
+	#特産品
+	$opt_item1 = "<option value='0'></option>";
+	$opt_item2 = "<option value='0'></option>";
+	$opt_item3 = "<option value='0'></option>";
+	$sth = $dbh->prepare("select * from $glb[db_prefix]i01 order by i01id");
+	$sth->execute();
+    while($res = $sth->fetch(PDO::FETCH_ASSOC)){
+    	if ($res[i01name] == ""){ continue; }
+		if ($i01id[0] === $res[i01id]){ $wk="selected"; }else{ $wk=""; }
+		$opt_item1 .= "<option value='{$res[i01id]}' {$wk}>{$res[i01name]}</option>";
+		if ($i01id[1] === $res[i01id]){ $wk="selected"; }else{ $wk=""; }
+		$opt_item2 .= "<option value='{$res[i01id]}' {$wk}>{$res[i01name]}</option>";
+		if ($i01id[2] === $res[i01id]){ $wk="selected"; }else{ $wk=""; }
+		$opt_item3 .= "<option value='{$res[i01id]}' {$wk}>{$res[i01name]}</option>";
+    }
+	$sth->closeCursor();
+
+	
+	#業者
+	$opt_cli1 = "<option value=''></option>";
+	$opt_cli2 = "<option value=''></option>";
+	$opt_cli3 = "<option value=''></option>";
+	$sth = $dbh->prepare("select * from $glb[db_prefix]v01 order by c01id");
+	$sth->execute();
+    while($res = $sth->fetch(PDO::FETCH_ASSOC)){
+    	if ($res[c01id] == ""){ continue; }
+		if ($c01id[0] === $res[c01id]){ $wk="selected"; }else{ $wk=""; }
+		$opt_cli1 .= "<option value='{$res[c01id]}' data-i01id_1='{$res[items]}' {$wk}>{$res[c01name]}</option>";
+		if ($c01id[1] === $res[c01id]){ $wk="selected"; }else{ $wk=""; }
+		$opt_cli2 .= "<option value='{$res[c01id]}' data-i01id_2='{$res[items]}' {$wk}>{$res[c01name]}</option>";
+		if ($c01id[2] === $res[c01id]){ $wk="selected"; }else{ $wk=""; }
+		$opt_cli3 .= "<option value='{$res[c01id]}' data-i01id_3='{$res[items]}' {$wk}>{$res[c01name]}</option>";
+	}
+	$sth->closeCursor();
+	
     $title = "ふるさと納税台帳〔修正〕";
     
 $add_head = <<<EOT
+<script type="text/javascript">
+$(function () {
+	$("#i01id_1").narrows("#c01id_1", {
+		allow_multiple_parent_values: true
+	});
+	$("#i01id_2").narrows("#c01id_2", {
+		allow_multiple_parent_values: true
+	});
+	$("#i01id_3").narrows("#c01id_3", {
+		allow_multiple_parent_values: true
+	});
+});
+</script>
 EOT;
 ;#==============================================================================
 $inner = <<<EOT
@@ -712,6 +985,10 @@ $inner = <<<EOT
 				<td><input type="text" name="d01email" value="$in[d01email]" style="width:500px;"></td>
 			</tr>
 			<tr>
+				<th>申出書による申し込み</th>
+				<td><input type="checkbox" name="d01moushide" value="1" style="width:100px;" $moushide></td>
+			</tr>
+			<tr>
 				<th>調定</th>
 				<td><input type="text" name="d01cyotei" value="$in[d01cyotei]" class=" datepicker" style="width:100px;"></td>
 			</tr>
@@ -727,19 +1004,108 @@ $inner = <<<EOT
 				<th>特産品希望</th>
 				<td>$parts_tokusan_offer</td>
 			</tr>
+
+
+			<!-- 特産品 -->
+
+			<tr>
+				<th colspan=2>特産品１</th>
+			</tr>
+
 			<tr>
 				<th>特産品名</th>
-				<td><input type="text" name="d01tokusan_hinmei" value="$in[d01tokusan_hinmei]" style="width:500px;"></td>
+				<td><select id="i01id_1" name="i01id_1">$opt_item1</select><input type="hidden"  name="i01id_1x" value="$i01id[0]"></td>
+			</tr>
+			<tr>
+				<th>業者</th>
+				<td><select id="c01id_1" name="c01id_1">$opt_cli1</select></td>
 			</tr>
 			<tr>
 				<th>発送依頼</th>
-				<td><input type="text" name="d01hassouirai" value="$in[d01hassouirai]" class=" datepicker" style="width:100px;"></td>
+				<td><input type="text" name="m01hassouirai_1" value="$m01hassouirai[0]" class=" datepicker" style="width:100px;"></td>
 			</tr>
 			<tr>
 				<th>発送日</th>
-				<td><input type="text" name="d01tokusanhin" value="$in[d01tokusanhin]" class=" datepicker" style="width:100px;"></td>
+				<td><input type="text" name="m01hassoubi_1" value="$m01hassoubi[0]" class=" datepicker" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>数量</th>
+				<td><input type="number" name="m01qty_1" value="$m01qty[0]" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>箱代</th>
+				<td><input type="number" name="m01charge_1" value="$m01charge[0]" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>送料</th>
+				<td><input type="number" name="m01postage_1" value="$m01postage[0]" style="width:100px;"></td>
+			</tr>
+
+			<tr>
+				<th colspan=2>特産品２</th>
+			</tr>
+
+			<tr>
+				<th>特産品名</th>
+				<td><select id="i01id_2" name="i01id_2">$opt_item2</select><input type="hidden"  name="i01id_2x" value="$i01id[1]"></td>
+			</tr>
+			<tr>
+				<th>業者</th>
+				<td><select id="c01id_2" name="c01id_2">$opt_cli2</select></td>
+			</tr>
+			<tr>
+				<th>発送依頼</th>
+				<td><input type="text" name="m01hassouirai_2" value="$m01hassouirai[1]" class=" datepicker" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>発送日</th>
+				<td><input type="text" name="m01hassoubi_2" value="$m01hassoubi[1]" class=" datepicker" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>数量</th>
+				<td><input type="number" name="m01qty_2" value="$m01qty[1]" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>箱代</th>
+				<td><input type="number" name="m01charge_2" value="$m01charge[1]" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>送料</th>
+				<td><input type="number" name="m01postage_2" value="$m01postage[1]" style="width:100px;"></td>
 			</tr>
 			
+			<tr>
+				<th colspan=2>特産品３</th>
+			</tr>
+
+			<tr>
+				<th>特産品名</th>
+				<td><select id="i01id_3" name="i01id_3">$opt_item3</select><input type="hidden"  name="i01id_3x" value="$i01id[2]"></td>
+			</tr>
+			<tr>
+				<th>業者</th>
+				<td><select id="c01id_3" name="c01id_3">$opt_cli3</select></td>
+			</tr>
+			<tr>
+				<th>発送依頼</th>
+				<td><input type="text" name="m01hassouirai_3" value="$m01hassouirai[2]" class=" datepicker" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>発送日</th>
+				<td><input type="text" name="m01hassoubi_3" value="$m01hassoubi[2]" class=" datepicker" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>数量</th>
+				<td><input type="number" name="m01qty_3" value="$m01qty[2]" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>箱代</th>
+				<td><input type="number" name="m01charge_3" value="$m01charge[2]" style="width:100px;"></td>
+			</tr>
+			<tr>
+				<th>送料</th>
+				<td><input type="number" name="m01postage_3" value="$m01postage[2]" style="width:100px;"></td>
+			</tr>			
 			<tr>
 				<td colspan="2" style="text-align:center;">
 					<input type="button" class="cmd btn btn-info" value="保存" onclick="document.ifm.submit();">
@@ -802,6 +1168,12 @@ function ph22_rtn(){ #修正実行
     if ($in['d01tokusanhin'] == ""){ $in["d01tokusanhin"] = null; }
     if ($in['d01jyuryosyo'] == ""){ $in["d01jyuryosyo"] = null; }
 	
+    if ($in['d01moushide'] == ""){
+		$in["d01moushide"] = NULL; 
+   }else{
+	   $in["d01moushide"] =date("Y/m/d");
+   } 
+	
 //    if (($in["d01zip1"] != "") or ($in["d01zip2"] != "")){
 //    	$in["d01zip"] = sprintf("%03d-%04d",$in["d01zip1"],$in["d01zip2"]);
 //    }
@@ -824,15 +1196,13 @@ function ph22_rtn(){ #修正実行
 		,d01tel=?
 		,d01fax=?
 		,d01email=?
+		,d01moushide=?
 		,d01cyotei=?
 		,d01furikomihyo=?
-		,d01hassouirai=?
-		,d01tokusanhin=?
 		,d01jyuryosyo=?
 		
 		,d01edittime=?
 		,d01tokusan_offer=?
-		,d01tokusan_hinmei=?
 	where d01id = ?
 EOT;
 		
@@ -852,22 +1222,134 @@ EOT;
 		$sth->bindValue(13, $in['d01tel']);
 		$sth->bindValue(14, $in['d01fax']);
 		$sth->bindValue(15, $in['d01email']);
-		$sth->bindValue(16, $in['d01cyotei']);
-		$sth->bindValue(17, $in['d01furikomihyo']);
-		$sth->bindValue(18, $in['d01hassouirai']);
-		$sth->bindValue(19, $in['d01tokusanhin']);
-		$sth->bindValue(20, $in['d01jyuryosyo']);
+		$sth->bindValue(16, $in['d01moushide']);
+		$sth->bindValue(17, $in['d01cyotei']);
+		$sth->bindValue(18, $in['d01furikomihyo']);
+		$sth->bindValue(19, $in['d01jyuryosyo']);
 		
-		$sth->bindValue(21, date("Y/m/d H:i:s"));
+		$sth->bindValue(20, date("Y/m/d H:i:s"));
 
-		$sth->bindValue(22,$in['d01tokusan_offer']);
-		$sth->bindValue(23,$in['d01tokusan_hinmei']);
+		$sth->bindValue(21,$in['d01tokusan_offer']);
 
 		// bindの順序注意！
-		$sth->bindValue(24,$in['d01id']);
+		$sth->bindValue(22,$in['d01id']);
 
 	$sth->execute();
 	$sth->closeCursor();
+
+
+    for ($i=1;$i<=3;$i++) {
+
+		if (!isset($in['i01id_'.$i]) || $in['i01id_'.$i]=="" || $in['i01id_'.$i]=="0") {
+
+			$sth = $dbh->prepare("delete from $glb[db_prefix]m01 where d01id=? and m01id=?");
+            $ret = $sth->execute(array($in['d01id'],$i));
+        } else {
+
+            $in["m01qty_".$i] += 0;
+            $in["m01charge_".$i] += 0;
+            $in["m01postage_".$i] += 0;
+
+            if ($in['c01id_'.$i] == "") {
+                $in["c01id_".$i] = 0;
+            }
+            if ($in['m01hassouirai_'.$i] == "") {
+                $in["m01hassouirai_".$i] = null;
+            }
+            if ($in['m01hassoubi_'.$i] == "") {
+                $in["m01hassoubi_".$i] = null;
+            }
+
+
+            if (!isset($in['i01id_'.$i.'x']) || $in['i01id_'.$i.'x']=="") {
+                //過去に登録がないので新規登録
+                $sql =<<<EOT
+			insert into $glb[db_prefix]m01(
+				 m01addtime
+				,m01edittime
+				,m01deltime
+				,d01id
+				,m01hassouirai
+				,i01id
+				,m01qty
+				,m01charge
+				,m01postage
+				,m01hassoubi
+				,c01id
+				,m01id
+			) values (?,?,?,?,?,?,?,?,?,?,?,?)
+EOT;
+    
+                $sth = $dbh->prepare($sql);
+                $sth->bindValue(1, date("Y/m/d H:i:s"));
+                $sth->bindValue(2, date("Y/m/d H:i:s"));
+                $sth->bindValue(3, null);
+            
+                $sth->bindValue(4, $in['d01id']);
+                $sth->bindValue(5, $in['m01hassouirai_'.$i]);
+                $sth->bindValue(6, $in['i01id_'.$i]);
+                $sth->bindValue(7, $in['m01qty_'.$i]);
+                $sth->bindValue(8, $in['m01charge_'.$i]);
+                $sth->bindValue(9, $in['m01postage_'.$i]);
+                $sth->bindValue(10, $in['m01hassoubi_'.$i]);
+                $sth->bindValue(11, $in['c01id_'.$i]);
+				$sth->bindValue(12, $i);
+				
+				$ret = $sth->execute();
+        
+				if (!$ret) {
+					$arr = $sth->errorInfo();
+					print_r($arr);
+					die('INSERT 失敗');
+				}
+
+            } else {
+                //過去に登録がないので新規登録
+                $sql =<<<EOT
+			update $glb[db_prefix]m01 set 
+				 m01edittime=?
+				,m01hassouirai=?
+				,i01id=?
+				,m01qty=?
+				,m01charge=?
+				,m01postage=?
+				,m01hassoubi=?
+				,c01id=?
+			where d01id=? and m01id=?
+EOT;
+    
+                $sth = $dbh->prepare($sql);
+                $sth->bindValue(1, date("Y/m/d H:i:s"));
+                $sth->bindValue(2, $in['m01hassouirai_'.$i]);
+                $sth->bindValue(3, $in['i01id_'.$i]);
+                $sth->bindValue(4, $in['m01qty_'.$i]);
+                $sth->bindValue(5, $in['m01charge_'.$i]);
+                $sth->bindValue(6, $in['m01postage_'.$i]);
+                $sth->bindValue(7, $in['m01hassoubi_'.$i]);
+                $sth->bindValue(8, $in['c01id_'.$i]);
+                $sth->bindValue(9, $in['d01id']);
+				$sth->bindValue(10,$i);
+				
+				$ret = $sth->execute();
+        
+				if (!$ret) {
+					$arr = $sth->errorInfo();
+					print_r($arr);
+					die('UPADTE 失敗');
+				}
+
+            }
+        
+
+        
+            $sth->closeCursor();
+        }
+    }
+
+
+
+
+
 
 	unset($_SESSION["spa"]);
 	$in = array();

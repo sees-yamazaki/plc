@@ -1,0 +1,9 @@
+ALTER TABLE `test_d01` ADD `d01moushide` DATE NULL DEFAULT NULL AFTER `d01email`;
+
+
+d01tokusan_hinmei の初期値をNULLにする
+ALTER TABLE `test_d01` CHANGE `d01tokusan_hinmei` `d01tokusan_hinmei` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
+VIEW を追加
+
+"./js/jquery.narrows.js">< を追加
