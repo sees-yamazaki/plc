@@ -1,0 +1,166 @@
+@charset "UTF-8";
+
+
+/********************************************************************/
+/* エラーメッセージ類
+/********************************************************************/
+/* ERROR */
+.error_msg, .err_msg{
+	color: #ff0000;
+	font-family: "Verdana", sans-serif;
+	}
+
+/* WARNING */
+.warning_msg, .wrn_msg{
+	color: #ff6600;
+	font-family: "Verdana", sans-serif;
+	}
+/* CAUTION */
+.caution_msg, .cau_msg{
+	color: #ff6600;
+	font-family: "Verdana", sans-serif;
+	}
+	
+/* RESULT */
+.normal_msg, .nrm_msg{
+	color: #666666;
+	font-family: "Verdana", sans-serif;
+	}
+/********************************************************************/
+
+.err_box, .wrn_box, .nrm_box {
+	border: 1px solid #ccc;
+	margin: 10px;
+	padding:10px 10px 10px 10px;
+	font-weight:normal;
+	font-family:"Verdana", sans-serif;
+}
+.nrm_box {
+	color: #333333;
+	background-color: #ececec;
+}
+.wrn_box {
+	color: #ff3300;
+	background-color: #ffbb99;
+	font-weight:bold;
+}
+.err_box {
+	color: #cc0000;
+	background-color: #ff9999;
+	font-weight:bold;
+}
+
+/********************************************************************/
+/* 開発用 */
+/********************************************************************/
+
+.todo{
+	border: 1px solid;
+	margin: 5px;
+	padding:5px 5px 5px 5px;
+	font-weight:bold;
+	font-family:"Verdana", sans-serif;
+	font-size:100%;
+	color: #f00;
+	background-color: #fff;
+}
+
+span.todo{
+	border: 1px solid;
+	margin: 0;
+	padding:0;
+	font-weight:normal;
+	font-family:"Verdana", sans-serif;
+	font-size:90%;
+	color: #f00;
+	background-color: #fff;
+}
+.debug {
+	border: 1px solid;
+	margin: 0px;
+	padding:5px 5px 5px 5px;
+	font-weight:normal;
+	font-family:"Verdana", sans-serif;
+	font-size:12px;
+	line-height:1.2em;
+	color: #00ff00;
+	background-color: #003300;
+}
+
+/********************************************************************/
+/* 汎用表示テーブル */
+/********************************************************************/
+table.pubTable{
+	margin:0;
+	padding:0;
+	border-collapse:collapse;
+	border:1px solid #C1C1C1;
+}
+table.pubTable th{
+	margin:0 0 5px 0;
+	padding:2px 0 2px 5px;
+	border:1px solid #C1C1C1;
+	background:#eeeeee;
+	color:#444444;
+	font-weight:bold;
+	font-size:12px;
+	text-align:left;
+	vertical-align:middle;
+	
+}
+table.pubTable td{
+	margin:0;
+	padding:3px 3px 3px 3px;
+	font-size:12px;
+	border-left:1px solid #C1C1C1;border-bottom:1px solid #C1C1C1;color:#333333;
+	line-height:1.2em;
+	vertical-align:top;
+}
+
+table.pubTable thead th {
+	margin:3px;
+	padding:3px;
+	border:1px solid #C1C1C1;
+	background:#5b9bd5;
+	color:#fff;
+	font-weight:bold;
+	font-size:14px;
+	text-align:left;
+	vertical-align:middle;
+}
+/********************************************************************/
+/* レイアウトテーブル */
+/********************************************************************/
+table.hidTable{
+	margin:0;
+	padding:0;
+	border-collapse:collapse;
+	border:1px none;
+}
+table.hidTable th{
+	margin:0 0 5px 0;
+	padding:0 5px;
+	border:1px none;
+	background:#ECF5FA;
+	color:#333333;
+	font-weight:bold;
+	text-align:left;
+}
+table.hidTable td{
+	margin:0;
+	padding:3px;
+	border:1px none;
+	line-height:1.2em;
+}
+
+
+/********************************************************************/
+/* 
+/********************************************************************/
+.tc{ text-align:center;}
+.tl{ text-align:left;}
+.tr{ text-align:right;}
+
+.tcn{ white-space:nowrap; text-align:center;}
+.tln{ white-space:nowrap; text-align:left;}
+.trn{ white-space:nowrap; text-align:right;}

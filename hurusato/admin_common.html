@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>
+        <?=$title?>
+    </title>
+    <link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="./css/reset.css?$con_version" rel="stylesheet" type="text/css" />
+    <link href="./css/normal.css?$con_version" rel="stylesheet" type="text/css" />
+    <link href="./css/mgstd.css?$con_version" rel="stylesheet" type="text/css" />
+    <link href="./js/colorbox.css?$con_version" rel="stylesheet" type="text/css" />
+    <link href="./js/jquery-ui.min.css" rel="stylesheet" type="text/css">
+    <script src="./js/jquery-1.11.3.min.js"></script>
+    <script src="./js/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="./js/sprintf.js" type="text/javascript"></script>
+    <script src="./js/jquery.colorbox-min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/jquery.blockUI.js"></script>
+    <script src="./js/jquery.upload-1.0.2.min.js"></script>
+    <script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+    <style type="text/css">
+        body {
+            font-family: 'Lucida Grande', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', Meiryo, メイリオ, sans-serif;
+        }
+        
+        input,
+        select,
+        textarea {
+            font-weight: normal;
+            line-height: 1.2em;
+        }
+        
+        .menutitle {
+            font-size: 90%;
+        }
+        
+        .menucont {
+            font-size: 90%;
+        }
+        
+        \@media print {
+            a[href]:after {
+                content: ""!important;
+            }
+            abbr[title]:after {
+                content: ""!important;
+            }
+        }
+        
+        body {
+            padding-top: 30px;
+        }
+    </style>
+
+
+    <script>
+        jQuery(function() {
+            jQuery(".datepicker").datepicker({
+                // Datepicker設定
+                dateFormat: 'yy-mm-dd',
+                yearSuffix: '年',
+                showMonthAfterYear: true,
+                monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                dayNames: ['日', '月', '火', '水', '木', '金', '土'],
+                dayNamesMin: ['日', '月', '火', '水', '木', '金', '土'],
+                hideIfNoPrevNext: true
+            });
+        });
+    </script>
+    <script type="text/javascript" src="./js/jquery.floatThead.js"></script>
+    <script>
+        jQuery(function() {
+            var objTable = jQuery('.hfix');
+            objTable.floatThead({
+                top: 30
+            });
+        });
+    </script>
+    <?=$add_head?>
+
+        <body>
+
+</head>
+
+<body>
+    <div class="noprint navbar navbar-fixed-top">
+        <table id="header" style="border:0; padding:5px; width:100%;">
+            <tbody>
+                <tr style="height:30px;">
+                    <td style="text-align:left; vertical-align:middle; color:#ffffff;background-color:#2f0091;">&nbsp;
+                        <strong>ふるさと納税台帳</strong> Ver.
+                        <?=$glb[version]?>
+                            &nbsp;
+                            <?=$glb[mode_message]?>
+                    </td>
+                    <td style="text-align:right; vertical-align:middle; color:#ffffff;background-color:#2f0091;">
+                        <strong><?=$_SESSION[aname]?></strong>
+                        <a href="./?mode=logoff" class='btn btn-xs btn-success'>
+                            <font color="#ffffff">ログアウト</font>
+                        </a>&nbsp;
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <table width="100%">
+        <tr>
+            <td valign="top" style="width:140px;">
+                <br />
+                <div class="menutitle">【メイン】</div>
+                <div class="menucont">
+                    <a class="menubtn" href="./mnt_data.php">ふるさと納税台帳</a>
+                    <a class="menubtn" href="./rep_item.php">特産品別カウント</a>
+                    <a class="menubtn" href="./items.php">商品管理</a>
+                    <a class="menubtn" href="./clients.php">業者管理</a>
+                </div>
+
+            </td>
+            <td style="text-align:left; vertical-align:top;">
+                <div style="padding:20px 10px;">
+                    <?=$inner?>
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
