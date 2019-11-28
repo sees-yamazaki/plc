@@ -1,9 +1,34 @@
+***********************
+******　環境構築
+
+作業１　　d01テーブルに「文書月日」を追加する
+
 ALTER TABLE `test_d01` ADD `d01moushide` DATE NULL DEFAULT NULL AFTER `d01email`;
 
+作業２　　d01テーブルの未使用項目「目算品名」のデフォルト値にNULLを許容する
 
-d01tokusan_hinmei の初期値をNULLにする
 ALTER TABLE `test_d01` CHANGE `d01tokusan_hinmei` `d01tokusan_hinmei` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 
-VIEW を追加
 
-"./js/jquery.narrows.js">< を追加
+作業３　　明細情報テーブル、商品マスタ、業者マスタを作成する
+　　　　　->  01makeTable.sql　　を実行
+
+作業４　　VIEWを追加する
+　　　　　->　02makeView.sql　　を実行
+
+
+
+
+
+***********************
+******　移行作業
+
+移行１　　注文データから商品マスタに登録する
+　　　　　->  10ikou.sql　　を実行
+
+移行２　　注文データから、明細データを登録する
+　　　　　->  11ikou.sql　　を実行
+
+移行３　　文書年月を更新 備考欄が「申出書による申し込み」の記載があるもの
+　　　　　->  12ikou.sql　　を実行
+

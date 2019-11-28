@@ -64,16 +64,25 @@ function ph1_rtn(){	#一覧
     global $lcl;
     $ssid = session_id();
 
+	$_number_format = "number_format";
 	
     #===================================
     if(isset($in[delid])){
         //TODO 注文が存在するかどうか確認する
-        // $sth = $dbh->prepare("select * from $glb[db_prefix]i01 where  ('$in[cli_name]')");
-        // $sth->execute();
-
-
-        $sth = $dbh->prepare("delete from $glb[db_prefix]i01 where i01id ='$in[delid]'");
+        $sth = $dbh->prepare("select count(*) as cnt from $glb[db_prefix]m01 where `i01id`= '$in[delid]' ");
         $sth->execute();
+        $cnt=0;
+        if ($res = $sth->fetch()) {
+            $cnt = $res['cnt'];
+        }
+
+        if ($cnt==0) {
+            $sth = $dbh->prepare("delete from $glb[db_prefix]i01 where i01id ='$in[delid]'");
+            $sth->execute();
+        }else{
+            $err_msg = "<span style='color:red' >削除しようとした商品は注文履歴に存在するため削除できません。</span>";
+        }
+
 
     }
 
@@ -89,6 +98,9 @@ $list .= <<<EOT
 		<tr style="background:$bgcolor;">
             <td class="tln">{$res['i01id']}</td>
             <td class="tln">{$res['i01name']}</td>
+            <td class="tln">{$res['i01name2']}</td>
+            <td class="tln">{$res['i01qty']}</td>
+            <td class="tln">{$_number_format($res['i01price'])}</td>
             <form name="qfm" method="get" action="items.php">
             <td class="tln">
             <input type="submit" class="btn btn-xs btn-info" value="編集">
@@ -132,7 +144,7 @@ $inner = <<<EOT
 	<input type="hidden" name="d01id" value="0" />
 </form> 
 <div class="main"> 
-
+$err_msg 
 	<form name="qfm" method="get" action="items.php">
 	    <input type="hidden" name="ph" value="100" />
             <input type="submit" class="btn btn-info" value="新規登録">
@@ -149,6 +161,9 @@ $inner = <<<EOT
 			<tr>
                 <th style="width:100px;">ID</th>
                 <th style="width:300px;">商品名</th>
+                <th style="width:300px;">商品名(内訳用)	</th>
+                <th style="width:300px;">数量(内訳用)</th>
+                <th style="width:300px;">金額</th>
                 <th style=""></th>
             </tr>
 		</thead>
@@ -183,14 +198,14 @@ function ph100_rtn(){	#編集
 
             if (isset($in[iID]) && $in[iID]<>"" ) {
 
-                $sth = $dbh->prepare("UPDATE $glb[db_prefix]i01 SET `i01name`=?,`i01name2`=?,`i01qty`=?,`i01gyosha1`=?,`i01gyosha2`=?,`i01gyosha3`=?,`i01gyosha4`=?,`i01gyosha5`=? WHERE `i01id`=?");
-                $sth->execute(array( $in[i01name],$in[i01name2],$in[i01qty],$in[i01gyosha1],$in[i01gyosha2],$in[i01gyosha3],$in[i01gyosha4] ,$in[i01gyosha5],$in[iID] ) );
+                $sth = $dbh->prepare("UPDATE $glb[db_prefix]i01 SET `i01name`=?,`i01name2`=?,`i01qty`=?,`i01price`=?,`i01gyosha1`=?,`i01gyosha2`=?,`i01gyosha3`=?,`i01gyosha4`=?,`i01gyosha5`=?, `i01edittime`=? WHERE `i01id`=?");
+                $sth->execute(array( $in[i01name],$in[i01name2],$in[i01qty],$in[i01price],$in[i01gyosha1],$in[i01gyosha2],$in[i01gyosha3],$in[i01gyosha4] ,$in[i01gyosha5],date("Y/m/d H:i:s"), $in[iID] ) );
 
                 header("Location: ./items.php");
             }else{
 
-                $sth = $dbh->prepare("INSERT INTO $glb[db_prefix]i01 ( `i01name`, `i01name2`, `i01qty`, `i01gyosha1`, `i01gyosha2`, `i01gyosha3`, `i01gyosha4`, `i01gyosha5`) VALUES  (?,?,?,?,?,?,?,?)");
-                $sth->execute(array( $in[i01name],$in[i01name2],$in[i01qty],$in[i01gyosha1],$in[i01gyosha2],$in[i01gyosha3],$in[i01gyosha4] ,$in[i01gyosha5] ) );
+                $sth = $dbh->prepare("INSERT INTO $glb[db_prefix]i01 ( `i01name`, `i01name2`, `i01qty`, `i01price`, `i01gyosha1`, `i01gyosha2`, `i01gyosha3`, `i01gyosha4`, `i01gyosha5`) VALUES  (?,?,?,?,?,?,?,?,?)");
+                $sth->execute(array( $in[i01name],$in[i01name2],$in[i01qty],$in[i01price],$in[i01gyosha1],$in[i01gyosha2],$in[i01gyosha3],$in[i01gyosha4] ,$in[i01gyosha5] ) );
 
                 header("Location: ./items.php");
             }
@@ -210,6 +225,7 @@ function ph100_rtn(){	#編集
             $i01name = $res['i01name'];
             $i01name2 = $res['i01name2'];
             $i01qty = $res['i01qty'];
+            $i01price = $res['i01price'];
             $i01gyosha1 = $res['i01gyosha1'];
             $i01gyosha2 = $res['i01gyosha2'];
             $i01gyosha3 = $res['i01gyosha3'];
@@ -274,6 +290,10 @@ function ph100_rtn(){	#編集
             <tr>
             <th>数量(内訳用)</th>
             <td><input type="number" name="i01qty" value="$i01qty" style="width:200px;" min=0 max=9999 required></td>
+            </tr>
+            <tr>
+            <th>金額</th>
+            <td><input type="number" name="i01price" value="$i01price" style="width:200px;" min=0 max=999999 required></td>
             </tr>
             <tr>
             <th>取扱業者</th>

@@ -154,7 +154,6 @@ $err_msg
                 <th style="width:100px;">ID</th>
                 <th style="width:300px;">業者名</th>
                 <th style=""></th>
-                <th style=""></th>
             </tr>
 		</thead>
 		<tbody>
@@ -187,10 +186,10 @@ function ph100_rtn(){	#編集
         #===================================
         if($in[stts]=="edit"){
 
-            if (isset($in[iID]) && $in[iID]<>"" ) {
+            if (isset($in[cID]) && $in[cID]<>"" ) {
 
-                $sth = $dbh->prepare("UPDATE $glb[db_prefix]c01 SET `c01name`=? WHERE `c01id`=?");
-                $sth->execute(array( $in[c01name], $in[cID] ) );
+                $sth = $dbh->prepare("UPDATE $glb[db_prefix]c01 SET `c01name`=?, `c01edittime`=? WHERE `c01id`=?");
+                $sth->execute(array( $in[c01name], date("Y/m/d H:i:s"), $in[cID] ) );
 
                 header("Location: ./clients.php");
             }else{

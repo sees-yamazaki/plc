@@ -1,0 +1,1 @@
+UPDATE `test_d01` SET `d01moushide`=`d01date` WHERE `d01comm`= '申出書による申し込み';

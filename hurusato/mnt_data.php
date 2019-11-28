@@ -88,14 +88,21 @@ function ph1_rtn(){	#一覧
 	
 	$data_cnt = $dbh->query("select count(*) from $glb[db_prefix]d01 {$sql_where}")->fetchColumn();
 	
-	$sth = $dbh->prepare("select * from $glb[db_prefix]d01 $sql_where order by d01id desc");
+	$sth = $dbh->prepare("select * from $glb[db_prefix]v02 $sql_where order by d01id desc, m01id asc");
 	$sth->execute();
     while($res = $sth->fetch(PDO::FETCH_ASSOC)){
+
+        if ($res['m01qty']>1) {
+            $item = $res['i01name']."x".$res['m01qty']."個";
+        }else{
+            $item = $res['i01name'];
+		}
 		
 $list .= <<<EOT
 
 		<tr style="background:$bgcolor;">
 			<td><a href="javascript:;" onclick="document.efm.d01id.value=$res[d01id];document.efm.submit();">{$res['d01id']}</a></td>
+			<td>{$res['m01id']}</td>
 			<td>{$res['d01date']}</td>
 			<td>{$res['d01name']}</td>
 			<td>{$res['d01zip']}</td>
@@ -105,19 +112,25 @@ $list .= <<<EOT
 			<td>{$glb['pmethod'][$res['d01pmethod']]}</td>
 			<td>{$glb['f_open'][$res['d01f_open']]}</td>
 			<td>{$glb['tokurei'][$res['d01tokurei']]}</td>
+			<td>{$item}</td>
 			<td>{$res['d01comm']}</td>
 			<td>{$res['d01entry_date']}</td>
 			<td>{$res['d01nyukin_kakunin_date']}</td>
 			<td>{$res['d01tel']}</td>
 			<td>{$res['d01fax']}</td>
 			<td>{$res['d01email']}</td>
+			<td>{$res['d01moushide']}</td>
 			<td>{$res['d01cyotei']}</td>
 			<td>{$res['d01furikomihyo']}</td>
 			<td>{$res['d01jyuryosyo']}</td>
 			<td>{$glb['tokusan_offer'][$res['d01tokusan_offer']]}</td>
 			<td>{$res['d01tokusan_hinmei']}</td>
-			<td>{$res['d01hassouirai']}</td>
-			<td>{$res['d01tokusanhin']}</td>
+			<td>{$res['m01hassouirai']}</td>
+			<td>{$res['m01hassoubi']}</td>
+			<td>{$res['c01name']}</td>
+			<td>{$_number_format($res['i01price'])}</td>
+			<td>{$_number_format($res['m01charge'])}</td>
+			<td>{$_number_format($res['m01postage'])}</td>
 
 			<td style="width:90px;" nowrap>
 				<input type="button" class="btn btn-xs btn-info" value="編集" onclick="document.efm.d01id.value=$res[d01id];document.efm.submit();">
@@ -197,7 +210,7 @@ $inner = <<<EOT
 		<form method="post" action="mnt_data.php">
 			<input type="submit" class="btn btn-info" value="新規登録">
 			<input type="hidden" name="ph" value="11">
-<a class="btn btn-info" style="margin-left: 20px;" href="./list_dl.php" download="furusato_output.xlsx">ダウンロード</a>
+			<!--<a class="btn btn-info" style="margin-left: 20px;" href="./list_dl.php" download="furusato_output.xlsx">ダウンロード</a> -->
 		</form>
 
 	</div>
@@ -208,7 +221,8 @@ $inner = <<<EOT
 		<thead>
 			<tr>
 				<th>整理番号</th>
-				<th>受付年月日</th>
+				<th>明細番号</th>
+				<th>寄附年月日</th>
 				<th>氏名（団体名）</th>
 				<th>郵便番号</th>
 				<th>住所（所在地）</th>
@@ -217,12 +231,14 @@ $inner = <<<EOT
 				<th>払込方法</th>
 				<th>公表の有無</th>
 				<th>特例申請</th>
+				<th>商品名</th>
 				<th>備考</th>
 				<th>申込日</th>
 				<th>入金確認日</th>
 				<th>電話番号</th>
 				<th>ＦＡＸ</th>
 				<th>メール</th>
+				<th>文書月日</th>
 				<th>調定</th>
 				<th>振込票</th>
 				<th>受領書</th>
@@ -230,6 +246,10 @@ $inner = <<<EOT
 				<th>特産品名</th>
 				<th>発送依頼</th>
 				<th>発送日</th>
+				<th>業者名</th>
+				<th>商品代</th>
+				<th>箱代</th>
+				<th>送料</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -376,7 +396,7 @@ $inner = <<<EOT
 	<form name="ifm" method="post" action="mnt_data.php">
 		<table class="pubTable">
 			<tr>
-				<th>受付年月日</th>
+				<th>寄附年月日</th>
 				<td><input type="text" name="d01date" value="$in[d01date]" class=" datepicker" style="width:100px;"></td>
 			</tr>
 			<tr>
@@ -923,7 +943,7 @@ $inner = <<<EOT
 	<form name="ifm" method="post" action="mnt_data.php">
 		<table class="pubTable">
 			<tr>
-				<th>受付年月日</th>
+				<th>寄附年月日</th>
 				<td><input type="text" name="d01date" value="$in[d01date]" class=" datepicker" style="width:100px;"></td>
 			</tr>
 			<tr>

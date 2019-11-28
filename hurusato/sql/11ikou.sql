@@ -1,0 +1,1 @@
+INSERT INTO `test_m01`(`d01id`, `m01id`, `m01hassouirai`, `i01id`, `m01qty`, `m01charge`, `m01postage`, `c01id`, `m01hassoubi`) SELECT   D.d01id,1,D.d01hassouirai,I.i01id,0,0,0,0,D.d01tokusanhin      FROM test_d01 D LEFT JOIN test_i01 I on D.d01tokusan_hinmei=I.i01name WHERE D.d01tokusan_hinmei<>'' and D.d01tokusan_hinmei IS NOT NULL ;
