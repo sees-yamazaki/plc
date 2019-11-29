@@ -68,9 +68,13 @@ div#calcsheet {
 
 div#report {
     display: none;
+    width: 1250px;
+    margin: 0 auto;
 }
 
-input.number {
+input.number,
+input.number1,
+input.number2 {
     text-align: right;
 }
 
@@ -86,6 +90,7 @@ div#report table tr td div {
 }
 
 input.lbl {
+    text-align: right;
     border: none;
     background: none;
     -webkit-appearance: none;
@@ -96,7 +101,7 @@ ul.topnav {
     margin: 0;
     padding: 0;
     list-style-type: none;
-    background-color: #333333;
+    background-color: #9b9b9b;
 }
 
 ul.topnav li {
@@ -109,6 +114,7 @@ ul.topnav li a {
     text-align: center;
     text-decoration: none;
     color: white;
+    background-color: #333333;
 }
 
 ul.topnav li a:hover:not(.active) {
@@ -125,12 +131,32 @@ ul.topnav li.right {
     float: right;
 }
 
+ul.topnav li a.lst {
+    background-color: #535353;
+    color: #dddddd;
+}
+
+ul.topnav li a.lst:hover:not(.active) {
+    background-color: #dddddd;
+    color: #4d4d4d;
+}
+
+ul.topnav li a.rvc {
+    background-color: #dddddd;
+    color: #111111;
+}
+
+ul.topnav li a.rvc:hover:not(.active) {
+    background-color: #111111;
+    color: #dddddd;
+}
+
 ul.topnav2 {
     overflow: hidden;
     margin: 0;
     padding: 0;
     list-style-type: none;
-    background-color: #24214d;
+    background-color: #403f4e;
 }
 
 ul.topnav2 li {
@@ -147,12 +173,12 @@ ul.topnav2 li a {
 
 ul.topnav2 li a:hover:not(.active) {
     background-color: #dddddd;
-    color: #202e6d;
+    color: #434652;
 }
 
 ul.topnav2 li a.active {
     background-color: #777777;
-    color: #46409b;
+    color: #7e7d92;
 }
 
 ul.topnav2 li.right {
@@ -167,6 +193,7 @@ ul.topnav2 li.right {
 .hs {
     border-collapse: collapse;
     margin: 0 auto;
+    background-color: #eeeeee;
 }
 
 .hs td,
@@ -174,7 +201,7 @@ ul.topnav2 li.right {
     border-width: 1px 0px;
     border-color: #ccc;
     border-style: solid;
-    padding: 10px;
+    padding: 5px;
     text-align: left;
 }
 
@@ -189,22 +216,26 @@ ul.topnav2 li.right {
 
 .areaA {
     width: 200px;
-    background-color: #eeeeee;
 }
 
 .areaB {
-    width: 150px;
-    background-color: #eeeeee;
+    width: 200px;
 }
 
 .areaC {
     width: 150px;
-    background-color: #eeeeee;
 }
 
 .areaD {
     width: 150px;
-    background-color: #eeeeee;
+}
+
+.widthBunki {
+    width: 160px;
+}
+
+.area50 {
+    width: 50px;
 }
 
 .ff {
@@ -257,6 +288,7 @@ td.tani {
     text-align: left;
 }
 
+th.fline,
 td.fline {
     border: none;
     border: 1px solid black;
@@ -265,6 +297,22 @@ td.fline {
 table.rep {
     border-collapse: collapse;
     margin: 0 auto;
+}
+
+table.repS {
+    border-collapse: collapse;
+    font-size: x-small;
+}
+
+table.repS tr th {
+    width: 110px;
+    text-align: center;
+}
+
+table.repS tr td {
+    width: 110px;
+    text-align: right;
+    padding: 0 10px;
 }
 
 .report1,
@@ -284,9 +332,15 @@ table.rep {
     font-weight: bold;
 }
 
+.blueBold {
+    color: blue;
+    font-weight: bold;
+}
+
 textarea.sakubun {
     width: 98%;
     font-size: 11pt;
+    border: none;
 }
 
 .btn-sakubun {
@@ -307,4 +361,136 @@ textarea.sakubun {
     /*下に動く*/
     border-bottom: none;
     /*線を消す*/
+}
+
+.skbnHr {
+    height: 1px;
+    background-color: #ffffff;
+    border: none;
+    width: 750px;
+}
+
+.skbnHr500 {
+    height: 1px;
+    background-color: #ffffff;
+    border: none;
+    width: 500px;
+}
+
+.skbnGrph {
+    vertical-align: top;
+}
+
+.emptyTd {
+    /* ▼ 斜線はSVG画像を背景として設定 */
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHN0eWxlPSJ3aWR0aDoxMDAlO2hlaWdodDoxMDAlOyI+PGxpbmUgeDE9IjEwMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSIgc3R5bGU9InN0cm9rZTogI2JiYmJiYjtzdHJva2Utd2lkdGg6IDE7Ij48L2xpbmU+PC9zdmc+');
+}
+
+button.ntc {
+    cursor: pointer;
+    background: #049559;
+    width: 100%;
+    border: 0;
+    padding: 5px;
+    color: #ffffff;
+}
+
+button.ntc:hover {
+    background: #148d1a;
+}
+
+button.ntc2 {
+    cursor: pointer;
+    background: #040695;
+    width: 100%;
+    border: 0;
+    padding: 5px;
+    color: #ffffff;
+}
+
+button.ntc2:hover {
+    background: #14208d;
+}
+
+button.del {
+    cursor: pointer;
+    background: #950404;
+    border: 0;
+    padding: 5px;
+    color: #ffffff;
+}
+
+button.del:hover {
+    background: #9b2929;
+}
+
+table.cntr {
+    width: 40%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+table.cntr td {
+    background-color: #eee;
+}
+
+.btnBlue {
+    display: inline-block;
+    max-width: 180px;
+    text-align: left;
+    border: 2px solid #4b61c3;
+    font-size: 12px;
+    color: #4b9dc3;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: .4s;
+}
+
+.btnBlue:hover {
+    background-color: #4b61c3;
+    border-color: #85a3e5;
+    color: #FFF;
+}
+
+.btnRed {
+    display: inline-block;
+    max-width: 180px;
+    text-align: left;
+    border: 2px solid #c34b4b;
+    font-size: 12px;
+    color: #c34b4b;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: .4s;
+}
+
+.btnRed:hover {
+    background-color: #c34b4b;
+    border-color: #e58585;
+    color: #FFF;
+}
+
+.btnOrange {
+    display: inline-block;
+    max-width: 180px;
+    text-align: left;
+    border: 2px solid #c38f4b;
+    font-size: 12px;
+    color: #c3854b;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: .4s;
+}
+
+.btnOrange:hover {
+    background-color: #c37b4b;
+    border-color: #e5a885;
+    color: #FFF;
 }

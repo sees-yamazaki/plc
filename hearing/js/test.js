@@ -38,11 +38,6 @@ function demo() {
 
 }
 
-function demo2() {
-    demo();
-    xxx();
-}
-
 // // 足し算
 // BigNumber(0.1).plus(0.2);  // '0.3'
 // // 引き算

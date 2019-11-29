@@ -2223,22 +2223,62 @@ function sleep(waitMsec) {
     while (new Date() - startMsec < waitMsec);
 }
 
+function frm1(vle, dp) {
+    nf = new Intl.NumberFormat("ja-JP", { useGrouping: true, style: 'decimal', minimumFractionDigits: dp, maximumFractionDigits: dp });
+    return nf.format(vle);
+}
+
+function plusUriage() {
+    _d29 = document.getElementById("d29");
+    d29 = getValue(_d29);
+    if (d29 == "") { d29 = 0 };
+    d29 = myPlus(d29, 0.5);
+    document.getElementById('scrl1').value = d29;
+    _d29.value = frm1(d29, 1);
+}
+
+function minusUriage() {
+    _d30 = document.getElementById("d29");
+    d29 = getValue(_d29);
+    if (d29 == "") { d29 = 0 };
+    d29 = mySubtract(d29, 0.5);
+    document.getElementById('scrl1').value = d29;
+    _d29.value = frm1(d29, 1);
+
+}
+
 function plusGenka() {
     _d30 = document.getElementById("d30");
     d30 = getValue(_d30);
-    console.log("d30 - " + d30);
     if (d30 == "") { d30 = 0 };
     d30 = myPlus(d30, 0.1);
-    _d30.value = d30;
+    _d30.value = frm1(d30, 1);
 
 }
 
 function minusGenka() {
     _d30 = document.getElementById("d30");
     d30 = getValue(_d30);
-    console.log("d30 - " + d30);
     if (d30 == "") { d30 = 0 };
     d30 = mySubtract(d30, 0.1);
-    _d30.value = d30;
+    _d30.value = frm1(d30, 1);
+
+}
+
+function plusStaff() {
+    _d31 = document.getElementById("d31");
+    d31 = getValue(_d31);
+    if (d31 == "") { d31 = 0 };
+    d31 = myPlus(d31, 1);
+    _d31.value = frm1(d31, 0);
+
+}
+
+function minusStaff() {
+    _d31 = document.getElementById("d31");
+    d31 = getValue(_d31);
+    if (d31 == "") { d31 = 0 };
+    d31 = mySubtract(d31, 1);
+    _d31.value = frm1(d31, 0);
 
 }

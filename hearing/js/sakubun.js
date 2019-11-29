@@ -1449,7 +1449,7 @@ function sakubun(flg) {
                     { targetAxisIndex: 1 }, // 第2系列は右のY時を使用
                 ],
                 legend: { position: 'bottom' },
-                width: 400,
+                width: 500,
                 height: 400,
                 annotation: {
                     1: {
@@ -1510,7 +1510,7 @@ function sakubun(flg) {
                     { targetAxisIndex: 1 }, // 第2系列は右のY時を使用
                 ],
                 legend: { position: 'bottom' },
-                width: 400,
+                width: 500,
                 height: 400
             };
 

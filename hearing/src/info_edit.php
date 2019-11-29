@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+// ログイン状態チェック
+if (!isset($_SESSION["NAME"])) {
+    header("Location: logoff.php");
+    exit;
+}
+
 // タイムゾーンを設定
 date_default_timezone_set('Asia/Tokyo');
 
@@ -10,6 +16,8 @@ require './db/infos.php';
 $infos = new cls_infos();
 
 try {
+    $iSeq = $_POST['iSeq'];
+    $infos->infos_seq = $_POST['iSeq'];
     $infos->title1 = $_POST['title1'];
     $infos->title2 = $_POST['title2'];
     $infos->d2 = $_POST['d2'];
@@ -50,18 +58,15 @@ try {
     $infos->a96r = $_POST['a96r'];
     
     if (isset($_POST['infoRec'])) {
-        // if (!empty($sSeq)) {
-        //     updateSystem($system);
-        // } else {
-             insertinfos($infos);
-        // }
+        insertinfos($infos);
+
         if (empty($errorMessage)) {
             header("Location: ./info_list.php");
         }
-    // } elseif (isset($_POST['infoRec'])) {
-    //     deleteSystem($system);
+    } elseif (isset($_POST['infoUpdate'])) {
+        updateinfos($infos);
 
-    //     header("Location: ./systems_list.php");
+         header("Location: ./info_list.php");
     } else {
         //$system = getSystem($sSeq);
     }
@@ -80,7 +85,7 @@ try {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-    <title></title>
+    <title>HearingSheet</title>
     <link rel="stylesheet" href="../css/main.css" />
     <script src="../js/main.js"></script>
 </head>
@@ -93,6 +98,47 @@ try {
                 <li><a id="back" href="#" onclick="back1();">戻る</a></li>
             </ul>
         </div>
+         <input type='hidden' name='stts' value='back'>
+            <input type="hidden" name="iSeq" value="<?php echo $iSeq;  ?>">
+            <input type="hidden" name="users_seq" value="<?php echo $_POST['users_seq'];  ?>">
+            <input type="hidden" name="title1" value="<?php echo $_POST['title1'];  ?>">
+            <input type="hidden" name="title2" value="<?php echo $_POST['title2'];  ?>">
+            <input type="hidden" name="d2" value="<?php echo $_POST['d2'];  ?>">
+            <input type="hidden" name="d3" value="<?php echo $_POST['d3'];  ?>">
+            <input type="hidden" name="d4" value="<?php echo $_POST['d4'];  ?>">
+            <input type="hidden" name="d6" value="<?php echo $_POST['d6'];  ?>">
+            <input type="hidden" name="d8" value="<?php echo $_POST['d8'];  ?>">
+            <input type="hidden" name="f8" value="<?php echo $_POST['f8'];  ?>">
+            <input type="hidden" name="d11" value="<?php echo $_POST['d11'];  ?>">
+            <input type="hidden" name="d12" value="<?php echo $_POST['d12'];  ?>">
+            <input type="hidden" name="e13" value="<?php echo $_POST['e13'];  ?>">
+            <input type="hidden" name="d29" value="<?php echo $_POST['d29'];  ?>">
+            <input type="hidden" name="d30" value="<?php echo $_POST['d30'];  ?>">
+            <input type="hidden" name="d31" value="<?php echo $_POST['d31'];  ?>">
+            <input type="hidden" name="l29" value="<?php echo $_POST['l29'];  ?>">
+            <input type="hidden" name="l30" value="<?php echo $_POST['l30'];  ?>">
+            <input type="hidden" name="l31" value="<?php echo $_POST['l31'];  ?>">
+            <input type="hidden" name="d49" value="<?php echo $_POST['d49'];  ?>">
+            <input type="hidden" name="d50" value="<?php echo $_POST['d50'];  ?>">
+            <input type="hidden" name="e51" value="<?php echo $_POST['e51'];  ?>">
+            <input type="hidden" name="c68" value="<?php echo $_POST['c68'];  ?>">
+            <input type="hidden" name="c69" value="<?php echo $_POST['c69'];  ?>">
+            <input type="hidden" name="l73" value="<?php echo $_POST['l73'];  ?>">
+            <input type="hidden" name="c88" value="<?php echo $_POST['c88'];  ?>">
+            <input type="hidden" name="c89" value="<?php echo $_POST['c89'];  ?>">
+            <input type="hidden" name="i18" value="<?php echo $_POST['i18'];  ?>">
+            <input type="hidden" name="i56" value="<?php echo $_POST['i56'];  ?>">
+            <input type="hidden" name="a1r" value="<?php echo $_POST['a1r'];  ?>">
+            <input type="hidden" name="a6r" value="<?php echo $_POST['a6r'];  ?>">
+            <input type="hidden" name="a11r" value="<?php echo $_POST['a11r'];  ?>">
+            <input type="hidden" name="a26r" value="<?php echo $_POST['a26r'];  ?>">
+            <input type="hidden" name="a29r" value="<?php echo $_POST['a29r'];  ?>">
+            <input type="hidden" name="a44r" value="<?php echo $_POST['a44r'];  ?>">
+            <input type="hidden" name="a51r" value="<?php echo $_POST['a51r'];  ?>">
+            <input type="hidden" name="a62r" value="<?php echo $_POST['a62r'];  ?>">
+            <input type="hidden" name="a75r" value="<?php echo $_POST['a75r'];  ?>">
+            <input type="hidden" name="a87r" value="<?php echo $_POST['a87r'];  ?>">
+            <input type="hidden" name="a96r" value="<?php echo $_POST['a96r'];  ?>">
     </form>
 
     <div id="content">
@@ -102,6 +148,8 @@ try {
         </div><br>
 
         <form class="" action='' method='POST' onsubmit="return addcheck()">
+            <input type="hidden" name="iSeq" value="<?php echo $iSeq;  ?>">
+            <input type="hidden" name="users_seq" value="<?php echo $_POST['users_seq'];  ?>">
             <input type="hidden" name="d2" value="<?php echo $_POST['d2'];  ?>">
             <input type="hidden" name="d3" value="<?php echo $_POST['d3'];  ?>">
             <input type="hidden" name="d4" value="<?php echo $_POST['d4'];  ?>">
@@ -142,11 +190,25 @@ try {
             <table class="hs">
                 <tr>
                     <td style="width:600px">
-                        タイトル１：<input type=text name="title1" class="del wdtM" required><br>
-                        タイトル２：<input type=text name="title2" class="del wdtM"></td>
+                        登録ユーザー：<?php echo $_SESSION['NAME'] ?><br><br>
+                        タイトル１：<input type=text name="title1" class="wdtM" value="<?php echo $_POST['title1']; ?>" required><br><br>
+                        タイトル２：<input type=text name="title2" class="wdtM" value="<?php echo $_POST['title2']; ?>"></td>
                 </tr>
                 <tr>
-                    <td><input type=submit name="infoRec" class="del wdtLL" value="登録"></td>
+                    <?php if (!isset($iSeq) || $iSeq=="") { ?>
+                        <button type=submit name="infoRec" class="ntc2 wdtLL">登録する</button>
+                    <?php } elseif ($_POST['users_seq']==$_SESSION['SEQ']) { ?>
+                        <td>
+                            <button type=submit name="infoUpdate" class="ntc wdtLL">更新する</button>
+                            <br><br>
+                            <button type=submit name="infoRec" class="ntc2 wdtLL">新しいデータとして登録する</button>
+                        </td>
+                    <?php } else { ?>
+                        <td>
+                            他者の作成データのため上書きできません。<br><br>
+                            <button type=submit name="infoRec" class="ntc2 wdtLL">新しいデータとして登録する</button>
+                        </td>
+                    <?php } ?>
                 </tr>
             </table>
 

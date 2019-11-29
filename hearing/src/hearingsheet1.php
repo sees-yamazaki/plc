@@ -3,10 +3,15 @@
 // セッション開始
 session_start();
 
-$ini = parse_ini_file('../common.ini', FALSE);
-$_SESSION["INI"] = $ini;
+// $ini = parse_ini_file('../common.ini', false);
+// $_SESSION["INI"] = $ini;
 
-$_SESSION["MY_ROOT"] = $_SERVER['DOCUMENT_ROOT'].$ini['schema'];
+// $_SESSION["MY_ROOT"] = $_SERVER['DOCUMENT_ROOT'].$ini['schema'];
+    // ログイン状態チェック
+    if (!isset($_SESSION["NAME"])) {
+        header("Location: logoff.php");
+        exit;
+    }
 
 
 // タイムゾーンを設定
@@ -14,8 +19,9 @@ date_default_timezone_set('Asia/Tokyo');
 
 
 
+$stts = $_POST['stts'];
 $iSeq = $_POST['iSeq'];
- 
+
 
 require_once './db/infos.php';
 $info = array();
@@ -31,7 +37,7 @@ $test = 1;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-    <title></title>
+    <title>HearingSheet</title>
     <link rel="stylesheet" href="../css/main.css" />
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="../js/main.js"></script>
@@ -42,11 +48,14 @@ $test = 1;
 </head>
 
 <body>
-    <?php if($info->title1==""){ ?>
+    <?php if (!isset($stts)) { ?>
     <input type="hidden" id="cnt" value="0">
-    <?php }else{ ?>
+    <?php }else if ($stts=="edit") { ?>
     <input type="hidden" id="cnt" value="1">
     <input type="hidden" id="iSeq" value="<?php echo $iSeq;  ?>">
+    <input type="hidden" id="users_seqx" value="<?php echo $info->users_seq;  ?>">
+    <input type="hidden" id="title1x" value="<?php echo $info->title1;  ?>">
+    <input type="hidden" id="title2x" value="<?php echo $info->title2;  ?>">
     <input type="hidden" id="d2x" value="<?php echo $info->d2;  ?>">
     <input type="hidden" id="d3x" value="<?php echo $info->d3;  ?>">
     <input type="hidden" id="d4x" value="<?php echo $info->d4;  ?>">
@@ -83,10 +92,68 @@ $test = 1;
     <input type="hidden" id="a75rx" value="<?php echo $info->a75r;  ?>">
     <input type="hidden" id="a87rx" value="<?php echo $info->a87r;  ?>">
     <input type="hidden" id="a96rx" value="<?php echo $info->a96r;  ?>">
+    <?php } else { ?>
+    <input type="hidden" id="cnt" value="1">
+    <input type="hidden" id="iSeq" value="<?php echo $iSeq;  ?>">
+    <input type="hidden" id="users_seqx" value="<?php echo $_POST['users_seq'];  ?>">
+    <input type="hidden" id="title1x" value="<?php echo $_POST['title1'];  ?>">
+    <input type="hidden" id="title2x" value="<?php echo $_POST['title2'];  ?>">
+    <input type="hidden" id="d2x" value="<?php echo $_POST['d2'];  ?>">
+    <input type="hidden" id="d3x" value="<?php echo $_POST['d3'];  ?>">
+    <input type="hidden" id="d4x" value="<?php echo $_POST['d4'];  ?>">
+    <input type="hidden" id="d6x" value="<?php echo $_POST['d6'];  ?>">
+    <input type="hidden" id="d8x" value="<?php echo $_POST['d8'];  ?>">
+    <input type="hidden" id="f8x" value="<?php echo $_POST['f8'];  ?>">
+    <input type="hidden" id="d11x" value="<?php echo $_POST['d11'];  ?>">
+    <input type="hidden" id="d12x" value="<?php echo $_POST['d12'];  ?>">
+    <input type="hidden" id="e13x" value="<?php echo $_POST['e13'];  ?>">
+    <input type="hidden" id="d29x" value="<?php echo $_POST['d29'];  ?>">
+    <input type="hidden" id="d30x" value="<?php echo $_POST['d30'];  ?>">
+    <input type="hidden" id="d31x" value="<?php echo $_POST['d31'];  ?>">
+    <input type="hidden" id="l29x" value="<?php echo $_POST['l29'];  ?>">
+    <input type="hidden" id="l30x" value="<?php echo $_POST['l30'];  ?>">
+    <input type="hidden" id="l31x" value="<?php echo $_POST['l31'];  ?>">
+    <input type="hidden" id="d49x" value="<?php echo $_POST['d49'];  ?>">
+    <input type="hidden" id="d50x" value="<?php echo $_POST['d50'];  ?>">
+    <input type="hidden" id="e51x" value="<?php echo $_POST['e51'];  ?>">
+    <input type="hidden" id="c68x" value="<?php echo $_POST['c68'];  ?>">
+    <input type="hidden" id="c69x" value="<?php echo $_POST['c69'];  ?>">
+    <input type="hidden" id="l73x" value="<?php echo $_POST['l73'];  ?>">
+    <input type="hidden" id="c88x" value="<?php echo $_POST['c88'];  ?>">
+    <input type="hidden" id="c89x" value="<?php echo $_POST['c89'];  ?>">
+    <input type="hidden" id="i18x" value="<?php echo $_POST['i18'];  ?>">
+    <input type="hidden" id="i56x" value="<?php echo $_POST['i56'];  ?>">
+    <input type="hidden" id="a1rx" value="<?php echo $_POST['a1r'];  ?>">
+    <input type="hidden" id="a6rx" value="<?php echo $_POST['a6r'];  ?>">
+    <input type="hidden" id="a11rx" value="<?php echo $_POST['a11r'];  ?>">
+    <input type="hidden" id="a26rx" value="<?php echo $_POST['a26r'];  ?>">
+    <input type="hidden" id="a29rx" value="<?php echo $_POST['a29r'];  ?>">
+    <input type="hidden" id="a44rx" value="<?php echo $_POST['a44r'];  ?>">
+    <input type="hidden" id="a51rx" value="<?php echo $_POST['a51r'];  ?>">
+    <input type="hidden" id="a62rx" value="<?php echo $_POST['a62r'];  ?>">
+    <input type="hidden" id="a75rx" value="<?php echo $_POST['a75r'];  ?>">
+    <input type="hidden" id="a87rx" value="<?php echo $_POST['a87r'];  ?>">
+    <input type="hidden" id="a96rx" value="<?php echo $_POST['a96r'];  ?>">
     <?php } ?>
 
     <form id="infos" name="infos" action="info_edit.php" method="POST">
-        <?php include './menu.php'; ?>
+        <input type="hidden" name="iSeq" value="<?php echo $iSeq; ?>">
+        <input type="hidden" id="title1" name="title1" value="">
+        <input type="hidden" id="title2" name="title2" value="">
+        <input type="hidden" id="users_seq" name="users_seq" value="">
+        <div class='menu no_print'>
+            <ul class='topnav'>
+                <li><a id="page1" href="#" onclick="page1();">入力シート</a></li>
+                <li><a id="page2" href="#" onclick="page2();">計算結果</a></li>
+                <li><a id="page3" href="#" onclick="page3();">自動作文</a></li>
+                <li><a href='javascript:isReset()'>リセット</a></li>
+                <li><a id="infoRec" href="javascript:sakubunCheck()" class="lst">登録する</a></li>
+                <li><a id="info" href="javascript:showList()" class="lst">登録情報</a></li>
+                <li><a id="info" href="javascript:showUser()" class="lst">ユーザ</a></li>
+                <li><input type="button" onclick="demo()" value="デモ用数値">
+                <li class='right'><a href='./logoff.php' class="rvc">ログオフ</a></li>
+            </ul>
+        </div>
 
         <div id="content">
 
@@ -130,8 +197,8 @@ $test = 1;
                     <tr>
                         <th colspan=2>生菓子：焼菓子　＝</th>
                         <td>
-                            <input type="text" class="number wdtSS" id="d8" name="d8">
-                            ：<input type="text" class="number wdtSS" id="f8" name="f8">
+                            <input type="text" class="number wdtSS" style="text-align: center" id="d8" name="d8">
+                            ：<input type="text" class="number wdtSS" style="text-align: center" id="f8" name="f8">
                         </td>
                         <td></td>
                     </tr>
@@ -161,7 +228,7 @@ $test = 1;
                     <tr>
                         <th></th>
                         <td>（材料原価）</td>
-                        <td>率 <input type="text" class="number wdtS" id="e13" name="e13">%</td>
+                        <td>率 <input type="text" class="number1 wdtS" id="e13" name="e13">%</td>
                         <td></td>
                     </tr>
                     <tr>
@@ -227,15 +294,19 @@ $test = 1;
                     <colgroup span="1" class="areaD"></colgroup>
                     <tr>
                         <th>売上成長</th>
-                        <td><input type="number" class="number" id="d29" name="d29" min="100" max="200" step="0.5"
+                        <td><input type="number" class="number1 wdtM" id="d29" name="d29" min="100" max="200" step="0.5"
                                 onchange="document.getElementById('scrl1').value=this.value">%</td>
-                        <td colspan=2><input type="range" id="scrl1" value="1" min="100" max="200" step="0.5"
+                        <td colspan=2>
+                            <input type="button" class="tgl" style="font-size:10pt;" value="＜" onclick="minusUriage();">
+                            <input type="button" class="tgl" style="font-size:10pt;" value="＞" onclick="plusUriage();">
+                            &nbsp;&nbsp;&nbsp;
+                            <input type="range" id="scrl1" value="1" min="100" max="200" step="0.5"
                                 oninput="document.getElementById('d29').value=this.value"></td>
                     </tr>
                     <tr>
                         <th>製造原価低減</th>
                         <td colspan=2>
-                            マイナス<input type="number" class="number wdtS" id="d30" name="d30" min="0" max="100"
+                            マイナス<input type="number" class="number wdtSS" id="d30" name="d30" min="0" max="100"
                                 step="0.1">%
                             &nbsp;&nbsp;&nbsp;
                             <input type="button" class="tgl" style="font-size:10pt;" value="＜" onclick="minusGenka();">
@@ -245,14 +316,18 @@ $test = 1;
                     </tr>
                     <tr>
                         <th>製造　増員数</th>
-                        <td>プラス<input type="number" class="number wdtS" id="d31" name="d31" min="0" max="999"></td>
-                        <td>名</td>
+                        <td>プラス<input type="number" class="number wdtS" id="d31" name="d31" min="0" max="999">名</td>
+                        <td>
+                            <input type="button" class="tgl" style="font-size:10pt;" value="＜" onclick="minusStaff();">
+                            <input type="button" class="tgl" style="font-size:10pt;" value="＞" onclick="plusStaff();">
+                        </td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>生菓子：焼菓子　＝</th>
-                        <td><input type="text" class="lbl wdtSSS" id="d32" name="d32" readonly>：<input type="text"
-                                class="lbl wdtSSS" id="f32" name="f32" readonly></td>
+                        <td><input type="text" class="lbl wdtSSS" style="text-align: center" id="d32" name="d32"
+                                readonly>：<input type="text" class="lbl wdtSSS" style="text-align: center" id="f32"
+                                name="f32" readonly></td>
                         <td></td>
                         <td></td>
                     </tr>
@@ -294,7 +369,7 @@ $test = 1;
                     </tr>
                     <tr>
                         <th>補助率</th>
-                        <td><select style="f130P" id="l33">
+                        <td><select class="f130P" id="l33">
                                 <option value=0>1/2
                                 <option value=1>2/3
                             </select></td>
@@ -309,7 +384,7 @@ $test = 1;
                     </tr>
                     <tr>
                         <th>一括償却</th>
-                        <td><select style="f130P" id="l35">
+                        <td><select class="f130P" id="l35">
                                 <option value=0>する
                                 <option value=1>しない
                             </select></td>
@@ -344,17 +419,20 @@ $test = 1;
                     <tr>
                         <td>経常利益 成長</td>
                         <td><input type="text" class="lbl" id="d35" name="d35" readonly></td>
-                        <td><input type="text" class="lbl" id="f35" name="f35" readonly></td>
+                        <td><input type="text" class="lbl" style="text-align: center;" id="f35" name="f35" readonly>
+                        </td>
                     </tr>
                     <tr>
                         <td>付加価値額 成長</td>
                         <td><input type="text" class="lbl" id="d36" name="d36" readonly></td>
-                        <td><input type="text" class="lbl" id="f36" name="f36" readonly></td>
+                        <td><input type="text" class="lbl" style="text-align: center;" id="f36" name="f36" readonly>
+                        </td>
                     </tr>
                     <tr>
                         <td>労働生産性 成長</td>
                         <td><input type="text" class="lbl" id="d37" name="d37" readonly></td>
-                        <td><input type="text" class="lbl" id="f37" name="f37" readonly></td>
+                        <td><input type="text" class="lbl" style="text-align: center;" id="f37" name="f37" readonly>
+                        </td>
                     </tr>
                 </table>
 
@@ -421,7 +499,7 @@ $test = 1;
                     <tr>
                         <th></th>
                         <td>（材料原価）</td>
-                        <td>率 <input type="text" class="number wdtS" id="e51" name="e51">%</td>
+                        <td>率 <input type="text" class="number1 wdtS" id="e51" name="e51">%</td>
                         <td></td>
                     </tr>
                     <tr>
@@ -499,15 +577,17 @@ $test = 1;
                     </tr>
                     <tr>
                         <td>経常利益 成長</td>
-                        <td><input type="number" class="number wdtSS" id="c68" name="c68">%</td>
+                        <td><input type="number" class="number wdtSS" id="c68" name="c68" value="1">%</td>
                         <td><input type="text" class="lbl" id="d68" name="d68" readonly></td>
-                        <td><input type="text" class="lbl" id="g68" name="g68" readonly></td>
+                        <td><input type="text" class="lbl" style="text-align: center;" id="g68" name="g68" readonly>
+                        </td>
                     </tr>
                     <tr>
                         <td>付加価値額 成長</td>
-                        <td><input type="number" class="number wdtSS" id="c69" name="c69">%</td>
+                        <td><input type="number" class="number wdtSS" id="c69" name="c69" value="3">%</td>
                         <td><input type="text" class="lbl" id="d69" name="d69" readonly></td>
-                        <td><input type="text" class="lbl" id="g69" name="g69" readonly></td>
+                        <td><input type="text" class="lbl" style="text-align: center;" id="g69" name="g69" readonly>
+                        </td>
                     </tr>
                 </table>
 
@@ -516,11 +596,9 @@ $test = 1;
                 <table class='hs'>
                     <colgroup span="1" class="areaA"></colgroup>
                     <colgroup span="1" class="areaB"></colgroup>
-                    <colgroup span="1" class="areaC"></colgroup>
-                    <colgroup span="1" class="areaD"></colgroup>
                     <tr>
-                        <th colspan=2>有形固定資産</th>
-                        <td colspan=2><input type="text" class="number" id="l73" name="l73"></td>
+                        <th>有形固定資産</th>
+                        <td><input type="text" class="number" id="l73" name="l73"></td>
                     </tr>
                 </table>
                 <br><br>
@@ -539,7 +617,8 @@ $test = 1;
                         <td><input type="text" class="lbl" id="c73" name="c73" readonly></td>
                         <td><input type="text" class="lbl" id="d73" name="d73" readonly></td>
                         <td><input type="text" class="lbl" id="e73" name="e73" readonly></td>
-                        <td><input type="text" class="lbl" id="g73" name="g73" readonly></td>
+                        <td><input type="text" class="lbl" style="text-align: center;" id="g73" name="g73" readonly>
+                        </td>
                     </tr>
                 </table>
 
@@ -549,16 +628,8 @@ $test = 1;
                 <h3>３．損益分岐点の推移</h3>
 
                 <table class='hs'>
-                    <colgroup span="1" class="areaA"></colgroup>
-                    <colgroup span="1" class="areaB"></colgroup>
-                    <colgroup span="1" class="areaC"></colgroup>
-                    <colgroup span="1" class="areaD"></colgroup>
-                    <colgroup span="1" class="areaD"></colgroup>
-                    <colgroup span="1" class="areaD"></colgroup>
-                    <colgroup span="1" class="areaD"></colgroup>
-                    <colgroup span="1" class="areaD"></colgroup>
                     <tr>
-                        <th></th>
+                        <th><input type="text" class="lbl" readonly></th>
                         <th>前期実績</th>
                         <th>1年目</th>
                         <th>2年目</th>
@@ -569,32 +640,32 @@ $test = 1;
                     </tr>
                     <tr>
                         <th>売上高</th>
-                        <td><input type="text" class="lbl" id="c77" name="c77" readonly></td>
-                        <td><input type="text" class="lbl" id="d77" name="d77" readonly></td>
-                        <td><input type="text" class="lbl" id="e77" name="e77" readonly></td>
-                        <td><input type="text" class="lbl" id="g77" name="g77" readonly></td>
-                        <td><input type="text" class="lbl" id="h77" name="h77" readonly></td>
-                        <td><input type="text" class="lbl" id="i77" name="i77" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="c77" name="c77" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="d77" name="d77" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="e77" name="e77" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="g77" name="g77" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="h77" name="h77" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="i77" name="i77" readonly></td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>損益分岐点売上高</th>
-                        <td><input type="text" class="lbl" id="c78" name="c78" readonly></td>
-                        <td><input type="text" class="lbl" id="d78" name="d78" readonly></td>
-                        <td><input type="text" class="lbl" id="e78" name="e78" readonly></td>
-                        <td><input type="text" class="lbl" id="g78" name="g78" readonly></td>
-                        <td><input type="text" class="lbl" id="h78" name="h78" readonly></td>
-                        <td><input type="text" class="lbl" id="i78" name="i78" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="c78" name="c78" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="d78" name="d78" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="e78" name="e78" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="g78" name="g78" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="h78" name="h78" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="i78" name="i78" readonly></td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>損益分岐点比率</th>
-                        <td><input type="text" class="lbl" id="c79" name="c79" readonly></td>
-                        <td><input type="text" class="lbl" id="d79" name="d79" readonly></td>
-                        <td><input type="text" class="lbl" id="e79" name="e79" readonly></td>
-                        <td><input type="text" class="lbl" id="g79" name="g79" readonly></td>
-                        <td><input type="text" class="lbl" id="h79" name="h79" readonly></td>
-                        <td><input type="text" class="lbl" id="i79" name="i79" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="c79" name="c79" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="d79" name="d79" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="e79" name="e79" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="g79" name="g79" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="h79" name="h79" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="i79" name="i79" readonly></td>
                         <td></td>
                     </tr>
                 </table>
@@ -614,11 +685,10 @@ $test = 1;
                 <table class='hs'>
                     <colgroup span="1" class="areaA"></colgroup>
                     <colgroup span="1" class="areaB"></colgroup>
-                    <colgroup span="1" class="areaC"></colgroup>
-                    <colgroup span="1" class="areaD"></colgroup>
                     <tr>
                         <th>判定</th>
-                        <td><input type="text" class="lbl" id="c83" name="c83" readonly></td>
+                        <td><input type="text" class="lbl" style="text-align: center;" id="c83" name="c83" readonly>
+                        </td>
                     </tr>
                 </table>
 
@@ -643,23 +713,21 @@ $test = 1;
                     <colgroup span="1" class="areaD"></colgroup>
                     <tr>
                         <th>法人税率</th>
-                        <td><input type="number" class="number wdtSS" id="c88" name="c88" step="0.1">%</td>
+                        <td><input type="number" class="number2 wdtS" id="c88" name="c88" step="0.01" value="25.00">%
+                        </td>
                     </tr>
                     <tr>
                         <th>資本コスト</th>
-                        <td><input type="number" class="number wdtSS" id="c89" name="c89">%</td>
+                        <td><input type="number" class="number2 wdtS" id="c89" name="c89" step="0.01" value="10.00">%
+                        </td>
                     </tr>
                 </table>
 
                 <br><br>
 
                 <table class='hs'>
-                    <colgroup span="1" class="areaA"></colgroup>
-                    <colgroup span="1" class="areaB"></colgroup>
-                    <colgroup span="1" class="areaC"></colgroup>
-                    <colgroup span="4" class="areaD"></colgroup>
                     <tr>
-                        <th></th>
+                        <th><input type="text" class="lbl widthBunki" readonly></th>
                         <th>投資時点</th>
                         <th>1年目</th>
                         <th>2年目</th>
@@ -669,83 +737,83 @@ $test = 1;
                     </tr>
                     <tr>
                         <th>①CIF（営業CF）</th>
-                        <td rowspan=6></td>
-                        <td><input type="text" class="lbl" id="d93" name="d93" readonly></td>
-                        <td><input type="text" class="lbl" id="e93" name="e93" readonly></td>
-                        <td><input type="text" class="lbl" id="f93" name="f93" readonly></td>
-                        <td><input type="text" class="lbl" id="g93" name="g93" readonly></td>
-                        <td><input type="text" class="lbl" id="h93" name="h93" readonly></td>
+                        <td rowspan=6 class="emptyTd"></td>
+                        <td><input type="text" class="lbl widthBunki" id="d93" name="d93" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="e93" name="e93" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="f93" name="f93" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="g93" name="g93" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="h93" name="h93" readonly></td>
                     </tr>
                     <tr>
                         <th>①'税引き後CIF（営業CF）</th>
-                        <td><input type="text" class="lbl" id="d94" name="d94" readonly></td>
-                        <td><input type="text" class="lbl" id="e94" name="e94" readonly></td>
-                        <td><input type="text" class="lbl" id="f94" name="f94" readonly></td>
-                        <td><input type="text" class="lbl" id="g94" name="g94" readonly></td>
-                        <td><input type="text" class="lbl" id="h94" name="h94" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="d94" name="d94" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="e94" name="e94" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="f94" name="f94" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="g94" name="g94" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="h94" name="h94" readonly></td>
                     </tr>
                     <tr>
                         <th>　設備の減価償却費</th>
-                        <td><input type="text" class="lbl" id="d95" name="d95" readonly></td>
-                        <td><input type="text" class="lbl" id="e95" name="e95" readonly></td>
-                        <td><input type="text" class="lbl" id="f95" name="f95" readonly></td>
-                        <td><input type="text" class="lbl" id="g95" name="g95" readonly></td>
-                        <td><input type="text" class="lbl" id="h95" name="h95" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="d95" name="d95" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="e95" name="e95" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="f95" name="f95" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="g95" name="g95" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="h95" name="h95" readonly></td>
                     </tr>
                     <tr>
                         <th>②減価償却費のﾀｯｸｽｼｰﾙﾄﾞ</th>
-                        <td><input type="text" class="lbl" id="d96" name="d96" readonly></td>
-                        <td><input type="text" class="lbl" id="e96" name="e96" readonly></td>
-                        <td><input type="text" class="lbl" id="f96" name="f96" readonly></td>
-                        <td><input type="text" class="lbl" id="g96" name="g96" readonly></td>
-                        <td><input type="text" class="lbl" id="h96" name="h96" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="d96" name="d96" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="e96" name="e96" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="f96" name="f96" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="g96" name="g96" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="h96" name="h96" readonly></td>
                     </tr>
                     <tr>
                         <th>正味CF計（①'＋②）</th>
-                        <td><input type="text" class="lbl" id="d97" name="d97" readonly></td>
-                        <td><input type="text" class="lbl" id="e97" name="e97" readonly></td>
-                        <td><input type="text" class="lbl" id="f97" name="f97" readonly></td>
-                        <td><input type="text" class="lbl" id="g97" name="g97" readonly></td>
-                        <td><input type="text" class="lbl" id="h97" name="h97" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="d97" name="d97" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="e97" name="e97" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="f97" name="f97" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="g97" name="g97" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="h97" name="h97" readonly></td>
                     </tr>
                     <tr>
                         <th>割引率</th>
-                        <td><input type="text" class="lbl" id="d98" name="d98" readonly></td>
-                        <td><input type="text" class="lbl" id="e98" name="e98" readonly></td>
-                        <td><input type="text" class="lbl" id="f98" name="f98" readonly></td>
-                        <td><input type="text" class="lbl" id="g98" name="g98" readonly></td>
-                        <td><input type="text" class="lbl" id="h98" name="h98" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="d98" name="d98" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="e98" name="e98" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="f98" name="f98" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="g98" name="g98" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="h98" name="h98" readonly></td>
                     </tr>
                     <tr>
                         <th>①”税引後CIF（営業CF）</th>
-                        <td><input type="text" class="lbl" id="c99" name="c99" readonly></td>
-                        <td><input type="text" class="lbl" id="d99" name="d99" readonly></td>
-                        <td><input type="text" class="lbl" id="e99" name="e99" readonly></td>
-                        <td><input type="text" class="lbl" id="f99" name="f99" readonly></td>
-                        <td><input type="text" class="lbl" id="g99" name="g99" readonly></td>
-                        <td><input type="text" class="lbl" id="h99" name="h99" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="c99" name="c99" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="d99" name="d99" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="e99" name="e99" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="f99" name="f99" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="g99" name="g99" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="h99" name="h99" readonly></td>
                     </tr>
                     <tr>
                         <th>②'タックスシールド</th>
-                        <td><input type="text" class="lbl" id="c100" name="c100" readonly></td>
-                        <td><input type="text" class="lbl" id="d100" name="d100" readonly></td>
-                        <td><input type="text" class="lbl" id="e100" name="e100" readonly></td>
-                        <td><input type="text" class="lbl" id="f100" name="f100" readonly></td>
-                        <td><input type="text" class="lbl" id="g100" name="g100" readonly></td>
-                        <td><input type="text" class="lbl" id="h100" name="h100" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="c100" name="c100" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="d100" name="d100" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="e100" name="e100" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="f100" name="f100" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="g100" name="g100" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="h100" name="h100" readonly></td>
                     </tr>
                     <tr>
                         <th>割引現在価値合計（①"＋②'）</th>
-                        <td><input type="text" class="lbl" id="c101" name="c101" readonly></td>
-                        <td><input type="text" class="lbl" id="d101" name="d101" readonly></td>
-                        <td><input type="text" class="lbl" id="e101" name="e101" readonly></td>
-                        <td><input type="text" class="lbl" id="f101" name="f101" readonly></td>
-                        <td><input type="text" class="lbl" id="g101" name="g101" readonly></td>
-                        <td><input type="text" class="lbl" id="h101" name="h101" readonly></td>
+                        <td><input type="text" class="lbl widthBunki blueBold" id="c101" name="c101" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="d101" name="d101" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="e101" name="e101" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="f101" name="f101" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="g101" name="g101" readonly></td>
+                        <td><input type="text" class="lbl widthBunki" id="h101" name="h101" readonly></td>
                     </tr>
                     <tr>
                         <th>投資額</th>
-                        <td><input type="text" class="lbl" id="c102" name="c102" readonly></td>
+                        <td><input type="text" class="lbl widthBunki redBold" id="c102" name="c102" readonly></td>
                         <td colspan=5></td>
                     </tr>
                 </table>
@@ -881,7 +949,8 @@ $test = 1;
                     </tr>
                     <tr>
                         <td>（総合日産）</td>
-                        <td><input type="number" class="number wdtSS" id="i18" name="i18" min="1" max="31">営業日</td>
+                        <td><input type="number" class="number wdtSS" id="i18" name="i18" min="1" max="31"
+                                value="25">営業日</td>
                         <td></td>
                         <td></td>
                         <td>（一人当たり日産）</td>
@@ -1179,7 +1248,8 @@ $test = 1;
                     </tr>
                     <tr>
                         <td>（総合日産）</td>
-                        <td><input type="number" class="number wdtSS" id="i56" name="i56" min="1" max="31">営業日</td>
+                        <td><input type="number" class="number wdtSS" id="i56" name="i56" min="1" max="31"
+                                value="25">営業日</td>
                         <td></td>
                         <td></td>
                         <td>（一人当たり日産）</td>
@@ -1363,207 +1433,231 @@ $test = 1;
 
             <div id="report">
 
-            <div class="no_print">
-            <a href="#" class="btn-sakubun" onclick="sakubun(0)" >自動作文</a><br><br>
-    </div>
+                <div class="no_print">
+                    <a href="#" class="btn-sakubun" onclick="sakubun(0)">自動作文</a><br><br>
+                </div>
 
                 <table class="rep">
-                    <colgroup span="1" class="report1"></colgroup>
-                    <colgroup span="1" class="report2"></colgroup>
-                    <colgroup span="1" class="report3"></colgroup>
-                    <colgroup span="1" class="report4"></colgroup>
-                    <colgroup span="1" class="report5"></colgroup>
-                    <colgroup span="1" class="report6"></colgroup>
-                    <colgroup span="1" class="report7"></colgroup>
-                    <colgroup span="1" class="report8"></colgroup>
-                    <colgroup span="1" class="report9"></colgroup>
                     <tr>
-                        <td colspan=8>
-                            <textarea id="a1r" name="a1r" rows=30 class="sakubun"></textarea>
-                        </td>
                         <td>
+                            <hr class="skbnHr">
+                            <textarea id="a1r" name="a1r" rows=30 class="sakubun"></textarea><br>
+                            <textarea id="a6r" name="a6r" rows=6 class="sakubun"></textarea>
+                        </td>
+                        <td class="skbnGrph">
                             <div class="grph" id="graph1r"></div>
                         </td>
                     </tr>
+                </table>
+                <table class="repS">
                     <tr>
-                        <td colspan=9>&nbsp;</td>
+                        <th class="fline"></th>
+                        <th class="fline">①平均単価</th>
+                        <th class="fline">②材料費</th>
+                        <th class="fline">③直接労務費</th>
+                        <th class="fline">④間接労務費</th>
+                        <th class="fline">⑤総原価<br>(②＋③＋④)</th>
+                        <th class="fline">⑥収益/個</th>
+                        <th class="fline">⑦収益率</th>
                     </tr>
                     <tr>
-                        <td colspan=8>
-                            <textarea id="a6r" name="a6r" rows=6 class="sakubun"></textarea>
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="fline"></td>
-                        <td class="fline">①平均単価</td>
-                        <td class="fline">②材料費</td>
-                        <td class="fline">③直接労務費</td>
-                        <td class="fline">④間接労務費</td>
-                        <td class="fline">⑤総原価<br>(②＋③＋④)</td>
-                        <td class="fline">⑥収益/個</td>
-                        <td class="fline">⑦収益率</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="fline">生菓子</td>
+                        <th class="fline">生菓子</th>
                         <td class="fline">
-                            <div id="b9r"></div>
+                            <p id="b9r"></p>
                         </td>
                         <td class="fline">
-                            <div id="c9r"></div>
+                            <p id="c9r"></p>
                         </td>
                         <td class="fline redBold">
-                            <div id="d9r"></div>
+                            <p id="d9r"></p>
                         </td>
                         <td class="fline redBold">
-                            <div id="e9r"></div>
+                            <p id="e9r"></p>
                         </td>
                         <td class="fline">
-                            <div id="f9r"></div>
+                            <p id="f9r"></p>
                         </td>
                         <td class="fline">
-                            <div id="g9r"></div>
+                            <p id="g9r"></p>
                         </td>
                         <td class="fline">
-                            <div id="h9r"></div>
+                            <p id="h9r"></p>
                         </td>
-                        <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子</td>
+                        <th class="fline">焼菓子</th>
                         <td class="fline">
-                            <div id="b10r"></div>
+                            <p id="b10r"></p>
                         </td>
                         <td class="fline">
-                            <div id="c10r"></div>
+                            <p id="c10r"></p>
                         </td>
                         <td class="fline">
-                            <div id="d10r"></div>
+                            <p id="d10r"></p>
                         </td>
                         <td class="fline">
-                            <div id="e10r"></div>
+                            <p id="e10r"></p>
                         </td>
                         <td class="fline">
-                            <div id="f10r"></div>
+                            <p id="f10r"></p>
                         </td>
                         <td class="fline">
-                            <div id="g10r"></div>
+                            <p id="g10r"></p>
                         </td>
                         <td class="fline">
-                            <div id="h10r"></div>
+                            <p id="h10r"></p>
                         </td>
-                        <td></td>
                     </tr>
+                </table>
+                <table class="rep">
                     <tr>
-                        <td colspan=8>
-                            <textarea id="a11r" name="a11r" rows=28 class="sakubun"></textarea>
-                        </td>
                         <td>
+                            <hr class="skbnHr">
+                            <textarea id="a11r" name="a11r" rows=28 class="sakubun"></textarea><br>
+                            <textarea id="a26r" name="a26r" rows=6 class="sakubun"></textarea><br>
+                            <textarea id="a29r" name="a29r" rows=13 class="sakubun"></textarea>
+                        </td>
+                        <td class="skbnGrph">
                             <div class="grph" id="graph2r"></div>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan=8>
-                            <textarea id="a26r" name="a26r" rows=6 class="sakubun"></textarea>
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td colspan=8>
-                            <textarea id="a29r" name="a29r" rows=13 class="sakubun"></textarea>
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td colspan=9>&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td colspan=8>
+                        <td>
                             <textarea id="a44r" name="a44r" rows=18 class="sakubun"></textarea>
                         </td>
-                        <td>
+                        <td class="skbnGrph">
                             <div class="grph" id="graph3r"></div>
                         </td>
                     </tr>
+                </table>
+                <table class="repS">
                     <tr>
-                        <td class="fline"></td>
-                        <td class="fline">売上額</td>
-                        <td class="fline">直接労務費</td>
-                        <td class="fline">間接労務費</td>
-                        <td class="fline">労務費率</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <th class="fline"></th>
+                        <th class="fline">売上額</th>
+                        <th class="fline">直接労務費</th>
+                        <th class="fline">間接労務費</th>
+                        <th class="fline">労務費率</th>
                     </tr>
                     <tr>
-                        <td class="fline">設備導入前</td>
+                        <th class="fline">設備導入前</th>
                         <td class="fline">
-                            <div id="b48r"></div>
+                            <p id="b48r"></p>
                         </td>
                         <td class="fline">
-                            <div id="c48r"></div>
+                            <p id="c48r"></p>
                         </td>
                         <td class="fline">
-                            <div id="d48r"></div>
+                            <p id="d48r"></p>
                         </td>
                         <td class="fline">
-                            <div id="e48r"></div>
+                            <p id="e48r"></p>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">設備導入後</td>
+                        <th class="fline">設備導入後</th>
                         <td class="fline">
-                            <div id="b49r"></div>
+                            <p id="b49r"></p>
                         </td>
                         <td class="fline">
-                            <div id="c49r"></div>
+                            <p id="c49r"></p>
                         </td>
                         <td class="fline">
-                            <div id="d49r"></div>
+                            <p id="d49r"></p>
                         </td>
                         <td class="fline">
-                            <div id="e49r"></div>
+                            <p id="e49r"></p>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">成長率/削減率</td>
+                        <th class="fline">成長率/削減率</th>
                         <td class="fline">
-                            <div id="b50r"></div>
+                            <p id="b50r"></p>
                         </td>
                         <td class="fline">
-                            <div id="c50r"></div>
+                            <p id="c50r"></p>
                         </td>
                         <td class="fline">
-                            <div id="d50r"></div>
+                            <p id="d50r"></p>
                         </td>
                         <td class="fline">
-                            <div id="e50r"></div>
+                            <p id="e50r"></p>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
+                </table>
+                <table class="rep">
                     <tr>
-                        <td colspan=8>
+                        <td>
+                            <hr class="skbnHr">
                             <textarea id="a51r" name="a51r" rows=15 class="sakubun"></textarea>
                         </td>
-                        <td>
+                        <td class="skbnGrph">
                             <div class="grph" id="graph4r"></div>
                         </td>
                     </tr>
+                </table>
+                <table class="repS">
                     <tr>
-                        <td class="fline">【生菓子】</td>
+                        <th class="fline">【生菓子】</th>
+                        <th class="fline">①平均単価</th>
+                        <th class="fline">②材料費</th>
+                        <th class="fline">③直接労務費</th>
+                        <th class="fline">④間接労務費</th>
+                        <th class="fline">⑤総原価<br>(②＋③＋④)</th>
+                        <th class="fline">⑥収益/個</th>
+                        <th class="fline">⑦収益率</th>
+                    </tr>
+                    <tr>
+                        <th class="fline">設備導入前</th>
+                        <td class="fline">
+                            <p id="b55r"></p>
+                        </td>
+                        <td class="fline">
+                            <p id="c55r"></p>
+                        </td>
+                        <td class="fline">
+                            <p id="d55r"></p>
+                        </td>
+                        <td class="fline">
+                            <p id="e55r"></p>
+                        </td>
+                        <td class="fline">
+                            <p id="f55r"></p>
+                        </td>
+                        <td class="fline">
+                            <p id="g55r"></p>
+                        </td>
+                        <td class="fline">
+                            <p id="h55r"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="fline">設備導入後</th>
+                        <td class="fline">
+                            <p id="b56r"></p>
+                        </td>
+                        <td class="fline">
+                            <p id="c56r"></p>
+                        </td>
+                        <td class="fline redBold">
+                            <p id="d56r"></p>
+                        </td>
+                        <td class="fline redBold">
+                            <p id="e56r"></p>
+                        </td>
+                        <td class="fline">
+                            <p id="f56r"></p>
+                        </td>
+                        <td class="fline">
+                            <p id="g56r"></p>
+                        </td>
+                        <td class="fline redBold">
+                            <p id="h56r"></p>
+                        </td>
+                    </tr>
+                </table><br>
+                <table class="repS">
+                    <tr>
+                        <th class="fline">【焼菓子】</th>
                         <td class="fline">①平均単価</td>
                         <td class="fline">②材料費</td>
                         <td class="fline">③直接労務費</td>
@@ -1574,589 +1668,493 @@ $test = 1;
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">設備導入前</td>
+                        <th class="fline">設備導入前</th>
                         <td class="fline">
-                            <div id="b55r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="c55r"></div>
+                            <p id="b59r"></p>
                         </td>
                         <td class="fline">
-                            <div id="d55r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="e55r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="f55r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="g55r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="h55r"></div>
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="fline">設備導入後</td>
-                        <td class="fline">
-                            <div id="b56r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="c56r"></div>
-                        </td>
-                        <td class="fline redBold">
-                            <div id="d56r"></div>
-                        </td>
-                        <td class="fline redBold">
-                            <div id="e56r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="f56r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="g56r"></div>
-                        </td>
-                        <td class="fline redBold">
-                            <div id="h56r"></div>
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td colspan=9></td>
-                    </tr>
-                    <tr>
-                        <td class="fline">【焼菓子】</td>
-                        <td class="fline">①平均単価</td>
-                        <td class="fline">②材料費</td>
-                        <td class="fline">③直接労務費</td>
-                        <td class="fline">④間接労務費</td>
-                        <td class="fline">⑤総原価<br>(②＋③＋④)</td>
-                        <td class="fline">⑥収益/個</td>
-                        <td class="fline">⑦収益率</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="fline">設備導入前</td>
-                        <td class="fline">
-                            <div id="b59r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="c59r"></div>
+                            <p id="c59r"></p>
                         </td>
                         <td class="fline ">
-                            <div id="d59r"></div>
+                            <p id="d59r"></p>
                         </td>
                         <td class="fline ">
-                            <div id="e59r"></div>
+                            <p id="e59r"></p>
                         </td>
                         <td class="fline">
-                            <div id="f59r"></div>
+                            <p id="f59r"></p>
                         </td>
                         <td class="fline">
-                            <div id="g59r"></div>
+                            <p id="g59r"></p>
                         </td>
                         <td class="fline">
-                            <div id="h59r"></div>
+                            <p id="h59r"></p>
                         </td>
-                        <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">設備導入後</td>
+                        <th class="fline">設備導入後</th>
                         <td class="fline">
-                            <div id="b60r"></div>
+                            <p id="b60r"></p>
                         </td>
                         <td class="fline">
-                            <div id="c60r"></div>
+                            <p id="c60r"></p>
                         </td>
                         <td class="fline redBold">
-                            <div id="d60r"></div>
+                            <p id="d60r"></p>
                         </td>
                         <td class="fline redBold">
-                            <div id="e60r"></div>
+                            <p id="e60r"></p>
                         </td>
                         <td class="fline">
-                            <div id="f60r"></div>
+                            <p id="f60r"></p>
                         </td>
                         <td class="fline">
-                            <div id="g60r"></div>
+                            <p id="g60r"></p>
                         </td>
                         <td class="fline redBold">
-                            <div id="h60r"></div>
+                            <p id="h60r"></p>
                         </td>
-                        <td></td>
                     </tr>
+                </table>
+                <table class="rep">
                     <tr>
-                        <td colspan=9></td>
-                    </tr>
-                    <tr>
-                        <td colspan=8>
+                        <td>
+                            <hr class="skbnHr">
                             <textarea id="a62r" name="a62r" rows=6 class="sakubun"></textarea>
                         </td>
-                        <td></td>
+                        <td><hr class="skbnHr500"></td>
+                    </tr>
+                </table>
+                <table class="repS">
+                    <tr>
+                        <th class="fline">生産性指標</th>
+                        <th class="fline">実施前</th>
+                        <th class="fline">５年後</th>
+                        <th class="fline">向上率</th>
                     </tr>
                     <tr>
-                        <td colspan=9></td>
-                    </tr>
-                    <tr>
-                        <td class="fline">生産性指標</td>
-                        <td class="fline">実施前</td>
-                        <td class="fline">５年後</td>
-                        <td class="fline">向上率</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="fline">従業員数</td>
+                        <th class="fline">従業員数</th>
                         <td class="fline">
-                            <div id="b66r"></div>
+                            <p id="b66r"></p>
                         </td>
                         <td class="fline">
-                            <div id="c66r"></div>
+                            <p id="c66r"></p>
                         </td>
                         <td class="fline">
-                            <div id="d66r"></div>
+                            <p id="d66r"></p>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     <tr id="r67r">
-                        <td class="fline">付加価値額</td>
+                        <th class="fline">付加価値額</th>
                         <td class="fline">
-                            <div id="b67r"></div>
+                            <p id="b67r"></p>
                         </td>
                         <td class="fline">
-                            <div id="c67r"></div>
+                            <p id="c67r"></p>
                         </td>
                         <td class="fline">
-                            <div id="d67r"></div>
+                            <p id="d67r"></p>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     <tr id="r68r">
-                        <td class="fline">一人当たり売上高</td>
+                        <th class="fline">一人当たり売上高</th>
                         <td class="fline">
-                            <div id="b68r"></div>
+                            <p id="b68r"></p>
                         </td>
                         <td class="fline">
-                            <div id="c68r"></div>
+                            <p id="c68r"></p>
                         </td>
                         <td class="fline">
-                            <div id="d68r"></div>
+                            <p id="d68r"></p>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     <tr id="r69r">
-                        <td class="fline">一人当たり限界利益</td>
+                        <th class="fline">一人当たり限界利益</th>
                         <td class="fline">
-                            <div id="b69r"></div>
+                            <p id="b69r"></p>
                         </td>
                         <td class="fline">
-                            <div id="c69r"></div>
+                            <p id="c69r"></p>
                         </td>
                         <td class="fline">
-                            <div id="d69r"></div>
+                            <p id="d69r"></p>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     <tr id="r70r">
-                        <td class="fline">一人当たり貢献利益</td>
+                        <th class="fline">一人当たり貢献利益</th>
                         <td class="fline">
-                            <div id="b70r"></div>
+                            <p id="b70r"></p>
                         </td>
                         <td class="fline">
-                            <div id="c70r"></div>
+                            <p id="c70r"></p>
                         </td>
                         <td class="fline">
-                            <div id="d70r"></div>
+                            <p id="d70r"></p>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     <tr id="r71r">
-                        <td class="fline">一人当たり付加価値額</td>
+                        <th class="fline">一人当たり付加価値額</th>
                         <td class="fline">
-                            <div id="b71r"></div>
+                            <p id="b71r"></p>
                         </td>
                         <td class="fline">
-                            <div id="c71r"></div>
+                            <p id="c71r"></p>
                         </td>
                         <td class="fline">
-                            <div id="d71r"></div>
+                            <p id="d71r"></p>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     <tr id="r72r">
-                        <td class="fline">売上高付加価値率</td>
+                        <th class="fline">売上高付加価値率</th>
                         <td class="fline">
-                            <div id="b72r"></div>
+                            <p id="b72r"></p>
                         </td>
                         <td class="fline">
-                            <div id="c72r"></div>
+                            <p id="c72r"></p>
                         </td>
                         <td class="fline">
-                            <div id="d72r"></div>
+                            <p id="d72r"></p>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     <tr id="r73r">
-                        <td class="fline">有形固定資産回転率</td>
+                        <th class="fline">有形固定資産回転率</th>
                         <td class="fline">
-                            <div id="b73r"></div>
+                            <p id="b73r"></p>
                         </td>
                         <td class="fline">
-                            <div id="c73r"></div>
+                            <p id="c73r"></p>
                         </td>
                         <td class="fline">
-                            <div id="d73r"></div>
+                            <p id="d73r"></p>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     <tr id="r74r">
-                        <td class="fline">労働装備率</td>
+                        <th class="fline">労働装備率</th>
                         <td class="fline">
-                            <div id="b74r"></div>
+                            <p id="b74r"></p>
                         </td>
                         <td class="fline">
-                            <div id="c74r"></div>
+                            <p id="c74r"></p>
                         </td>
                         <td class="fline">
-                            <div id="d74r"></div>
+                            <p id="d74r"></p>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
+
+                </table>
+
+                <table class="rep">
+
                     <tr>
-                        <td colspan=8>
+                        <td>
+                            <hr class="skbnHr">
                             <textarea id="a75r" name="a75r" rows=20 class="sakubun"></textarea>
                         </td>
-                        <td></td>
+                        <td><hr class="skbnHr500"></td>
                     </tr>
+
+                </table>
+
+                <table class="rep">
+
                     <tr>
-                        <td colspan=8>
+                        <td>
+                            <hr class="skbnHr">
                             <textarea id="a87r" name="a87r" rows=6 class="sakubun"></textarea>
                         </td>
-                        <td>
+                        <td rowspan=2 class="skbnGrph">
                             <div class="grph" id="graph5r"></div>
                         </td>
                     </tr>
+
+
                     <tr>
-                        <td class="fline"></td>
-                        <td class="fline">前期実績</td>
-                        <td class="fline">1年目</td>
-                        <td class="fline">2年目</td>
-                        <td class="fline">3年目</td>
-                        <td class="fline">4年目</td>
-                        <td class="fline">5年目</td>
-                        <td></td>
-                        <td></td>
+                        <td>
+                            <table class="repS">
+
+                                <tr>
+                                    <th class="fline"></th>
+                                    <th class="fline">前期実績</th>
+                                    <th class="fline">1年目</th>
+                                    <th class="fline">2年目</th>
+                                    <th class="fline">3年目</th>
+                                    <th class="fline">4年目</th>
+                                    <th class="fline">5年目</th>
+                                </tr>
+                                <tr>
+                                    <th class="fline">売上高</th>
+                                    <td class="fline">
+                                        <p id="b92r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="c92r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="d92r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="e92r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="f92r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="g92r"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="fline">損益分岐点売上高</th>
+                                    <td class="fline">
+                                        <p id="b93r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="c93r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="d93r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="e93r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="f93r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="g93r"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="fline">損益分岐点比率</th>
+                                    <td class="fline">
+                                        <p id="b94r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="c94r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="d94r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="e94r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="f94r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="g94r"></p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
                     </tr>
+                </table>
+
+                <table class="rep">
                     <tr>
-                        <td class="fline">売上高</td>
-                        <td class="fline">
-                            <div id="b92r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="c92r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="d92r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="e92r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="f92r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="g92r"></div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="fline">損益分岐点売上高</td>
-                        <td class="fline">
-                            <div id="b93r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="c93r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="d93r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="e93r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="f93r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="g93r"></div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="fline">損益分岐点比率</td>
-                        <td class="fline">
-                            <div id="b94r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="c94r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="d94r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="e94r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="f94r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="g94r"></div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td colspan=8>
+                        <td>
+                            <hr class="skbnHr">
                             <textarea id="a96r" name="a96r" rows=13 class="sakubun"></textarea>
                         </td>
-                        <td>
+                        <td rowspan=2 class="skbnGrph">
                             <div class="grph" id="graph6r"></div>
                         </td>
                     </tr>
 
                     <tr>
-                        <td class="fline">
-                            </th>
-                        <td class="fline">投資時点</th>
-                        <td class="fline">1年目</th>
-                        <td class="fline">2年目</th>
-                        <td class="fline">3年目</th>
-                        <td class="fline">4年目</th>
-                        <td class="fline">5年目</th>
-                    </tr>
-                    <tr>
-                        <td class="fline">①CIF（営業CF）</th>
-                        <td rowspan=6></td>
-                        <td class="fline">
-                            <div id="c104r" name="c104r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="d104r" name="d104r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="e104r" name="e104r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="f104r" name="f104r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="g104r" name="g104r"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fline">①'税引き後CIF（営業CF）</th>
-                        <td class="fline">
-                            <div id="c105r" name="c105r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="d105r" name="d105r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="e105r" name="e105r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="f105r" name="f105r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="g105r" name="g105r"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fline">　設備の減価償却費</th>
-                        <td class="fline">
-                            <div id="c106r" name="c106r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="d106r" name="d106r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="e106r" name="e106r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="f106r" name="f106r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="g106r" name="g106r"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fline">②減価償却費のﾀｯｸｽｼｰﾙﾄﾞ</th>
-                        <td class="fline">
-                            <div id="c107r" name="c107r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="d107r" name="d107r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="e107r" name="e107r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="f107r" name="f107r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="g107r" name="g107r"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fline">正味CF計（①'＋②）</th>
-                        <td class="fline">
-                            <div id="c108r" name="c108r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="d108r" name="d108r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="e108r" name="e108r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="f108r" name="f108r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="g108r" name="g108r"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fline">割引率</th>
-                        <td class="fline">
-                            <div id="c109r" name="c109r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="d109r" name="d109r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="e109r" name="e109r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="f109r" name="f109r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="g109r" name="g109r"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fline">①”税引後CIF（営業CF）</th>
-                        <td class="fline">
-                            <div id="b110r" name="b110r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="c110r" name="c110r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="d110r" name="d110r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="e110r" name="e110r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="f110r" name="f110r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="g110r" name="g110r"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fline">②'タックスシールド</th>
-                        <td class="fline">
-                            <div id="b111r" name="b111r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="c111r" name="c111r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="d111r" name="d111r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="e111r" name="e111r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="f111r" name="f111r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="g111r" name="g111r"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fline">割引現在価値合計（①"＋②'）</th>
-                        <td class="fline">
-                            <div id="b112r" name="b112r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="c112r" name="c112r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="d112r" name="d112r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="e112r" name="e112r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="f112r" name="f112r"></div>
-                        </td>
-                        <td class="fline">
-                            <div id="g112r" name="g112r"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fline">投資額</th>
-                        <td class="fline">
-                            <div id="b113r" name="b113r"></div>
-                        </td>
-                        <td colspan=5></td>
-                    </tr>
+                        <td>
+                            <table class="repS">
+                                <tr>
+                                    <th class="fline"></th>
+                                    <th class="fline">投資時点</th>
+                                    <th class="fline">1年目</th>
+                                    <th class="fline">2年目</th>
+                                    <th class="fline">3年目</th>
+                                    <th class="fline">4年目</th>
+                                    <th class="fline">5年目</th>
+                                </tr>
+                                <tr>
+                                    <th class="fline">①CIF（営業CF）</th>
+                                    <td rowspan=6 class="emptyTd"></td>
+                                    <td class="fline">
+                                        <p id="c104r" name="c104r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="d104r" name="d104r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="e104r" name="e104r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="f104r" name="f104r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="g104r" name="g104r"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="fline">①'税引き後CIF（営業CF）</th>
+                                    <td class="fline">
+                                        <p id="c105r" name="c105r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="d105r" name="d105r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="e105r" name="e105r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="f105r" name="f105r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="g105r" name="g105r"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="fline">　設備の減価償却費</th>
+                                    <td class="fline">
+                                        <p id="c106r" name="c106r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="d106r" name="d106r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="e106r" name="e106r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="f106r" name="f106r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="g106r" name="g106r"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="fline">②減価償却費のﾀｯｸｽｼｰﾙﾄﾞ</th>
+                                    <td class="fline">
+                                        <p id="c107r" name="c107r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="d107r" name="d107r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="e107r" name="e107r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="f107r" name="f107r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="g107r" name="g107r"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="fline">正味CF計（①'＋②）</th>
+                                    <td class="fline">
+                                        <p id="c108r" name="c108r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="d108r" name="d108r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="e108r" name="e108r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="f108r" name="f108r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="g108r" name="g108r"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="fline">割引率</th>
+                                    <td class="fline">
+                                        <p id="c109r" name="c109r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="d109r" name="d109r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="e109r" name="e109r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="f109r" name="f109r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="g109r" name="g109r"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="fline">①”税引後CIF（営業CF）</th>
+                                    <td class="fline">
+                                        <p id="b110r" name="b110r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="c110r" name="c110r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="d110r" name="d110r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="e110r" name="e110r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="f110r" name="f110r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="g110r" name="g110r"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="fline">②'タックスシールド</th>
+                                    <td class="fline">
+                                        <p id="b111r" name="b111r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="c111r" name="c111r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="d111r" name="d111r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="e111r" name="e111r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="f111r" name="f111r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="g111r" name="g111r"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="fline">割引現在価値合計（①"＋②'）</th>
+                                    <td class="fline">
+                                        <p id="b112r" name="b112r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="c112r" name="c112r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="d112r" name="d112r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="e112r" name="e112r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="f112r" name="f112r"></p>
+                                    </td>
+                                    <td class="fline">
+                                        <p id="g112r" name="g112r"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="fline">投資額</th>
+                                    <td class="fline">
+                                        <p id="b113r" name="b113r"></p>
+                                    </td>
+                                    <td colspan=5></td>
+                                </tr>
 
-
+                            </table>
+                        </td>
+                    </tr>
 
 
 

@@ -31,8 +31,16 @@ function delcheck() {
 }
 
 
+function reMyPWcheck() {
+    if (window.confirm('パスワードを更新してもよろしいですか？')) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function rePWcheck() {
-    if (window.confirm('パスワードを初期化してもよろしいですか？')) {
+    if (window.confirm('パスワードを　IDで　初期化してもよろしいですか？')) {
         return true;
     } else {
         return false;
@@ -55,6 +63,19 @@ function isReset() {
     } else {}
 }
 
+
+function showList() {
+    if (window.confirm('現在の編集内容は全て破棄されます。　よろしいですか？')) {
+        window.location.href = 'info_list.php';
+    } else {}
+}
+
+function showUser() {
+    if (window.confirm('現在の編集内容は全て破棄されます。　よろしいですか？')) {
+        window.location.href = 'users_list.php';
+    } else {}
+}
+
 function back2() {
     document.getElementById("sakubun1").submit();
 }
@@ -64,11 +85,7 @@ function sakubunCheck() {
     if (tmp == "") {
         alert("「自動作文」を先に実行してください。");
     } else {
-        if (window.confirm('計算を終了し、登録処理を行ってよろしいですか？')) {
-            document.getElementById("infos").submit();
-        } else {
-            //
-        }
+        document.getElementById("infos").submit();
     }
 }
 
@@ -80,11 +97,37 @@ function sliceMaxLength(elem, maxLength) {
 /**************************
  * カンマ編集を行うFunction
  **************************/
-function toComma(obj) {
+// function toComma(obj) {
+//     if ((obj.value).trim().length != 0 && !isNaN(obj.value)) {
+//         obj.value = Number(obj.value).toLocaleString();
+//     }
+// }
+
+function toComma(obj, dp) {
     if ((obj.value).trim().length != 0 && !isNaN(obj.value)) {
-        obj.value = Number(obj.value).toLocaleString();
+        nf = new Intl.NumberFormat("ja-JP", { useGrouping: true, style: 'decimal', minimumFractionDigits: dp, maximumFractionDigits: dp });
+        obj.value = nf.format(obj.value);
+        //obj.value = Number(obj.value).toLocaleString();
     }
 }
+
+// function toComma2(obj) {
+//     if ((obj.value).trim().length != 0 && !isNaN(obj.value)) {
+//         nf = new Intl.NumberFormat("ja-JP", { useGrouping: true, style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+//         obj.value = nf.format(obj.value);
+//         //obj.value = Number(obj.value).toLocaleString();
+//     }
+// }
+
+
+// function getValueExt2(rng, dp, mlp) {
+//     tmp0 = document.getElementById(rng).value.replace(/,/g, '').replace('%', '');
+//     tmp0 = tmp0 * mlp;
+//     nf = new Intl.NumberFormat("ja-JP", { useGrouping: true, style: 'decimal', minimumFractionDigits: dp, maximumFractionDigits: dp });
+//     rtn = nf.format(tmp0);
+//     return rtn;
+// }
+
 
 /**************************
  * カンマ編集を解除するFunction
@@ -101,11 +144,27 @@ window.onload = function() {
     var elements = document.getElementsByClassName("number");
     for (var i = 0; i < elements.length; i++) {
         elements[i].onfocus = function() { offComma(this); }
-        elements[i].onblur = function() { toComma(this); }
+        elements[i].onblur = function() { toComma(this, 0); }
     }
+    var elements = document.getElementsByClassName("number1");
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].onfocus = function() { offComma(this); }
+        elements[i].onblur = function() { toComma(this, 1); }
+    }
+    var elements = document.getElementsByClassName("number2");
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].onfocus = function() { offComma(this); }
+        elements[i].onblur = function() { toComma(this, 2); }
+    }
+
+
+
     x1 = document.getElementById("cnt").value;
     if (x1 == "1") {
 
+        document.getElementById("users_seq").value = document.getElementById("users_seqx").value;
+        document.getElementById("title1").value = document.getElementById("title1x").value;
+        document.getElementById("title2").value = document.getElementById("title2x").value;
         document.getElementById("d2").value = document.getElementById("d2x").value;
         document.getElementById("d3").value = document.getElementById("d3x").value;
         document.getElementById("d4").value = document.getElementById("d4x").value;

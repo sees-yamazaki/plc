@@ -32,6 +32,7 @@ if (isset($_POST["login"])) {
             $users = loginUsers($userid,$userpw);
 
             if(empty($users->users_id)){
+                var_dump($uers);
                 $errorMessage = 'ログインできませんでした。';
             }else{
                 $errorMessage = 'ログインできました。';
@@ -40,7 +41,7 @@ if (isset($_POST["login"])) {
                 $_SESSION["NAME"] = $users->users_name;
                 $_SESSION["LEVEL"] = $users->users_level;
 
-                header("Location: ./src/home.php");
+                header("Location: ./src/hearingsheet1.php");
             }
 
 
@@ -62,7 +63,7 @@ if (isset($_POST["login"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-    <title>ProgreSS</title>
+    <title>HearingSheet</title>
     <link rel="stylesheet" href="./css/main.css" />
     <link rel="stylesheet" href="./css/login.css" />
 </head>
