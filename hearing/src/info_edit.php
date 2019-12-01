@@ -196,7 +196,7 @@ try {
                 </tr>
                 <tr>
                     <?php if (!isset($iSeq) || $iSeq=="") { ?>
-                        <button type=submit name="infoRec" class="ntc2 wdtLL">登録する</button>
+                        <td><button type=submit name="infoRec" class="ntc2 wdtLL">登録する</button></td>
                     <?php } elseif ($_POST['users_seq']==$_SESSION['SEQ']) { ?>
                         <td>
                             <button type=submit name="infoUpdate" class="ntc wdtLL">更新する</button>
