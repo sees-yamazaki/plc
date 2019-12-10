@@ -42,6 +42,14 @@ function sakubun(flg) {
         return;
     }
 
+    tmp = document.getElementById("a1r").value;
+    if (tmp != "" && flg == 0) {
+        if (window.confirm('すでに自動作文が実施されています。　上書きしてよろしいですか？')) {} else {
+            return;
+        }
+    }
+
+
     getRange();
 
     // UriageB = Format(Range(cnUriageB).Value, "#,##0")            '売上額
@@ -1613,6 +1621,8 @@ function sakubun(flg) {
 
 
     page3();
+
+    location.hash = "page-top";
 
 
 }

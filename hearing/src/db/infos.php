@@ -231,7 +231,7 @@ class cls_infos
         {
             try {
                 require $_SESSION["MY_ROOT"].'/src/db/dns.php';
-                $sql = " UPDATE `infos`  SET  `title1`=:title1,  `title2`=:title2,    `d2`=:d2,  `d3`=:d3,  `d4`=:d4,  `d6`=:d6,  `d8`=:d8,  `f8`=:f8,  `d11`=:d11,  `d12`=:d12,  `e13`=:e13,  `d29`=:d29,  `d30`=:d30,  `d31`=:d31,  `l29`=:l29,  `l30`=:l30,  `l31`=:l31,  `d49`=:d49,  `d50`=:d50,  `e51`=:e51,  `c68`=:c68,  `c69`=:c69,  `l73`=:l73,  `c88`=:c88,  `c89`=:c89,  `i18`=:i18,  `i56`=:i56,  `a1r`=:a1r,  `a6r`=:a6r,  `a11r`=:a11r,  `a26r`=:a26r,  `a29r`=:a29r,  `a44r`=:a44r,  `a51r`=:a51r,  `a62r`=:a62r,  `a75r`=:a75r,  `a87r`=:a87r,  `a96r`=:a96r WHERE infos_seq=:infos_seq";
+                $sql = " UPDATE `infos`  SET  `title1`=:title1,  `title2`=:title2,    `d2`=:d2,  `d3`=:d3,  `d4`=:d4,  `d6`=:d6,  `d8`=:d8,  `f8`=:f8,  `d11`=:d11,  `d12`=:d12,  `e13`=:e13,  `d29`=:d29,  `d30`=:d30,  `d31`=:d31,  `l29`=:l29,  `l30`=:l30,  `l31`=:l31,  `d49`=:d49,  `d50`=:d50,  `e51`=:e51,  `c68`=:c68,  `c69`=:c69,  `l73`=:l73,  `c88`=:c88,  `c89`=:c89,  `i18`=:i18,  `i56`=:i56,  `a1r`=:a1r,  `a6r`=:a6r,  `a11r`=:a11r,  `a26r`=:a26r,  `a29r`=:a29r,  `a44r`=:a44r,  `a51r`=:a51r,  `a62r`=:a62r,  `a75r`=:a75r,  `a87r`=:a87r,  `a96r`=:a96r, `createdate`=NOW() WHERE infos_seq=:infos_seq";
                 $stmt = $pdo -> prepare($sql);
                 $stmt->bindParam(':infos_seq', $infos->infos_seq, PDO::PARAM_INT);
                 $stmt->bindParam(':title1', $infos->title1, PDO::PARAM_STR);

@@ -55,9 +55,16 @@ date_default_timezone_set('Asia/Tokyo');
 
             header("Location: ./users_list.php");
         } elseif (isset($_POST['userDel'])) {
-            deleteUser($user);
+            $rtn = checkUsers($user);
+            if (count($rtn)==0) {
+                deleteUser($user);
 
-            header("Location: ./users_list.php");
+                header("Location: ./users_list.php");
+            } else {
+                $errorMessage = 'このユーザはシミュレーションデータが登録されているため削除できません';
+                
+                $user = getUser($uSeq);
+            }
         } else {
             $user = getUser($uSeq);
         }
@@ -102,7 +109,7 @@ date_default_timezone_set('Asia/Tokyo');
     <div id="content">
 
         <div>
-            <span class="err"><?php echo htmlspecialchars($errorMessage, ENT_QUOTES); ?></span>
+            <span class="redBold"><?php echo htmlspecialchars($errorMessage, ENT_QUOTES); ?></span>
         </div><br>
 
         <form action="users_edit.php" method="POST" onsubmit="return addcheck()">
@@ -139,7 +146,7 @@ date_default_timezone_set('Asia/Tokyo');
 
             <input type="hidden" name="uSeq" value="<?php echo $uSeq; ?>">
 
-            <?php if($uSeq == $_SESSION['SEQ']){ ?>
+            <?php if ($uSeq == $_SESSION['SEQ']) { ?>
             <br><br><br>
             <table class="hs">
                 <tr>
@@ -155,7 +162,7 @@ date_default_timezone_set('Asia/Tokyo');
                     </td>
                 </tr>
             </table>
-            <?php }else{ ?>
+            <?php } else { ?>
             <table class="cntr">
                 <tr>
                     <td><button type=submit name="userPw" class="ntc">パスワードを初期化する</button></td>
@@ -165,7 +172,7 @@ date_default_timezone_set('Asia/Tokyo');
 
         </form>
 
-        <?php if($uSeq <> $_SESSION['SEQ']){ ?>
+        <?php if ($uSeq <> $_SESSION['SEQ']) { ?>
         <form action="users_edit.php" method="POST" onsubmit="return delcheck()">
 
             <input type="hidden" name="uSeq" value="<?php echo $uSeq; ?>">

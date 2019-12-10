@@ -45,12 +45,38 @@ $test = 1;
     <script src="../js/sakubun.js"></script>
     <script src="../js/test.js"></script>
     <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+    document.onkeydown = function(e) {
+        $('form').on('keydown', 'input', function(e) {
+            if (e.keyCode == 13) {
+                if ($(this).attr("type") == 'submit') return;
+
+                var form = $(this).closest('form');
+                //var focusable = form.find('input, button[type="submit"], select, textarea').not('[readonly]').filter(':visible');
+                var focusable = form.find('input').not('[readonly],.lbl,input[type="button"],input[type="range"]').filter(':visible');
+
+                if (e.shiftKey) {
+                    focusable.eq(focusable.index(this) - 1).focus();
+                } else {
+                    var next = focusable.eq(focusable.index(this) + 1);
+                    if (next.length) {
+                        next.focus();
+                    } else {
+                        focusable.eq(0).focus();
+                    }
+                }
+
+                e.preventDefault();
+            }
+        });
+    };
+    </script>
 </head>
 
-<body>
+<body id="page-top">
     <?php if (!isset($stts)) { ?>
     <input type="hidden" id="cnt" value="0">
-    <?php }else if ($stts=="edit") { ?>
+    <?php } elseif ($stts=="edit") { ?>
     <input type="hidden" id="cnt" value="1">
     <input type="hidden" id="iSeq" value="<?php echo $iSeq;  ?>">
     <input type="hidden" id="users_seqx" value="<?php echo $info->users_seq;  ?>">
@@ -217,12 +243,12 @@ $test = 1;
                     <tr>
                         <th rowspan=2>平均単価</th>
                         <td>生菓子平均単価</td>
-                        <td><input type="text" class="number" id="d11" name="d11"></td>
+                        <td><input type="text" class="number1" id="d11" name="d11"></td>
                         <td>円／個</td>
                     </tr>
                     <tr>
                         <td>焼菓子平均単価</td>
-                        <td><input type="text" class="number" id="d12" name="d12"></td>
+                        <td><input type="text" class="number1" id="d12" name="d12"></td>
                         <td>円／個</td>
                     </tr>
                     <tr>
@@ -301,12 +327,12 @@ $test = 1;
                             <input type="button" class="tgl" style="font-size:10pt;" value="＞" onclick="plusUriage();">
                             &nbsp;&nbsp;&nbsp;
                             <input type="range" id="scrl1" value="1" min="100" max="200" step="0.5"
-                                oninput="document.getElementById('d29').value=this.value"></td>
+                                oninput="doSlide(this.value)"></td>
                     </tr>
                     <tr>
                         <th>製造原価低減</th>
                         <td colspan=2>
-                            マイナス<input type="number" class="number wdtSS" id="d30" name="d30" min="0" max="100"
+                            マイナス<input type="number" class="number1 wdtSS" id="d30" name="d30" min="0" max="100"
                                 step="0.1">%
                             &nbsp;&nbsp;&nbsp;
                             <input type="button" class="tgl" style="font-size:10pt;" value="＜" onclick="minusGenka();">
@@ -488,12 +514,12 @@ $test = 1;
                     <tr>
                         <th rowspan=2>平均単価</th>
                         <td>生菓子平均単価</td>
-                        <td><input type="text" class="number" id="d49" name="d49"></td>
+                        <td><input type="text" class="number1" id="d49" name="d49"></td>
                         <td>円／個</td>
                     </tr>
                     <tr>
                         <td>焼菓子平均単価</td>
-                        <td><input type="text" class="number" id="d50" name="d50"></td>
+                        <td><input type="text" class="number1" id="d50" name="d50"></td>
                         <td>円／個</td>
                     </tr>
                     <tr>
@@ -676,7 +702,9 @@ $test = 1;
                 <h3>４．投資判断としての妥当性</h3>
                 <table class='hs'>
                     <tr>
-                        <td><input type="button" value="自動計算" onclick="btning();"></td>
+                        <td>
+                            <a href="javascript:void(0)" class="btn-sakubun" onclick="btning()">自動計算</a>
+                        </td>
                     </tr>
                 </table>
 
@@ -829,6 +857,11 @@ $test = 1;
                         </td>
                     </tr>
                 </table>
+
+
+                <div class="no_print">
+                    <br><br><a href="javascript:void(0)" class="btn-sakubun" onclick="sakubun(0)">自動作文</a><br><br>
+                </div>
 
             </div>
 
@@ -1224,8 +1257,7 @@ $test = 1;
                         <td class="fline">個/月間</td>
                         <td></td>
                         <td class="fline">生菓子商品点数</td>
-                        <td class="fline">
-                            <<input type="text" class="lbl" id="m53" name="m53" readonly>/td>
+                        <td class="fline"><input type="text" class="lbl" id="m53" name="m53" readonly></td>
                         <td class="fline">個/月間</td>
                     </tr>
                     <tr>
@@ -1433,9 +1465,6 @@ $test = 1;
 
             <div id="report">
 
-                <div class="no_print">
-                    <a href="#" class="btn-sakubun" onclick="sakubun(0)">自動作文</a><br><br>
-                </div>
 
                 <table class="rep">
                     <tr>
@@ -1515,7 +1544,7 @@ $test = 1;
                             <hr class="skbnHr">
                             <textarea id="a11r" name="a11r" rows=28 class="sakubun"></textarea><br>
                             <textarea id="a26r" name="a26r" rows=6 class="sakubun"></textarea><br>
-                            <textarea id="a29r" name="a29r" rows=13 class="sakubun"></textarea>
+                            <textarea id="a29r" name="a29r" rows=23 class="sakubun"></textarea>
                         </td>
                         <td class="skbnGrph">
                             <div class="grph" id="graph2r"></div>
@@ -1925,7 +1954,7 @@ $test = 1;
                                 </tr>
                                 <tr>
                                     <th class="fline">損益分岐点比率</th>
-                                    <td class="fline">
+                                    <td class="fline blueBold">
                                         <p id="b94r"></p>
                                     </td>
                                     <td class="fline">
@@ -1940,7 +1969,7 @@ $test = 1;
                                     <td class="fline">
                                         <p id="f94r"></p>
                                     </td>
-                                    <td class="fline">
+                                    <td class="fline blueBold">
                                         <p id="g94r"></p>
                                     </td>
                                 </tr>
@@ -2146,7 +2175,7 @@ $test = 1;
                                 </tr>
                                 <tr>
                                     <th class="fline">投資額</th>
-                                    <td class="fline">
+                                    <td class="fline blueBold">
                                         <p id="b113r" name="b113r"></p>
                                     </td>
                                     <td colspan=5></td>

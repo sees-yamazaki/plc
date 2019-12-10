@@ -68,7 +68,7 @@ $infos = getInfos();
 
         <table class="hs">
             <tr>
-                <th style="width:200px;">登録日時</th>
+                <th style="width:200px;">更新日時</th>
                 <th style="width:300px;">タイトル1</th>
                 <th style="width:300px;">タイトル2</th>
                 <th style="width:200px;">登録者</th>

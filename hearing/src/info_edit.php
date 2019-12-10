@@ -144,7 +144,7 @@ try {
     <div id="content">
 
         <div class="nav">
-            <span class="err"><?php echo htmlspecialchars($errorMessage, ENT_QUOTES); ?></span>
+            <span class="redBold"><?php echo htmlspecialchars($errorMessage, ENT_QUOTES); ?></span>
         </div><br>
 
         <form class="" action='' method='POST' onsubmit="return addcheck()">
@@ -205,7 +205,7 @@ try {
                         </td>
                     <?php } else { ?>
                         <td>
-                            他者の作成データのため上書きできません。<br><br>
+                            <span class="redBold">他者の作成データのため上書きできません。</span><br><br>
                             <button type=submit name="infoRec" class="ntc2 wdtLL">新しいデータとして登録する</button>
                         </td>
                     <?php } ?>

@@ -1,7 +1,7 @@
 $(function() {
 
     // テキストボックスにフォーカス時、フォームの背景色を変化
-    $('.number')
+    $('.number,.number1,.number2')
         .focusin(function(e) {
             $(this).css('background-color', '#ffc');
         })
@@ -11,6 +11,11 @@ $(function() {
 
     $('input')
         .focusout(function(e) {
+            doCalc();
+        });
+
+    $('select')
+        .change(function(e) {
             doCalc();
         });
 
@@ -449,7 +454,7 @@ function doCalc() {
         l36 = l36 / 10;
     }
 
-    writeValue(_l36, l36, "");
+    writeValue(_l36, myTrunc(l36, 0), "");
 
 
 
@@ -610,8 +615,9 @@ function doCalc() {
     //=SUM(D53)+D56+D59
     _d62 = document.getElementById("d62");
     d62 = d53 + d56 + d59;
+    tmp1 = myRound(d62, 1);
 
-    writeValue(_d62, d62, "");
+    writeValue(_d62, tmp1, "");
 
 
     //####################################
@@ -2235,6 +2241,8 @@ function plusUriage() {
     d29 = myPlus(d29, 0.5);
     document.getElementById('scrl1').value = d29;
     _d29.value = frm1(d29, 1);
+
+    doCalc();
 }
 
 function minusUriage() {
@@ -2245,6 +2253,7 @@ function minusUriage() {
     document.getElementById('scrl1').value = d29;
     _d29.value = frm1(d29, 1);
 
+    doCalc();
 }
 
 function plusGenka() {
@@ -2254,6 +2263,7 @@ function plusGenka() {
     d30 = myPlus(d30, 0.1);
     _d30.value = frm1(d30, 1);
 
+    doCalc();
 }
 
 function minusGenka() {
@@ -2262,6 +2272,8 @@ function minusGenka() {
     if (d30 == "") { d30 = 0 };
     d30 = mySubtract(d30, 0.1);
     _d30.value = frm1(d30, 1);
+
+    doCalc();
 
 }
 
@@ -2272,6 +2284,8 @@ function plusStaff() {
     d31 = myPlus(d31, 1);
     _d31.value = frm1(d31, 0);
 
+    doCalc();
+
 }
 
 function minusStaff() {
@@ -2280,5 +2294,14 @@ function minusStaff() {
     if (d31 == "") { d31 = 0 };
     d31 = mySubtract(d31, 1);
     _d31.value = frm1(d31, 0);
+
+    doCalc();
+
+}
+
+function doSlide(vlu) {
+    document.getElementById('d29').value = vlu;
+
+    doCalc();
 
 }
