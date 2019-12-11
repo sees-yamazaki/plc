@@ -1341,8 +1341,9 @@ function sakubun(flg) {
 
             var options = {
                 title: '菓子分類比率',
-                width: 500,
-                height: 300
+                width: 800,
+                height: 300,
+                fontSize: 20
             };
 
             var chart = new google.visualization.PieChart(document.getElementById('graph1r'));
@@ -1409,8 +1410,9 @@ function sakubun(flg) {
 
             var options = {
                 title: '採算性（' + tmp0 + "）",
-                width: 500,
-                height: 300
+                width: 800,
+                height: 300,
+                fontSize: 20
             };
 
             var chart = new google.visualization.PieChart(document.getElementById('graph2r'));
@@ -1457,8 +1459,9 @@ function sakubun(flg) {
                     { targetAxisIndex: 1 }, // 第2系列は右のY時を使用
                 ],
                 legend: { position: 'bottom' },
-                width: 500,
+                width: 800,
                 height: 400,
+                fontSize: 20,
                 annotation: {
                     1: {
                         style: 'none'
@@ -1518,8 +1521,9 @@ function sakubun(flg) {
                     { targetAxisIndex: 1 }, // 第2系列は右のY時を使用
                 ],
                 legend: { position: 'bottom' },
-                width: 500,
-                height: 400
+                width: 800,
+                height: 400,
+                fontSize: 20
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('graph4r'));
@@ -1565,8 +1569,9 @@ function sakubun(flg) {
                     { targetAxisIndex: 1 }, // 第2系列は右のY時を使用
                 ],
                 legend: { position: 'bottom' },
-                width: 700,
-                height: 400
+                width: 1100,
+                height: 500,
+                fontSize: 20
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('graph5r'));
@@ -1608,8 +1613,9 @@ function sakubun(flg) {
                 title: 'シミュレーション(NPV)',
                 isStacked: true,
                 legend: { position: 'bottom' },
-                width: 700,
-                height: 400
+                width: 1200,
+                height: 400,
+                fontSize: 20
             };
 
             var chart = new google.visualization.ColumnChart(document.getElementById('graph6r'));

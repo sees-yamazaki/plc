@@ -292,6 +292,11 @@ th.fline,
 td.fline {
     border: none;
     border: 1px solid black;
+    white-space: nowrap;
+}
+
+.nwrp {
+    white-space: nowrap;
 }
 
 table.rep {
@@ -313,6 +318,10 @@ table.repS tr td {
     width: 110px;
     text-align: right;
     padding: 0 10px;
+}
+
+tr.bgClr {
+    background-color: #e4e4e4;
 }
 
 .report1,
@@ -339,7 +348,7 @@ table.repS tr td {
 
 textarea.sakubun {
     width: 98%;
-    font-size: 11pt;
+    font-size: 13pt;
     border: none;
 }
 
@@ -354,7 +363,20 @@ textarea.sakubun {
     border-radius: 3px;
 }
 
-.btn-sakubun:active {
+.btn-sakubun2 {
+    display: inline-block;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    background: #668ad8;
+    /*ボタン色*/
+    color: #FFF;
+    border-bottom: solid 4px #627295;
+    border-radius: 3px;
+    height: 80px;
+}
+
+.btn-sakubun:active,
+.btn-sakubun2:active {
     /*ボタンを押したとき*/
     -webkit-transform: translateY(4px);
     transform: translateY(4px);
@@ -367,7 +389,7 @@ textarea.sakubun {
     height: 1px;
     background-color: #ffffff;
     border: none;
-    width: 750px;
+    width: 1200px;
 }
 
 .skbnHr500 {
@@ -493,4 +515,9 @@ table.cntr td {
     background-color: #c37b4b;
     border-color: #e5a885;
     color: #FFF;
+}
+
+caption {
+    caption-side: top;
+    text-align: right;
 }

@@ -53,7 +53,8 @@ $test = 1;
 
                 var form = $(this).closest('form');
                 //var focusable = form.find('input, button[type="submit"], select, textarea').not('[readonly]').filter(':visible');
-                var focusable = form.find('input').not('[readonly],.lbl,input[type="button"],input[type="range"]').filter(':visible');
+                var focusable = form.find('input').not(
+                    '[readonly],.lbl,input[type="button"],input[type="range"]').filter(':visible');
 
                 if (e.shiftKey) {
                     focusable.eq(focusable.index(this) - 1).focus();
@@ -303,12 +304,12 @@ $test = 1;
                         <th rowspan=2>総原価</th>
                         <td>生菓子平均総原価</td>
                         <td><input type="text" class="lbl" id="d23" name="d23" readonly></td>
-                        <td></td>
+                        <td>円／個</td>
                     </tr>
                     <tr>
                         <td>焼菓子平均総原価</td>
                         <td><input type="text" class="lbl" id="d24" name="d24" readonly></td>
-                        <td></td>
+                        <td>円／個</td>
                     </tr>
                 </table>
 
@@ -328,6 +329,9 @@ $test = 1;
                             &nbsp;&nbsp;&nbsp;
                             <input type="range" id="scrl1" value="1" min="100" max="200" step="0.5"
                                 oninput="doSlide(this.value)"></td>
+                        <td rowspan="3">
+                            <a href="javascript:void(0)" class="btn-sakubun2" onclick="btning()">自動計算</a>
+                        </td>
                     </tr>
                     <tr>
                         <th>製造原価低減</th>
@@ -372,25 +376,25 @@ $test = 1;
                     <tr>
                         <th>設備1</th>
                         <td><input type="text" class="number" id="l29" name="l29"></td>
-                        <td>税抜</td>
+                        <td>円　税抜</td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>設備2</th>
                         <td><input type="text" class="number" id="l30" name="l30"></td>
-                        <td>税抜</td>
+                        <td>円　税抜</td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>設備3</th>
                         <td><input type="text" class="number" id="l31" name="l31"></td>
-                        <td>税抜</td>
+                        <td>円　税抜</td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>計</th>
                         <td><input type="text" class="lbl" id="l32" name="l32" readonly></td>
-                        <td></td>
+                        <td>円</td>
                         <td></td>
                     </tr>
                     <tr>
@@ -405,7 +409,7 @@ $test = 1;
                     <tr>
                         <th>補助額</th>
                         <td><input type="text" class="lbl" id="l34" name="l34" readonly></td>
-                        <td></td>
+                        <td>円</td>
                         <td></td>
                     </tr>
                     <tr>
@@ -420,14 +424,8 @@ $test = 1;
                     <tr>
                         <th>減価償却費</th>
                         <td><input type="text" class="lbl" id="l36" name="l36" readonly></td>
+                        <td>円</td>
                         <td><input type="text" class="lbl" id="m36" name="m36" readonly></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                 </table>
 
@@ -574,12 +572,12 @@ $test = 1;
                         <th rowspan=2>総原価</th>
                         <td>生菓子平均総原価</td>
                         <td><input type="text" class="lbl" id="d61" name="d61" readonly></td>
-                        <td></td>
+                        <td>円／個</td>
                     </tr>
                     <tr>
                         <td>焼菓子平均総原価</td>
                         <td><input type="text" class="lbl" id="d62" name="d62" readonly></td>
-                        <td></td>
+                        <td>円／個</td>
                     </tr>
                 </table>
 
@@ -624,11 +622,12 @@ $test = 1;
                     <colgroup span="1" class="areaB"></colgroup>
                     <tr>
                         <th>有形固定資産</th>
-                        <td><input type="text" class="number" id="l73" name="l73"></td>
+                        <td nowrap><input type="text" class="number" id="l73" name="l73">円</td>
                     </tr>
                 </table>
                 <br><br>
                 <table class='hs'>
+                    <caption>（円）</caption>
                     <colgroup span="1" class="areaA"></colgroup>
                     <colgroup span="1" class="areaB"></colgroup>
                     <colgroup span="1" class="areaC"></colgroup>
@@ -654,6 +653,7 @@ $test = 1;
                 <h3>３．損益分岐点の推移</h3>
 
                 <table class='hs'>
+                    <caption>（円）</caption>
                     <tr>
                         <th><input type="text" class="lbl" readonly></th>
                         <th>前期実績</th>
@@ -754,6 +754,7 @@ $test = 1;
                 <br><br>
 
                 <table class='hs'>
+                    <caption>（円）</caption>
                     <tr>
                         <th><input type="text" class="lbl widthBunki" readonly></th>
                         <th>投資時点</th>
@@ -789,7 +790,7 @@ $test = 1;
                         <td><input type="text" class="lbl widthBunki" id="h95" name="h95" readonly></td>
                     </tr>
                     <tr>
-                        <th>②減価償却費のﾀｯｸｽｼｰﾙﾄﾞ</th>
+                        <th class="nwrp">②減価償却費のﾀｯｸｽｼｰﾙﾄﾞ</th>
                         <td><input type="text" class="lbl widthBunki" id="d96" name="d96" readonly></td>
                         <td><input type="text" class="lbl widthBunki" id="e96" name="e96" readonly></td>
                         <td><input type="text" class="lbl widthBunki" id="f96" name="f96" readonly></td>
@@ -813,7 +814,7 @@ $test = 1;
                         <td><input type="text" class="lbl widthBunki" id="h98" name="h98" readonly></td>
                     </tr>
                     <tr>
-                        <th>①”税引後CIF（営業CF）</th>
+                        <th class="nwrp">①”税引後CIF（営業CF）</th>
                         <td><input type="text" class="lbl widthBunki" id="c99" name="c99" readonly></td>
                         <td><input type="text" class="lbl widthBunki" id="d99" name="d99" readonly></td>
                         <td><input type="text" class="lbl widthBunki" id="e99" name="e99" readonly></td>
@@ -831,7 +832,7 @@ $test = 1;
                         <td><input type="text" class="lbl widthBunki" id="h100" name="h100" readonly></td>
                     </tr>
                     <tr>
-                        <th>割引現在価値合計（①"＋②'）</th>
+                        <th class="nwrp">割引現在価値合計（①"＋②'）</th>
                         <td><input type="text" class="lbl widthBunki blueBold" id="c101" name="c101" readonly></td>
                         <td><input type="text" class="lbl widthBunki" id="d101" name="d101" readonly></td>
                         <td><input type="text" class="lbl widthBunki" id="e101" name="e101" readonly></td>
@@ -922,16 +923,16 @@ $test = 1;
                         <td class="fline"><input type="text" class="lbl" id="i11" name="i11" readonly></td>
                         <td class="fline">個/年間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m11" name="m11" readonly></td>
                         <td class="fline">個/年間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline">生菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i12" name="i12" readonly></td>
                         <td class="fline">個/年間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m12" name="m12" readonly></td>
                         <td class="fline">個/年間</td>
                     </tr>
@@ -958,16 +959,16 @@ $test = 1;
                         <td class="fline"><input type="text" class="lbl" id="i15" name="i15" readonly></td>
                         <td class="fline">個/月間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m15" name="m15" readonly></td>
                         <td class="fline">個/月間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline">生菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i16" name="i16" readonly></td>
                         <td class="fline">個/月間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m16" name="m16" readonly></td>
                         <td class="fline">個/月間</td>
                     </tr>
@@ -995,16 +996,16 @@ $test = 1;
                         <td class="fline"><input type="text" class="lbl" id="i19" name="i19"></td>
                         <td class="fline">個/日間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m19" name="m19" readonly></td>
                         <td class="fline">個/日間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline">生菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i20" name="i20" readonly></td>
                         <td class="fline">個/日間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m20" name="m20" readonly></td>
                         <td class="fline">個/日間</td>
                     </tr>
@@ -1220,16 +1221,16 @@ $test = 1;
                         <td class="fline"><input type="text" class="lbl" id="i49" name="i49" readonly></td>
                         <td class="fline">個/年間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m49" name="m49" readonly></td>
                         <td class="fline">個/年間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline">生菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i50" name="i50" readonly></td>
                         <td class="fline">個/年間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m50" name="m50" readonly></td>
                         <td class="fline">個/年間</td>
                     </tr>
@@ -1256,16 +1257,16 @@ $test = 1;
                         <td class="fline"><input type="text" class="lbl" id="i53" name="i53" readonly></td>
                         <td class="fline">個/月間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m53" name="m53" readonly></td>
                         <td class="fline">個/月間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline">生菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i54" name="i54" readonly></td>
                         <td class="fline">個/月間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m54" name="m54" readonly></td>
                         <td class="fline">個/月間</td>
                     </tr>
@@ -1293,16 +1294,16 @@ $test = 1;
                         <td class="fline"><input type="text" class="lbl" id="i57" name="i57" readonly></td>
                         <td class="fline">個/日間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m57" name="m57" readonly></td>
                         <td class="fline">個/日間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline">生菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i58" name="i58" readonly></td>
                         <td class="fline">個/日間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m58" name="m58" readonly></td>
                         <td class="fline">個/日間</td>
                     </tr>
@@ -1470,16 +1471,28 @@ $test = 1;
                     <tr>
                         <td>
                             <hr class="skbnHr">
-                            <textarea id="a1r" name="a1r" rows=30 class="sakubun"></textarea><br>
-                            <textarea id="a6r" name="a6r" rows=6 class="sakubun"></textarea>
+                            <textarea id="a1r" name="a1r" rows=23 class="sakubun"></textarea><br>
                         </td>
+                    </tr>
+                </table>
+                <table class="rep">
+                    <tr>
                         <td class="skbnGrph">
                             <div class="grph" id="graph1r"></div>
                         </td>
                     </tr>
                 </table>
-                <table class="repS">
+                <table class="rep">
                     <tr>
+                        <td>
+                        <hr class="skbnHr">
+                            <textarea id="a6r" name="a6r" rows=6 class="sakubun"></textarea>
+                        </td>
+                    </tr>
+                </table>
+                <table class="repS">
+                    <caption>（円）</caption>
+                    <tr class="bgClr">
                         <th class="fline"></th>
                         <th class="fline">①平均単価</th>
                         <th class="fline">②材料費</th>
@@ -1542,25 +1555,45 @@ $test = 1;
                     <tr>
                         <td>
                             <hr class="skbnHr">
-                            <textarea id="a11r" name="a11r" rows=28 class="sakubun"></textarea><br>
-                            <textarea id="a26r" name="a26r" rows=6 class="sakubun"></textarea><br>
-                            <textarea id="a29r" name="a29r" rows=23 class="sakubun"></textarea>
+                            <textarea id="a11r" name="a11r" rows=22 class="sakubun"></textarea><br>
+                            <textarea id="a26r" name="a26r" rows=4 class="sakubun"></textarea><br>
                         </td>
+                    </tr>
+                </table>
+                <table class="rep">
+                    <tr>
                         <td class="skbnGrph">
                             <div class="grph" id="graph2r"></div>
                         </td>
                     </tr>
+                </table>
+                <table class="rep">
                     <tr>
                         <td>
-                            <textarea id="a44r" name="a44r" rows=18 class="sakubun"></textarea>
+                        <hr class="skbnHr">
+                            <textarea id="a29r" name="a29r" rows=21 class="sakubun"></textarea>
                         </td>
+                    </tr>
+                </table>
+                <table class="rep">
+                    <tr>
+                        <td>
+                        <hr class="skbnHr">
+                            <textarea id="a44r" name="a44r" rows=15 class="sakubun"></textarea>
+                        </td>
+                    </tr>
+                </table>
+                <table class="rep">
+                    <tr>
                         <td class="skbnGrph">
                             <div class="grph" id="graph3r"></div>
                         </td>
                     </tr>
                 </table>
+                <br><br>
                 <table class="repS">
-                    <tr>
+                    <caption>（万円）</caption>
+                    <tr class="bgClr">
                         <th class="fline"></th>
                         <th class="fline">売上額</th>
                         <th class="fline">直接労務費</th>
@@ -1617,15 +1650,20 @@ $test = 1;
                     <tr>
                         <td>
                             <hr class="skbnHr">
-                            <textarea id="a51r" name="a51r" rows=15 class="sakubun"></textarea>
+                            <textarea id="a51r" name="a51r" rows=11 class="sakubun"></textarea>
                         </td>
+                    </tr>
+                </table>
+                <table class="rep">
+                    <tr>
                         <td class="skbnGrph">
                             <div class="grph" id="graph4r"></div>
                         </td>
                     </tr>
                 </table>
                 <table class="repS">
-                    <tr>
+                    <caption>（円）</caption>
+                    <tr class="bgClr">
                         <th class="fline">【生菓子】</th>
                         <th class="fline">①平均単価</th>
                         <th class="fline">②材料費</th>
@@ -1685,16 +1723,16 @@ $test = 1;
                     </tr>
                 </table><br>
                 <table class="repS">
-                    <tr>
+                    <caption>（円）</caption>
+                    <tr class="bgClr">
                         <th class="fline">【焼菓子】</th>
-                        <td class="fline">①平均単価</td>
-                        <td class="fline">②材料費</td>
-                        <td class="fline">③直接労務費</td>
-                        <td class="fline">④間接労務費</td>
-                        <td class="fline">⑤総原価<br>(②＋③＋④)</td>
-                        <td class="fline">⑥収益/個</td>
-                        <td class="fline">⑦収益率</td>
-                        <td></td>
+                        <th class="fline">①平均単価</th>
+                        <th class="fline">②材料費</th>
+                        <th class="fline">③直接労務費</th>
+                        <th class="fline">④間接労務費</th>
+                        <th class="fline">⑤総原価<br>(②＋③＋④)</th>
+                        <th class="fline">⑥収益/個</th>
+                        <th class="fline">⑦収益率</th>
                     </tr>
                     <tr>
                         <th class="fline">設備導入前</th>
@@ -1751,11 +1789,14 @@ $test = 1;
                             <hr class="skbnHr">
                             <textarea id="a62r" name="a62r" rows=6 class="sakubun"></textarea>
                         </td>
-                        <td><hr class="skbnHr500"></td>
+                        <td>
+                            <hr class="skbnHr500">
+                        </td>
                     </tr>
                 </table>
                 <table class="repS">
-                    <tr>
+                    <caption>（円）</caption>
+                    <tr class="bgClr">
                         <th class="fline">生産性指標</th>
                         <th class="fline">実施前</th>
                         <th class="fline">５年後</th>
@@ -1879,7 +1920,9 @@ $test = 1;
                             <hr class="skbnHr">
                             <textarea id="a75r" name="a75r" rows=20 class="sakubun"></textarea>
                         </td>
-                        <td><hr class="skbnHr500"></td>
+                        <td>
+                            <hr class="skbnHr500">
+                        </td>
                     </tr>
 
                 </table>
@@ -1891,17 +1934,29 @@ $test = 1;
                             <hr class="skbnHr">
                             <textarea id="a87r" name="a87r" rows=6 class="sakubun"></textarea>
                         </td>
+                    </tr>
+
+                </table>
+
+                <table class="rep">
+
+
+                    <tr>
                         <td rowspan=2 class="skbnGrph">
                             <div class="grph" id="graph5r"></div>
                         </td>
                     </tr>
 
+                </table>
+
+                <table class="rep">
+
 
                     <tr>
                         <td>
                             <table class="repS">
-
-                                <tr>
+                                <caption>（円）</caption>
+                                <tr class="bgClr">
                                     <th class="fline"></th>
                                     <th class="fline">前期実績</th>
                                     <th class="fline">1年目</th>
@@ -1984,15 +2039,25 @@ $test = 1;
                             <hr class="skbnHr">
                             <textarea id="a96r" name="a96r" rows=13 class="sakubun"></textarea>
                         </td>
+                    </tr>
+                </table>
+
+                <table class="rep">
+
+                    <tr>
                         <td rowspan=2 class="skbnGrph">
                             <div class="grph" id="graph6r"></div>
                         </td>
                     </tr>
+                </table>
+
+                <table class="rep">
 
                     <tr>
                         <td>
                             <table class="repS">
-                                <tr>
+                                <caption>（円）</caption>
+                                <tr class="bgClr">
                                     <th class="fline"></th>
                                     <th class="fline">投資時点</th>
                                     <th class="fline">1年目</th>
@@ -2154,7 +2219,7 @@ $test = 1;
                                 </tr>
                                 <tr>
                                     <th class="fline">割引現在価値合計（①"＋②'）</th>
-                                    <td class="fline">
+                                    <td class="fline blueBold">
                                         <p id="b112r" name="b112r"></p>
                                     </td>
                                     <td class="fline">
@@ -2175,7 +2240,7 @@ $test = 1;
                                 </tr>
                                 <tr>
                                     <th class="fline">投資額</th>
-                                    <td class="fline blueBold">
+                                    <td class="fline redBold">
                                         <p id="b113r" name="b113r"></p>
                                     </td>
                                     <td colspan=5></td>
