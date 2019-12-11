@@ -76,6 +76,10 @@ input.number,
 input.number1,
 input.number2 {
     text-align: right;
+    ime-mode: disabled;
+}
+.imeon{
+    ime-mode: active;
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -306,7 +310,8 @@ table.rep {
 
 table.repS {
     border-collapse: collapse;
-    font-size: x-small;
+    font-size: 1rem;
+    margin: 0 auto;
 }
 
 table.repS tr th {

@@ -191,8 +191,8 @@ try {
                 <tr>
                     <td style="width:600px">
                         登録ユーザー：<?php echo $_SESSION['NAME'] ?><br><br>
-                        タイトル１：<input type=text name="title1" class="wdtM" value="<?php echo $_POST['title1']; ?>" required><br><br>
-                        タイトル２：<input type=text name="title2" class="wdtM" value="<?php echo $_POST['title2']; ?>"></td>
+                        タイトル１：<input type=text name="title1" class="wdtM imeon" value="<?php echo $_POST['title1']; ?>" required><br><br>
+                        タイトル２：<input type=text name="title2" class="wdtM imeon" value="<?php echo $_POST['title2']; ?>"></td>
                 </tr>
                 <tr>
                     <?php if (!isset($iSeq) || $iSeq=="") { ?>

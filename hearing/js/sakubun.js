@@ -1343,7 +1343,7 @@ function sakubun(flg) {
                 title: '菓子分類比率',
                 width: 800,
                 height: 300,
-                fontSize: 20
+                fontSize: 18
             };
 
             var chart = new google.visualization.PieChart(document.getElementById('graph1r'));
@@ -1412,7 +1412,7 @@ function sakubun(flg) {
                 title: '採算性（' + tmp0 + "）",
                 width: 800,
                 height: 300,
-                fontSize: 20
+                fontSize: 18
             };
 
             var chart = new google.visualization.PieChart(document.getElementById('graph2r'));
@@ -1461,7 +1461,7 @@ function sakubun(flg) {
                 legend: { position: 'bottom' },
                 width: 800,
                 height: 400,
-                fontSize: 20,
+                fontSize: 18,
                 annotation: {
                     1: {
                         style: 'none'
@@ -1523,7 +1523,7 @@ function sakubun(flg) {
                 legend: { position: 'bottom' },
                 width: 800,
                 height: 400,
-                fontSize: 20
+                fontSize: 18
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('graph4r'));
@@ -1571,7 +1571,7 @@ function sakubun(flg) {
                 legend: { position: 'bottom' },
                 width: 1100,
                 height: 500,
-                fontSize: 20
+                fontSize: 18
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('graph5r'));
@@ -1593,7 +1593,7 @@ function sakubun(flg) {
             var data = new google.visualization.DataTable();
             data.addColumn('string', '');
             data.addColumn('number', "投資額");
-            data.addColumn({ type: 'number', role: 'annotation' });
+            data.addColumn({ type: 'number', role: 'annotation', baseline: 100 });
             data.addColumn('number', "②'タックスシールド");
             data.addColumn({ type: 'number', role: 'annotation' });
             data.addColumn('number', '①”税引後CIF（営業CF）');
@@ -1615,7 +1615,7 @@ function sakubun(flg) {
                 legend: { position: 'bottom' },
                 width: 1200,
                 height: 400,
-                fontSize: 20
+                fontSize: 18
             };
 
             var chart = new google.visualization.ColumnChart(document.getElementById('graph6r'));

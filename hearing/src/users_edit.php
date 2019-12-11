@@ -120,7 +120,7 @@ date_default_timezone_set('Asia/Tokyo');
                 <tr>
                     <th><span class="required">*</span>ID<span class="f50P"> (10)</span></th>
                     <td style="width:400px"><input type="text" name="users_id" class="f130P wdtL" maxlength=10
-                            style="ime-mode: inactive;" required pattern="[0-9a-zA-Z]+" title="半角英数字"
+                            style="ime-mode: disabled;" required pattern="[0-9a-zA-Z]+" title="半角英数字"
                             placeholder="半角英数字" value="<?php echo $user->users_id; ?>" autocomplete="off">
                     </td>
                 </tr>

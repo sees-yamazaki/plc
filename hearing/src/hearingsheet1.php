@@ -177,7 +177,9 @@ $test = 1;
                 <li><a id="infoRec" href="javascript:sakubunCheck()" class="lst">登録する</a></li>
                 <li><a id="info" href="javascript:showList()" class="lst">登録情報</a></li>
                 <li><a id="info" href="javascript:showUser()" class="lst">ユーザ</a></li>
+                <!--
                 <li><input type="button" onclick="demo()" value="デモ用数値">
+                -->
                 <li class='right'><a href='./logoff.php' class="rvc">ログオフ</a></li>
             </ul>
         </div>
@@ -1471,7 +1473,7 @@ $test = 1;
                     <tr>
                         <td>
                             <hr class="skbnHr">
-                            <textarea id="a1r" name="a1r" rows=23 class="sakubun"></textarea><br>
+                            <textarea id="a1r" name="a1r" rows=20 class="sakubun"></textarea><br>
                         </td>
                     </tr>
                 </table>
@@ -1555,7 +1557,7 @@ $test = 1;
                     <tr>
                         <td>
                             <hr class="skbnHr">
-                            <textarea id="a11r" name="a11r" rows=22 class="sakubun"></textarea><br>
+                            <textarea id="a11r" name="a11r" rows=20 class="sakubun"></textarea><br>
                             <textarea id="a26r" name="a26r" rows=4 class="sakubun"></textarea><br>
                         </td>
                     </tr>
@@ -1571,7 +1573,7 @@ $test = 1;
                     <tr>
                         <td>
                         <hr class="skbnHr">
-                            <textarea id="a29r" name="a29r" rows=21 class="sakubun"></textarea>
+                            <textarea id="a29r" name="a29r" rows=20 class="sakubun"></textarea>
                         </td>
                     </tr>
                 </table>
@@ -1579,7 +1581,7 @@ $test = 1;
                     <tr>
                         <td>
                         <hr class="skbnHr">
-                            <textarea id="a44r" name="a44r" rows=15 class="sakubun"></textarea>
+                            <textarea id="a44r" name="a44r" rows=13 class="sakubun"></textarea>
                         </td>
                     </tr>
                 </table>
@@ -1787,7 +1789,7 @@ $test = 1;
                     <tr>
                         <td>
                             <hr class="skbnHr">
-                            <textarea id="a62r" name="a62r" rows=6 class="sakubun"></textarea>
+                            <textarea id="a62r" name="a62r" rows=4 class="sakubun"></textarea>
                         </td>
                         <td>
                             <hr class="skbnHr500">
@@ -1918,7 +1920,7 @@ $test = 1;
                     <tr>
                         <td>
                             <hr class="skbnHr">
-                            <textarea id="a75r" name="a75r" rows=20 class="sakubun"></textarea>
+                            <textarea id="a75r" name="a75r" rows=14 class="sakubun"></textarea>
                         </td>
                         <td>
                             <hr class="skbnHr500">
@@ -1932,7 +1934,7 @@ $test = 1;
                     <tr>
                         <td>
                             <hr class="skbnHr">
-                            <textarea id="a87r" name="a87r" rows=6 class="sakubun"></textarea>
+                            <textarea id="a87r" name="a87r" rows=5 class="sakubun"></textarea>
                         </td>
                     </tr>
 
@@ -2037,7 +2039,7 @@ $test = 1;
                     <tr>
                         <td>
                             <hr class="skbnHr">
-                            <textarea id="a96r" name="a96r" rows=13 class="sakubun"></textarea>
+                            <textarea id="a96r" name="a96r" rows=9 class="sakubun"></textarea>
                         </td>
                     </tr>
                 </table>
@@ -2050,7 +2052,7 @@ $test = 1;
                         </td>
                     </tr>
                 </table>
-
+<br><br>
                 <table class="rep">
 
                     <tr>
