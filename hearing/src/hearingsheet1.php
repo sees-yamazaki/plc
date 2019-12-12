@@ -27,7 +27,7 @@ require_once './db/infos.php';
 $info = array();
 $info = getInfo($iSeq);
 
-$test = 1;
+$ini = $_SESSION['INI'];
 
 ?>
 
@@ -177,9 +177,9 @@ $test = 1;
                 <li><a id="infoRec" href="javascript:sakubunCheck()" class="lst">登録する</a></li>
                 <li><a id="info" href="javascript:showList()" class="lst">登録情報</a></li>
                 <li><a id="info" href="javascript:showUser()" class="lst">ユーザ</a></li>
-                <!--
+                <?php if($ini['support']==1){ ?>
                 <li><input type="button" onclick="demo()" value="デモ用数値">
-                -->
+                <?php } ?>
                 <li class='right'><a href='./logoff.php' class="rvc">ログオフ</a></li>
             </ul>
         </div>
