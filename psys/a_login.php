@@ -26,9 +26,9 @@ if (isset($_POST["login"])) {
         try {
             require_once './db/users.php';
             $users = new cls_users();
-            $users = loginUsers($userid, $userpw);
+            $users = loginUsers($users_id, $users_pw);
 
-            if (count($users)<>1) {
+            if ($users->users_seq==0) {
                 $errorMessage = 'ログインできませんでした。';
             } else {
                 $errorMessage = 'ログインできました。';
@@ -94,6 +94,7 @@ if (isset($_POST["login"])) {
                     </div>
                     <button type="submit" class="btn btn-primary btn-block" name="login"> ログイン</button>
                   </form>
+                                        <span class="clrRed"><?php echo $errorMessage ?></span>
                 </div>
               </div>
             </div>

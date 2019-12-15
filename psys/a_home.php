@@ -44,6 +44,7 @@ $errorMessage = "";
 
     <?php include('./a_footer.php'); ?>
 
+
     </div>
     </div>
     <script src="./assets/vendors/js/core.js"></script>
