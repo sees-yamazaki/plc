@@ -203,8 +203,8 @@ window.onload = function() {
         document.getElementById("a87r").value = document.getElementById("a87rx").value;
         document.getElementById("a96r").value = document.getElementById("a96rx").value;
         doCalc();
-        sakubun(1);
         page1();
+        sakubun(1);
     }
 };
 
@@ -232,7 +232,7 @@ function page2() {
     p1.classList.remove("active");
     p2.classList.add("active");
     p3.classList.remove("active");
-
+    document.getElementById('i18').focus();
 }
 
 function page3() {

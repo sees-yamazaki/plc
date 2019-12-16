@@ -44,7 +44,7 @@ function sakubun(flg) {
 
     tmp = document.getElementById("a1r").value;
     if (tmp != "" && flg == 0) {
-        if (window.confirm('すでに自動作文が実施されています。　上書きしてよろしいですか？')) {} else {
+        if (window.confirm('自動作文データが上書きされます。よろしいですか？（OK/Cansel）')) {} else {
             return;
         }
     }
@@ -627,12 +627,12 @@ function sakubun(flg) {
     tmp2 = numFormat(JinkenhiRitu_YakiWK * 100, 1);
     if (JinkenhiRitu_NamaWK > JinkenhiRitu_YakiWK) {
         strwk += "一方、「人件費」では生菓子の製造労務費が問題で、菓子一個当たりの直接労務費と間接労務費" +
-            "の合計が" + (myCnvNum(NamaAveRoumuB) + myCnvNum(NamaAveHankanB)) + "円となっており、" +
+            "の合計が" + myTrunc(myCnvNum(NamaAveRoumuB) + myCnvNum(NamaAveHankanB), 2) + "円となっており、" +
             "その「人件費率」も" + tmp1 + "%となっている。" + br;
         IssueKbn = "生菓子";
     } else {
         strwk += "一方、「人件費」では焼菓子の製造労務費が問題で、菓子一個当たりの直接労務費と間接労務費" +
-            "の合計が" + (myCnvNum(YakiAveRoumuB) + myCnvNum(YakiAveHankanB)) + "円となっており、" +
+            "の合計が" + myTrunc(myCnvNum(YakiAveRoumuB) + myCnvNum(YakiAveHankanB), 2) + "円となっており、" +
             "その人件費率も" + tmp2 + "%となっている。" + br;
         IssueKbn = "焼菓子";
     }
@@ -883,13 +883,13 @@ function sakubun(flg) {
         //直接労務費が削減される場合
         if ((myCnvNum(HankanhiB) - myCnvNum(HankanhiA)) >= 0) {
             //間接労務費も削減される場合
-            tmp2 = numFormat(e50r * 100, 1);
+            tmp2 = numFormat(e50r, 2);
             strwk += "材料費含めた製造原価全体として" + GenkaTeigen + "削減見込みであることに加え、" +
                 "下表にあるように直接労務費、間接労務費ともに削減がなされ労務費全体としても労務費率が" + tmp2 + "%削減の見込みであるため";
 
         } else {
             //間接労務費は削減されない場合
-            tmp2 = numFormat(e50r * 100, 1);
+            tmp2 = numFormat(e50r, 2);
             strwk += "材料費含めた製造原価全体として" + GenkaTeigen + "削減見込みであることに加え、" +
                 "下表にあるように直接労務費を中心に削減がなされ労務費全体として労務費率が" + tmp2 + "%削減の見込みであるため";
         }
@@ -897,13 +897,13 @@ function sakubun(flg) {
         //直接労務費が削減されない場合（従業員の増員が多い場合）
         if ((myCnvNum(HankanhiB) - myCnvNum(HankanhiA)) >= 0) {
             //間接労務費は削減される場合
-            tmp2 = numFormat(e50r * 100, 1);
+            tmp2 = numFormat(e50r, 2);
             strwk += "材料費含めた製造原価全体として" + GenkaTeigen + "削減見込みであることに加え、" +
                 "下表にあるように間接労務費を中心に削減がなされ労務費全体として労務費率が" + tmp2 + "%削減の見込みであるため";
 
         } else {
             //間接労務費は削減されない場合
-            tmp2 = numFormat(e50r * 100, 1);
+            tmp2 = numFormat(e50r, 2);
             strwk += "材料費含めた製造原価全体として" + GenkaTeigen + "削減見込みであることに加え、" +
                 "下表にあるように労務費全体として労務費率が" + tmp2 + "%削減の見込みであるため";
         }

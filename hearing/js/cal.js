@@ -12,17 +12,23 @@ $(function() {
 
     $('#d11')
         .focusout(function(e) {
-            document.getElementById("d49").value = document.getElementById("d11").value;
+            if (document.getElementById("d49").value == "") {
+                document.getElementById("d49").value = document.getElementById("d11").value;
+            }
         });
 
     $('#d12')
         .focusout(function(e) {
-            document.getElementById("d50").value = document.getElementById("d12").value;
+            if (document.getElementById("d50").value == "") {
+                document.getElementById("d50").value = document.getElementById("d12").value;
+            }
         });
 
     $('#e13')
         .focusout(function(e) {
-            document.getElementById("e51").value = document.getElementById("e13").value;
+            if (document.getElementById("e51").value == "") {
+                document.getElementById("e51").value = document.getElementById("e13").value;
+            }
         });
 
     $('input')

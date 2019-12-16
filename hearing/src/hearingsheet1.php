@@ -925,12 +925,12 @@ $ini = $_SESSION['INI'];
                         <td class="fline"><input type="text" class="lbl" id="i11" name="i11" readonly></td>
                         <td class="fline">個/年間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline">生菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m11" name="m11" readonly></td>
                         <td class="fline">個/年間</td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i12" name="i12" readonly></td>
                         <td class="fline">個/年間</td>
                         <td></td>
@@ -961,12 +961,12 @@ $ini = $_SESSION['INI'];
                         <td class="fline"><input type="text" class="lbl" id="i15" name="i15" readonly></td>
                         <td class="fline">個/月間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline">生菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m15" name="m15" readonly></td>
                         <td class="fline">個/月間</td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i16" name="i16" readonly></td>
                         <td class="fline">個/月間</td>
                         <td></td>
@@ -998,12 +998,12 @@ $ini = $_SESSION['INI'];
                         <td class="fline"><input type="text" class="lbl" id="i19" name="i19"></td>
                         <td class="fline">個/日間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline">生菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m19" name="m19" readonly></td>
                         <td class="fline">個/日間</td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i20" name="i20" readonly></td>
                         <td class="fline">個/日間</td>
                         <td></td>
@@ -1223,12 +1223,12 @@ $ini = $_SESSION['INI'];
                         <td class="fline"><input type="text" class="lbl" id="i49" name="i49" readonly></td>
                         <td class="fline">個/年間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline">生菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m49" name="m49" readonly></td>
                         <td class="fline">個/年間</td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i50" name="i50" readonly></td>
                         <td class="fline">個/年間</td>
                         <td></td>
@@ -1259,12 +1259,12 @@ $ini = $_SESSION['INI'];
                         <td class="fline"><input type="text" class="lbl" id="i53" name="i53" readonly></td>
                         <td class="fline">個/月間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline">生菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m53" name="m53" readonly></td>
                         <td class="fline">個/月間</td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i54" name="i54" readonly></td>
                         <td class="fline">個/月間</td>
                         <td></td>
@@ -1296,12 +1296,12 @@ $ini = $_SESSION['INI'];
                         <td class="fline"><input type="text" class="lbl" id="i57" name="i57" readonly></td>
                         <td class="fline">個/日間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline">生菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m57" name="m57" readonly></td>
                         <td class="fline">個/日間</td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline">焼菓子商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i58" name="i58" readonly></td>
                         <td class="fline">個/日間</td>
                         <td></td>
