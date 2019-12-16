@@ -32,7 +32,7 @@
             <ul class="navigation-menu">
                 <li class="nav-category-divider">MAIN</li>
                 <li>
-                    <a href="index.html">
+                    <a href="a_home.php">
                         <span class="link-title">ホーム</span>
                         <i class="mdi mdi-home link-icon"></i>
                     </a>
@@ -44,10 +44,10 @@
                     </a>
                     <ul class="collapse navigation-submenu" id="sample-pages">
                         <li>
-                            <a href="" target="_blank">ユーザ一覧</a>
+                            <a href="javascript:void(0)">ユーザ一覧</a>
                         </li>
                         <li>
-                            <a href="" target="_blank">検索</a>
+                            <a href="javascript:void(0)">検索</a>
                         </li>
                     </ul>
                 </li>
@@ -58,13 +58,13 @@
                     </a>
                     <ul class="collapse navigation-submenu" id="ui-elements">
                         <li>
-                            <a href="pages/ui-components/buttons.html">キャンペーン一覧</a>
+                            <a href="javascript:void(0)">キャンペーン一覧</a>
                         </li>
                         <li>
-                            <a href="pages/ui-components/tables.html">景品一覧</a>
+                            <a href="javascript:void(0)">景品一覧</a>
                         </li>
                         <li>
-                            <a href="pages/ui-components/typography.html">ゲーム一覧</a>
+                            <a href="javascript:void(0)">ゲーム一覧</a>
                         </li>
                     </ul>
                 </li>
@@ -103,6 +103,7 @@
                         <i class="mdi mdi-home link-icon"></i>
                     </a>
                 </li>
+                <!--
                 <li>
                     <a href="pages/forms/form-elements.html">
                         <span class="link-title">Forms</span>
@@ -128,5 +129,6 @@
                         <i class="mdi mdi-asterisk link-icon"></i>
                     </a>
                 </li>
+-->
             </ul>
         </div>

@@ -45,6 +45,7 @@ $errorMessage = "";
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">
     <link rel="shortcut icon" href="../asssets/images/favicon.ico" />
+    <link rel="stylesheet" href="./asset/css/main.css">
     <script>
     function usrEdit(vlu) {
         document.frm.uSeq.value = vlu;

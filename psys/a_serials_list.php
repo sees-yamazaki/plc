@@ -15,23 +15,26 @@ $errorMessage = "";
 
 
  try {
-     require_once './db/serials.php';
+
+    require_once './db/serials.php';
      $serials = new cls_serials();
      $serials = getSerials();
 
      $html="";
      foreach ($serials as $serial) {
-        $html .= '<tr>';
-        $html .= "<td>".$serial->s_title."</td>";
-        $html .= "<td>".$serial->s_qty."</td>";
-        $html .= "<td>".$serial->createdt."</td>";
-        $html .= "<td><button type='button' name='edit' class='btn btn-inverse-secondary' onclick='usrEdit(".$user->users_seq.")'>編集</button></td>";
-        $html .= "</tr>";
-    }
-
-} catch (PDOException $e) {
-    $errorMessage = 'データベースエラー:'.$e->getMessage();
-}
+         $html .= '<tr>';
+         $html .= "<td>".$serial->s_title."</td>";
+         $html .= "<td>".$serial->s_qty."</td>";
+         $html .= "<td>".$serial->createdt."</td>";
+         $html .= "<td>";
+         $html .= "<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='scEdit(".$serial->s_seq.")'>編集</button>";
+         $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='scDL(".$serial->s_seq.")'>DL</button>";
+         $html .= "</td>";
+         $html .= "</tr>";
+     }
+ } catch (PDOException $e) {
+     $errorMessage = 'データベースエラー:'.$e->getMessage();
+ }
 
 
 ?>
@@ -46,17 +49,25 @@ $errorMessage = "";
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">
     <link rel="shortcut icon" href="../asssets/images/favicon.ico" />
+    <link rel="stylesheet" href="./asset/css/main.css">
     <script>
-    function usrEdit(vlu) {
-        document.frm.uSeq.value = vlu;
+    function scEdit(vlu) {
+        document.frm.sSeq.value = vlu;
         document.frm.submit();
+    }
+    function scDL(vlu) {
+        document.frm2.sSeq.value = vlu;
+        document.frm2.submit();
     }
     </script>
 </head>
 
 <body class="header-fixed">
-    <form action='a_users_edit.php' method='POST' name="frm">
-        <input type='hidden' name='uSeq' value=''>
+    <form action='a_serials_edit.php' method='POST' name="frm">
+        <input type='hidden' name='sSeq' value=''>
+    </form>
+    <form action='a_serials_dl.php' method='POST' name="frm2">
+        <input type='hidden' name='sSeq' value=''>
     </form>
 
     <?php include('./a_menu.php'); ?>

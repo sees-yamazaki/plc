@@ -29,32 +29,29 @@ $errorMessage = "";
         $serial->users_seq = $_SESSION['SEQ'];
         
         if (isset($_POST['edit'])) {
-
-            if (!empty($uSeq)) {
-                updateSerials($serial);
+            if (!empty($sSeq)) {
+                $errorMessage = updateSerials($serial);
             } else {
-                insertSerials($serial);
+                $errorMessage = insertSerials($serial);
             }
             
             
             if (empty($errorMessage)) {
                 header("Location: ./a_serials_list.php");
             }
+        } elseif (isset($_POST['del'])) {
+            $cnt = countSCodes($sSeq);
+            if ($cnt==0) {
+                deleteSerials($sSeq);
 
-            // } elseif (isset($_POST['userDel'])) {
-            // $rtn = checkUsers($user);
-            // if (count($rtn)==0) {
-            //     deleteUser($user);
-
-            //     header("Location: ./users_list.php");
-
-            // } else {
-            //     $errorMessage = 'このユーザはシミュレーションデータが登録されているため削除できません';
+                header("Location: ./a_serials_list.php");
+            } else {
+                $errorMessage = 'このシリアルコードはすでに使用されているため削除できません';
                 
-            //     $user = getUser($uSeq);
-            // }
+                $serial = getSerial($sSeq);
+            }
         } else {
-            $user = getSerial($sSeq);
+            $serial = getSerial($sSeq);
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
@@ -75,7 +72,8 @@ $errorMessage = "";
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">
     <link rel="shortcut icon" href="./assets/images/favicon.ico" />
-    <script src="./assets/js/main.js"></script>
+    <link rel="stylesheet" href="./asset/css/main.css">
+    <script src="./asset/js/main.js"></script>
 </head>
 
 <body class="header-fixed">
@@ -98,7 +96,7 @@ $errorMessage = "";
 
                                         <form action="" method="POST" onsubmit="return addcheck()">
 
-                                        <div class="form-group row showcase_row_area">
+                                            <div class="form-group row showcase_row_area">
                                                 <div class="col-md-3 showcase_text_area">
                                                     <label for="inputType1">タイトル</label>
                                                 </div>
@@ -116,8 +114,8 @@ $errorMessage = "";
                                                 <div class="col-md-9 showcase_content_area">
                                                     <input type="text" class="form-control" name="s_qty"
                                                         value="<?php echo $serial->s_qty; ?>" placeholder="5文字まで"
-                                                        maxLength=5 pattern="[0-9]+" title="数字"
-                                                        autocomplete="off" required>
+                                                        maxLength=5 pattern="[0-9]+" title="数字" autocomplete="off"
+                                                        required>
                                                 </div>
                                             </div>
 
@@ -126,6 +124,13 @@ $errorMessage = "";
                                                 name="edit">登　録</button>
                                             <input type="hidden" name="sSeq" value="<?php echo $serial->s_seq; ?>">
                                         </form>
+                                        <br><br>
+                                        <form action="" method="POST" onsubmit="return addcheck()">
+                                            <button type="submit" class="btn btn-danger btn-block mt-0"
+                                                name="del">削　除</button>
+                                            <input type="hidden" name="sSeq" value="<?php echo $serial->s_seq; ?>">
+                                        </form>
+
                                         <span class="clrRed"><?php echo $errorMessage ?></span>
                                     </div>
                                 </div>

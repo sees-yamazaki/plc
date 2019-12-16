@@ -1,0 +1,35 @@
+.clrRed {
+    color: red;
+}
+
+.redBold {
+    color: red;
+    font-weight: bold;
+}
+
+.blueBold {
+    color: blue;
+    font-weight: bold;
+}
+
+.page-content-wrapper {
+    background-color: #e4e4e4;
+}
+
+.page-body {
+    background: #e4e4e4;
+}
+
+.t-header {
+    height: 5px;
+    background-color: #696969;
+}
+
+.t-header-brand-wrapper {
+    height: 5px;
+    background-color: #696969;
+}
+
+.t-header-content-wrapper {
+    height: 5px;
+}

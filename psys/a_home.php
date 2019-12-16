@@ -28,6 +28,7 @@ $errorMessage = "";
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">
     <link rel="shortcut icon" href="../asssets/images/favicon.ico" />
+    <link rel="stylesheet" href="./asset/css/main.css">
 </head>
 
 <body class="header-fixed">
@@ -37,7 +38,7 @@ $errorMessage = "";
     <div class="page-content-wrapper">
         <div class="page-content-wrapper-inner">
             <div class="content-viewport">
-                aaaa
+                
             </div>
         </div>
     </div>

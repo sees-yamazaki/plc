@@ -100,7 +100,8 @@ $errorMessage = "";
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">
     <link rel="shortcut icon" href="./assets/images/favicon.ico" />
-    <script src="./assets/js/main.js"></script>
+    <link rel="stylesheet" href="./asset/css/main.css">
+    <script src="./asset/js/main.js"></script>
 </head>
 
 <body class="header-fixed">
