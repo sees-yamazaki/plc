@@ -2049,6 +2049,7 @@ $ini = $_SESSION['INI'];
                     <tr>
                         <td rowspan=2 class="skbnGrph">
                             <div class="grph" id="graph6r"></div>
+                            <p id="x1r"></p>
                         </td>
                     </tr>
                 </table>

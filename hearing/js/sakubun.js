@@ -1581,7 +1581,7 @@ function sakubun(flg) {
 
     })();
 
-
+    document.getElementById("x1r").innerHTML = '(投資時点  <span class ="blueBold"> 投資額：' + numFormat(c102, 0) + '</span><span class ="redBold"> タックスシールド：' + numFormat(c100, 0) + '</span>)';
 
     (function() {
         'use strict';
