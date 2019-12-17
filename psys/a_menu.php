@@ -58,7 +58,10 @@
                     </a>
                     <ul class="collapse navigation-submenu" id="ui-elements">
                         <li>
-                            <a href="javascript:void(0)">キャンペーン一覧</a>
+                            <a href="a_promos_list.php">キャンペーン一覧</a>
+                        </li>
+                        <li>
+                            <a href="a_promos_edit.php">キャンペーン新規登録</a>
                         </li>
                         <li>
                             <a href="javascript:void(0)">景品一覧</a>

@@ -92,7 +92,7 @@ $errorMessage = "";
                                 <div class="row mb-3">
                                     <div class="col-md-8 mx-auto">
 
-                                        <p class="grid-header">Input Types</p>
+                                        <p class="grid-header">シリアルコード新規登録画面</p>
 
                                         <form action="" method="POST" onsubmit="return addcheck()">
 
@@ -111,12 +111,21 @@ $errorMessage = "";
                                                 <div class="col-md-3 showcase_text_area">
                                                     <label for="inputType1">発行数</label>
                                                 </div>
+                                                <?php if($sSeq==""){ ?>
                                                 <div class="col-md-9 showcase_content_area">
                                                     <input type="text" class="form-control" name="s_qty"
                                                         value="<?php echo $serial->s_qty; ?>" placeholder="5文字まで"
                                                         maxLength=5 pattern="[0-9]+" title="数字" autocomplete="off"
                                                         required>
                                                 </div>
+                                                <?php }else{ ?>
+                                                    <div class="col-md-9 showcase_content_area">
+                                                    <input type="text" class="form-control" 
+                                                        value="<?php echo $serial->s_qty; ?>" 
+                                                        readonly>
+                                                        <input type="hidden" name="s_qty" value="<?php echo $serial->s_qty; ?>">
+                                                </div>
+                                                <?php } ?>
                                             </div>
 
 
@@ -124,12 +133,14 @@ $errorMessage = "";
                                                 name="edit">登　録</button>
                                             <input type="hidden" name="sSeq" value="<?php echo $serial->s_seq; ?>">
                                         </form>
+                                        <?php if($sSeq<>""){ ?>
                                         <br><br>
-                                        <form action="" method="POST" onsubmit="return addcheck()">
+                                        <form action="" method="POST" onsubmit="return delcheck()">
                                             <button type="submit" class="btn btn-danger btn-block mt-0"
                                                 name="del">削　除</button>
                                             <input type="hidden" name="sSeq" value="<?php echo $serial->s_seq; ?>">
                                         </form>
+                                        <?php } ?>
 
                                         <span class="clrRed"><?php echo $errorMessage ?></span>
                                     </div>

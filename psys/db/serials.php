@@ -161,12 +161,10 @@ function updateSerials($serials)
 {
     try {
         require './db/dns.php';
-        $sql = " UPDATE `serials`  SET  `s_title`=:s_title,  `s_qty`=:s_qty, `users_seq`=:users_seq WHERE s_seq=:s_seq";
+        $sql = " UPDATE `serials` SET  `s_title`=:s_title WHERE s_seq=:s_seq";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':s_seq', $serials->s_seq, PDO::PARAM_INT);
         $stmt->bindParam(':s_title', $serials->s_title, PDO::PARAM_STR);
-        $stmt->bindParam(':s_qty', $serials->s_qty, PDO::PARAM_INT);
-        $stmt->bindParam(':users_seq', $serials->users_seq, PDO::PARAM_INT);
         $stmt->execute();
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
