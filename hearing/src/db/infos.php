@@ -8,6 +8,7 @@ class cls_infos
     public $title1 ;
     public $title2 ;
     public $createdate ;
+    public $k_seq ;
     public $d2 ;
     public $d3 ;
     public $d4 ;
@@ -64,6 +65,7 @@ class cls_infos
                 $result->title1 = $row['title1'];
                 $result->title2 = $row['title2'];
                 $result->createdate = $row['createdate'];
+                $result->k_seq = $row['k_seq'];
                 $result->d2 = $row['d2'];
                 $result->d3 = $row['d3'];
                 $result->d4 = $row['d4'];
@@ -127,6 +129,7 @@ class cls_infos
                     $result->title1 = $row['title1'];
                     $result->title2 = $row['title2'];
                     $result->createdate = $row['createdate'];
+                    $result->k_seq = $row['k_seq'];
                     $result->d2 = $row['d2'];
                     $result->d3 = $row['d3'];
                     $result->d4 = $row['d4'];
@@ -177,11 +180,12 @@ class cls_infos
         {
             try {
                 require $_SESSION["MY_ROOT"].'/src/db/dns.php';
-                $sql = "INSERT  INTO `infos` (  `users_seq`, `title1`,  `title2`,   `d2`,  `d3`,  `d4`,  `d6`,  `d8`,  `f8`,  `d11`,  `d12`,  `e13`,  `d29`,  `d30`,  `d31`,  `l29`,  `l30`,  `l31`,  `d49`,  `d50`,  `e51`,  `c68`,  `c69`,  `l73`,  `c88`,  `c89`,  `i18`,  `i56`,  `a1r`,  `a6r`,  `a11r`,  `a26r`,  `a29r`,  `a44r`,  `a51r`,  `a62r`,  `a75r`,  `a87r`,  `a96r`) VALUES (:users_seq, :title1, :title2, :d2, :d3, :d4, :d6, :d8, :f8, :d11, :d12, :e13, :d29, :d30, :d31, :l29, :l30, :l31, :d49, :d50, :e51, :c68, :c69, :l73, :c88, :c89, :i18, :i56, :a1r, :a6r, :a11r, :a26r, :a29r, :a44r, :a51r, :a62r, :a75r, :a87r, :a96r)";
+                $sql = "INSERT  INTO `infos` (  `users_seq`, `title1`,  `title2`,   `k_seq`,   `d2`,  `d3`,  `d4`,  `d6`,  `d8`,  `f8`,  `d11`,  `d12`,  `e13`,  `d29`,  `d30`,  `d31`,  `l29`,  `l30`,  `l31`,  `d49`,  `d50`,  `e51`,  `c68`,  `c69`,  `l73`,  `c88`,  `c89`,  `i18`,  `i56`,  `a1r`,  `a6r`,  `a11r`,  `a26r`,  `a29r`,  `a44r`,  `a51r`,  `a62r`,  `a75r`,  `a87r`,  `a96r`) VALUES (:users_seq, :title1, :title2, :k_seq, :d2, :d3, :d4, :d6, :d8, :f8, :d11, :d12, :e13, :d29, :d30, :d31, :l29, :l30, :l31, :d49, :d50, :e51, :c68, :c69, :l73, :c88, :c89, :i18, :i56, :a1r, :a6r, :a11r, :a26r, :a29r, :a44r, :a51r, :a62r, :a75r, :a87r, :a96r)";
                 $stmt = $pdo -> prepare($sql);
                 $stmt->bindParam(':users_seq', $_SESSION['SEQ'], PDO::PARAM_STR);
                 $stmt->bindParam(':title1', $infos->title1, PDO::PARAM_STR);
                 $stmt->bindParam(':title2', $infos->title2, PDO::PARAM_STR);
+                $stmt->bindParam(':k_seq', $infos->k_seq, PDO::PARAM_INT);
                 $stmt->bindParam(':d2', $infos->d2, PDO::PARAM_STR);
                 $stmt->bindParam(':d3', $infos->d3, PDO::PARAM_STR);
                 $stmt->bindParam(':d4', $infos->d4, PDO::PARAM_STR);
@@ -231,11 +235,12 @@ class cls_infos
         {
             try {
                 require $_SESSION["MY_ROOT"].'/src/db/dns.php';
-                $sql = " UPDATE `infos`  SET  `title1`=:title1,  `title2`=:title2,    `d2`=:d2,  `d3`=:d3,  `d4`=:d4,  `d6`=:d6,  `d8`=:d8,  `f8`=:f8,  `d11`=:d11,  `d12`=:d12,  `e13`=:e13,  `d29`=:d29,  `d30`=:d30,  `d31`=:d31,  `l29`=:l29,  `l30`=:l30,  `l31`=:l31,  `d49`=:d49,  `d50`=:d50,  `e51`=:e51,  `c68`=:c68,  `c69`=:c69,  `l73`=:l73,  `c88`=:c88,  `c89`=:c89,  `i18`=:i18,  `i56`=:i56,  `a1r`=:a1r,  `a6r`=:a6r,  `a11r`=:a11r,  `a26r`=:a26r,  `a29r`=:a29r,  `a44r`=:a44r,  `a51r`=:a51r,  `a62r`=:a62r,  `a75r`=:a75r,  `a87r`=:a87r,  `a96r`=:a96r, `createdate`=NOW() WHERE infos_seq=:infos_seq";
+                $sql = " UPDATE `infos`  SET  `title1`=:title1,  `title2`=:title2,    `k_seq`=:k_seq,   `d2`=:d2,  `d3`=:d3,  `d4`=:d4,  `d6`=:d6,  `d8`=:d8,  `f8`=:f8,  `d11`=:d11,  `d12`=:d12,  `e13`=:e13,  `d29`=:d29,  `d30`=:d30,  `d31`=:d31,  `l29`=:l29,  `l30`=:l30,  `l31`=:l31,  `d49`=:d49,  `d50`=:d50,  `e51`=:e51,  `c68`=:c68,  `c69`=:c69,  `l73`=:l73,  `c88`=:c88,  `c89`=:c89,  `i18`=:i18,  `i56`=:i56,  `a1r`=:a1r,  `a6r`=:a6r,  `a11r`=:a11r,  `a26r`=:a26r,  `a29r`=:a29r,  `a44r`=:a44r,  `a51r`=:a51r,  `a62r`=:a62r,  `a75r`=:a75r,  `a87r`=:a87r,  `a96r`=:a96r, `createdate`=NOW() WHERE infos_seq=:infos_seq";
                 $stmt = $pdo -> prepare($sql);
                 $stmt->bindParam(':infos_seq', $infos->infos_seq, PDO::PARAM_INT);
                 $stmt->bindParam(':title1', $infos->title1, PDO::PARAM_STR);
                 $stmt->bindParam(':title2', $infos->title2, PDO::PARAM_STR);
+                $stmt->bindParam(':k_seq', $infos->k_seq, PDO::PARAM_INT);
                 $stmt->bindParam(':d2', $infos->d2, PDO::PARAM_STR);
                 $stmt->bindParam(':d3', $infos->d3, PDO::PARAM_STR);
                 $stmt->bindParam(':d4', $infos->d4, PDO::PARAM_STR);

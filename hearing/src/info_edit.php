@@ -11,6 +11,7 @@ if (!isset($_SESSION["NAME"])) {
 date_default_timezone_set('Asia/Tokyo');
 
 $iSeq = $_POST['iSeq'];
+$kSeq = $_POST['kSeq'];
  
 require './db/infos.php';
 $infos = new cls_infos();
@@ -20,6 +21,7 @@ try {
     $infos->infos_seq = $_POST['iSeq'];
     $infos->title1 = $_POST['title1'];
     $infos->title2 = $_POST['title2'];
+    $infos->k_seq = $_POST['kSeq'];
     $infos->d2 = $_POST['d2'];
     $infos->d3 = $_POST['d3'];
     $infos->d4 = $_POST['d4'];
@@ -103,6 +105,7 @@ try {
             <input type="hidden" name="users_seq" value="<?php echo $_POST['users_seq'];  ?>">
             <input type="hidden" name="title1" value="<?php echo $_POST['title1'];  ?>">
             <input type="hidden" name="title2" value="<?php echo $_POST['title2'];  ?>">
+            <input type="hidden" name="kSeq" value="<?php echo $kSeq;  ?>">
             <input type="hidden" name="d2" value="<?php echo $_POST['d2'];  ?>">
             <input type="hidden" name="d3" value="<?php echo $_POST['d3'];  ?>">
             <input type="hidden" name="d4" value="<?php echo $_POST['d4'];  ?>">
@@ -150,6 +153,7 @@ try {
         <form class="" action='' method='POST' onsubmit="return addcheck()">
             <input type="hidden" name="iSeq" value="<?php echo $iSeq;  ?>">
             <input type="hidden" name="users_seq" value="<?php echo $_POST['users_seq'];  ?>">
+            <input type="hidden" name="kSeq" value="<?php echo $kSeq; ?>">
             <input type="hidden" name="d2" value="<?php echo $_POST['d2'];  ?>">
             <input type="hidden" name="d3" value="<?php echo $_POST['d3'];  ?>">
             <input type="hidden" name="d4" value="<?php echo $_POST['d4'];  ?>">

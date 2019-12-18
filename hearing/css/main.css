@@ -528,3 +528,32 @@ caption {
     caption-side: top;
     text-align: right;
 }
+
+.tpl {
+    border-collapse: collapse;
+    margin: 0 auto;
+    background-color: #eeeeee;
+    width: 700px;
+}
+
+.tpl th {
+    width: 150px;
+}
+
+.tpl td,
+.tpl th {
+    border-width: 1px 0px;
+    border-color: #ccc;
+    border-style: solid;
+    padding: 5px;
+    text-align: left;
+}
+
+.tpl th {
+    border-left: 5px solid #eeeeee;
+    color: #005ab3;
+}
+
+.tpl td input {
+    font-size: 130%;
+}

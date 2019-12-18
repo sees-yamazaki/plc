@@ -76,6 +76,18 @@ function showUser() {
     } else {}
 }
 
+function showKbn() {
+    if (window.confirm('現在の編集内容は全て破棄されます。　よろしいですか？')) {
+        window.location.href = 'kubuns_list.php';
+    } else {}
+}
+
+function showTmp() {
+    if (window.confirm('現在の編集内容は全て破棄されます。　よろしいですか？')) {
+        window.location.href = 'temps_list.php';
+    } else {}
+}
+
 function back2() {
     document.getElementById("sakubun1").submit();
 }

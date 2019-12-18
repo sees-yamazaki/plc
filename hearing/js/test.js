@@ -38,6 +38,23 @@ function demo() {
 
 }
 
+function demo2() {
+    document.getElementById("t_word_1").value = "t_word_1";
+    document.getElementById("t_word_2").value = "t_word_2";
+    document.getElementById("t_word_3").value = "t_word_3";
+    document.getElementById("t_word_4").value = "t_word_4";
+    document.getElementById("t_word_5").value = "t_word_5";
+    document.getElementById("t_word_6").value = "t_word_6";
+    document.getElementById("t_word_7").value = "t_word_7";
+    document.getElementById("t_word_8").value = "t_word_8";
+    document.getElementById("t_word_9").value = "t_word_9";
+    document.getElementById("t_word_10").value = "t_word_10";
+    document.getElementById("t_word_11").value = "t_word_11";
+    document.getElementById("t_word_12").value = "t_word_12";
+    document.getElementById("t_word_13").value = "t_word_13";
+    document.getElementById("t_word_14").value = "t_word_14";
+    document.getElementById("t_word_15").value = "t_word_15";
+}
 // // 足し算
 // BigNumber(0.1).plus(0.2);  // '0.3'
 // // 引き算

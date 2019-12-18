@@ -52,6 +52,26 @@ function sakubun(flg) {
 
     getRange();
 
+    //マスタ取得
+    tSeq = document.getElementById('tSeq').value;
+    k_kubun1 = document.getElementById('k_kubun1').value;
+    k_kubun2 = document.getElementById('k_kubun2').value;
+    t_word_1 = document.getElementById('t_word_1').value;
+    t_word_2 = document.getElementById('t_word_2').value;
+    t_word_3 = document.getElementById('t_word_3').value;
+    t_word_4 = document.getElementById('t_word_4').value;
+    t_word_5 = document.getElementById('t_word_5').value;
+    t_word_6 = document.getElementById('t_word_6').value;
+    t_word_7 = document.getElementById('t_word_7').value;
+    t_word_8 = document.getElementById('t_word_8').value;
+    t_word_9 = document.getElementById('t_word_9').value;
+    t_word_10 = document.getElementById('t_word_10').value;
+    t_word_11 = document.getElementById('t_word_11').value;
+    t_word_12 = document.getElementById('t_word_12').value;
+    t_word_13 = document.getElementById('t_word_13').value;
+    t_word_14 = document.getElementById('t_word_14').value;
+    t_word_15 = document.getElementById('t_word_15').value;
+
     // UriageB = Format(Range(cnUriageB).Value, "#,##0")            '売上額
     // RoumuhiB = Format(Range(cnRoumuhiB).Value, "#,##0")          '労務費
     // HankanhiB = Format(Range(cnHankanhiB).Value, "#,##0")        '販管費
@@ -344,12 +364,12 @@ function sakubun(flg) {
     // End If
     // strwk = strwk & vbCrLf
     strwk = '' + "■生産の状況　〜新商品開発を停滞させる生産性要因〜" + br +
-        "　当社は生菓子と焼菓子の製造比率を生菓子が" + KashiHirituB_Nama +
-        "、焼菓子が" + KashiHirituB_Yaki + "にて生産しており、" +
-        "生菓子の年間売上が" + NamaUriageB + "万円（売上点数約" + NamaTensuNenB + "個）、" +
-        "焼菓子が" + YakiUriageB + "万円（売上点数約" + YakiTensuNenB + "個）で" +
+        "　当社は" + k_kubun1 + "と" + k_kubun2 + "の" + t_word_1 + "を" + k_kubun1 + "が" + KashiHirituB_Nama +
+        "、" + k_kubun2 + "が" + KashiHirituB_Yaki + "にて生産しており、" +
+        "" + k_kubun1 + "の年間売上が" + NamaUriageB + "万円（売上点数約" + NamaTensuNenB + "個）、" +
+        "" + k_kubun2 + "が" + YakiUriageB + "万円（売上点数約" + YakiTensuNenB + "個）で" +
         "売上規模は、" + UriageB + "万円／年となっている。" +
-        "また、菓子製造に携わる従業員数は現在" + JyugyoinB + "名であり、一人当たりの売上金額は、" +
+        "また、" + t_word_2 + "製造に携わる従業員数は現在" + JyugyoinB + "名であり、一人当たりの売上金額は、" +
         UriageB_Hitori + "万円／年と";
 
     // console.log("KashiHirituB_Nama:" + KashiHirituB_Nama);
@@ -426,7 +446,7 @@ function sakubun(flg) {
     tmp1 = numFormat(myCnvNum(UriageB) * myCnvNum(ZairyoGenkarituB) / 100, 1);
     tmp2 = numFormat(myCnvNum(RoumuhiB) + myCnvNum(HankanhiB), 0);
     tmp3 = numFormat(myCnvNum(UriageGenkaRituWK) * 100, 1);
-    strwk += "　次に売上原価であるが、材料原価率が" + ZairyoGenkarituB + "で" +
+    strwk += "　次に売上原価であるが、" + t_word_3 + "が" + ZairyoGenkarituB + "で" +
         tmp1 + "万円／年、" +
         "人件費が直接労務費（" + RoumuhiB + "万円／年）と間接労務費（" + HankanhiB + "万円／年）を合わせて" +
         tmp2 + "万円／年となり、" +
@@ -511,7 +531,7 @@ function sakubun(flg) {
     // strwk = strwk & "■商品の採算性について　〜こだわるが故の不採算と技術的な壁〜　" & vbCrLf
     // strwk = strwk & "以下は、菓子分類別に当社の平均的な商品１個あたりの採算を示している。"
     strwk = "■商品の採算性について　〜こだわるが故の不採算と技術的な壁〜　" + br +
-        "以下は、菓子分類別に当社の平均的な商品１個あたりの採算を示している。";
+        "以下は、" + t_word_4 + "別に当社の平均的な商品１個あたりの採算を示している。";
 
     if (flg == 0) {
         document.getElementById("a6r").value = strwk;
@@ -588,18 +608,18 @@ function sakubun(flg) {
     console.log("ZairyoGenkarituB_wk:" + ZairyoGenkarituB_wk);
     if (ZairyoGenkarituB_wk > 0.4) {
         //材料費率が高いケース
-        strwk = "　当社は予てより県産素材や自然素材、レア食材の入手ルートを持っているのが強みであるが、そのこだわりから" +
+        strwk = "　当社は予てより" + t_word_5 + "、" + t_word_6 + "の入手ルートを持っているのが強みであるが、そのこだわりから" +
             "「材料費率」が" + ZairyoGenkarituB + "と非常に高くなっているのが採算上の問題となっている。";
     } else if (ZairyoGenkarituB_wk > 0.3) {
         //材料費率が高めのケース
-        strwk = "　当社は予てより国内産素材や自然素材など材料にこだわってきたが、" +
+        strwk = "　当社は予てより" + t_word_7 + "など材料にこだわってきたが、" +
             "「材料費率」が、" + ZairyoGenkarituB + "と年々高くなってきており採算を圧迫している。";
     } else if (ZairyoGenkarituB_wk < 0.25) {
         //材料費率が低めのケース
-        strwk = "　当社は予てより国内素材や自然素材を活用しつつも、" +
+        strwk = "　当社は予てより" + t_word_7 + "を活用しつつも、" +
             "「材料費率」を" + ZairyoGenkarituB + "程度に抑えることができる仕入先との関係性の深さが強みである。";
     } else {
-        strwk += "　当社は予てより国内産素材や自然素材など材料にこだわりつつも、" +
+        strwk += "　当社は予てより" + t_word_7 + "など材料にこだわりつつも、" +
             "「材料費率」が、" + ZairyoGenkarituB + "と年々高くなってきている。";
     }
     if (ZairyoGenkarituB_wk < 0.25) {
@@ -626,12 +646,12 @@ function sakubun(flg) {
     tmp1 = numFormat(JinkenhiRitu_NamaWK * 100, 1);
     tmp2 = numFormat(JinkenhiRitu_YakiWK * 100, 1);
     if (JinkenhiRitu_NamaWK > JinkenhiRitu_YakiWK) {
-        strwk += "一方、「人件費」では生菓子の製造労務費が問題で、菓子一個当たりの直接労務費と間接労務費" +
+        strwk += "一方、「人件費」では" + t_word_8 + "が問題で、" + t_word_2 + "一個当たりの直接労務費と間接労務費" +
             "の合計が" + myTrunc(myCnvNum(NamaAveRoumuB) + myCnvNum(NamaAveHankanB), 2) + "円となっており、" +
             "その「人件費率」も" + tmp1 + "%となっている。" + br;
         IssueKbn = "生菓子";
     } else {
-        strwk += "一方、「人件費」では焼菓子の製造労務費が問題で、菓子一個当たりの直接労務費と間接労務費" +
+        strwk += "一方、「人件費」では" + t_word_9 + "が問題で、" + t_word_2 + "一個当たりの直接労務費と間接労務費" +
             "の合計が" + myTrunc(myCnvNum(YakiAveRoumuB) + myCnvNum(YakiAveHankanB), 2) + "円となっており、" +
             "その人件費率も" + tmp2 + "%となっている。" + br;
         IssueKbn = "焼菓子";
@@ -660,22 +680,22 @@ function sakubun(flg) {
     // strwk = strwk & "新商品構想を具現化するのに障壁となる技術課題を解消する機能性高い設備を導入するか、など、"
     // strwk = strwk & "いかにしてこだわりを維持・商品開発に仕向けつつ、作業の効率性や全体のスループットを高めるかが課題である｡ "
 
-    strwk += "　従来より、素材の計量・調合/混合・分割・充填・成型・焼成・仕上げ・冷却・包装/梱包など手作業工程が高頻度で" +
-        "発生する業態であって、さらに仕上げ工程や装飾などパティシエの実力、ひいては店舗の特長を出す" +
+    strwk += "　従来より、" + t_word_10 + "など手作業工程が高頻度で" +
+        "発生する業態であって、さらに仕上げ工程や装飾など" + t_word_11 + "の実力、ひいては店舗の特長を出す" +
         "工程も含めると多大な人手と時間を要してしまう特性があり人件費率が高まりやすい状況となる。" + br +
-        "　また、綺麗さや形状といった審美感への訴求、またおいしさのバリエーションやシズル感(*)の追究といった" +
-        "視覚面や情緒面で顧客を魅了する多品種少量型の商品生産となるため、上級パティシエでも単純で" +
-        "簡易な工程に手を取られたり、繁忙期には包装工程などもアルバイトに混ざって" +
+        "　また、" + t_word_12 + "の追究といった" +
+        "視覚面や情緒面で顧客を魅了する多品種少量型の商品生産となるため、上級" + t_word_11 + "でも単純で" +
+        "簡易な工程に手を取られたり、繁忙期には" + t_word_13 + "などもアルバイトに混ざって" +
         "こなさなければならない状況である。" + br +
         "　これらのことから①いかに作業効率化を通じた原価低減、" +
         "各工程の能率向上による生産工程全体の最適化を通じた生産拡大(販売拡大)を図ることで";
     if (JinkenhiRitu_NamaWK > JinkenhiRitu_YakiWK) {
-        strwk += "生菓子";
+        strwk += k_kubun1;
     } else {
-        strwk += "焼菓子";
+        strwk += k_kubun2;
     }
-    strwk += "の収益化と材料高騰による減収を補完していくか、また、②いかに熟練パティシエが仕上げ工程や" +
-        "商品企画・開発に時間を割けるよう生産余力を確保するか、さらに、③それらパティシエが描く" +
+    strwk += "の収益化と材料高騰による減収を補完していくか、また、②いかに熟練" + t_word_11 + "が" + t_word_14 + "や" +
+        "商品企画・開発に時間を割けるよう生産余力を確保するか、さらに、③それら" + t_word_11 + "が描く" +
         "新商品構想を具現化するのに障壁となる技術課題を解消する機能性高い設備を導入するか、など、" +
         "いかにしてこだわりを維持・商品開発に仕向けつつ、作業の効率性や全体のスループットを高めるかが課題である｡ "
 
@@ -688,9 +708,12 @@ function sakubun(flg) {
     // strwk = strwk & "*)シズル感…揚げ物や肉が焼ける際の「ジュージュー」と音を立てる意味を表す英語の擬音語'sizzle'(ｼｽﾞﾙ)"
     // strwk = strwk & "が語源で、フルーツやグラスにつく水滴などのおいしそうなツヤ感や瑞々しさ・新鮮さ、焼成物の湯気など"
     // strwk = strwk & "人の五感に訴求して消費者の食欲や購買意欲を掻き立てる感覚・感性を表す広告用語に転じた。" & vbCrLf
-    strwk = "*)シズル感…揚げ物や肉が焼ける際の「ジュージュー」と音を立てる意味を表す英語の擬音語'sizzle'(ｼｽﾞﾙ)" +
-        "が語源で、フルーツやグラスにつく水滴などのおいしそうなツヤ感や瑞々しさ・新鮮さ、焼成物の湯気など" +
-        "人の五感に訴求して消費者の食欲や購買意欲を掻き立てる感覚・感性を表す広告用語に転じた。" + br;
+    strwk = "";
+    if (tSeq == 1) {
+        strwk = "*)シズル感…揚げ物や肉が焼ける際の「ジュージュー」と音を立てる意味を表す英語の擬音語'sizzle'(ｼｽﾞﾙ)" +
+            "が語源で、フルーツやグラスにつく水滴などのおいしそうなツヤ感や瑞々しさ・新鮮さ、焼成物の湯気など" +
+            "人の五感に訴求して消費者の食欲や購買意欲を掻き立てる感覚・感性を表す広告用語に転じた。" + br;
+    }
 
     if (flg == 0) {
         document.getElementById("a26r").value = strwk;
@@ -1000,7 +1023,7 @@ function sakubun(flg) {
     // strwk = "■効果②　労務費の低下と収益率の向上" & vbCrLf
     // strwk = strwk & "　さらに、設備導入により●●工程や●●工程における菓子製造の労務費率も大幅に低減し、"
     strwk = "■効果②　労務費の低下と収益率の向上" + br +
-        "　さらに、設備導入により●●工程や●●工程における菓子製造の労務費率も大幅に低減し、";
+        "　さらに、設備導入により●●工程や●●工程における" + t_word_2 + "製造の労務費率も大幅に低減し、";
 
     //     If IssueKbn = "生菓子" Then
     //     strwk = strwk & "特に前述で問題となっていた生菓子単価に占める人件費率(直接労務費+間接労務費)が" & Format(JinkenhiRitu_NamaWK * 100, "#,##0.0") & "%と"
@@ -1046,18 +1069,18 @@ function sakubun(flg) {
         tmp2 = numFormat((myCnvNum(Nama1koRiekiA) / myCnvNum(NamaAveTanA) * 100) - (myCnvNum(Nama1koRiekiB) / myCnvNum(NamaAveTanB) * 100), 1);
         tmp3 = numFormat(myCnvNum(JinkenhiRitu_YakiWK) * 100, 1);
         tmp4 = numFormat((myCnvNum(Yaki1koRiekiA) / myCnvNum(YakiAveTanA) * 100) - (myCnvNum(Yaki1koRiekiB) / myCnvNum(YakiAveTanB) * 100), 1);
-        strwk += "特に前述で問題となっていた生菓子単価に占める人件費率(直接労務費+間接労務費)が" + tmp1 + "%と" +
+        strwk += "特に前述で問題となっていた" + k_kubun1 + "単価に占める人件費率(直接労務費+間接労務費)が" + tmp1 + "%と" +
             "大幅に削減でき、収益率も" + tmp2 + "ポイント伸長することが期待できる。" + br +
-            "　なお、焼菓子においても単価に占める人件費率(直接労務費+間接労務費)が" + tmp3 + "%と削減できるとともに、" +
+            "　なお、" + k_kubun2 + "においても単価に占める人件費率(直接労務費+間接労務費)が" + tmp3 + "%と削減できるとともに、" +
             "収益率も" + tmp4 + "ポイント伸長することが期待できる。";
     } else {
         tmp1 = numFormat(myCnvNum(JinkenhiRitu_YakiWK) * 100, 1);
         tmp2 = numFormat((myCnvNum(Yaki1koRiekiA) / myCnvNum(YakiAveTanA) * 100) - (myCnvNum(Yaki1koRiekiB) / myCnvNum(YakiAveTanB) * 100), 1);
         tmp3 = numFormat(myCnvNum(JinkenhiRitu_NamaWK) * 100, 1);
         tmp4 = numFormat((myCnvNum(Nama1koRiekiA) / myCnvNum(NamaAveTanA) * 100) - (myCnvNum(Nama1koRiekiB) / myCnvNum(NamaAveTanB) * 100), 1);
-        strwk += "特に前述で問題となっていた焼菓子単価に占める人件費率(直接労務費+間接労務費)が" + tmp1 + "%と" +
+        strwk += "特に前述で問題となっていた" + k_kubun2 + "単価に占める人件費率(直接労務費+間接労務費)が" + tmp1 + "%と" +
             "大幅に削減でき、収益率も" + tmp2 + "ポイント伸長することが期待できる。" + br +
-            "　なお、焼菓子においても単価に占める人件費率(直接労務費+間接労務費)が" + tmp3 + "%と削減できるとともに、" +
+            "　なお、" + k_kubun1 + "においても単価に占める人件費率(直接労務費+間接労務費)が" + tmp3 + "%と削減できるとともに、" +
             "収益率も" + tmp4 + "ポイント伸長することが期待できる。";
 
     }
@@ -1066,7 +1089,7 @@ function sakubun(flg) {
     // strwk = strwk & vbCrLf
     // strwk = strwk & "　以下は、菓子区分別にみた製造原価の比較表、および、" & IssueKbn & "における労務費と収益率の推移グラフである。"
     // strwk = strwk & vbCrLf
-    strwk += br + "　以下は、菓子区分別にみた製造原価の比較表、および、" + IssueKbn + "における労務費と収益率の推移グラフである。" + br;
+    strwk += br + "　以下は、" + t_word_15 + "区分別にみた製造原価の比較表、および、" + IssueKbn + "における労務費と収益率の推移グラフである。" + br;
 
     if (flg == 0) {
         document.getElementById("a51r").value = strwk;
@@ -1340,7 +1363,7 @@ function sakubun(flg) {
             ]);
 
             var options = {
-                title: '菓子分類比率',
+                title: t_word_4 + '比率',
                 width: 800,
                 height: 300,
                 fontSize: 18

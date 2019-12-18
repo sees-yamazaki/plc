@@ -21,13 +21,45 @@ date_default_timezone_set('Asia/Tokyo');
 
 $stts = $_POST['stts'];
 $iSeq = $_POST['iSeq'];
+$kSeq = $_POST['kSeq'];
 
+
+$reload = $_POST['reload'];
 
 require_once './db/infos.php';
 $info = array();
 $info = getInfo($iSeq);
 
 $ini = $_SESSION['INI'];
+
+if(!isset($info->k_seq)){
+    $info->k_seq=1;
+}
+
+if(isset($reload) || isset($kSeq)){
+    $info->k_seq=$kSeq;
+}
+
+require_once './db/kubuns.php';
+$kubuns = array();
+$kubuns = getKubuns();
+
+$kubun1="";
+$kubun2="";
+$tSeq=1;
+foreach ($kubuns as $kubun) { 
+     if ($kubun->k_seq == $info->k_seq){
+         $wk="selected";
+         $kubun1 = $kubun->k_kubun1;
+         $kubun2 = $kubun->k_kubun2;
+         $tSeq=$kubun->t_seq;
+        }else{ $wk=""; }
+     $opt_tmp .= "<option value='".$kubun->k_seq."' {$wk}>".$kubun->k_title."</option>";
+}
+
+require './db/templates.php';
+$template = new cls_templates();
+$template = getTemplate($tSeq);
 
 ?>
 
@@ -72,14 +104,28 @@ $ini = $_SESSION['INI'];
         });
     };
     </script>
+    <script>
+    function frmChange(obj) {
+        var idx = obj.selectedIndex;
+        var vlu = obj.options[idx].value;
+        document.frm2.kSeq.value = vlu;
+        document.frm2.submit();
+    }
+    </script>
 </head>
 
 <body id="page-top">
-    <?php if (!isset($stts)) { ?>
+    <form action='' method='POST' name="frm2">
+        <input type='hidden' name='kSeq' value=''>
+        <input type='hidden' name='reload' value='1'>
+        <input type='hidden' name='stts' value='<?php echo $stts; ?>'>
+        <input type='hidden' name='iSeq' value='<?php echo $info->infos_seq; ?>'>
+    </form>
+    <?php if (!isset($stts) || $stts=="") { ?>
     <input type="hidden" id="cnt" value="0">
     <?php } elseif ($stts=="edit") { ?>
     <input type="hidden" id="cnt" value="1">
-    <input type="hidden" id="iSeq" value="<?php echo $iSeq;  ?>">
+    <input type="hidden" id="iSeq" value="<?php echo $info->infos_seq;  ?>">
     <input type="hidden" id="users_seqx" value="<?php echo $info->users_seq;  ?>">
     <input type="hidden" id="title1x" value="<?php echo $info->title1;  ?>">
     <input type="hidden" id="title2x" value="<?php echo $info->title2;  ?>">
@@ -121,7 +167,7 @@ $ini = $_SESSION['INI'];
     <input type="hidden" id="a96rx" value="<?php echo $info->a96r;  ?>">
     <?php } else { ?>
     <input type="hidden" id="cnt" value="1">
-    <input type="hidden" id="iSeq" value="<?php echo $iSeq;  ?>">
+    <input type="hidden" id="iSeq" value="<?php echo $info->infos_seq;  ?>">
     <input type="hidden" id="users_seqx" value="<?php echo $_POST['users_seq'];  ?>">
     <input type="hidden" id="title1x" value="<?php echo $_POST['title1'];  ?>">
     <input type="hidden" id="title2x" value="<?php echo $_POST['title2'];  ?>">
@@ -163,11 +209,31 @@ $ini = $_SESSION['INI'];
     <input type="hidden" id="a96rx" value="<?php echo $_POST['a96r'];  ?>">
     <?php } ?>
 
+    <input type='hidden' id='tSeq' value='<?php echo $tSeq;  ?>'>
+    <input type='hidden' id='k_kubun1' value='<?php echo $kubun1;  ?>'>
+    <input type='hidden' id='k_kubun2' value='<?php echo $kubun2;  ?>'>
+    <input type='hidden' id='t_word_1' value='<?php echo $template->t_word_1;  ?>'>
+    <input type='hidden' id='t_word_2' value='<?php echo $template->t_word_2;  ?>'>
+    <input type='hidden' id='t_word_3' value='<?php echo $template->t_word_3;  ?>'>
+    <input type='hidden' id='t_word_4' value='<?php echo $template->t_word_4;  ?>'>
+    <input type='hidden' id='t_word_5' value='<?php echo $template->t_word_5;  ?>'>
+    <input type='hidden' id='t_word_6' value='<?php echo $template->t_word_6;  ?>'>
+    <input type='hidden' id='t_word_7' value='<?php echo $template->t_word_7;  ?>'>
+    <input type='hidden' id='t_word_8' value='<?php echo $template->t_word_8;  ?>'>
+    <input type='hidden' id='t_word_9' value='<?php echo $template->t_word_9;  ?>'>
+    <input type='hidden' id='t_word_10' value='<?php echo $template->t_word_10;  ?>'>
+    <input type='hidden' id='t_word_11' value='<?php echo $template->t_word_11;  ?>'>
+    <input type='hidden' id='t_word_12' value='<?php echo $template->t_word_12;  ?>'>
+    <input type='hidden' id='t_word_13' value='<?php echo $template->t_word_13;  ?>'>
+    <input type='hidden' id='t_word_14' value='<?php echo $template->t_word_14;  ?>'>
+    <input type='hidden' id='t_word_15' value='<?php echo $template->t_word_15;  ?>'>
+
     <form id="infos" name="infos" action="info_edit.php" method="POST">
-        <input type="hidden" name="iSeq" value="<?php echo $iSeq; ?>">
+        <input type="hidden" name="iSeq" value="<?php echo $info->infos_seq; ?>">
         <input type="hidden" id="title1" name="title1" value="">
         <input type="hidden" id="title2" name="title2" value="">
         <input type="hidden" id="users_seq" name="users_seq" value="">
+        <input type='hidden' id='kSeq' name='kSeq' value="<?php echo $info->k_seq;  ?>">
         <div class='menu no_print'>
             <ul class='topnav'>
                 <li><a id="page1" href="#" onclick="page1();">入力シート</a></li>
@@ -177,18 +243,26 @@ $ini = $_SESSION['INI'];
                 <li><a id="infoRec" href="javascript:sakubunCheck()" class="lst">登録する</a></li>
                 <li><a id="info" href="javascript:showList()" class="lst">登録情報</a></li>
                 <li><a id="info" href="javascript:showUser()" class="lst">ユーザ</a></li>
+                <li><a id="info" href="javascript:showKbn()" class="lst">フォーマット</a></li>
+                <li><a id="info" href="javascript:showTmp()" class="lst">テンプレート</a></li>
                 <?php if($ini['support']==1){ ?>
                 <li><input type="button" onclick="demo()" value="デモ用数値">
-                <?php } ?>
+                    <?php } ?>
                 <li class='right'><a href='./logoff.php' class="rvc">ログオフ</a></li>
             </ul>
         </div>
 
         <div id="content">
 
+
             <div id="inputsheet">
 
-                <h1>≪設備導入前≫</h1>
+                <div class="no_print">
+                    <br><select id="t_seq" name="t_seq" class="f130P" onchange='frmChange(this)'
+                        )><?php echo $opt_tmp; ?></select><br>
+                </div>
+
+                <h1>≪設備導入前≫<?php echo $kubun1; ?></h1>
                 <table class='hs'>
                     <colgroup span="1" class="areaA"></colgroup>
                     <colgroup span="1" class="areaB"></colgroup>
@@ -224,7 +298,7 @@ $ini = $_SESSION['INI'];
                         <td colspan=4>&nbsp;</td>
                     </tr>
                     <tr>
-                        <th colspan=2>生菓子：焼菓子　＝</th>
+                        <th colspan=2><?php echo $kubun1; ?>：<?php echo $kubun2; ?>　＝</th>
                         <td>
                             <input type="text" class="number wdtSS" style="text-align: center" id="d8" name="d8">
                             ：<input type="text" class="number wdtSS" style="text-align: center" id="f8" name="f8">
@@ -245,12 +319,12 @@ $ini = $_SESSION['INI'];
                     </tr>
                     <tr>
                         <th rowspan=2>平均単価</th>
-                        <td>生菓子平均単価</td>
+                        <td><?php echo $kubun1; ?>平均単価</td>
                         <td><input type="text" class="number1" id="d11" name="d11"></td>
                         <td>円／個</td>
                     </tr>
                     <tr>
-                        <td>焼菓子平均単価</td>
+                        <td><?php echo $kubun2; ?>平均単価</td>
                         <td><input type="text" class="number1" id="d12" name="d12"></td>
                         <td>円／個</td>
                     </tr>
@@ -262,12 +336,12 @@ $ini = $_SESSION['INI'];
                     </tr>
                     <tr>
                         <th rowspan=2>材料</th>
-                        <td>生菓子平均材料原価</td>
+                        <td><?php echo $kubun1; ?>平均材料原価</td>
                         <td><input type="text" class="lbl" id="d14" name="d14"></td>
                         <td>円／個</td>
                     </tr>
                     <tr>
-                        <td>焼菓子平均材料原価</td>
+                        <td><?php echo $kubun2; ?>平均材料原価</td>
                         <td><input type="text" class="lbl" id="d15" name="d15" readonly></td>
                         <td>円／個</td>
                     </tr>
@@ -276,12 +350,12 @@ $ini = $_SESSION['INI'];
                     </tr>
                     <tr>
                         <th rowspan=2>労務</th>
-                        <td>生菓子平均労務費</td>
+                        <td><?php echo $kubun1; ?>平均労務費</td>
                         <td><input type="text" class="lbl" id="d17" name="d17" readonly></td>
                         <td>円／個</td>
                     </tr>
                     <tr>
-                        <td>焼菓子平均労務費</td>
+                        <td><?php echo $kubun2; ?>平均労務費</td>
                         <td><input type="text" class="lbl" id="d18" name="d18" readonly></td>
                         <td>円／個</td>
                     </tr>
@@ -290,12 +364,12 @@ $ini = $_SESSION['INI'];
                     </tr>
                     <tr>
                         <th rowspan=2>販管</th>
-                        <td>生菓子平均販管費</td>
+                        <td><?php echo $kubun1; ?>平均販管費</td>
                         <td><input type="text" class="lbl" id="d20" name="d20" readonly></td>
                         <td>円／個</td>
                     </tr>
                     <tr>
-                        <td>焼菓子平均販管費</td>
+                        <td><?php echo $kubun2; ?>平均販管費</td>
                         <td><input type="text" class="lbl" id="d21" name="d21" readonly></td>
                         <td>円／個</td>
                     </tr>
@@ -304,12 +378,12 @@ $ini = $_SESSION['INI'];
                     </tr>
                     <tr>
                         <th rowspan=2>総原価</th>
-                        <td>生菓子平均総原価</td>
+                        <td><?php echo $kubun1; ?>平均総原価</td>
                         <td><input type="text" class="lbl" id="d23" name="d23" readonly></td>
                         <td>円／個</td>
                     </tr>
                     <tr>
-                        <td>焼菓子平均総原価</td>
+                        <td><?php echo $kubun2; ?>平均総原価</td>
                         <td><input type="text" class="lbl" id="d24" name="d24" readonly></td>
                         <td>円／個</td>
                     </tr>
@@ -356,7 +430,7 @@ $ini = $_SESSION['INI'];
                         <td></td>
                     </tr>
                     <tr>
-                        <th>生菓子：焼菓子　＝</th>
+                        <th><?php echo $kubun1; ?>：<?php echo $kubun2; ?>　＝</th>
                         <td><input type="text" class="lbl wdtSSS" style="text-align: center" id="d32" name="d32"
                                 readonly>：<input type="text" class="lbl wdtSSS" style="text-align: center" id="f32"
                                 name="f32" readonly></td>
@@ -364,13 +438,13 @@ $ini = $_SESSION['INI'];
                         <td></td>
                     </tr>
                     <tr>
-                        <th>生菓子平均単価</th>
+                        <th><?php echo $kubun1; ?>平均単価</th>
                         <td><input type="text" class="lbl" id="i31" name="i31" readonly></td>
                         <td>円／個</td>
                         <td></td>
                     </tr>
                     <tr>
-                        <th>焼菓子平均単価</th>
+                        <th><?php echo $kubun2; ?>平均単価</th>
                         <td><input type="text" class="lbl" id="i32" name="i32" readonly></td>
                         <td>円／個</td>
                         <td></td>
@@ -513,12 +587,12 @@ $ini = $_SESSION['INI'];
                     </tr>
                     <tr>
                         <th rowspan=2>平均単価</th>
-                        <td>生菓子平均単価</td>
+                        <td><?php echo $kubun1; ?>平均単価</td>
                         <td><input type="text" class="number1" id="d49" name="d49"></td>
                         <td>円／個</td>
                     </tr>
                     <tr>
-                        <td>焼菓子平均単価</td>
+                        <td><?php echo $kubun2; ?>平均単価</td>
                         <td><input type="text" class="number1" id="d50" name="d50"></td>
                         <td>円／個</td>
                     </tr>
@@ -530,12 +604,12 @@ $ini = $_SESSION['INI'];
                     </tr>
                     <tr>
                         <th rowspan=2>材料</th>
-                        <td>生菓子平均材料原価</td>
+                        <td><?php echo $kubun1; ?>平均材料原価</td>
                         <td><input type="text" class="lbl" id="d52" name="d52" readonly></td>
                         <td>円／個</td>
                     </tr>
                     <tr>
-                        <td>焼菓子平均材料原価</td>
+                        <td><?php echo $kubun2; ?>平均材料原価</td>
                         <td><input type="text" class="lbl" id="d53" name="d53" readonly></td>
                         <td>円／個</td>
                     </tr>
@@ -544,12 +618,12 @@ $ini = $_SESSION['INI'];
                     </tr>
                     <tr>
                         <th rowspan=2>労務</th>
-                        <td>生菓子平均労務費</td>
+                        <td><?php echo $kubun1; ?>平均労務費</td>
                         <td><input type="text" class="lbl" id="d55" name="d55" readonly></td>
                         <td>円／個</td>
                     </tr>
                     <tr>
-                        <td>焼菓子平均労務費</td>
+                        <td><?php echo $kubun2; ?>平均労務費</td>
                         <td><input type="text" class="lbl" id="d56" name="d56" readonly></td>
                         <td>円／個</td>
                     </tr>
@@ -558,12 +632,12 @@ $ini = $_SESSION['INI'];
                     </tr>
                     <tr>
                         <th rowspan=2>販管</th>
-                        <td>生菓子平均販管費</td>
+                        <td><?php echo $kubun1; ?>平均販管費</td>
                         <td><input type="text" class="lbl" id="d58" name="d58" readonly></td>
                         <td>円／個</td>
                     </tr>
                     <tr>
-                        <td>焼菓子平均販管費</td>
+                        <td><?php echo $kubun2; ?>平均販管費</td>
                         <td><input type="text" class="lbl" id="d59" name="d59" readonly></td>
                         <td>円／個</td>
                     </tr>
@@ -572,12 +646,12 @@ $ini = $_SESSION['INI'];
                     </tr>
                     <tr>
                         <th rowspan=2>総原価</th>
-                        <td>生菓子平均総原価</td>
+                        <td><?php echo $kubun1; ?>平均総原価</td>
                         <td><input type="text" class="lbl" id="d61" name="d61" readonly></td>
                         <td>円／個</td>
                     </tr>
                     <tr>
-                        <td>焼菓子平均総原価</td>
+                        <td><?php echo $kubun2; ?>平均総原価</td>
                         <td><input type="text" class="lbl" id="d62" name="d62" readonly></td>
                         <td>円／個</td>
                     </tr>
@@ -900,13 +974,13 @@ $ini = $_SESSION['INI'];
                         <td></td>
                     </tr>
                     <tr>
-                        <td>生菓子売上</td>
+                        <td><?php echo $kubun1; ?>売上</td>
                         <td class="uline"><input type="text" class="lbl" id="i8" name="i8" readonly></td>
                         <td class="tani">万円</td>
                         <td colspan=4></td>
                     </tr>
                     <tr>
-                        <td>焼菓子売上</td>
+                        <td><?php echo $kubun2; ?>売上</td>
                         <td class="uline"><input type="text" class="lbl" id="i9" name="i9" readonly></td>
                         <td class="tani">万円</td>
                         <td colspan=4></td>
@@ -921,20 +995,20 @@ $ini = $_SESSION['INI'];
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i11" name="i11" readonly></td>
                         <td class="fline">個/年間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m11" name="m11" readonly></td>
                         <td class="fline">個/年間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i12" name="i12" readonly></td>
                         <td class="fline">個/年間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m12" name="m12" readonly></td>
                         <td class="fline">個/年間</td>
                     </tr>
@@ -957,20 +1031,20 @@ $ini = $_SESSION['INI'];
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i15" name="i15" readonly></td>
                         <td class="fline">個/月間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m15" name="m15" readonly></td>
                         <td class="fline">個/月間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i16" name="i16" readonly></td>
                         <td class="fline">個/月間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m16" name="m16" readonly></td>
                         <td class="fline">個/月間</td>
                     </tr>
@@ -994,20 +1068,20 @@ $ini = $_SESSION['INI'];
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i19" name="i19"></td>
                         <td class="fline">個/日間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m19" name="m19" readonly></td>
                         <td class="fline">個/日間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i20" name="i20" readonly></td>
                         <td class="fline">個/日間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m20" name="m20" readonly></td>
                         <td class="fline">個/日間</td>
                     </tr>
@@ -1075,20 +1149,20 @@ $ini = $_SESSION['INI'];
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="q11" name="q11" readonly></td>
                         <td class="fline">円/年間</td>
                         <td></td>
-                        <td class="fline">生菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="u11" name="u11" readonly></td>
                         <td class="fline">円/年間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="q12" name="q12" readonly></td>
                         <td class="fline">円/年間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="u12" name="u12" readonly></td>
                         <td class="fline">円/年間</td>
                     </tr>
@@ -1111,20 +1185,20 @@ $ini = $_SESSION['INI'];
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="q15" name="q15" readonly></td>
                         <td class="fline">円/月間</td>
                         <td></td>
-                        <td class="fline">生菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="u15" name="u15" readonly></td>
                         <td class="fline">円/月間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="q16" name="q16" readonly></td>
                         <td class="fline">円/月間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="u16" name="u16" readonly></td>
                         <td class="fline">円/月間</td>
                     </tr>
@@ -1147,20 +1221,20 @@ $ini = $_SESSION['INI'];
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="q19" name="q19" readonly></td>
                         <td class="fline">円/日間</td>
                         <td></td>
-                        <td class="fline">生菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="u19" name="u19" readonly></td>
                         <td class="fline">円/日間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="q20" name="q20" readonly></td>
                         <td class="fline">円/日間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="u20" name="u20" readonly></td>
                         <td class="fline">円/日間</td>
                     </tr>
@@ -1198,13 +1272,13 @@ $ini = $_SESSION['INI'];
                         <td></td>
                     </tr>
                     <tr>
-                        <td>生菓子売上</td>
+                        <td><?php echo $kubun1; ?>売上</td>
                         <td class="uline"><input type="text" class="lbl" id="i46" name="i46" readonly></td>
                         <td class="tani">万円</td>
                         <td colspan=4></td>
                     </tr>
                     <tr>
-                        <td>焼菓子売上</td>
+                        <td><?php echo $kubun2; ?>売上</td>
                         <td class="uline"><input type="text" class="lbl" id="i47" name="i47" readonly></td>
                         <td class="tani">万円</td>
                         <td colspan=4></td>
@@ -1219,20 +1293,20 @@ $ini = $_SESSION['INI'];
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i49" name="i49" readonly></td>
                         <td class="fline">個/年間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m49" name="m49" readonly></td>
                         <td class="fline">個/年間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i50" name="i50" readonly></td>
                         <td class="fline">個/年間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m50" name="m50" readonly></td>
                         <td class="fline">個/年間</td>
                     </tr>
@@ -1255,20 +1329,20 @@ $ini = $_SESSION['INI'];
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i53" name="i53" readonly></td>
                         <td class="fline">個/月間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m53" name="m53" readonly></td>
                         <td class="fline">個/月間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i54" name="i54" readonly></td>
                         <td class="fline">個/月間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m54" name="m54" readonly></td>
                         <td class="fline">個/月間</td>
                     </tr>
@@ -1292,20 +1366,20 @@ $ini = $_SESSION['INI'];
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i57" name="i57" readonly></td>
                         <td class="fline">個/日間</td>
                         <td></td>
-                        <td class="fline">生菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m57" name="m57" readonly></td>
                         <td class="fline">個/日間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="i58" name="i58" readonly></td>
                         <td class="fline">個/日間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品点数</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品点数</td>
                         <td class="fline"><input type="text" class="lbl" id="m58" name="m58" readonly></td>
                         <td class="fline">個/日間</td>
                     </tr>
@@ -1372,20 +1446,20 @@ $ini = $_SESSION['INI'];
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="q49" name="q49" readonly></td>
                         <td class="fline">円/年間</td>
                         <td></td>
-                        <td class="fline">生菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="u49" name="u49" readonly></td>
                         <td class="fline">円/年間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="q50" name="q50" readonly></td>
                         <td class="fline">円/年間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="u50" name="u50" readonly></td>
                         <td class="fline">円/年間</td>
                     </tr>
@@ -1408,20 +1482,20 @@ $ini = $_SESSION['INI'];
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="q53" name="q53" readonly></td>
                         <td class="fline">円/月間</td>
                         <td></td>
-                        <td class="fline">生菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="u53" name="u53" readonly></td>
                         <td class="fline">円/月間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="q54" name="q54" readonly></td>
                         <td class="fline">円/月間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="u54" name="u54" readonly></td>
                         <td class="fline">円/月間</td>
                     </tr>
@@ -1444,20 +1518,20 @@ $ini = $_SESSION['INI'];
                         <td></td>
                     </tr>
                     <tr>
-                        <td class="fline">生菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="q57" name="q57" readonly></td>
                         <td class="fline">円/日間</td>
                         <td></td>
-                        <td class="fline">生菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun1; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="u57" name="u57" readonly></td>
                         <td class="fline">円/日間</td>
                     </tr>
                     <tr>
-                        <td class="fline">焼菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="q58" name="q58" readonly></td>
                         <td class="fline">円/日間</td>
                         <td></td>
-                        <td class="fline">焼菓子商品実収益</td>
+                        <td class="fline"><?php echo $kubun2; ?>商品実収益</td>
                         <td class="fline"><input type="text" class="lbl" id="u58" name="u58" readonly></td>
                         <td class="fline">円/日間</td>
                     </tr>
@@ -1487,7 +1561,7 @@ $ini = $_SESSION['INI'];
                 <table class="rep">
                     <tr>
                         <td>
-                        <hr class="skbnHr">
+                            <hr class="skbnHr">
                             <textarea id="a6r" name="a6r" rows=6 class="sakubun"></textarea>
                         </td>
                     </tr>
@@ -1505,7 +1579,7 @@ $ini = $_SESSION['INI'];
                         <th class="fline">⑦収益率</th>
                     </tr>
                     <tr>
-                        <th class="fline">生菓子</th>
+                        <th class="fline"><?php echo $kubun1; ?></th>
                         <td class="fline">
                             <p id="b9r"></p>
                         </td>
@@ -1529,7 +1603,7 @@ $ini = $_SESSION['INI'];
                         </td>
                     </tr>
                     <tr>
-                        <th class="fline">焼菓子</th>
+                        <th class="fline"><?php echo $kubun2; ?></th>
                         <td class="fline">
                             <p id="b10r"></p>
                         </td>
@@ -1572,7 +1646,7 @@ $ini = $_SESSION['INI'];
                 <table class="rep">
                     <tr>
                         <td>
-                        <hr class="skbnHr">
+                            <hr class="skbnHr">
                             <textarea id="a29r" name="a29r" rows=20 class="sakubun"></textarea>
                         </td>
                     </tr>
@@ -1580,7 +1654,7 @@ $ini = $_SESSION['INI'];
                 <table class="rep">
                     <tr>
                         <td>
-                        <hr class="skbnHr">
+                            <hr class="skbnHr">
                             <textarea id="a44r" name="a44r" rows=13 class="sakubun"></textarea>
                         </td>
                     </tr>
@@ -1666,7 +1740,7 @@ $ini = $_SESSION['INI'];
                 <table class="repS">
                     <caption>（円）</caption>
                     <tr class="bgClr">
-                        <th class="fline">【生菓子】</th>
+                        <th class="fline">【<?php echo $kubun1; ?>】</th>
                         <th class="fline">①平均単価</th>
                         <th class="fline">②材料費</th>
                         <th class="fline">③直接労務費</th>
@@ -1727,7 +1801,7 @@ $ini = $_SESSION['INI'];
                 <table class="repS">
                     <caption>（円）</caption>
                     <tr class="bgClr">
-                        <th class="fline">【焼菓子】</th>
+                        <th class="fline">【<?php echo $kubun2; ?>】</th>
                         <th class="fline">①平均単価</th>
                         <th class="fline">②材料費</th>
                         <th class="fline">③直接労務費</th>
@@ -2053,7 +2127,7 @@ $ini = $_SESSION['INI'];
                         </td>
                     </tr>
                 </table>
-<br><br>
+                <br><br>
                 <table class="rep">
 
                     <tr>
