@@ -15,6 +15,9 @@ $errorMessage = "";
 
 
 $pSeq = $_POST['pSeq'];
+if(!isset($pSeq)){
+    $pSeq = $_GET['pSeq'];
+}
 
  try {
      require_once './db/prizes.php';
@@ -22,11 +25,12 @@ $pSeq = $_POST['pSeq'];
      $prizes = getPrizes($pSeq);
 
      $html="";
-     foreach ($promos as $promo) {
+     foreach ($prizes as $prize) {
         $html .= '<tr>';
-        $html .= "<td>".$promo->pz_title."</td>";
-        $html .= "<td>".$promo->pz_hitcnt."</td>";
-        $html .= "<td><button type='button' name='edit' class='btn btn-inverse-secondary' onclick='prmEdit(".$promo->p_seq.")'>編集</button></td>";
+        $html .= "<td>".$prize->pz_order."</td>";
+        $html .= "<td>".$prize->pz_title."</td>";
+        $html .= "<td>".$prize->pz_hitcnt."</td>";
+        $html .= "<td><button type='button' name='edit' class='btn btn-inverse-secondary' onclick='przEdit(".$prize->pz_seq.")'>編集</button></td>";
         $html .= "</tr>";
     }
 
@@ -74,8 +78,9 @@ $pSeq = $_POST['pSeq'];
                 <table class="table table-dark">
                     <thead>
                         <tr>
-                            <th>名称</th>
-                            <th>開催期間</th>
+                            <th>並び順</th>
+                            <th>賞品</th>
+                            <th>当たりカウント</th>
                             <th></th>
                         </tr>
                     </thead>
