@@ -40,11 +40,11 @@ $errorMessage = "";
                 $filepath = pathinfo($_FILES ['pz_img'] ['name']);
     
                 if (!($filepath['extension']=="png" || $filepath['extension']=="bmp" || $filepath['extension']=="jpg")) {
-                    $errorMessage .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。<br>';
+                    $errorMessage .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
                 }
     
                 if (mb_strlen($prize->pz_img)>20) {
-                    $errorMessage .= '<br>・アップロード画像のファイル名は20文字以内にしてください。<br>';
+                    $errorMessage .= '<br>・アップロード画像のファイル名は20文字以内にしてください。';
                 }
             }
             
@@ -56,9 +56,9 @@ $errorMessage = "";
                     insertprize($prize);
                 }
 
-                //header("Location: ./a_prizes_list.php?pSeq=".$pSeq);
+                header("Location: ./a_prizes_list.php?pSeq=".$pSeq);
             }else{
-                $errorMessage .= '<br>今回アップロードされたファイル：'.basename( $_FILES ['pz_img'] ['name'] );
+                $errorMessage = '<br>アップロードされたファイル：'.basename( $_FILES ['pz_img'] ['name'] ).$errorMessage."<br>";
             }
 
         } elseif (isset($_POST['del'])) {

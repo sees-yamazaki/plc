@@ -63,11 +63,16 @@
                         <li>
                             <a href="a_promos_edit.php">キャンペーン新規登録</a>
                         </li>
+<!--
                         <li>
                             <a href="javascript:void(0)">景品一覧</a>
                         </li>
+-->
                         <li>
-                            <a href="javascript:void(0)">ゲーム一覧</a>
+                            <a href="a_games_list.php">ゲーム一覧</a>
+                        </li>
+                        <li>
+                            <a href="a_games_edit.php">ゲーム新規登録</a>
                         </li>
                     </ul>
                 </li>

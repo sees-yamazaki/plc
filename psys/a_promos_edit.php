@@ -17,7 +17,6 @@ if (!isset($_SESSION["SEQ"])) {
 $errorMessage = "";
 
 
-
     $pSeq = $_POST['pSeq'];
 
     require './db/promos.php';
@@ -28,25 +27,25 @@ $errorMessage = "";
         $promo->p_title = $_POST['p_title'];
         $promo->p_text1 = $_POST['p_text1'];
         $promo->p_text2 = $_POST['p_text2'];
-        $promo->p_img = basename( $_FILES ['p_img'] ['name'] );
+        $promo->p_img = basename($_FILES ['p_img'] ['name']);
         $promo->p_startdt = $_POST['p_startdt'];
         $promo->p_enddt = $_POST['p_enddt'];
-        $delImg= $_POST['delImg'];
-        if(isset($delImg)){
-            $promo->p_img="";
-        }
+        $promo->g_seq = $_POST['g_seq'];
+        $promo->imgStts = $_POST['imgStts'];
         
         if (isset($_POST['promoEdit'])) {
 
-            //アップロードファイルの検証
-            $filepath = pathinfo($_FILES ['p_img'] ['name']);
+            if ($promo->imgStts=="1") {
+                //アップロードファイルの検証
+                $filepath = pathinfo($_FILES ['p_img'] ['name']);
 
-            if  (!($filepath['extension']=="png" || $filepath['extension']=="bmp" || $filepath['extension']=="jpg")) {
-                $errorMessage .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。<br>';
-            }
+                if (!($filepath['extension']=="png" || $filepath['extension']=="bmp" || $filepath['extension']=="jpg")) {
+                    $errorMessage .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。<br>';
+                }
 
-            if  (mb_strlen($promo->p_img)>20) {
-                $errorMessage .= '<br>・アップロード画像のファイル名は20文字以内にしてください。<br>';
+                if (mb_strlen($promo->p_img)>20) {
+                    $errorMessage .= '<br>・アップロード画像のファイル名は20文字以内にしてください。<br>';
+                }
             }
             
             
@@ -58,19 +57,19 @@ $errorMessage = "";
                 }
 
                 header("Location: ./a_promos_list.php");
-            }else{
-                $errorMessage .= '<br>今回アップロードされたファイル：'.basename( $_FILES ['p_img'] ['name'] );
+            } else {
+                $errorMessage .= '<br>今回アップロードされたファイル：'.basename($_FILES ['p_img'] ['name']);
             }
         } elseif (isset($_POST['del'])) {
             //$rtn = checkUsers($user);
             //if (count($rtn)==0) {
-                deletePromo($pSeq);
+            deletePromo($pSeq);
 
-                header("Location: ./a_promos_list.php");
+            header("Location: ./a_promos_list.php");
             //} else {
-                $errorMessage = 'このユーザはシミュレーションデータが登録されているため削除できません';
+            $errorMessage = 'このユーザはシミュレーションデータが登録されているため削除できません';
                 
-                //$user = getUser($pSeq);
+        //$user = getUser($pSeq);
             //}
         } else {
             $promo = getPromo($pSeq);
@@ -81,6 +80,25 @@ $errorMessage = "";
             echo $e->getMessage();
         }
     }
+
+
+
+$ckImg1 = " checked";
+$ckImg2 = "";
+if(!empty($pSeq)){
+    $ckImg1 = "";
+    $ckImg2 = " checked";
+}
+
+
+require_once './db/games.php';
+$games = new cls_games();
+$games = getGames();
+foreach ($games as $game) { 
+    if ($game->g_seq == $promo->g_seq){ $wk="selected"; }else{ $wk=""; }
+    $opt_tmp .= "<option value='".$game->g_seq."' {$wk}>".$game->g_title."</option>";
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -139,32 +157,68 @@ $errorMessage = "";
                                         </div>
                                     </div>
 
+
                                     <div class="form-group row showcase_row_area">
                                         <div class="col-md-3 showcase_text_area">
-                                            <label for="inputType1">画像１</label>
+                                            <label for="inputType1">画像</label>
                                         </div>
-                                        <div class="col-md-9 showcase_content_area">
-                                            <input type="file" class="btn" name="p_img">
+
+                                        <div class="form-inline">
+                                            <div class="radio mb-3">
+                                                <label class="radio-label mr-4">
+                                                    <input name="imgStts" type="radio" value="1"
+                                                        <?php echo $ckImg1; ?>>アップロードする<i class="input-frame"></i>
+                                                </label>
+                                                <div class="col-md-9 showcase_content_area">
+                                                    <input type="file" class="btn" name="p_img">
+                                                </div>
+                                            </div>
                                         </div>
+
+                                    </div>
+                                    <div class="form-group row showcase_row_area">
+                                        <div class="col-md-3 showcase_text_area">
+                                            <label for="inputType1"></label>
+                                        </div>
+
+                                        <div class="form-inline">
+                                            <div class="radio mb-3">
+                                                <label class="radio-label">
+                                                    <input name="imgStts" type="radio" value="2"
+                                                        <?php echo $ckImg2; ?>>アップロードしない<i class="input-frame"></i>
+                                                </label>
+                                            </div>
+                                        </div>
+
                                     </div>
 
-                                    <?php if($pSeq<>""){ ?>
+                                    <?php if ($pSeq<>"") { ?>
                                     <div class="form-group row showcase_row_area">
                                         <div class="col-md-3 showcase_text_area">
+                                            <label for="inputType1"></label>
                                         </div>
-                                        <div class="checkbox">
-                                            <label>
-                                                <?php if(isset($delImg)){ ?>
-                                                <input type="checkbox" class="form-check-input" name="delImg" checked>
-                                                画像を削除する <i class="input-frame"></i>
-                                                <?php }else{ ?>
-                                                <input type="checkbox" class="form-check-input" name="delImg"> 画像を削除する
-                                                <i class="input-frame"></i>
-                                                <?php } ?>
-                                            </label>
+
+                                        <div class="form-inline">
+                                            <div class="radio mb-3">
+                                                <label class="radio-label">
+                                                    <input name="imgStts" type="radio" value="3">画像を削除する<i
+                                                        class="input-frame"></i>
+                                                </label>
+                                            </div>
                                         </div>
+
                                     </div>
                                     <?php } ?>
+
+
+
+
+
+
+
+
+
+
 
 
                                     <div class="form-group row showcase_row_area">
@@ -197,12 +251,24 @@ $errorMessage = "";
                                         </div>
                                     </div>
 
+                                    <div class="form-group row showcase_row_area">
+                                        <div class="col-md-3 showcase_text_area">
+                                            <label for="inputType1">ゲーム</label>
+                                        </div>
+
+                                        <div class="col-md-9 showcase_content_area">
+                                            <select class="custom-select" id="g_seq" name="g_seq" required>
+                                                <?php echo $opt_tmp; ?></select>
+                                            </select>
+                                        </div>
+                                    </div>
+
                                     <button type="submit" class="btn btn-primary btn-block mt-0"
                                         name="promoEdit">登　録</button>
                                     <input type="hidden" name="pSeq" value="<?php echo $promo->p_seq; ?>">
                                 </form>
 
-                                <?php if($pSeq<>""){ ?>
+                                <?php if ($pSeq<>"") { ?>
                                 <br><br>
                                 <form action="" method="POST" onsubmit="return delcheck()">
                                     <button type="submit" class="btn btn-danger btn-block mt-0" name="del">削　除</button>

@@ -98,11 +98,11 @@ class cls_prizes
     {
         try {
             require './db/dns.php';
+            $sql="";
             if ($prizes->imgStts==1) {
                 $sql = " UPDATE `prizes`  SET  `p_seq`=:p_seq, `pz_order`=:pz_order, `pz_title`=:pz_title,  `pz_img`=:pz_img,  `pz_text`=:pz_text,  `pz_hitcnt`=:pz_hitcnt WHERE pz_seq=:pz_seq";
             } elseif ($prizes->imgStts==2) {
-                // $sql = " UPDATE `prizes`  SET  `p_seq`=:p_seq, `pz_order`=:pz_order, `pz_title`=:pz_title,  `pz_text`=:pz_text,  `pz_hitcnt`=:pz_hitcnt WHERE pz_seq=:pz_seq";
-                $sql = " UPDATE `prizes`  SET  `p_seq`=:p_seq, `pz_title`=:pz_title,  `pz_text`=:pz_text,  `pz_hitcnt`=:pz_hitcnt WHERE pz_seq=:pz_seq";
+                 $sql = " UPDATE `prizes`  SET  `p_seq`=:p_seq, `pz_order`=:pz_order, `pz_title`=:pz_title,   `pz_text`=:pz_text,  `pz_hitcnt`=:pz_hitcnt WHERE pz_seq=:pz_seq";
             } else {
                 $sql = " UPDATE `prizes`  SET  `p_seq`=:p_seq, `pz_order`=:pz_order, `pz_title`=:pz_title,  `pz_img`=:pz_img,  `pz_text`=:pz_text,  `pz_hitcnt`=:pz_hitcnt WHERE pz_seq=:pz_seq";
                 $prizes->pz_img = "";
@@ -110,14 +110,15 @@ class cls_prizes
             $stmt = $pdo -> prepare($sql);
             $stmt->bindParam(':pz_seq', $prizes->pz_seq, PDO::PARAM_INT);
             $stmt->bindParam(':p_seq', $prizes->p_seq, PDO::PARAM_INT);
-            //$stmt->bindParam(':pz_order', $prizes->pz_order, PDO::PARAM_INT);
+            $stmt->bindParam(':pz_order', $prizes->pz_order, PDO::PARAM_INT);
             $stmt->bindParam(':pz_title', $prizes->pz_title, PDO::PARAM_STR);
-            $stmt->bindParam(':pz_img', $prizes->pz_img, PDO::PARAM_STR);
+            if ($prizes->imgStts<>2) {
+                $stmt->bindParam(':pz_img', $prizes->pz_img, PDO::PARAM_STR);
+            }
             $stmt->bindParam(':pz_text', $prizes->pz_text, PDO::PARAM_STR);
             $stmt->bindParam(':pz_hitcnt', $prizes->pz_hitcnt, PDO::PARAM_INT);
             $stmt->execute();
 
-            var_dump($sql);
             if ($prizes->imgStts==1) {
                 $file = 'promos/'.$prizes->p_seq."/". basename($_FILES ['pz_img'] ['name']);
                 move_uploaded_file($_FILES ['pz_img'] ['tmp_name'], $file);

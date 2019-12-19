@@ -8,6 +8,8 @@ class cls_promos
     public $p_text2 ;
     public $p_startdt ;
     public $p_enddt ;
+    public $g_seq ;
+    public $imgStts ;
 }
     
     function getPromos()
@@ -26,6 +28,7 @@ class cls_promos
                 $result->p_text2 = $row['p_text2'];
                 $result->p_startdt = $row['p_startdt'];
                 $result->p_enddt = $row['p_enddt'];
+                $result->g_seq = $row['g_seq'];
                 array_push($results, $result);
             }
         } catch (PDOException $e) {
@@ -53,6 +56,7 @@ class cls_promos
                 $result->p_text2 = $row['p_text2'];
                 $result->p_startdt = $row['p_startdt'];
                 $result->p_enddt = $row['p_enddt'];
+                $result->g_seq = $row['g_seq'];
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
@@ -67,7 +71,7 @@ class cls_promos
     {
         try {
             require './db/dns.php';
-            $sql = "INSERT  INTO `promos` (  `p_title`,  `p_text1`,  `p_img`,  `p_text2`, `p_startdt`, `p_enddt`) VALUES (:p_title, :p_text1, :p_img, :p_text2, :p_startdt , :p_enddt)";
+            $sql = "INSERT  INTO `promos` (  `p_title`,  `p_text1`,  `p_img`,  `p_text2`, `p_startdt`, `p_enddt`, `g_seq`) VALUES (:p_title, :p_text1, :p_img, :p_text2, :p_startdt , :p_enddt, :g_seq)";
             $stmt = $pdo -> prepare($sql);
             $stmt->bindParam(':p_title', $promos->p_title, PDO::PARAM_STR);
             $stmt->bindParam(':p_text1', $promos->p_text1, PDO::PARAM_STR);
@@ -75,6 +79,7 @@ class cls_promos
             $stmt->bindParam(':p_text2', $promos->p_text2, PDO::PARAM_STR);
             $stmt->bindParam(':p_startdt', $promos->p_startdt, PDO::PARAM_STR);
             $stmt->bindParam(':p_enddt', $promos->p_enddt, PDO::PARAM_STR);
+            $stmt->bindParam(':g_seq', $promos->g_seq, PDO::PARAM_INT);
             
             $stmt->execute();
 
@@ -100,18 +105,31 @@ class cls_promos
     {
         try {
             require './db/dns.php';
-            $sql = " UPDATE `promos`  SET  `p_title`=:p_title,  `p_text1`=:p_text1,  `p_img`=:p_img,  `p_text2`=:p_text2,`p_startdt`=:p_startdt,`p_enddt`=:p_enddt WHERE p_seq=:p_seq";
+            $sql="";
+            if ($promos->imgStts==1) {
+                $sql = " UPDATE `promos`  SET  `p_title`=:p_title,  `p_text1`=:p_text1,  `p_img`=:p_img,  `p_text2`=:p_text2,`p_startdt`=:p_startdt,`p_enddt`=:p_enddt,`g_seq`=:g_seq WHERE p_seq=:p_seq";
+            } elseif ($promos->imgStts==2) {
+                $sql = " UPDATE `promos`  SET  `p_title`=:p_title,  `p_text1`=:p_text1,  `p_text2`=:p_text2,`p_startdt`=:p_startdt,`p_enddt`=:p_enddt,`g_seq`=:g_seq WHERE p_seq=:p_seq";
+            } else {
+                $sql = " UPDATE `promos`  SET  `p_title`=:p_title,  `p_text1`=:p_text1,  `p_img`=:p_img,  `p_text2`=:p_text2,`p_startdt`=:p_startdt,`p_enddt`=:p_enddt,`g_seq`=:g_seq WHERE p_seq=:p_seq";
+                $promos->p_img = "";
+            }
+
             $stmt = $pdo -> prepare($sql);
             $stmt->bindParam(':p_seq', $promos->p_seq, PDO::PARAM_INT);
             $stmt->bindParam(':p_title', $promos->p_title, PDO::PARAM_STR);
             $stmt->bindParam(':p_text1', $promos->p_text1, PDO::PARAM_STR);
-            $stmt->bindParam(':p_img', $promos->p_img, PDO::PARAM_STR);
+            if ($promos->imgStts<>2) {
+                $stmt->bindParam(':p_img', $promos->p_img, PDO::PARAM_STR);
+            }
             $stmt->bindParam(':p_text2', $promos->p_text2, PDO::PARAM_STR);
             $stmt->bindParam(':p_startdt', $promos->p_startdt, PDO::PARAM_STR);
             $stmt->bindParam(':p_enddt', $promos->p_enddt, PDO::PARAM_STR);
+            $stmt->bindParam(':g_seq', $promos->g_seq, PDO::PARAM_INT);
             $stmt->execute();
 
-            if($promos->p_img<>""){
+
+            if ($promos->imgStts==1) {
                 $file = 'promos/'.$promos->p_seq."/". basename( $_FILES ['p_img'] ['name'] );
                 move_uploaded_file ( $_FILES ['p_img'] ['tmp_name'], $file );
             }

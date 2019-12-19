@@ -1,0 +1,289 @@
+#footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 140px;
+}
+
+#geta {
+    height: 140px;
+}
+
+@media screen and (max-width: 736px) {
+    #footer {
+        height: 100px;
+    }
+    #geta {
+        height: 100px;
+    }
+}
+
+
+/* Banner */
+
+#banner2 {
+    background-color: #fff;
+    color: rgba(255, 255, 255, 0.75);
+    text-align: center;
+    cursor: default;
+    padding: 10em 4em 9em 4em;
+}
+
+#banner2 input,
+#banner2 select,
+#banner2 textarea {
+    color: #3498db;
+}
+
+#banner2 a {
+    color: #3498db;
+}
+
+#banner2 strong,
+#banner2 b {
+    color: #3498db;
+}
+
+#banner2 h1,
+#banner2 h2,
+#banner2 h3,
+#banner2 h4,
+#banner2 h5,
+#banner2 h6 {
+    color: #3498db;
+}
+
+#banner2 blockquote {
+    border-left-color: rgba(255, 255, 255, 0.25);
+}
+
+#banner2 code {
+    background: rgba(255, 255, 255, 0.075);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+#banner2 hr {
+    border-bottom-color: rgba(255, 255, 255, 0.25);
+}
+
+#banner2 .box {
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+#banner2 input[type="submit"],
+#banner2 input[type="reset"],
+#banner2 input[type="button"],
+#banner2 button,
+#banner2 .button {
+    background-color: #1abc9c;
+    color: #3498db !important;
+}
+
+#banner2 input[type="submit"]:hover,
+#banner2 input[type="reset"]:hover,
+#banner2 input[type="button"]:hover,
+#banner2 button:hover,
+#banner2 .button:hover {
+    background-color: #1dd2af;
+}
+
+#banner2 input[type="submit"]:active,
+#banner2 input[type="reset"]:active,
+#banner2 input[type="button"]:active,
+#banner2 button:active,
+#banner2 .button:active {
+    background-color: #17a689;
+}
+
+#banner2 input[type="submit"].alt,
+#banner2 input[type="reset"].alt,
+#banner2 input[type="button"].alt,
+#banner2 button.alt,
+#banner2 .button.alt {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25);
+    color: #3498db !important;
+}
+
+#banner2 input[type="submit"].alt:hover,
+#banner2 input[type="reset"].alt:hover,
+#banner2 input[type="button"].alt:hover,
+#banner2 button.alt:hover,
+#banner2 .button.alt:hover {
+    background-color: rgba(255, 255, 255, 0.075);
+}
+
+#banner2 input[type="submit"].alt:active,
+#banner2 input[type="reset"].alt:active,
+#banner2 input[type="button"].alt:active,
+#banner2 button.alt:active,
+#banner2 .button.alt:active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#banner2 input[type="submit"].alt.icon:before,
+#banner2 input[type="reset"].alt.icon:before,
+#banner2 input[type="button"].alt.icon:before,
+#banner2 button.alt.icon:before,
+#banner2 .button.alt.icon:before {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#banner2 input[type="submit"].special,
+#banner2 input[type="reset"].special,
+#banner2 input[type="button"].special,
+#banner2 button.special,
+#banner2 .button.special {
+    background-color: #3498db;
+    color: #3498db !important;
+}
+
+#banner2 label {
+    color: #3498db;
+}
+
+#banner2 input[type="text"],
+#banner2 input[type="password"],
+#banner2 input[type="email"],
+#banner2 select,
+#banner2 textarea {
+    background: rgba(255, 255, 255, 0.075);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+#banner2 input[type="text"]:focus,
+#banner2 input[type="password"]:focus,
+#banner2 input[type="email"]:focus,
+#banner2 select:focus,
+#banner2 textarea:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 1px #3498db;
+}
+
+#banner2 .select-wrapper:before {
+    color: rgba(255, 255, 255, 0.25);
+}
+
+#banner2 input[type="checkbox"]+label,
+#banner2 input[type="radio"]+label {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+#banner2 input[type="checkbox"]+label:before,
+#banner2 input[type="radio"]+label:before {
+    background: rgba(255, 255, 255, 0.075);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+#banner2 input[type="checkbox"]:checked+label:before,
+#banner2 input[type="radio"]:checked+label:before {
+    background-color: #3498db;
+    border-color: #3498db;
+    color: #3498db;
+}
+
+#banner2 input[type="checkbox"]:focus+label:before,
+#banner2 input[type="radio"]:focus+label:before {
+    border-color: #3498db;
+    box-shadow: 0 0 0 1px #3498db;
+}
+
+#banner2 ::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+#banner2 :-moz-placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+#banner2 ::-moz-placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+#banner2 :-ms-input-placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+#banner2 .formerize-placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+#banner2 ul.alt li {
+    border-top-color: rgba(255, 255, 255, 0.25);
+}
+
+#banner2 header p {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#banner2 table tbody tr {
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+#banner2 table tbody tr:nth-child(2n + 1) {
+    background-color: rgba(255, 255, 255, 0.075);
+}
+
+#banner2 table th {
+    color: #3498db;
+}
+
+#banner2 table thead {
+    border-bottom-color: rgba(255, 255, 255, 0.25);
+}
+
+#banner2 table tfoot {
+    border-top-color: rgba(255, 255, 255, 0.25);
+}
+
+#banner2 table.alt tbody tr td {
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+#banner2 h1 {
+    font-size: 3em;
+    line-height: 1.45;
+    margin: 0 0 0.75em 0;
+}
+
+#banner2>.inner {
+    opacity: 1;
+    -moz-transform: none;
+    -webkit-transform: none;
+    -ms-transform: none;
+    transform: none;
+    -moz-transition: opacity 1s ease, -moz-transform 1s ease;
+    -webkit-transition: opacity 1s ease, -webkit-transform 1s ease;
+    -ms-transition: opacity 1s ease, -ms-transform 1s ease;
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+#banner2>.inner> :last-child {
+    margin-bottom: 0;
+}
+
+body.is-loading #banner2>.inner {
+    opacity: 0;
+    -moz-transform: translateY(1em);
+    -webkit-transform: translateY(1em);
+    -ms-transform: translateY(1em);
+    transform: translateY(1em);
+}
+
+@media screen and (max-width: 1280px) {
+    #banner2 h1 {
+        font-size: 2.75em;
+    }
+    #banner2 h1 br {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 736px) {
+    #banner2 {
+        padding: 5em 1.5em 4em 1.5em;
+    }
+    #banner2 h1 {
+        font-size: 2em;
+    }
+}
