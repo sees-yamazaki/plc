@@ -262,7 +262,7 @@ $template = getTemplate($tSeq);
                         )><?php echo $opt_tmp; ?></select><br>
                 </div>
 
-                <h1>≪設備導入前≫<?php echo $kubun1; ?></h1>
+                <h1>≪設備導入前≫</h1>
                 <table class='hs'>
                     <colgroup span="1" class="areaA"></colgroup>
                     <colgroup span="1" class="areaB"></colgroup>

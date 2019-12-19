@@ -649,12 +649,12 @@ function sakubun(flg) {
         strwk += "一方、「人件費」では" + t_word_8 + "が問題で、" + t_word_2 + "一個当たりの直接労務費と間接労務費" +
             "の合計が" + myTrunc(myCnvNum(NamaAveRoumuB) + myCnvNum(NamaAveHankanB), 2) + "円となっており、" +
             "その「人件費率」も" + tmp1 + "%となっている。" + br;
-        IssueKbn = "生菓子";
+        IssueKbn = k_kubun1;
     } else {
         strwk += "一方、「人件費」では" + t_word_9 + "が問題で、" + t_word_2 + "一個当たりの直接労務費と間接労務費" +
             "の合計が" + myTrunc(myCnvNum(YakiAveRoumuB) + myCnvNum(YakiAveHankanB), 2) + "円となっており、" +
             "その人件費率も" + tmp2 + "%となっている。" + br;
-        IssueKbn = "焼菓子";
+        IssueKbn = k_kubun2;
     }
 
 
@@ -1064,7 +1064,7 @@ function sakubun(flg) {
     // console.log("YakiAveTanA-" + YakiAveTanA);
     // console.log("Yaki1koRiekiB-" + Yaki1koRiekiB);
     // console.log("YakiAveTanB-" + YakiAveTanB);
-    if (IssueKbn == "生菓子") {
+    if (IssueKbn == k_kubun1) {
         tmp1 = numFormat(myCnvNum(JinkenhiRitu_NamaWK) * 100, 1);
         tmp2 = numFormat((myCnvNum(Nama1koRiekiA) / myCnvNum(NamaAveTanA) * 100) - (myCnvNum(Nama1koRiekiB) / myCnvNum(NamaAveTanB) * 100), 1);
         tmp3 = numFormat(myCnvNum(JinkenhiRitu_YakiWK) * 100, 1);
@@ -1408,14 +1408,14 @@ function sakubun(flg) {
             //     wsGraph.Range("F11").Value = Yaki1koRiekiB '収益/個
             // End If
             if (myCnvNum(JinkenhiRitu_NamaWK) > myCnvNum(JinkenhiRitu_YakiWK)) {
-                tmp0 = "生菓子";
+                tmp0 = k_kubun1;
                 tmp1 = myCnvNum(NamaAveTanB);
                 tmp2 = myCnvNum(NamaAveZaiB);
                 tmp3 = myCnvNum(NamaAveRoumuB);
                 tmp4 = myCnvNum(NamaAveHankanB);
                 tmp5 = myCnvNum(Nama1koRiekiB);
             } else {
-                tmp0 = "焼菓子";
+                tmp0 = k_kubun2;
                 tmp1 = myCnvNum(YakiAveTanB);
                 tmp2 = myCnvNum(YakiAveZaiB);
                 tmp3 = myCnvNum(YakiAveRoumuB);
@@ -1513,7 +1513,7 @@ function sakubun(flg) {
             var tmpA1 = myCnvNum(NamaAveRoumuA);
             var tmpA2 = myCnvNum(NamaAveHankanA);
             var tmpA3 = myTrunc(myCnvNum(Nama1koRiekiA) / myCnvNum(NamaAveTanA) * 100, 1);
-            if (IssueKbn != "生菓子") {
+            if (IssueKbn != k_kubun1) {
                 tmpB1 = myCnvNum(YakiAveRoumuB);
                 tmpB2 = myCnvNum(YakiAveHankanB);
                 tmpB3 = myTrunc(myCnvNum(Yaki1koRiekiB) / myCnvNum(YakiAveTanB) * 100, 1);
