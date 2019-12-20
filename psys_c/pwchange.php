@@ -14,30 +14,25 @@ if (!isset($_SESSION[$ini['sysname']."SEQ"])) {
 // エラーメッセージの初期化
 $errorMessage = "";
 
+$pw1 = $_POST['pw1'];
+$pw2 = $_POST['pw2'];
+
 
     require_once './db/serialcodes.php';
     $scode = new cls_serialcodes();
 
     try {
-		$scode->sc_code = $_POST['sc_code'];
-        
-        if (isset($_POST['pointEntry'])) {
-
-            $scode = getSerialCodeBySCode($scode->sc_code);
-
-            
-			if(!isset($scode->sc_seq)){
-                $errorMessage = 'シリアルコードが確認できませんでした。入力内容を確認してください。';
-			} else if(isset($scode->sc_point)){
-                $errorMessage = 'このシリアルコードはすでに登録されています。';
-			} else {
-                $scode->sc_point = 5;
-                $scode->m_seq = $_SESSION[$ini['sysname']."SEQ"];
-                $errorMessage = updateSerialCode($scode);
+        if (isset($_POST['pwChange'])) {
+            if (empty($pw1) || empty($pw2)) {
+                $errorMessage = 'パスワードが入力されていません。';
+            } elseif ($pw1<>$pw2) {
+                $errorMessage = 'パスワードが一致しません。';
+            } else {
+                updatePw($_SESSION[$ini['sysname']."SEQ"], $pw1);
             }
             
             if (empty($errorMessage)) {
-                header("Location: ./pointentried.php?addPt=".$scode->sc_point );
+                header("Location: ./pointentried.php?addPt=".$scode->sc_point);
             }
         }
     } catch (PDOException $e) {
@@ -65,7 +60,7 @@ $errorMessage = "";
     <?php include('./menu.php'); ?>
 
 
-    <?php if(!empty($errorMessage)){ ?>
+    <?php if (!empty($errorMessage)) { ?>
     <section id="banner2">
         <div class="inner">
             <h3><?php echo $errorMessage; ?></h3>
@@ -83,17 +78,19 @@ $errorMessage = "";
 
     <section id="banner">
         <div class="inner">
-            <h1>ポイント登録</h1>
+            <h1>パスワード変更</h1>
             <form action="" method="POST" name="editFrm">
                 <div class="">
-                    １２桁のポイントを入力してください
-                    <input type="text" name="sc_code" id="sc_code" value="<?php echo $scode->sc_code； ?>"
-                        placeholder="123456789012" />
+                    新しいパスワードを入力してください
+                    <input type="password" name="pw1" id="pw1" value=""
+                        placeholder="新しいパスワード" required />
+                        <input type="password" name="pw2" id="pw2" value=""
+                        placeholder="確認用" required />
                 </div><br>
                 <ul class="actions">
-                    <li><a href="javascript:editFrm.submit()" class="button alt scrolly big">登録する</a></li>
+                    <li><a href="javascript:editFrm.submit()" class="button alt scrolly big">更新する</a></li>
                 </ul>
-                <input type="hidden" name="pointEntry" value="1">
+                <input type="hidden" name="pwChange" value="1">
 
             </form>
 

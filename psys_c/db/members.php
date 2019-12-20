@@ -73,13 +73,13 @@ class cls_members
         return $result;
     }
     
-    function loginMember($m_id,$m_pw)
+    function loginMember($m_mail,$m_pw)
     {
         try {
             $result = new cls_members();
             require './db/dns.php';
-            $stmt = $pdo->prepare("SELECT * FROM `members` WHERE m_id=:m_id and m_pw=:m_pw" );
-            $stmt->bindParam(':m_id', $m_id, PDO::PARAM_STR);
+            $stmt = $pdo->prepare("SELECT * FROM `members` WHERE m_mail=:m_mail and m_pw=:m_pw" );
+            $stmt->bindParam(':m_mail', $m_mail, PDO::PARAM_STR);
             $stmt->bindParam(':m_pw', $m_pw, PDO::PARAM_STR);
             $stmt->execute();
             if ($row = $stmt->fetch()) {
@@ -164,6 +164,23 @@ class cls_members
             $stmt->bindParam(':m_address1', $members->m_address1, PDO::PARAM_STR);
             $stmt->bindParam(':m_address2', $members->m_address2, PDO::PARAM_STR);
             $stmt->bindParam(':m_tel', $members->m_tel, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            $errorMessage = 'データベースエラー';
+            if (strcmp("1", $ini['debug'])==0) {
+                echo $e->getMessage();
+            }
+        }
+    }
+    
+    function updatePw($m_seq,$m_pw)
+    {
+        try {
+            require './db/dns.php';
+            $sql = "UPDATE `members` SET `m_pw`=:m_pw WHERE m_seq=:m_seq";
+            $stmt = $pdo -> prepare($sql);
+            $stmt->bindParam(':m_seq', $m_seq, PDO::PARAM_INT);
+            $stmt->bindParam(':m_pw', $m_pw, PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';

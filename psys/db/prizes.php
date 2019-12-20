@@ -10,6 +10,7 @@ class cls_prizes
     public $pz_text ;
     public $pz_hitcnt ;
     public $imgStts ;
+    public $pz_nowcnt ;
 }
     
     function getPrizes($pSeq)
@@ -29,6 +30,7 @@ class cls_prizes
                 $result->pz_img = $row['pz_img'];
                 $result->pz_text = $row['pz_text'];
                 $result->pz_hitcnt = $row['pz_hitcnt'];
+                $result->pz_nowcnt = $row['pz_nowcnt'];
                 array_push($results, $result);
             }
         } catch (PDOException $e) {
@@ -56,6 +58,7 @@ class cls_prizes
                 $result->pz_img = $row['pz_img'];
                 $result->pz_text = $row['pz_text'];
                 $result->pz_hitcnt = $row['pz_hitcnt'];
+                $result->pz_nowcnt = $row['pz_nowcnt'];
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';

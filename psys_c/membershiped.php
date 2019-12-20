@@ -38,25 +38,14 @@ $errorMessage = "";
 		<!-- Header -->
 			<header id="header">
 				<a href="javascript:void(0)" class="logo"><strong>PointSystem</strong> by SEES</a>
-				<nav>
-					<a href="#menu">Menu</a>
-				</nav>
 			</header>
 
-		<!-- Nav -->
-			<nav id="menu">
-				<ul class="links">
-					<li><a href="index.php">Home</a></li>
-					<li><a href="generic.html">Generic</a></li>
-					<li><a href="elements.html">Elements</a></li>
-				</ul>
-			</nav>
 
 		<!-- Banner -->
 			<section id="banner">
 				<div class="inner">
                 <h1>会員登録完了</h1>
-					<h2><br>メールアドレスにIDとPWを送信しました。</h2>
+					<h2><br><s>メールアドレスにPWを送信しました。</s><br>テスト中のためメールは送信しません。<br>パスワードは「999」です。</h2>
 					<ul class="actions">
 						<li><a href="index.php" class="button alt scrolly big">ログインする</a></li>
 					</ul>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: 2019 年 12 月 19 日 18:22
+-- Generation Time: 2019 年 12 月 20 日 17:32
 -- サーバのバージョン： 5.7.25
 -- PHP Version: 7.3.1
 
@@ -61,10 +61,11 @@ CREATE TABLE `members` (
 --
 
 INSERT INTO `members` (`m_seq`, `m_id`, `m_pw`, `m_name`, `m_mail`, `m_post`, `m_address1`, `m_address2`, `m_tel`, `createdt`) VALUES
-(1, '123', '456', 'yama', 'mail@mail', 123, 'add', 'eess', 90, '2019-12-19 15:47:12'),
+(1, '123', '456', 'yama', '123', 123, 'add', 'eess', 90, '2019-12-19 15:47:12'),
 (3, '1576739192', '999', 'yama', 'yama@mail', 12, 'add1', 'ad2', 90, '2019-12-19 16:06:32'),
 (4, '1576739772', '999', 'yama', 'yama@', 123, 'add1', 'add2', 90, '2019-12-19 16:16:12'),
-(5, '1576740152', '999', 'yama', 'y@mail', 123, 'add1', 'add2', 9090, '2019-12-19 16:22:32');
+(5, '1576740152', '999', 'yama', 'y@mail', 123, 'add1', 'add2', 9090, '2019-12-19 16:22:32'),
+(6, '1576828705', '999', 'test', 'mail', 123, 'a1', 'a2', 900909090, '2019-12-20 16:58:25');
 
 -- --------------------------------------------------------
 
@@ -79,19 +80,20 @@ CREATE TABLE `prizes` (
   `pz_title` text NOT NULL,
   `pz_img` varchar(20) NOT NULL,
   `pz_text` text NOT NULL,
-  `pz_hitcnt` int(11) NOT NULL
+  `pz_hitcnt` int(11) NOT NULL,
+  `pz_nowcnt` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- テーブルのデータのダンプ `prizes`
 --
 
-INSERT INTO `prizes` (`pz_seq`, `p_seq`, `pz_order`, `pz_title`, `pz_img`, `pz_text`, `pz_hitcnt`) VALUES
-(1, 8, 21, 'a11', 'jhome 2.png', 'vvv11', 991),
-(2, 8, 3, 'aa9', '', 'bb', 12),
-(3, 8, 1, 'aa19', '', 'bb', 123),
-(4, 8, 0, 'aa', '', 'bb', 123),
-(5, 8, 0, '１２３', '', '４５６', 111);
+INSERT INTO `prizes` (`pz_seq`, `p_seq`, `pz_order`, `pz_title`, `pz_img`, `pz_text`, `pz_hitcnt`, `pz_nowcnt`) VALUES
+(1, 8, 21, '最後の賞品', 'gray.jpg', '最後の説明\r\nグレーな画像', 1, 0),
+(2, 8, 3, '二番目の商品', '', '二番目の説明\r\nの２ぎょうめ\r\n画像なし', 1, 0),
+(3, 8, 1, '一番目の商品', 'salmon.jpg', '一番目の説明\r\nサーモン画像', 1, 1),
+(4, 8, 10, '四番目の賞品', 'yellow.jpg', '４の説明\r\n黄色の画像', 1, 1),
+(5, 8, 5, '３番目の賞品', 'green.jpg', '三番目の説明\r\nGreeeen', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -115,7 +117,7 @@ CREATE TABLE `promos` (
 --
 
 INSERT INTO `promos` (`p_seq`, `p_title`, `p_text1`, `p_img`, `p_text2`, `p_startdt`, `p_enddt`, `g_seq`) VALUES
-(8, 'aaa', 'sss', 'jhome2.png', 'fff', '2019-12-02', '2019-12-18', 1),
+(8, 'キャンペーンのタイトル', '上の説明文\r\n２行目', 'jhome2.png', '説明文下\r\n２行目\r\n３ぎょうめ', '2019-12-02', '2019-12-20', 3),
 (9, 'camp2', 'te1111', 'pink.jpg', 'te2222', '2019-12-04', '2019-12-07', 3);
 
 -- --------------------------------------------------------
@@ -138,7 +140,7 @@ CREATE TABLE `serialcodes` (
 --
 
 INSERT INTO `serialcodes` (`sc_seq`, `s_seq`, `sc_code`, `entrydt`, `sc_point`, `m_seq`) VALUES
-(16062, 31, '721012131221', '2019-12-19 00:00:00', 10, 1),
+(16062, 31, '721012131221', '2019-12-19 00:00:00', 100, 1),
 (16063, 31, '483212324232', '2019-12-05 00:00:00', 6, 2),
 (16064, 31, '469432343533', NULL, NULL, NULL),
 (16065, 31, '458054345464', '2019-12-13 00:00:00', 4, 1),
@@ -147,7 +149,8 @@ INSERT INTO `serialcodes` (`sc_seq`, `s_seq`, `sc_code`, `entrydt`, `sc_point`, 
 (16068, 31, '879784387677', NULL, NULL, NULL),
 (16069, 31, '898089649878', NULL, NULL, NULL),
 (16070, 31, '890919085099', NULL, NULL, NULL),
-(16071, 31, '109010211060', NULL, NULL, NULL);
+(16071, 31, '109010211060', NULL, NULL, NULL),
+(16072, 31, '000000000001', '2019-12-20 09:56:24', 20, 1);
 
 -- --------------------------------------------------------
 
@@ -173,6 +176,34 @@ INSERT INTO `serials` (`s_seq`, `s_title`, `s_qty`, `createdt`, `users_seq`) VAL
 -- --------------------------------------------------------
 
 --
+-- テーブルの構造 `ships`
+--
+
+CREATE TABLE `ships` (
+  `sp_seq` int(11) NOT NULL,
+  `m_seq` int(11) NOT NULL,
+  `up_seq` int(11) NOT NULL,
+  `sp_name` varchar(20) NOT NULL,
+  `sp_post` int(7) NOT NULL,
+  `sp_address1` varchar(50) NOT NULL,
+  `sp_address2` varchar(50) NOT NULL,
+  `sp_tel` int(11) NOT NULL,
+  `sp_text` text NOT NULL,
+  `sp_flg` int(11) NOT NULL DEFAULT '0',
+  `createdt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- テーブルのデータのダンプ `ships`
+--
+
+INSERT INTO `ships` (`sp_seq`, `m_seq`, `up_seq`, `sp_name`, `sp_post`, `sp_address1`, `sp_address2`, `sp_tel`, `sp_text`, `sp_flg`, `createdt`) VALUES
+(1, 1, 0, 'yamaza', 123, 'add2', 'eess2', 9090, 'ああああ', 0, '2019-12-20 16:37:18'),
+(2, 1, 7, 'yama', 123, 'add', 'eess', 90, 'ddd', 0, '2019-12-20 16:39:00');
+
+-- --------------------------------------------------------
+
+--
 -- テーブルの構造 `usepoints`
 --
 
@@ -182,6 +213,8 @@ CREATE TABLE `usepoints` (
   `up_point` int(11) NOT NULL,
   `createdt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `up_status` int(11) NOT NULL,
+  `g_seq` int(11) NOT NULL,
+  `p_seq` int(11) NOT NULL,
   `pz_seq` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -189,8 +222,11 @@ CREATE TABLE `usepoints` (
 -- テーブルのデータのダンプ `usepoints`
 --
 
-INSERT INTO `usepoints` (`up_seq`, `m_seq`, `up_point`, `createdt`, `up_status`, `pz_seq`) VALUES
-(1, 1, 10, '2019-12-19 17:54:22', 1, 1);
+INSERT INTO `usepoints` (`up_seq`, `m_seq`, `up_point`, `createdt`, `up_status`, `g_seq`, `p_seq`, `pz_seq`) VALUES
+(4, 1, 20, '2019-12-20 16:07:23', 1, 3, 8, 1),
+(5, 1, 20, '2019-12-20 16:09:31', 1, 3, 8, 1),
+(6, 1, 20, '2019-12-20 16:11:46', 1, 3, 8, 3),
+(7, 1, 20, '2019-12-20 16:38:51', 1, 3, 8, 4);
 
 -- --------------------------------------------------------
 
@@ -276,6 +312,12 @@ ALTER TABLE `serials`
   ADD PRIMARY KEY (`s_seq`);
 
 --
+-- Indexes for table `ships`
+--
+ALTER TABLE `ships`
+  ADD PRIMARY KEY (`sp_seq`);
+
+--
 -- Indexes for table `usepoints`
 --
 ALTER TABLE `usepoints`
@@ -302,7 +344,7 @@ ALTER TABLE `games`
 -- AUTO_INCREMENT for table `members`
 --
 ALTER TABLE `members`
-  MODIFY `m_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `m_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `prizes`
@@ -320,7 +362,7 @@ ALTER TABLE `promos`
 -- AUTO_INCREMENT for table `serialcodes`
 --
 ALTER TABLE `serialcodes`
-  MODIFY `sc_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16072;
+  MODIFY `sc_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16073;
 
 --
 -- AUTO_INCREMENT for table `serials`
@@ -329,10 +371,16 @@ ALTER TABLE `serials`
   MODIFY `s_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
+-- AUTO_INCREMENT for table `ships`
+--
+ALTER TABLE `ships`
+  MODIFY `sp_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `usepoints`
 --
 ALTER TABLE `usepoints`
-  MODIFY `up_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `up_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`

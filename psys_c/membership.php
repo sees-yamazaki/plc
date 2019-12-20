@@ -12,37 +12,14 @@ $errorMessage = "";
     require_once './db/members.php';
     $member = new cls_members();
 
-    try {
-		$member->m_id = strtotime("now");
-		$member->m_pw = "999";
-        $member->m_name = $_POST['m_name'];
-        $member->m_mail = $_POST['m_mail'];
-        $member->m_post = $_POST['m_post'];
-        $member->m_address1 = $_POST['m_address1'];
-        $member->m_address2 = $_POST['m_address2'];
-		$member->m_tel = $_POST['m_tel'];
-        
-        if (isset($_POST['mmbrEdit'])) {
-
-			$cnt = checkMemberByMail($member->m_mail);
-
-			if($cnt==0){
-                $errorMessage = insertMember($member);
-			} else {
-				$errorMessage = 'このメールアドレスはすでに登録されています。';
-            }
-            
-            if (empty($errorMessage)) {
-				var_dump($member);
-                //header("Location: ./membershiped.php");
-            }
-        }
-    } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
-            echo $e->getMessage();
-        }
-    }
+	$member->m_id = strtotime("now");
+	$member->m_pw = "999";
+	$member->m_name = $_POST['m_name'];
+	$member->m_mail = $_POST['m_mail'];
+	$member->m_post = $_POST['m_post'];
+	$member->m_address1 = $_POST['m_address1'];
+	$member->m_address2 = $_POST['m_address2'];
+	$member->m_tel = $_POST['m_tel'];
 
 ?>
 <!DOCTYPE HTML>
@@ -59,19 +36,8 @@ $errorMessage = "";
 		<!-- Header -->
 			<header id="header">
 				<a href="javascript:void(0)" class="logo"><strong>PointSystem</strong> by SEES</a>
-				<nav>
-					<a href="#menu">Menu</a>
-				</nav>
 			</header>
 
-		<!-- Nav -->
-			<nav id="menu">
-				<ul class="links">
-					<li><a href="index.php">Home</a></li>
-					<li><a href="generic.html">Generic</a></li>
-					<li><a href="elements.html">Elements</a></li>
-				</ul>
-			</nav>
 
 		<!-- Banner -->
 			<?php if(!empty($errorMessage)){ ?>
@@ -82,6 +48,13 @@ $errorMessage = "";
 			</section>
 			<?php } ?>
 
+			<section id="banner9">
+        <div class="inner">
+            <ul class="actions actions2">
+                <li><a href="index.php" class="button alt scrolly big">戻る</a></li>
+            </ul>
+        </div>
+    </section>
 
 			<section id="banner">
 				<div class="inner">

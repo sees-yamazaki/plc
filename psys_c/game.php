@@ -14,9 +14,16 @@ if (!isset($_SESSION[$ini['sysname']."SEQ"])) {
 // エラーメッセージの初期化
 $errorMessage = "";
 
+$pSeq = $_POST['pSeq'];
+$gSeq = $_POST['gSeq'];
+$pzSeq = $_POST['pzSeq'];
 
-require_once './db/view.php';
-$point = getPoint($_SESSION[$ini['sysname']."SEQ"]);
+
+require_once './db/games.php';
+$game = getGame($gSeq);
+
+
+
 
 ?>
 
@@ -29,6 +36,11 @@ $point = getPoint($_SESSION[$ini['sysname']."SEQ"]);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <link rel="stylesheet" href="asset/css/main.css" />
+    <script>
+    function choise() {
+        document.frm.submit();
+    }
+    </script>
 </head>
 
 <body>
@@ -45,33 +57,30 @@ $point = getPoint($_SESSION[$ini['sysname']."SEQ"]);
     </section>
     <?php } ?>
 
-    <section id="banner2">
+    <section id="banner9">
         <div class="inner">
-            <h1>お知らせ</h1>
-        </div>
-    </section>
-
-    <section id="banner">
-        <div class="inner">
-            <h1>現在のポイント：<?php echo $point; ?>PT</h1>
-            <ul class="actions">
-                <li><a href="pointentry.php" class="button alt scrolly big">ポイント登録する</a></li>
+            <ul class="actions actions2">
+                <li><a href="select_prize.php" class="button alt scrolly big">戻る</a></li>
             </ul>
         </div>
     </section>
 
     <section id="banner">
+
+        <form action='gamed.php' method='POST' name="frm">
+            <input type='hidden' name='pSeq' value='<?php echo $pSeq; ?>'>
+            <input type='hidden' name='gSeq' value='<?php echo $gSeq; ?>'>
+            <input type='hidden' name='pzSeq' value='<?php echo $pzSeq; ?>'>
+        </form>
+
         <div class="inner">
-        <?php if($point>=20){ ?>
-            <h1>20ポイント貯まりました！！</h1>
-            <ul class="actions">
-                <li><a href="select_prize.php" class="button alt scrolly big">ゲームにチャレンジ</a></li>
-            </ul>
-            <?php }else{ ?>
-                <h3>頑張って20ポイント貯めると、ゲームにチャレンジできます！！</h3>
-        <?php } ?>
+            <h1>画像をタップ！！</h1>
+            <br>
+            <a href="javascript:choise()">
+            <img border=0 class="img100" src="<?php echo $ini['parentURL']; ?>/games/<?php echo $game->g_seq; ?>/<?php echo $game->g_image_start; ?>"></a>
         </div>
     </section>
+
 
 
     <?php include('./footer.php'); ?>

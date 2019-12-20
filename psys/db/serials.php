@@ -13,10 +13,10 @@ class cls_serialcodes
 {
     public $sc_seq ;
     public $s_seq ;
-    public $c_code ;
+    public $sc_code ;
     public $entrydt ;
     public $sc_point ;
-    public $c_seq ;
+    public $m_seq ;
 }
 
 function getSerials()

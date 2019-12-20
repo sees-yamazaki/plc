@@ -21,6 +21,68 @@
 
 /* Banner */
 
+#banner9 {
+    background-color: #6db1df;
+    color: #fff;
+    text-align: center;
+    cursor: default;
+}
+
+#banner9 .button {
+    background-color: #6db1df;
+    color: #fff !important;
+}
+
+#banner9 .button.alt {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25);
+    color: #fff !important;
+}
+
+ul.actions2 li {
+    display: inline-block;
+    padding: 0 0 0 0;
+    vertical-align: middle;
+}
+
+@media screen and (max-width: 480px) {
+    ul.actions2 {
+        margin: 0 0 0 0;
+    }
+}
+
+#banner3 {
+    background-color: #6db1df;
+    color: #fff;
+    text-align: center;
+    cursor: default;
+    padding: 10em 4em 9em 4em;
+}
+
+#banner3 hr {
+    border-bottom-color: rgba(228, 228, 228, 0.726);
+}
+
+#banner3 .button {
+    background-color: #6db1df;
+    color: #fff !important;
+}
+
+#banner3 .button.alt {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25);
+    color: #fff !important;
+}
+
+@media screen and (max-width: 736px) {
+    .img80 {
+        width: 80%;
+    }
+    .img100 {
+        width: 100%;
+    }
+}
+
 #banner2 {
     background-color: #fff;
     color: rgba(255, 255, 255, 0.75);
