@@ -44,7 +44,7 @@
                     </a>
                     <ul class="collapse navigation-submenu" id="sample-pages">
                         <li>
-                            <a href="javascript:void(0)">ユーザ一覧</a>
+                            <a href="a_members_list.php">ユーザ一覧</a>
                         </li>
                         <li>
                             <a href="javascript:void(0)">検索</a>

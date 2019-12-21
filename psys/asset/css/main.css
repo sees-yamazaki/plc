@@ -29,3 +29,23 @@
     height: 5px;
     background-color: #696969;
 }
+
+.btn-page {
+    background: #00ff62;
+    border: none;
+    color: #fff;
+}
+
+.btn-page i {
+    background: #00ff62;
+    color: #fff;
+}
+
+
+.btn-page:hover {
+    color: #07cc008f;
+    color: #fff;
+}
+.btn.page-icon-btn {
+  height: 30px;
+  width: 20px; }

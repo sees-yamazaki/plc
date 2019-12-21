@@ -18,8 +18,7 @@ $pw1 = $_POST['pw1'];
 $pw2 = $_POST['pw2'];
 
 
-    require_once './db/serialcodes.php';
-    $scode = new cls_serialcodes();
+    require_once './db/members.php';
 
     try {
         if (isset($_POST['pwChange'])) {
@@ -32,7 +31,7 @@ $pw2 = $_POST['pw2'];
             }
             
             if (empty($errorMessage)) {
-                header("Location: ./pointentried.php?addPt=".$scode->sc_point);
+                header("Location: ./pwchanged.php");
             }
         }
     } catch (PDOException $e) {

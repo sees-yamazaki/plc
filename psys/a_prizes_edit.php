@@ -8,13 +8,13 @@ $ini = $_SESSION['INI'];
 date_default_timezone_set('Asia/Tokyo');
 
 // ログイン状態チェック
-if (!isset($_SESSION["SEQ"])) {
-    header("Location: a_logoff.php");
+if (!isset($_SESSION['SEQ'])) {
+    header('Location: a_logoff.php');
     exit;
 }
 
 // エラーメッセージの初期化
-$errorMessage = "";
+$errorMessage = '';
 
     $pSeq = $_POST['pSeq'];
     $pzSeq = $_POST['pzSeq'];
@@ -23,32 +23,29 @@ $errorMessage = "";
     $prize = new cls_prizes();
 
     try {
-
         $prize->p_seq = $_POST['pSeq'];
         $prize->pz_seq = $_POST['pzSeq'];
         $prize->pz_order = $_POST['pz_order'];
         $prize->pz_title = $_POST['pz_title'];
         $prize->pz_text = $_POST['pz_text'];
-        $prize->pz_img = basename( $_FILES ['pz_img'] ['name'] );
+        $prize->pz_img = basename($_FILES['pz_img']['name']);
         $prize->pz_hitcnt = $_POST['pz_hitcnt'];
         $prize->imgStts = $_POST['imgStts'];
-        
-        if (isset($_POST['prizeEdit'])) {
 
-            if ($prize->imgStts=="1") {
+        if (isset($_POST['prizeEdit'])) {
+            if ($prize->imgStts == '1') {
                 //アップロードファイルの検証
-                $filepath = pathinfo($_FILES ['pz_img'] ['name']);
-    
-                if (!($filepath['extension']=="png" || $filepath['extension']=="bmp" || $filepath['extension']=="jpg")) {
+                $filepath = pathinfo($_FILES['pz_img']['name']);
+
+                if (!($filepath['extension'] == 'png' || $filepath['extension'] == 'bmp' || $filepath['extension'] == 'jpg')) {
                     $errorMessage .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
                 }
-    
-                if (mb_strlen($prize->pz_img)>20) {
+
+                if (mb_strlen($prize->pz_img) > 20) {
                     $errorMessage .= '<br>・アップロード画像のファイル名は20文字以内にしてください。';
                 }
             }
-            
-            
+
             if (empty($errorMessage)) {
                 if (!empty($pzSeq)) {
                     updateprize($prize);
@@ -56,38 +53,38 @@ $errorMessage = "";
                     insertprize($prize);
                 }
 
-                header("Location: ./a_prizes_list.php?pSeq=".$pSeq);
-            }else{
-                $errorMessage = '<br>アップロードされたファイル：'.basename( $_FILES ['pz_img'] ['name'] ).$errorMessage."<br>";
+                header('Location: ./a_prizes_list.php?pSeq='.$pSeq);
+            } else {
+                $errorMessage = '<br>アップロードされたファイル：'.basename($_FILES['pz_img']['name']).$errorMessage.'<br>';
             }
-
         } elseif (isset($_POST['del'])) {
-            //$rtn = checkUsers($user);
-            //if (count($rtn)==0) {
-                deleteprize($pSeq);
+            require './db/usepoints.php';
+            $rtn = countUsepointsByPzseq($pzSeq);
 
-                header("Location: ./a_prizes_list.php");
-            //} else {
-                $errorMessage = 'このユーザはシミュレーションデータが登録されているため削除できません';
-                
-                //$user = getUser($pSeq);
-            //}
+            if ($rtn == 0) {
+                deleteprize($pzSeq);
+
+                header('Location: ./a_prizes_list.php?pSeq='.$pSeq);
+            } else {
+                $errorMessage = 'この賞品はエントリー済のため削除できません';
+
+                $prize = getprize($pzSeq);
+            }
         } else {
             $prize = getprize($pzSeq);
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (strcmp('1', $ini['debug']) == 0) {
             echo $e->getMessage();
         }
     }
 
-
-$ckImg1 = " checked";
-$ckImg2 = "";
-if(!empty($pzSeq)){
-    $ckImg1 = "";
-    $ckImg2 = " checked";
+$ckImg1 = ' checked';
+$ckImg2 = '';
+if (!empty($pzSeq)) {
+    $ckImg1 = '';
+    $ckImg2 = ' checked';
 }
 
 ?>
@@ -116,7 +113,7 @@ if(!empty($pzSeq)){
         <input type='hidden' name='pSeq' value='<?php echo $pSeq; ?>'>
     </form>
 
-    <?php include('./a_menu.php'); ?>
+    <?php include './a_menu.php'; ?>
 
     <div class="page-content-wrapper">
         <div class="page-content-wrapper-inner">
@@ -202,7 +199,8 @@ if(!empty($pzSeq)){
 
                                     </div>
 
-                                    <?php if($pzSeq > 0){ ?>
+                                    <?php if ($pzSeq > 0) {
+    ?>
                                     <div class="form-group row showcase_row_area">
                                         <div class="col-md-3 showcase_text_area">
                                             <label for="inputType1"></label>
@@ -218,7 +216,8 @@ if(!empty($pzSeq)){
                                         </div>
 
                                     </div>
-                                    <?php } ?>
+                                    <?php
+} ?>
 
                                     <div class="form-group row showcase_row_area">
                                         <div class="col-md-3 showcase_text_area">
@@ -238,16 +237,18 @@ if(!empty($pzSeq)){
                                     <input type="hidden" name="pzSeq" value="<?php echo $pzSeq; ?>">
                                 </form>
 
-                                <?php if($pSeq<>""){ ?>
+                                <?php if ($pzSeq != '0') {
+        ?>
                                 <br><br>
                                 <form action="" method="POST" onsubmit="return delcheck()">
                                     <button type="submit" class="btn btn-danger btn-block mt-0" name="del">削　除</button>
                                     <input type="hidden" name="pSeq" value="<?php echo $pSeq; ?>">
                                     <input type="hidden" name="pzSeq" value="<?php echo $pzSeq; ?>">
                                 </form>
-                                <?php } ?>
+                                <?php
+    } ?>
 
-                                <span class="clrRed"><?php echo $errorMessage ?></span>
+                                <span class="clrRed"><?php echo $errorMessage; ?></span>
                             </div>
                         </div>
                     </div>
@@ -259,7 +260,7 @@ if(!empty($pzSeq)){
         </div>
     </div>
 
-    <?php include('./a_footer.php'); ?>
+    <?php include './a_footer.php'; ?>
 
     </div>
     </div>

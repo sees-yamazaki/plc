@@ -4,39 +4,39 @@
 session_start();
 
 $ini = parse_ini_file('./common.ini', false);
-$_SESSION["INI"] = $ini;
+$_SESSION['INI'] = $ini;
 
 // エラーメッセージの初期化
-$errorMessage = "";
+$errorMessage = '';
 
 // ログインボタンが押された場合
-if (isset($_POST["login"])) {
-
+if (isset($_POST['login'])) {
     // 1. ユーザIDの入力チェック
-    if (empty($_POST["m_mail"])) {  // emptyは値が空のとき
+    if (empty($_POST['m_mail'])) {  // emptyは値が空のとき
         $errorMessage = 'メールアドレスが未入力です。';
-    } elseif (empty($_POST["m_pw"])) {
+    } elseif (empty($_POST['m_pw'])) {
         $errorMessage = 'パスワードが未入力です。';
     } else {
         // 入力したユーザIDを格納
-        $m_mail = $_POST["m_mail"];
-        $m_pw = $_POST["m_pw"];
-
+        $m_mail = $_POST['m_mail'];
+        $m_pw = $_POST['m_pw'];
 
         try {
             require_once './db/members.php';
             $member = new cls_members();
             $member = loginMember($m_mail, $m_pw);
 
-            if ($member->m_seq==0) {
+            if ($member->m_seq == 0) {
                 $errorMessage = 'ログインできませんでした。';
             } else {
-				$sn = $ini['sysname'];
-                $_SESSION[$sn."SEQ"] = $member->m_seq;
-                $_SESSION[$sn."ID"] = $member->m_id;
-                $_SESSION[$sn."NAME"] = $member->m_name;
+                require_once './db/log.php';
+                log_login($member->m_seq);
+                $sn = $ini['sysname'];
+                $_SESSION[$sn.'SEQ'] = $member->m_seq;
+                $_SESSION[$sn.'ID'] = $member->m_id;
+                $_SESSION[$sn.'NAME'] = $member->m_name;
 
-                header("Location: ./home.php");
+                header('Location: ./home.php');
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
@@ -67,13 +67,15 @@ if (isset($_POST["login"])) {
     </header>
 
     <!-- Banner -->
-    <?php if(!empty($errorMessage)){ ?>
+    <?php if (!empty($errorMessage)) {
+    ?>
     <section id="banner2">
         <div class="inner">
             <h3><?php echo $errorMessage; ?></h3>
         </div>
     </section>
-    <?php } ?>
+    <?php
+} ?>
 
     <section id="banner">
         <div class="inner">
@@ -98,19 +100,7 @@ if (isset($_POST["login"])) {
     </section>
 
 
-    <!-- Footer -->
-    <footer id="footer">
-        <div class="copyright">
-            &copy; SEES
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.scrolly.min.js"></script>
-    <script src="assets/js/skel.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
+    <?php include './footer.php'; ?>
 
 </body>
 

@@ -1,14 +1,22 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: 2019 年 12 月 20 日 17:32
--- サーバのバージョン： 5.7.25
--- PHP Version: 7.3.1
+-- Generation Time: Dec 21, 2019 at 12:21 PM
+-- Server version: 5.7.24-log
+-- PHP Version: 7.2.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `psys`
@@ -17,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `games`
+-- Table structure for table `games`
 --
 
 CREATE TABLE `games` (
@@ -30,7 +38,7 @@ CREATE TABLE `games` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `games`
+-- Dumping data for table `games`
 --
 
 INSERT INTO `games` (`g_seq`, `g_title`, `g_image_start`, `g_image_hit`, `g_image_miss`, `g_text`) VALUES
@@ -40,7 +48,26 @@ INSERT INTO `games` (`g_seq`, `g_title`, `g_image_start`, `g_image_hit`, `g_imag
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `members`
+-- Table structure for table `log_login`
+--
+
+CREATE TABLE `log_login` (
+  `logindt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `m_seq` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `log_login`
+--
+
+INSERT INTO `log_login` (`logindt`, `m_seq`) VALUES
+('2019-12-21 19:25:48', 1),
+('2019-12-21 19:28:30', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `members`
 --
 
 CREATE TABLE `members` (
@@ -57,20 +84,38 @@ CREATE TABLE `members` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `members`
+-- Dumping data for table `members`
 --
 
 INSERT INTO `members` (`m_seq`, `m_id`, `m_pw`, `m_name`, `m_mail`, `m_post`, `m_address1`, `m_address2`, `m_tel`, `createdt`) VALUES
 (1, '123', '456', 'yama', '123', 123, 'add', 'eess', 90, '2019-12-19 15:47:12'),
-(3, '1576739192', '999', 'yama', 'yama@mail', 12, 'add1', 'ad2', 90, '2019-12-19 16:06:32'),
-(4, '1576739772', '999', 'yama', 'yama@', 123, 'add1', 'add2', 90, '2019-12-19 16:16:12'),
-(5, '1576740152', '999', 'yama', 'y@mail', 123, 'add1', 'add2', 9090, '2019-12-19 16:22:32'),
-(6, '1576828705', '999', 'test', 'mail', 123, 'a1', 'a2', 900909090, '2019-12-20 16:58:25');
+(7, '1', '999', 'ジェフ・ベゾス', '1@mail', 1234567, 'アマゾン', 'アメリカ', 55, '2019-12-21 12:30:36'),
+(8, '2', '999', 'ビル・ゲイツ', '2@mail', 1234567, 'マイクロソフト', 'アメリカ', 63, '2019-12-21 12:30:58'),
+(9, '3', '999', 'ウォーレン・バフェット', '3@mail', 1234567, 'バークシャー・ハサウェイ', 'アメリカ', 88, '2019-12-21 12:30:58'),
+(10, '4', '999', 'ベルナール・アルノー', '4@mail', 1234567, 'LVMH', 'フランス', 70, '2019-12-21 12:30:58'),
+(11, '5', '999', 'カルロス・スリム', '5@mail', 1234567, 'テレフォノス・デ・メヒコ', 'メキシコ', 79, '2019-12-21 12:30:59'),
+(12, '6', '999', 'アマンシオ・オルテガ', '6@mail', 1234567, 'インディテックス(ザラ)', 'スペイン', 82, '2019-12-21 12:30:59'),
+(13, '7', '999', 'ラリー・エリソン', '7@mail', 1234567, 'オラクル', 'アメリカ', 74, '2019-12-21 12:30:59'),
+(14, '8', '999', 'マーク・ザッカーバーグ', '8@mail', 1234567, 'フェイスブック', 'アメリカ', 34, '2019-12-21 12:30:59'),
+(15, '9', '999', 'マイケル・ブルームバーグ', '9@mail', 1234567, 'ブルームバーグ', 'アメリカ', 77, '2019-12-21 12:30:59'),
+(16, '10', '999', 'ラリー・ペイジ', '10@mail', 1234567, 'グーグル', 'アメリカ', 45, '2019-12-21 12:30:59'),
+(17, '11', '999', 'チャールズ・コック', '11@mail', 1234567, 'コック・インダストリーズ', 'アメリカ', 83, '2019-12-21 12:30:59'),
+(18, '11', '999', 'デイヴィッド・コック', '11@mail', 1234567, 'コック・インダストリーズ', 'アメリカ', 78, '2019-12-21 12:31:00'),
+(19, '13', '999', 'ムケシュ・アンバニ', '13@mail', 1234567, 'リライアンス・インダストリーズ', 'インド', 61, '2019-12-21 12:31:00'),
+(20, '14', '999', 'セルゲイ・ブリン', '14@mail', 1234567, 'グーグル', 'アメリカ', 45, '2019-12-21 12:31:00'),
+(21, '15', '999', 'フランソワーズ・マイヤーズ', '15@mail', 1234567, 'ロレアル', 'フランス', 65, '2019-12-21 14:35:38'),
+(22, '16', '999', 'ジム・ウォルトン', '16@mail', 1234567, 'ウォルマート', 'アメリカ', 70, '2019-12-21 14:35:39'),
+(23, '17', '999', 'アリス・ウォルトン', '17@mail', 1234567, 'ウォルマート', 'アメリカ', 69, '2019-12-21 14:35:39'),
+(24, '18', '999', 'ロブ・ウォルトン', '18@mail', 1234567, 'ウォルマート', 'アメリカ', 74, '2019-12-21 14:35:39'),
+(25, '19', '999', 'スティーブ・バルマー', '19@mail', 1234567, 'マイクロソフト', 'アメリカ', 62, '2019-12-21 14:35:39'),
+(26, '20', '999', '馬化騰', '20@mail', 1234567, 'テンセント', '中国', 47, '2019-12-21 14:35:39'),
+(27, '21', '999', 'ジャック・マー', '21@mail', 1234567, 'アリババ', '中国', 54, '2019-12-21 14:35:39'),
+(28, '22', '999', '許家印', '22@mail', 1234567, '恒大集団', '中国', 60, '2019-12-21 14:35:39');
 
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `prizes`
+-- Table structure for table `prizes`
 --
 
 CREATE TABLE `prizes` (
@@ -85,20 +130,19 @@ CREATE TABLE `prizes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `prizes`
+-- Dumping data for table `prizes`
 --
 
 INSERT INTO `prizes` (`pz_seq`, `p_seq`, `pz_order`, `pz_title`, `pz_img`, `pz_text`, `pz_hitcnt`, `pz_nowcnt`) VALUES
 (1, 8, 21, '最後の賞品', 'gray.jpg', '最後の説明\r\nグレーな画像', 1, 0),
 (2, 8, 3, '二番目の商品', '', '二番目の説明\r\nの２ぎょうめ\r\n画像なし', 1, 0),
-(3, 8, 1, '一番目の商品', 'salmon.jpg', '一番目の説明\r\nサーモン画像', 1, 1),
 (4, 8, 10, '四番目の賞品', 'yellow.jpg', '４の説明\r\n黄色の画像', 1, 1),
 (5, 8, 5, '３番目の賞品', 'green.jpg', '三番目の説明\r\nGreeeen', 1, 0);
 
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `promos`
+-- Table structure for table `promos`
 --
 
 CREATE TABLE `promos` (
@@ -113,17 +157,17 @@ CREATE TABLE `promos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `promos`
+-- Dumping data for table `promos`
 --
 
 INSERT INTO `promos` (`p_seq`, `p_title`, `p_text1`, `p_img`, `p_text2`, `p_startdt`, `p_enddt`, `g_seq`) VALUES
-(8, 'キャンペーンのタイトル', '上の説明文\r\n２行目', 'jhome2.png', '説明文下\r\n２行目\r\n３ぎょうめ', '2019-12-02', '2019-12-20', 3),
+(8, 'キャンペーンのタイトル', '上の説明文\r\n２行目', 'jhome2.png', '説明文下\r\n２行目\r\n３ぎょうめ', '2019-12-02', '2019-12-21', 3),
 (9, 'camp2', 'te1111', 'pink.jpg', 'te2222', '2019-12-04', '2019-12-07', 3);
 
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `serialcodes`
+-- Table structure for table `serialcodes`
 --
 
 CREATE TABLE `serialcodes` (
@@ -136,7 +180,7 @@ CREATE TABLE `serialcodes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `serialcodes`
+-- Dumping data for table `serialcodes`
 --
 
 INSERT INTO `serialcodes` (`sc_seq`, `s_seq`, `sc_code`, `entrydt`, `sc_point`, `m_seq`) VALUES
@@ -155,7 +199,7 @@ INSERT INTO `serialcodes` (`sc_seq`, `s_seq`, `sc_code`, `entrydt`, `sc_point`, 
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `serials`
+-- Table structure for table `serials`
 --
 
 CREATE TABLE `serials` (
@@ -167,7 +211,7 @@ CREATE TABLE `serials` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `serials`
+-- Dumping data for table `serials`
 --
 
 INSERT INTO `serials` (`s_seq`, `s_title`, `s_qty`, `createdt`, `users_seq`) VALUES
@@ -176,7 +220,7 @@ INSERT INTO `serials` (`s_seq`, `s_title`, `s_qty`, `createdt`, `users_seq`) VAL
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `ships`
+-- Table structure for table `ships`
 --
 
 CREATE TABLE `ships` (
@@ -194,7 +238,7 @@ CREATE TABLE `ships` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `ships`
+-- Dumping data for table `ships`
 --
 
 INSERT INTO `ships` (`sp_seq`, `m_seq`, `up_seq`, `sp_name`, `sp_post`, `sp_address1`, `sp_address2`, `sp_tel`, `sp_text`, `sp_flg`, `createdt`) VALUES
@@ -204,7 +248,7 @@ INSERT INTO `ships` (`sp_seq`, `m_seq`, `up_seq`, `sp_name`, `sp_post`, `sp_addr
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `usepoints`
+-- Table structure for table `usepoints`
 --
 
 CREATE TABLE `usepoints` (
@@ -219,19 +263,21 @@ CREATE TABLE `usepoints` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `usepoints`
+-- Dumping data for table `usepoints`
 --
 
 INSERT INTO `usepoints` (`up_seq`, `m_seq`, `up_point`, `createdt`, `up_status`, `g_seq`, `p_seq`, `pz_seq`) VALUES
 (4, 1, 20, '2019-12-20 16:07:23', 1, 3, 8, 1),
 (5, 1, 20, '2019-12-20 16:09:31', 1, 3, 8, 1),
 (6, 1, 20, '2019-12-20 16:11:46', 1, 3, 8, 3),
-(7, 1, 20, '2019-12-20 16:38:51', 1, 3, 8, 4);
+(7, 1, 20, '2019-12-20 16:38:51', 1, 3, 8, 4),
+(8, 1, -100, '2019-12-21 21:14:27', 99, 0, 0, 0),
+(9, 1, -6, '2019-12-21 21:18:09', 99, 0, 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -242,7 +288,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`users_seq`, `users_id`, `users_pw`, `users_name`) VALUES
@@ -254,8 +300,19 @@ INSERT INTO `users` (`users_seq`, `users_id`, `users_pw`, `users_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- ビュー用の代替構造 `v_point`
--- (実際のビューを参照するには下にあります)
+-- Stand-in structure for view `v_lastlogin`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_lastlogin` (
+`logindt` datetime
+,`m_seq` int(11)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_point`
+-- (See below for the actual view)
 --
 CREATE TABLE `v_point` (
 `m_seq` int(11)
@@ -265,11 +322,20 @@ CREATE TABLE `v_point` (
 -- --------------------------------------------------------
 
 --
--- ビュー用の構造 `v_point`
+-- Structure for view `v_lastlogin`
+--
+DROP TABLE IF EXISTS `v_lastlogin`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_lastlogin`  AS  select max(`log_login`.`logindt`) AS `logindt`,`log_login`.`m_seq` AS `m_seq` from `log_login` group by `log_login`.`m_seq` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_point`
 --
 DROP TABLE IF EXISTS `v_point`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_point`  AS  select `a`.`m_seq` AS `m_seq`,sum(`a`.`point`) AS `point` from (select `serialcodes`.`m_seq` AS `m_seq`,sum(`serialcodes`.`sc_point`) AS `point` from `serialcodes` where (`serialcodes`.`m_seq` is not null) group by `serialcodes`.`m_seq` union select `usepoints`.`m_seq` AS `m_seq`,(sum(`usepoints`.`up_point`) * -(1)) AS `point` from `usepoints` group by `usepoints`.`m_seq`) `A` group by `a`.`m_seq` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_point`  AS  select `a`.`m_seq` AS `m_seq`,sum(`a`.`point`) AS `point` from (select `serialcodes`.`m_seq` AS `m_seq`,sum(`serialcodes`.`sc_point`) AS `point` from `serialcodes` where (`serialcodes`.`m_seq` is not null) group by `serialcodes`.`m_seq` union select `usepoints`.`m_seq` AS `m_seq`,(sum(`usepoints`.`up_point`) * -(1)) AS `point` from `usepoints` group by `usepoints`.`m_seq`) `a` group by `a`.`m_seq` ;
 
 --
 -- Indexes for dumped tables
@@ -344,13 +410,13 @@ ALTER TABLE `games`
 -- AUTO_INCREMENT for table `members`
 --
 ALTER TABLE `members`
-  MODIFY `m_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `m_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `prizes`
 --
 ALTER TABLE `prizes`
-  MODIFY `pz_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `pz_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `promos`
@@ -380,10 +446,15 @@ ALTER TABLE `ships`
 -- AUTO_INCREMENT for table `usepoints`
 --
 ALTER TABLE `usepoints`
-  MODIFY `up_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `up_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `users_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

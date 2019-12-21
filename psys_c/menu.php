@@ -8,7 +8,6 @@
 
 		<!-- Nav -->
 		<nav id="menu">
-		    <?php echo $_SESSION[$ini['sysname']."NAME"].でログイン中 ?><br>
 		    <ul class="links">
 		        <li><a href="home.php">ホーム</a></li>
 		        <li><a href="pointentry.php">ポイント登録</a></li>
