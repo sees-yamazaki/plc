@@ -38,7 +38,8 @@ function getUserByID($user)
     try {
         $result = new cls_users();
         require $_SESSION['MY_ROOT'].'/src/db/dns.php';
-        $stmt = $pdo->prepare("SELECT * FROM `users` where users_id=:users_id ");
+        $stmt = $pdo->prepare("SELECT * FROM `users` where users_id=:users_id and users_seq<>:users_seq ");
+        $stmt->bindParam(':users_seq', $user->users_seq, PDO::PARAM_INT);
         $stmt->bindParam(':users_id', $user->users_id, PDO::PARAM_STR);
         $stmt->execute();
         if ($row = $stmt->fetch()) {
@@ -184,13 +185,13 @@ function getUserByID($user)
         }
     }
 
-    function deleteUser($users)
+    function deleteUser($uSeq)
     {
         try {
             require $_SESSION['MY_ROOT'].'/src/db/dns.php';
             $sql = " DELETE FROM `users` WHERE `users_seq`=:users_seq";
             $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':users_seq', $users->users_seq, PDO::PARAM_INT);
+            $stmt->bindParam(':users_seq', $uSeq, PDO::PARAM_INT);
             $stmt->execute();
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';

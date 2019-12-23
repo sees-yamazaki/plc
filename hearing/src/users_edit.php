@@ -55,9 +55,9 @@ date_default_timezone_set('Asia/Tokyo');
 
             header("Location: ./users_list.php");
         } elseif (isset($_POST['userDel'])) {
-            $rtn = checkUsers($user);
+            $rtn = checkUsers($uSeq);
             if (count($rtn)==0) {
-                deleteUser($user);
+                deleteUser($uSeq);
 
                 header("Location: ./users_list.php");
             } else {
