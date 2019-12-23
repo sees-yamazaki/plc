@@ -27,6 +27,7 @@ $errorMessage = '';
         $prize->pz_seq = $_POST['pzSeq'];
         $prize->pz_order = $_POST['pz_order'];
         $prize->pz_title = $_POST['pz_title'];
+        $prize->pz_code = $_POST['pz_code'];
         $prize->pz_text = $_POST['pz_text'];
         $prize->pz_img = basename($_FILES['pz_img']['name']);
         $prize->pz_hitcnt = $_POST['pz_hitcnt'];
@@ -157,6 +158,17 @@ if (!empty($pzSeq)) {
 
                                     <div class="form-group row showcase_row_area">
                                         <div class="col-md-3 showcase_text_area">
+                                            <label for="inputType1">賞品コード</label>
+                                        </div>
+                                        <div class="col-md-9 showcase_content_area">
+                                            <input type="text" class="form-control" name="pz_code"
+                                                value="<?php echo $prize->pz_code; ?>" placeholder="30文字まで"
+                                                maxLength=30 autocomplete="off" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row showcase_row_area">
+                                        <div class="col-md-3 showcase_text_area">
                                             <label for="inputType1">説明</label>
                                         </div>
                                         <div class="col-md-9 showcase_content_area">
@@ -225,8 +237,8 @@ if (!empty($pzSeq)) {
                                         </div>
                                         <div class="col-md-9 showcase_content_area">
                                             <input type="text" class="form-control" name="pz_hitcnt"
-                                                value="<?php echo $prize->pz_hitcnt; ?>" placeholder="5文字まで" maxLength=5
-                                                pattern="[0-9]+" title="数字" autocomplete="off" required>
+                                                value="<?php echo $prize->pz_hitcnt; ?>" placeholder="複数の場合は , で区切ってください" maxLength=100
+                                                pattern="[0-9,]+" title="数字、半角カンマ" autocomplete="off" required>
                                         </div>
                                     </div>
 

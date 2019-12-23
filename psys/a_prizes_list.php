@@ -29,6 +29,7 @@ if(!isset($pSeq)){
         $html .= '<tr>';
         $html .= "<td>".$prize->pz_order."</td>";
         $html .= "<td>".$prize->pz_title."</td>";
+        $html .= "<td>".$prize->pz_nowcnt."</td>";
         $html .= "<td>".$prize->pz_hitcnt."</td>";
         $html .= "<td><button type='button' name='edit' class='btn btn-inverse-secondary' onclick='przEdit(".$prize->pz_seq.")'>編集</button></td>";
         $html .= "</tr>";
@@ -80,6 +81,7 @@ if(!isset($pSeq)){
                         <tr>
                             <th>並び順</th>
                             <th>賞品</th>
+                            <th>現在カウント</th>
                             <th>当たりカウント</th>
                             <th></th>
                         </tr>

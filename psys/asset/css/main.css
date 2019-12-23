@@ -41,11 +41,36 @@
     color: #fff;
 }
 
-
 .btn-page:hover {
     color: #07cc008f;
     color: #fff;
 }
+
 .btn.page-icon-btn {
-  height: 30px;
-  width: 20px; }
+    height: 30px;
+    width: 20px;
+}
+
+.w50p {
+    width: 40%;
+}
+
+.w20p {
+    width: 20%;
+}
+
+.search {
+    display: inline;
+}
+
+.closeform {
+    background-color: #e4e4e4;
+}
+
+.openform {
+    background-color: #eee;
+}
+
+.fClose {
+    display: none;
+}

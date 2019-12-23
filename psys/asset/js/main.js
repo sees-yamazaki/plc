@@ -88,3 +88,15 @@ function sakubunCheck() {
         document.getElementById("infos").submit();
     }
 }
+
+function openclose() {
+    obj = document.getElementById('open').style;
+    if (obj.display == 'block') {
+        obj.display = 'none';
+        document.getElementById('searchfrom').style.backgroundColor = '#e4e4e4';
+    } else {
+        obj.display = 'block';
+        document.getElementById('searchfrom').style.backgroundColor = '#eee';
+    }
+
+}

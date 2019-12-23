@@ -13,24 +13,46 @@ if (!isset($_SESSION["SEQ"])) {
 // エラーメッセージの初期化
 $errorMessage = "";
 
+$search_id = $_POST['search_id'];
+$search_name = $_POST['search_name'];
 
  try {
+     $openclose = " fClose";
+     $formbg = " closeform";
+     $where = "";
+     if (isset($_POST['search'])) {
+        $tmp = array();
+
+        if (!empty($search_id)) {
+            $tmp[] = "(users_id=".$search_id.")"; 
+        }
+        if (!empty($search_name)) {
+            $tmp[] = "(users_name LIKE '%".$search_name."%')"; 
+        }
+
+        if(count($tmp)>0){
+            $where = " WHERE ".implode(" AND ",$tmp);
+        }
+
+        $openclose = " ";
+        $formbg = " openform";
+
+     }
      require_once './db/users.php';
      $users = new cls_users();
-     $users = getUsers();
+     $users = getUsers($where);
 
      $html="";
      foreach ($users as $user) {
-        $html .= '<tr>';
-        $html .= "<td>".$user->users_id."</td>";
-        $html .= "<td>".$user->users_name."</td>";
-        $html .= "<td><button type='button' name='edit' class='btn btn-inverse-secondary' onclick='usrEdit(".$user->users_seq.")'>編集</button></td>";
-        $html .= "</tr>";
-    }
-
-} catch (PDOException $e) {
-    $errorMessage = 'データベースエラー:'.$e->getMessage();
-}
+         $html .= '<tr>';
+         $html .= "<td>".$user->users_id."</td>";
+         $html .= "<td>".$user->users_name."</td>";
+         $html .= "<td><button type='button' name='edit' class='btn btn-inverse-secondary' onclick='usrEdit(".$user->users_seq.")'>編集</button></td>";
+         $html .= "</tr>";
+     }
+ } catch (PDOException $e) {
+     $errorMessage = 'データベースエラー:'.$e->getMessage();
+ }
 
 
 ?>
@@ -64,6 +86,39 @@ $errorMessage = "";
     <div class="page-content-wrapper">
         <div class="page-content-wrapper-inner">
             <div class="content-viewport">
+
+
+                <div id="searchfrom" class="grid <?php echo $formbg; ?>">
+                    <div class="btn btn-rounded social-icon-btn btn-facebook">
+                        <i class="mdi mdi-magnify" onclick="openclose()"></i>
+                    </div>
+                    <div class="grid-body <?php echo $openclose; ?>" id="open">
+                        <form action="" method="POST">
+
+                            <div class="form-group row">
+                                <div class="col-md-12 showcase_text_area">
+                                    <label for="inputType1">ID-></label>
+                                    <input type="number" class="form-control w50p search" name="search_id"
+                                        value="<?php echo $search_id; ?>" autocomplete="off">
+                                </div>
+                                <div class="col-md-12 showcase_text_area">
+                                    <label for="inputType1">名前-></label>
+                                    <input type="text" class="form-control w50p search" name="search_name"
+                                        value="<?php echo $search_name; ?>">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block mt-0" name="search">検索</button>
+                        </form>
+
+                        <span class="clrRed"><?php echo $errorMessage ?></span>
+                    </div>
+                </div>
+
+
+
+
+
                 <table class="table table-dark">
                     <thead>
                         <tr>
@@ -76,6 +131,10 @@ $errorMessage = "";
                         <?php echo $html; ?>
                     </tbody>
                 </table>
+
+
+
+
             </div>
         </div>
     </div>
@@ -90,6 +149,7 @@ $errorMessage = "";
     <script src="./assets/js/charts/chartjs.addon.js"></script>
     <script src="./assets/js/template.js"></script>
     <script src="./assets/js/dashboard.js"></script>
+    <script src="./asset/js/main.js"></script>
 </body>
 
 </html>

@@ -33,14 +33,14 @@ function loginUsers($uID,$uPW){
     return $users;
 }
 
-function getUsers(){
+function getUsers($where){
 
     try {
     
         $results = array();
 
         require './db/dns.php';
-        $stmt = $pdo->prepare("SELECT * FROM `users` ORDER BY users_id");
+        $stmt = $pdo->prepare("SELECT * FROM `users` ".$where." ORDER BY users_id");
         $stmt->execute(array());
 
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){

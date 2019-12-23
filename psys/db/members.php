@@ -80,12 +80,13 @@ class cls_members
         return $result;
     }
 
-    function getMemberRows()
+    function getMemberRows($where)
     {
         try {
             $cnt = 0;
             require './db/dns.php';
-            $stmt = $pdo->prepare('SELECT count(*) as cnt FROM `members`');
+            $stmt = $pdo->prepare('SELECT count(*) as cnt FROM ( SELECT m.*,CASE v.point IS NULL WHEN 1 THEN 0 ELSE v.point END as point,L.logindt FROM `members` m LEFT JOIN v_point v ON m.m_seq=v.m_seq LEFT JOIN v_lastlogin L ON L.m_seq=m.m_seq ) x '.$where);
+
             $stmt->execute();
             if ($row = $stmt->fetch()) {
                 $cnt = $row['cnt'];
@@ -100,12 +101,13 @@ class cls_members
         return $cnt;
     }
 
-    function getMembersLimit($limit, $offset)
+    function getMembersLimit($limit, $offset,$where)
     {
         try {
             $results = array();
             require './db/dns.php';
-            $stmt = $pdo->prepare('SELECT m.*,v.point,L.logindt FROM  `members` m LEFT JOIN v_point v ON m.m_seq=v.m_seq LEFT JOIN v_lastlogin L ON L.m_seq=m.m_seq ORDER BY m.m_seq LIMIT :lmt OFFSET :ofst');
+            $stmt = $pdo->prepare('SELECT x.* FROM ( SELECT m.*,CASE v.point IS NULL WHEN 1 THEN 0 ELSE v.point END as point,L.logindt FROM `members` m LEFT JOIN v_point v ON m.m_seq=v.m_seq LEFT JOIN v_lastlogin L ON L.m_seq=m.m_seq ) x '.$where.' ORDER BY x.m_seq LIMIT :lmt OFFSET :ofst');
+
             $stmt->bindParam(':lmt', $limit, PDO::PARAM_INT);
             $stmt->bindParam(':ofst', $offset, PDO::PARAM_INT);
             $stmt->execute();

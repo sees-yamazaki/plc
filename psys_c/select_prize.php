@@ -16,6 +16,21 @@ $errorMessage = '';
 
 require_once './db/promos.php';
 $promo = getOpenPromo();
+$html1 = '';
+if ($promo->p_seq==0) {
+    $html1 .= '<h2>ただいま、キャンペーンは実施されていません。</h2>';
+} else {
+    $html1 .= "<h1>".count($promo).$promo->p_title>"aaa</h1>";
+    if (isset($promo->p_text1)) {
+        $html1 .= "<h3>".$promo->p_text1."</h3>";
+    }
+    if (isset($promo->p_text1)) {
+        $html1 .= "<img class='img80' border=0 src='". $ini['parentURL'].'/promos/'.$promo->p_seq."/".$promo->p_img."'>";
+    }
+    if (isset($promo->p_text2)) {
+        $html1 .= "<h3>".$promo->p_text2."</h3>";
+    }
+}
 
 require_once './db/prizes.php';
 $prizes = getPrizes($promo->p_seq);
@@ -27,7 +42,7 @@ foreach ($prizes as $prize) {
     if (!empty($prize->pz_img)) {
         $html2 .= "<img class='img80' border=0 src='".$ini['parentURL'].'/promos/'.$promo->p_seq.'/'.$prize->pz_img."'><br>";
     }
-    if (!empty($prize->pz_text)) {
+    if (!empty($prize->p_img)) {
         $html2 .= nl2br($prize->pz_text).'<br>';
     }
     $html2 .= "<ul class='actions'>";
@@ -87,23 +102,7 @@ foreach ($prizes as $prize) {
         </form>
 
         <div class="inner">
-            <h1><?php echo $promo->p_title; ?></h1>
-            <br>
-            <?php if (isset($promo->p_text1)) {
-        ?>
-            <h3><?php echo $promo->p_text1; ?></h3>
-            <?php
-    } ?>
-            <?php if (isset($promo->p_img)) {
-        ?>
-            <img class='img80' border=0 src="<?php echo $ini['parentURL']; ?>/promos/<?php echo $promo->p_seq; ?>/<?php echo $promo->p_img; ?>">
-            <?php
-    } ?>
-            <?php if (isset($promo->p_text2)) {
-        ?>
-            <h3><?php echo $promo->p_text2; ?></h3>
-            <?php
-    } ?>
+            <?php echo $html1; ?>
         </div>
     </section>
 

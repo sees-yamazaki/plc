@@ -20,15 +20,47 @@ if (!isset($page)) {
 }
 
  try {
+     $search_min_point = $_POST['search_min_point'];
+     $search_max_point = $_POST['search_max_point'];
+     $search_name = $_POST['search_name'];
+
+     $openclose = " fClose";
+     $formbg = " closeform";
+     $where = "";
+     if (isset($_POST['search'])) {
+         $tmp = array();
+
+         if (!empty($search_name)) {
+             $tmp[] = "(x.m_name LIKE '%".$search_name."%')";
+         }
+         if (strlen($search_min_point)>0) {
+             $tmp[] = "(x.point>=".$search_min_point.")";
+         }
+         if (strlen($search_max_point)>0) {
+             $tmp[] = "(x.point<=".$search_max_point.")";
+         }
+
+         if (count($tmp)>0) {
+             $where = " WHERE ".implode(" AND ", $tmp);
+         }
+
+         $openclose = " ";
+         $formbg = " openform";
+     }
+
+
+
+
+
      require_once './db/members.php';
      $members = new cls_members();
 
-     $cnt = getMemberRows();
+     $cnt = getMemberRows($where);
      $maxPage = ceil($cnt / $limitRow);
 
      $offset = $limitRow * ($page - 1);
 
-     $members = getMembersLimit($limitRow, $offset);
+     $members = getMembersLimit($limitRow, $offset, $where);
 
      $html = '';
      foreach ($members as $member) {
@@ -74,6 +106,7 @@ if (!isset($page)) {
         document.frm.mSeq.value = vlu;
         document.frm.submit();
     }
+
     function paging(vlu) {
         document.pFrm.page.value = vlu;
         document.pFrm.submit();
@@ -94,6 +127,41 @@ if (!isset($page)) {
     <div class="page-content-wrapper">
         <div class="page-content-wrapper-inner">
             <div class="content-viewport">
+
+
+                <div id="searchfrom" class="grid <?php echo $formbg; ?>">
+                    <div class="btn btn-rounded social-icon-btn btn-facebook">
+                        <i class="mdi mdi-magnify" onclick="openclose()"></i>
+                    </div>
+                    <div class="grid-body <?php echo $openclose; ?>" id="open">
+                        <form action="" method="POST">
+
+                            <div class="form-group row">
+                                <div class="col-md-12 showcase_text_area">
+                                    <label for="inputType1">名前-></label>
+                                    <input type="text" class="form-control w50p search" name="search_name"
+                                        value="<?php echo $search_name; ?>">
+                                </div>
+                            </div>
+                            <div class="col-md-12 showcase_text_area">
+                                <label for="inputType1">保有ポイント-></label>
+                                <input type="number" class="form-control w20p search" name="search_min_point"
+                                    value="<?php echo $search_min_point; ?>" autocomplete="off">　〜　
+                                <input type="number" class="form-control w20p search" name="search_max_point"
+                                    value="<?php echo $search_max_point; ?>" autocomplete="off">
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-primary btn-block mt-0" name="search">検索</button>
+                        </form>
+
+                        <span class="clrRed"><?php echo $errorMessage ?></span>
+                    </div>
+                </div>
+
+
+
+
+
                 <table class="table table-dark">
                     <thead>
                         <tr>
@@ -107,7 +175,7 @@ if (!isset($page)) {
                         <?php echo $html; ?>
                     </tbody>
                 </table>
-                
+
                 <?php echo $pHtml; ?>
             </div>
         </div>
@@ -123,6 +191,7 @@ if (!isset($page)) {
     <script src="./assets/js/charts/chartjs.addon.js"></script>
     <script src="./assets/js/template.js"></script>
     <script src="./assets/js/dashboard.js"></script>
+    <script src="./asset/js/main.js"></script>
 </body>
 
 </html>
