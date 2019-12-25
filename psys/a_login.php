@@ -31,6 +31,28 @@ if (isset($_POST["login"])) {
             if ($users->users_seq==0) {
                 $errorMessage = 'ログインできませんでした。';
             } else {
+                require_once './db/systems.php';
+                $system = new cls_systems();
+                $system = getSystems();
+
+                if (!file_exists($system->path_root)) {
+                    mkdir($system->path_root, 0777);
+                    mkdir($system->path_root."/".$system->path_promo, 0777);
+                    mkdir($system->path_root."/".$system->path_game, 0777);
+                    mkdir($system->path_root."/".$system->path_info, 0777);
+                    mkdir($system->path_root."/".$system->path_scode, 0777);
+                }
+                $ary = array();
+                $ary['URL_PARENT'] = $system->url_parent;
+                $ary['URL_CHILD'] = $system->url_child;
+                $ary['PATH_PROMO'] = $system->path_root."/".$system->path_promo;
+                $ary['PATH_GAME'] = $system->path_root."/".$system->path_game;
+                $ary['PATH_INFO'] = $system->path_root."/".$system->path_info;
+                $ary['PATH_SCODE'] = $system->path_root."/".$system->path_scode;
+                $ary['SYSTEM_NAME'] = $system->system_name;
+
+                $_SESSION["SYS"] = $ary;
+
                 $errorMessage = 'ログインできました。';
                 $_SESSION["SEQ"] = $users->users_seq;
                 $_SESSION["ID"] = $users->users_id;

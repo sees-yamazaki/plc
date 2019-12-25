@@ -27,6 +27,7 @@ $errorMessage = "";
         $html .= "<td>";
         $html .= "<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='prmEdit(".$promo->p_seq.")'>編集</button>";
         $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='prmPrize(".$promo->p_seq.")'>賞品</button>";
+        $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='prmView(".$promo->p_seq.")'>プレビュー</button>";
         $html .= "</td>";
         $html .= "</tr>";
     }
@@ -58,6 +59,11 @@ $errorMessage = "";
         document.frm2.pSeq.value = vlu;
         document.frm2.submit();
     }
+    function prmView(vlu) {
+        //document.frm3.pSeq.value = vlu;
+        //document.frm3.submit();
+        win = window.open('a_promos_preview.php?pSeq=' + vlu, 'newwindow', 'width=400,height=600'); 
+    }
     </script>
 </head>
 
@@ -66,6 +72,9 @@ $errorMessage = "";
         <input type='hidden' name='pSeq' value=''>
     </form>
     <form action='a_prizes_list.php' method='POST' name="frm2">
+        <input type='hidden' name='pSeq' value=''>
+    </form>
+    <form action='a_promos_preview.php' method='POST' name="frm3" target="_blank">
         <input type='hidden' name='pSeq' value=''>
     </form>
 

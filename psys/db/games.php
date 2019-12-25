@@ -100,13 +100,14 @@ class cls_games
 
             $insertid = $pdo->lastInsertId();
 
-            mkdir ( 'games/'.$insertid );
+            $path = $_SESSION["SYS"]['PATH_GAME'].'/'.$insertid;
+            mkdir($path,0777);
 
-            $file = 'games/'.$insertid."/". basename( $_FILES ['g_image_start'] ['name'] );
+            $file = $path."/". basename( $_FILES ['g_image_start'] ['name'] );
             move_uploaded_file ( $_FILES ['g_image_start'] ['tmp_name'], $file );
-            $file = 'games/'.$insertid."/". basename( $_FILES ['g_image_hit'] ['name'] );
+            $file = $path."/". basename( $_FILES ['g_image_hit'] ['name'] );
             move_uploaded_file ( $_FILES ['g_image_hit'] ['tmp_name'], $file );
-            $file = 'games/'.$insertid."/". basename( $_FILES ['g_image_miss'] ['name'] );
+            $file = $path."/". basename( $_FILES ['g_image_miss'] ['name'] );
             move_uploaded_file ( $_FILES ['g_image_miss'] ['tmp_name'], $file );
 
         } catch (PDOException $e) {

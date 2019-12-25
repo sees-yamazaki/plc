@@ -47,7 +47,10 @@
                             <a href="a_members_list.php">ユーザ一覧</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)">検索</a>
+                            <a href="a_infos_list.php">お知らせ一覧</a>
+                        </li>
+                        <li>
+                            <a href="a_infos_edit.php">お知らせ新規登録</a>
                         </li>
                     </ul>
                 </li>
@@ -88,6 +91,9 @@
                         <li>
                             <a href="a_serials_edit.php">新規登録</a>
                         </li>
+                        <li>
+                            <a href="a_serials_detail_list.php">検索</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-category-divider">OTHER</li>
@@ -102,6 +108,9 @@
                         </li>
                         <li>
                             <a href="a_users_edit.php">新規登録</a>
+                        </li>
+                        <li>
+                            <a href="a_systems_edit.php">システム設定</a>
                         </li>
                     </ul>
                 </li>

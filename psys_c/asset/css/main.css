@@ -21,6 +21,18 @@
 
 /* Banner */
 
+#banner8 {
+    background-color: #fff;
+    color: #6db1df;
+    text-align: center;
+    cursor: default;
+    padding: 2em;
+}
+
+#banner8 h3 {
+    color: #6db1df;
+}
+
 #banner9 {
     background-color: #6db1df;
     color: #fff;

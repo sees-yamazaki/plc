@@ -19,6 +19,19 @@ class cls_serialcodes
     public $m_seq ;
 }
 
+class cls_v_serialcodes
+{
+    public $s_seq ;
+    public $s_title ;
+    public $s_qty ;
+    public $createdt ;
+    public $sc_code ;
+    public $entrydt ;
+    public $sc_point ;
+    public $m_seq ;
+    public $m_name ;
+}
+
 function getSerials()
 {
     try {
@@ -68,6 +81,26 @@ function getSerial($sSeq)
     return $result;
 }
 
+function getSerialOnToday()
+{
+    try {
+        $cnt = 0;
+        require './db/dns.php';
+        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `serials` WHERE createdt>=:createdt");
+        $stmt->bindParam(':createdt', date('Y/m/d 00:00:00'), PDO::PARAM_STR);
+        $stmt->execute();
+        if ($row = $stmt->fetch()) {
+            $cnt = $row['cnt'];
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'データベースエラー';
+        if (strcmp("1", $ini['debug'])==0) {
+            echo $e->getMessage();
+        }
+    }
+    return $cnt;
+}
+
 
 function countSCodes($sSeq)
 {
@@ -90,12 +123,66 @@ function countSCodes($sSeq)
     return $cnt;
 }
 
+function countVSCodes($where)
+{
+    $cnt=0;
+    try {
+        require './db/dns.php';
+        $sql = " SELECT count(*) AS cnt FROM `v_serialcodes`".$where;
+        $stmt = $pdo -> prepare($sql);
+        $stmt->execute();
+        if ($row = $stmt->fetch()) {
+            $cnt = $row['cnt'];
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'データベースエラー';
+        if (strcmp("1", $ini['debug'])==0) {
+            echo $e->getMessage();
+        }
+    }
+    return $cnt;
+}
+
+function getSCodesLimit($limit, $offset, $where)
+{
+    try {
+        $results = array();
+        require './db/dns.php';
+        $stmt = $pdo->prepare("SELECT * FROM `v_serialcodes` ".$where.' ORDER BY sc_seq LIMIT :lmt OFFSET :ofst');
+        $stmt->bindParam(':lmt', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':ofst', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_v_serialcodes();
+            $result->s_seq = $row['s_seq'];
+            $result->s_title = $row['s_title'];
+            $result->s_qty = $row['s_qty'];
+            $result->createdt = $row['createdt'];
+            $result->users_seq = $row['users_seq'];
+            $result->sc_seq = $row['sc_seq'];
+            $result->sc_code = $row['sc_code'];
+            $result->entrydt = $row['entrydt'];
+            $result->sc_point = $row['sc_point'];
+            $result->m_seq = $row['m_seq'];
+            $result->m_name = $row['m_name'];
+            array_push($results, $result);
+
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'データベースエラー';
+        if (strcmp("1", $ini['debug'])==0) {
+            echo $e->getMessage();
+        }
+    }
+    return $results;
+}
+
 
 function insertSerials($serials)
 {
     try {
         require './db/dns.php';
-        $sql = "INSERT  INTO `serials` (  `s_title`,  `s_qty`,  `users_seq`) VALUES (:s_title, :s_qty, :users_seq)";
+        $sql = "INSERT  INTO `serials` ( `s_title`, `s_qty`, `users_seq`) VALUES (:s_title, :s_qty, :users_seq)";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':s_title', $serials->s_title, PDO::PARAM_STR);
         $stmt->bindParam(':s_qty', $serials->s_qty, PDO::PARAM_INT);
@@ -105,7 +192,7 @@ function insertSerials($serials)
         $insertid = $pdo->lastInsertId();
         $stmt->closeCursor();
 
-        $fp = fopen("./output/".$insertid.".csv", "w");
+        $fp = fopen("./".$_SESSION["SYS"]['PATH_SCODE']."/".$insertid.".csv", "w");
 
         //シリアルコード生成
         //YY/MM/DDを取得する

@@ -20,7 +20,7 @@ $html1 = '';
 if ($promo->p_seq==0) {
     $html1 .= '<h2>ただいま、キャンペーンは実施されていません。</h2>';
 } else {
-    $html1 .= "<h1>".count($promo).$promo->p_title>"aaa</h1>";
+    $html1 .= "<h1>".$promo->p_title>"aaa</h1>";
     if (isset($promo->p_text1)) {
         $html1 .= "<h3>".$promo->p_text1."</h3>";
     }

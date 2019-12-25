@@ -15,26 +15,25 @@ $errorMessage = "";
 
 
  try {
-
-    require_once './db/serials.php';
-     $serials = new cls_serials();
-     $serials = getSerials();
+     require_once './db/infos.php';
+     $infos = new cls_infos();
+     $infos = getInfos();
 
      $html="";
-     foreach ($serials as $serial) {
-         $html .= '<tr>';
-         $html .= "<td>".$serial->s_title."</td>";
-         $html .= "<td>".$serial->s_qty."</td>";
-         $html .= "<td>".substr($serial->createdt,0,16)."</td>";
-         $html .= "<td>";
-         $html .= "<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='scEdit(".$serial->s_seq.")'>編集</button>";
-         $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='scDL(".$serial->s_seq.",".$serial->s_qty.")'>DL</button>";
-         $html .= "</td>";
-         $html .= "</tr>";
-     }
- } catch (PDOException $e) {
-     $errorMessage = 'データベースエラー:'.$e->getMessage();
- }
+     foreach ($infos as $info) {
+        $html .= '<tr>';
+        $html .= "<td>".$info->inf_title."</td>";
+        $html .= "<td>".$info->inf_startdt." 〜 ".$info->inf_enddt."</td>";
+        $html .= "<td>";
+        $html .= "<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='infoEdit(".$info->inf_seq.")'>編集</button>";
+        $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='infoView(".$info->inf_seq.")'>プレビュー</button>";
+        $html .= "</td>";
+        $html .= "</tr>";
+    }
+
+} catch (PDOException $e) {
+    $errorMessage = 'データベースエラー:'.$e->getMessage();
+}
 
 
 ?>
@@ -51,25 +50,19 @@ $errorMessage = "";
     <link rel="shortcut icon" href="../asssets/images/favicon.ico" />
     <link rel="stylesheet" href="./asset/css/main.css">
     <script>
-    function scEdit(vlu) {
-        document.frm.sSeq.value = vlu;
+    function infoEdit(vlu) {
+        document.frm.iSeq.value = vlu;
         document.frm.submit();
     }
-    function scDL(vlu,qty) {
-        document.frm2.sSeq.value = vlu;
-        document.frm2.sQty.value = qty;
-        document.frm2.submit();
+    function infoView(vlu) {
+        win = window.open('a_infos_preview.php?iSeq=' + vlu, 'newwindow', 'width=400,height=600'); 
     }
     </script>
 </head>
 
 <body class="header-fixed">
-    <form action='a_serials_edit.php' method='POST' name="frm">
-        <input type='hidden' name='sSeq' value=''>
-    </form>
-    <form action='a_serials_dl.php' method='POST' name="frm2">
-        <input type='hidden' name='sSeq' value=''>
-        <input type='hidden' name='sQty' value=''>
+    <form action='a_infos_edit.php' method='POST' name="frm">
+        <input type='hidden' name='iSeq' value=''>
     </form>
 
     <?php include('./a_menu.php'); ?>
@@ -80,9 +73,8 @@ $errorMessage = "";
                 <table class="table table-dark">
                     <thead>
                         <tr>
-                            <th>タイトル</th>
-                            <th>発行数</th>
-                            <th>作成日時</th>
+                            <th>名称</th>
+                            <th>表示期間</th>
                             <th></th>
                         </tr>
                     </thead>

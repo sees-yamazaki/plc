@@ -17,13 +17,14 @@ $errorMessage = "";
  try {
     
      $sSeq = $_POST['sSeq'];
+     $sQty = $_POST['sQty'];
 
      //CSV出力
      $fileNm = $sSeq.".csv";
      header('Content-Type: application/octet-stream');
-     header('Content-Length: '.filesize("./output/".$fileNm));
-     header('Content-Disposition: attachment; filename=codes.csv');
-     readfile("./output/".$fileNm);
+     header('Content-Length: '.filesize("./".$_SESSION["SYS"]['PATH_SCODE']."/".$fileNm));
+     header('Content-Disposition: attachment; filename=serialcode_'.$sQty.'.csv');
+     readfile("./".$_SESSION["SYS"]['PATH_SCODE']."/".$fileNm);
      exit(0);
      
  } catch (PDOException $e) {

@@ -29,6 +29,20 @@ if (isset($_POST['login'])) {
             if ($member->m_seq == 0) {
                 $errorMessage = 'ログインできませんでした。';
             } else {
+
+                require_once '../psys/db/systems.php';
+                $system = new cls_systems();
+                $system = getSystems();
+
+                $ary = array();
+                $ary['URL_PARENT'] = $system->url_parent;
+                $ary['PATH_PROMO'] = $system->path_root."/".$system->path_promo;
+                $ary['PATH_GAME'] = $system->path_root."/".$system->path_game;
+                $ary['PATH_INFO'] = $system->path_root."/".$system->path_info;
+                $ary['SYSTEM_NAME'] = $system->system_name;
+                $_SESSION["SYS"] = $ary;
+
+
                 require_once './db/log.php';
                 log_login($member->m_seq);
                 $sn = $ini['sysname'];

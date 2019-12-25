@@ -15,64 +15,58 @@ if (!isset($_SESSION['SEQ'])) {
 
 // エラーメッセージの初期化
 $errorMessage = '';
+$infMessage = '';
 
-    $pSeq = $_POST['pSeq'];
-    $pzSeq = $_POST['pzSeq'];
+$iSeq = $_POST['iSeq'];
+if (!isset($iSeq)) {
+    $iSeq = 0;
+}
 
-    require './db/prizes.php';
-    $prize = new cls_prizes();
+
+    require './db/infos.php';
+    $info = new cls_infos($iSeq);
 
     try {
-        $prize->p_seq = $_POST['pSeq'];
-        $prize->pz_seq = $_POST['pzSeq'];
-        $prize->pz_order = $_POST['pz_order'];
-        $prize->pz_title = $_POST['pz_title'];
-        $prize->pz_code = $_POST['pz_code'];
-        $prize->pz_text = $_POST['pz_text'];
-        $prize->pz_img = basename($_FILES['pz_img']['name']);
-        $prize->pz_hitcnt = $_POST['pz_hitcnt'];
-        $prize->imgStts = $_POST['imgStts'];
+        $info->inf_seq = $iSeq;
+        $info->inf_title = $_POST['inf_title'];
+        $info->inf_text1 = $_POST['inf_text1'];
+        $info->inf_text2 = $_POST['inf_text2'];
+        $info->inf_img = basename($_FILES['inf_img']['name']);
+        $info->inf_startdt = $_POST['inf_startdt'];
+        $info->inf_enddt = $_POST['inf_enddt'];
+        $info->imgStts = $_POST['imgStts'];
+        $info->inf_order = $_POST['inf_order'];
 
-        if (isset($_POST['prizeEdit'])) {
-            if ($prize->imgStts == '1') {
+        if (isset($_POST['infoEdit'])) {
+            if ($info->imgStts == '1') {
                 //アップロードファイルの検証
-                $filepath = pathinfo($_FILES['pz_img']['name']);
+                $filepath = pathinfo($_FILES['inf_img']['name']);
 
                 if (!($filepath['extension'] == 'png' || $filepath['extension'] == 'bmp' || $filepath['extension'] == 'jpg')) {
                     $errorMessage .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
                 }
 
-                if (mb_strlen($prize->pz_img) > 20) {
+                if (mb_strlen($info->inf_img) > 20) {
                     $errorMessage .= '<br>・アップロード画像のファイル名は20文字以内にしてください。';
                 }
             }
 
             if (empty($errorMessage)) {
-                if (!empty($pzSeq)) {
-                    updateprize($prize);
+                if ($iSeq==0) {
+                    insertInfo($info);
                 } else {
-                    insertprize($prize);
+                    updateInfo($info);
                 }
 
-                header('Location: ./a_prizes_list.php?pSeq='.$pSeq);
+                header('Location: ./a_infos_list.php');
             } else {
-                $errorMessage = '<br>アップロードされたファイル：'.basename($_FILES['pz_img']['name']).$errorMessage.'<br>';
+                $errorMessage = '<br>アップロードされたファイル：'.basename($_FILES['inf_img']['name']).$errorMessage.'<br>';
             }
         } elseif (isset($_POST['del'])) {
-            require './db/usepoints.php';
-            $rtn = countUsepointsByPzseq($pzSeq);
-
-            if ($rtn == 0) {
-                deleteprize($pzSeq);
-
-                header('Location: ./a_prizes_list.php?pSeq='.$pSeq);
-            } else {
-                $errorMessage = 'この賞品はエントリー済のため削除できません';
-
-                $prize = getprize($pzSeq);
-            }
+            deleteInfo($iSeq);
+            header('Location: ./a_infos_list.php');
         } else {
-            $prize = getprize($pzSeq);
+            $info = getInfo($iSeq);
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
@@ -83,7 +77,7 @@ $errorMessage = '';
 
 $ckImg1 = ' checked';
 $ckImg2 = '';
-if (!empty($pzSeq)) {
+if ($iSeq>0) {
     $ckImg1 = '';
     $ckImg2 = ' checked';
 }
@@ -110,8 +104,7 @@ if (!empty($pzSeq)) {
 </head>
 
 <body class="header-fixed">
-    <form action='a_prizes_list.php' method='POST' name="frm">
-        <input type='hidden' name='pSeq' value='<?php echo $pSeq; ?>'>
+    <form action='a_home.php' method='POST' name="frm">
     </form>
 
     <?php include './a_menu.php'; ?>
@@ -119,9 +112,6 @@ if (!empty($pzSeq)) {
     <div class="page-content-wrapper">
         <div class="page-content-wrapper-inner">
             <div class="content-viewport">
-                <button type="button" class="btn btn-inverse-info" onclick="back()">＜＜戻る</button>
-                <br><br>
-
 
                 <div class="col-lg-12">
                     <div class="grid">
@@ -129,51 +119,40 @@ if (!empty($pzSeq)) {
                             <div class="item-wrapper">
 
 
-                                <p class="grid-header">賞品登録</p>
+                                <p class="grid-header">お知らせ登録</p>
 
-                                <form action="" method="POST" onsubmit="return addcheck()"
-                                    enctype="multipart/form-data">
+                                <form action="" method="POST" onsubmit="return addcheck()" enctype="multipart/form-data">
 
-                                    <div class="form-group row showcase_row_area">
-                                        <div class="col-md-3 showcase_text_area">
-                                            <label for="inputType1">並び順</label>
-                                        </div>
-                                        <div class="col-md-9 showcase_content_area">
-                                            <input type="text" class="form-control" name="pz_order"
-                                                value="<?php echo $prize->pz_order; ?>" placeholder="2文字まで" maxLength=2
-                                                pattern="[0-9]+" title="数字" autocomplete="off" required>
-                                        </div>
+                                <div class="form-group row showcase_row_area">
+                                    <div class="col-md-3 showcase_text_area">
+                                        <label for="inputType1">並び順</label>
                                     </div>
+                                    <div class="col-md-9 showcase_content_area">
+                                        <input type="text" class="form-control w50p" name="inf_order"
+                                            value="<?php echo $info->inf_order; ?>" placeholder="2文字まで" maxLength=2
+                                            pattern="[0-9]+" title="数字" autocomplete="off" required>
+                                    </div>
+                                </div>
 
-                                    <div class="form-group row showcase_row_area">
+                                <div class="form-group row showcase_row_area">
                                         <div class="col-md-3 showcase_text_area">
-                                            <label for="inputType1">賞品名</label>
+                                            <label for="inputType1">タイトル</label>
                                         </div>
                                         <div class="col-md-9 showcase_content_area">
-                                            <input type="text" class="form-control" name="pz_title"
-                                                value="<?php echo $prize->pz_title; ?>" placeholder="20文字まで"
+                                            <input type="text" class="form-control" name="inf_title"
+                                                value="<?php echo $info->inf_title; ?>" placeholder="20文字まで"
                                                 maxLength=20 autocomplete="off" required>
                                         </div>
                                     </div>
 
-                                    <div class="form-group row showcase_row_area">
-                                        <div class="col-md-3 showcase_text_area">
-                                            <label for="inputType1">賞品コード</label>
-                                        </div>
-                                        <div class="col-md-9 showcase_content_area">
-                                            <input type="text" class="form-control" name="pz_code"
-                                                value="<?php echo $prize->pz_code; ?>" placeholder="30文字まで"
-                                                maxLength=30 autocomplete="off" required>
-                                        </div>
-                                    </div>
 
                                     <div class="form-group row showcase_row_area">
                                         <div class="col-md-3 showcase_text_area">
-                                            <label for="inputType1">説明</label>
+                                            <label for="inputType1">説明１</label>
                                         </div>
                                         <div class="col-md-9 showcase_content_area">
-                                            <textarea class="form-control" name="pz_text" cols="12"
-                                                rows="5"><?php echo $prize->pz_text; ?></textarea>
+                                            <textarea class="form-control" name="inf_text1" cols="12"
+                                                rows="5"><?php echo $info->inf_text1; ?></textarea>
                                         </div>
                                     </div>
 
@@ -185,11 +164,11 @@ if (!empty($pzSeq)) {
                                         <div class="form-inline">
                                             <div class="radio mb-3">
                                                 <label class="radio-label mr-4">
-                                                    <input name="imgStts" type="radio" value="1" <?php echo $ckImg1; ?>>アップロードする<i
-                                                        class="input-frame"></i>
+                                                    <input name="imgStts" type="radio" value="1"
+                                                        <?php echo $ckImg1; ?>>アップロードする<i class="input-frame"></i>
                                                 </label>
                                                 <div class="col-md-9 showcase_content_area">
-                                                    <input type="file" class="btn" name="pz_img">
+                                                    <input type="file" class="btn" name="inf_img">
                                                 </div>
                                             </div>
                                         </div>
@@ -203,15 +182,15 @@ if (!empty($pzSeq)) {
                                         <div class="form-inline">
                                             <div class="radio mb-3">
                                                 <label class="radio-label">
-                                                    <input name="imgStts" type="radio" value="2" <?php echo $ckImg2; ?>>アップロードしない<i
-                                                        class="input-frame"></i>
+                                                    <input name="imgStts" type="radio" value="2"
+                                                        <?php echo $ckImg2; ?>>アップロードしない<i class="input-frame"></i>
                                                 </label>
                                             </div>
                                         </div>
 
                                     </div>
 
-                                    <?php if ($pzSeq > 0) { ?>
+                                    <?php if ($iSeq > 0) {    ?>
                                     <div class="form-group row showcase_row_area">
                                         <div class="col-md-3 showcase_text_area">
                                             <label for="inputType1"></label>
@@ -231,30 +210,48 @@ if (!empty($pzSeq)) {
 
                                     <div class="form-group row showcase_row_area">
                                         <div class="col-md-3 showcase_text_area">
-                                            <label for="inputType1">当選カウント</label>
+                                            <label for="inputType1">説明２</label>
                                         </div>
                                         <div class="col-md-9 showcase_content_area">
-                                            <input type="text" class="form-control" name="pz_hitcnt"
-                                                value="<?php echo $prize->pz_hitcnt; ?>" placeholder="複数の場合は , で区切ってください" maxLength=100
-                                                pattern="[0-9,]+" title="数字、半角カンマ" autocomplete="off" required>
+                                            <textarea class="form-control" name="inf_text2" cols="12"
+                                                rows="5"><?php echo $info->inf_text2; ?></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row showcase_row_area">
+                                        <div class="col-md-3 showcase_text_area">
+                                            <label for="inputType1">開始日</label>
+                                        </div>
+                                        <div class="col-md-9 showcase_content_area">
+                                            <input type="date" class="form-control w50p" name="inf_startdt"
+                                                value="<?php echo $info->inf_startdt; ?>" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row showcase_row_area">
+                                        <div class="col-md-3 showcase_text_area">
+                                            <label for="inputType1">終了日</label>
+                                        </div>
+                                        <div class="col-md-9 showcase_content_area">
+                                            <input type="date" class="form-control w50p" name="inf_enddt"
+                                                value="<?php echo $info->inf_enddt; ?>" required>
                                         </div>
                                     </div>
 
 
+
                                     <button type="submit" class="btn btn-primary btn-block mt-0"
-                                        name="prizeEdit">登　録</button>
-                                    <input type="hidden" name="pSeq" value="<?php echo $pSeq; ?>">
-                                    <input type="hidden" name="pzSeq" value="<?php echo $pzSeq; ?>">
+                                        name="infoEdit">登　録</button>
+                                    <input type="hidden" name="iSeq" value="<?php echo $iSeq; ?>">
                                 </form>
 
-                                <?php if ($pzSeq != '0') { ?>
+                                <?php if ($iSeq != '0') {        ?>
                                 <br><br>
                                 <form action="" method="POST" onsubmit="return delcheck()">
                                     <button type="submit" class="btn btn-danger btn-block mt-0" name="del">削　除</button>
-                                    <input type="hidden" name="pSeq" value="<?php echo $pSeq; ?>">
-                                    <input type="hidden" name="pzSeq" value="<?php echo $pzSeq; ?>">
+                                    <input type="hidden" name="iSeq" value="<?php echo $iSeq; ?>">
                                 </form>
-                                <?php } ?>
+                                <?php    } ?>
 
                                 <span class="clrRed"><?php echo $errorMessage; ?></span>
                             </div>

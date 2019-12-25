@@ -13,7 +13,7 @@ if (!isset($_SESSION['SEQ'])) {
 // エラーメッセージの初期化
 $errorMessage = '';
 
-$limitRow = 8;
+$limitRow = 20;
 $page = $_POST['page'];
 if (!isset($page)) {
     $page = 1;
@@ -22,6 +22,8 @@ if (!isset($page)) {
  try {
      $search_min_point = $_POST['search_min_point'];
      $search_max_point = $_POST['search_max_point'];
+     $search_s_login = $_POST['search_s_login'];
+     $search_e_login = $_POST['search_e_login'];
      $search_name = $_POST['search_name'];
 
      $openclose = " fClose";
@@ -39,6 +41,12 @@ if (!isset($page)) {
          if (strlen($search_max_point)>0) {
              $tmp[] = "(x.point<=".$search_max_point.")";
          }
+         if (strlen($search_s_login)>0) {
+             $tmp[] = "(x.logindt>='".$search_s_login." 00:00:00')";
+         }
+         if (strlen($search_e_login)>0) {
+            $tmp[] = "(x.logindt<='".$search_e_login." 23:59:59')";
+        }
 
          if (count($tmp)>0) {
              $where = " WHERE ".implode(" AND ", $tmp);
@@ -142,13 +150,20 @@ if (!isset($page)) {
                                     <input type="text" class="form-control w50p search" name="search_name"
                                         value="<?php echo $search_name; ?>">
                                 </div>
-                            </div>
                             <div class="col-md-12 showcase_text_area">
                                 <label for="inputType1">保有ポイント-></label>
                                 <input type="number" class="form-control w20p search" name="search_min_point"
                                     value="<?php echo $search_min_point; ?>" autocomplete="off">　〜　
                                 <input type="number" class="form-control w20p search" name="search_max_point"
                                     value="<?php echo $search_max_point; ?>" autocomplete="off">
+                            </div>
+                            <div class="col-md-12 showcase_text_area">
+                                <label for="inputType1">最終ログイン-></label>
+                                <input type="date" class="form-control w30p search" name="search_s_login"
+                                    value="<?php echo $search_s_login; ?>" autocomplete="off">　〜　
+                                <input type="date" class="form-control w30p search" name="search_e_login"
+                                    value="<?php echo $search_e_login; ?>" autocomplete="off">
+                            </div>
                             </div>
                             <br>
                             <button type="submit" class="btn btn-primary btn-block mt-0" name="search">検索</button>
@@ -161,6 +176,7 @@ if (!isset($page)) {
 
 
 
+                <?php echo $pHtml; ?>
 
                 <table class="table table-dark">
                     <thead>
@@ -176,7 +192,6 @@ if (!isset($page)) {
                     </tbody>
                 </table>
 
-                <?php echo $pHtml; ?>
             </div>
         </div>
     </div>

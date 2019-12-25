@@ -18,6 +18,25 @@ $errorMessage = "";
 require_once './db/view.php';
 $point = getPoint($_SESSION[$ini['sysname']."SEQ"]);
 
+
+require '../psys/db/infos.php';
+$infos = getOpenInfos("");
+
+$html1 = '';
+foreach ($infos as $info) {
+    if (strlen($info->inf_text1)>0) {
+        $html1 .= "<h3>".nl2br($info->inf_text1)."</h3>";
+    }
+    if (strlen($info->inf_img)>0) {
+        $html1 .= "<img class='img80' border=0 src='../psys/".$_SESSION["SYS"]['PATH_INFO']."/".$info->inf_seq."/".$info->inf_img."'>";
+    }
+    if (strlen($info->inf_text2)>0) {
+        $html1 .= "<h3>".nl2br($info->inf_text2)."</h3>";
+    }
+    $html1 .= "<hr>";
+}
+$html1 = substr($html1,0,-4);
+
 ?>
 
 <!DOCTYPE HTML>
@@ -36,18 +55,9 @@ $point = getPoint($_SESSION[$ini['sysname']."SEQ"]);
 
     <?php include('./menu.php'); ?>
 
-    <!-- Banner -->
-    <?php if(!empty($errorMessage)){ ?>
-    <section id="banner2">
+    <section id="banner8">
         <div class="inner">
-            <h3><?php echo $errorMessage; ?></h3>
-        </div>
-    </section>
-    <?php } ?>
-
-    <section id="banner2">
-        <div class="inner">
-            <h1>お知らせ</h1>
+            <?php echo $html1; ?>
         </div>
     </section>
 

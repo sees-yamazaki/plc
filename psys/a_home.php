@@ -39,6 +39,7 @@ $errorMessage = "";
         <div class="page-content-wrapper-inner">
             <div class="content-viewport">
                 
+    <?php var_dump($_SESSION); ?>
             </div>
         </div>
     </div>

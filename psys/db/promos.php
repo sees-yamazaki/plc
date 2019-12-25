@@ -85,10 +85,11 @@ class cls_promos
 
             $insertid = $pdo->lastInsertId();
 
-            mkdir ( 'promos/'.$insertid );
+            $path = $_SESSION["SYS"]['PATH_PROMO'].'/'.$insertid;
+            mkdir($path,0777);
 
-            if($promos->p_img<>""){
-                $file = 'promos/'.$insertid."/". basename( $_FILES ['p_img'] ['name'] );
+            if ($promos->imgStts==1) {
+                $file = $path."/". basename( $_FILES ['p_img'] ['name'] );
                 move_uploaded_file ( $_FILES ['p_img'] ['tmp_name'], $file );
             }
 
@@ -130,7 +131,8 @@ class cls_promos
 
 
             if ($promos->imgStts==1) {
-                $file = 'promos/'.$promos->p_seq."/". basename( $_FILES ['p_img'] ['name'] );
+                $path = $_SESSION["SYS"]['PATH_PROMO'].'/'.$promos->p_seq;
+                $file = $path."/". basename( $_FILES ['p_img'] ['name'] );
                 move_uploaded_file ( $_FILES ['p_img'] ['tmp_name'], $file );
             }
 

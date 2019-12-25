@@ -52,6 +52,7 @@ $errorMessage = "";
             }
         } else {
             $serial = getSerial($sSeq);
+            $cnt = getSerialOnToday();
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
@@ -93,6 +94,9 @@ $errorMessage = "";
                                     <div class="col-md-8 mx-auto">
 
                                         <p class="grid-header">シリアルコード新規登録画面</p>
+                                        <?php  if($cnt>0){ ?>
+                                        <p class="clrRed">本日は既にシリアルコードを作成しています。<br>コードの取り扱いに気をつけてください。<br>&nbsp;</p>
+                                        <?php } ?>
 
                                         <form action="" method="POST" onsubmit="return addcheck()">
 
@@ -119,11 +123,12 @@ $errorMessage = "";
                                                         required>
                                                 </div>
                                                 <?php }else{ ?>
-                                                    <div class="col-md-9 showcase_content_area">
-                                                    <input type="text" class="form-control" 
-                                                        value="<?php echo $serial->s_qty; ?>" 
-                                                        readonly>
-                                                        <input type="hidden" name="s_qty" value="<?php echo $serial->s_qty; ?>">
+                                                <div class="col-md-9 showcase_content_area">
+                                                    <input type="text" class="form-control"
+                                                        value="<?php echo $serial->s_qty; ?>" readonly>
+                                                    <input type="hidden" name="s_qty"
+                                                        value="<?php echo $serial->s_qty; ?>">
+                                                        <p class="clrRed">発行数は編集することができません。<br>&nbsp;</p>
                                                 </div>
                                                 <?php } ?>
                                             </div>
