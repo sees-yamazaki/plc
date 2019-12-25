@@ -2024,7 +2024,7 @@ $template = getTemplate($tSeq);
                     </tr>
 
                 </table>
-
+<hr class="page">
                 <table class="rep">
 
 
@@ -2118,16 +2118,17 @@ $template = getTemplate($tSeq);
                     </tr>
                 </table>
 
-                <table class="rep">
 
+                <table class="rep">
                     <tr>
                         <td rowspan=2 class="skbnGrph">
                             <div class="grph" id="graph6r"></div>
                             <p id="x1r"></p>
                         </td>
+                        <td><hr class="tempHr"></td>
                     </tr>
                 </table>
-                <br><br>
+<br><br>
                 <table class="rep">
 
                     <tr>
@@ -2332,7 +2333,6 @@ $template = getTemplate($tSeq);
 
 
                 </table>
-
 
 
             </div>

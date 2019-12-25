@@ -406,6 +406,17 @@ textarea.sakubun {
     width: 500px;
 }
 
+hr.page {
+    page-break-before: always;
+}
+
+.tempHr {
+    height: 500px;
+    background-color: #ffffff;
+    border: none;
+    width: 1px;
+}
+
 .skbnGrph {
     vertical-align: top;
 }

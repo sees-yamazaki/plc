@@ -879,11 +879,12 @@ function doCalc() {
     g37c = g25c / g16c;
     h37c = h25c / h16c;
 
-
-    c122c = 0.01;
+    //    c122c = 0.01;
+    c122c = myRound(getValue(document.getElementById("c68")) / 100, 2);
     d122c = h26c;
     e122c = (d122c >= c122c * 5 ? "OK" : "NG"); //=IF(D122>=($C$122*5),"OK","NG")
-    c123c = 0.03;
+    //c123c = 0.03;
+    c123c = myRound(getValue(document.getElementById("c69")) / 100, 2);
     d123c = h30c;
     e123c = (d123c >= c123c * 5 ? "OK" : "NG"); //=IF(D123>=($C$123*5),"OK","NG")
     c124c = 0.05;
