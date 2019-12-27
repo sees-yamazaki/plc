@@ -25,7 +25,7 @@ session_destroy();
 <body>
 
     <div class="pen-title">
-        <br><br><img src="../img/logo2.png" width=200px><br><br>
+        <br><br><img src="../img/TC_rogomark.png" width=200px><br><br>
     </div>
     <div class="module form-module">
         <div class=""></div>
