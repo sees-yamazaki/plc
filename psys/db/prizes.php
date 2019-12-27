@@ -45,7 +45,7 @@ class cls_hitcounts
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp('1', $ini['debug']) == 0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -75,7 +75,7 @@ class cls_hitcounts
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp('1', $ini['debug']) == 0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -101,7 +101,7 @@ class cls_hitcounts
             $insertid = $pdo->lastInsertId();
 
             if ($prizes->imgStts == 1) {
-                $path = $_SESSION["SYS"]['PATH_PROMO'].'/'.$prizes->p_seq;
+                $path = getSsn('PATH_PROMO').'/'.$prizes->p_seq;
                 $file = $path.'/'.basename($_FILES['pz_img']['name']);
                 move_uploaded_file($_FILES['pz_img']['tmp_name'], $file);
             }
@@ -121,7 +121,7 @@ class cls_hitcounts
 
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp('1', $ini['debug']) == 0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -153,7 +153,7 @@ class cls_hitcounts
             $stmt->execute();
 
             if ($prizes->imgStts == 1) {
-                $path = $_SESSION["SYS"]['PATH_PROMO'].'/'.$prizes->p_seq;
+                $path = getSsn('PATH_PROMO').'/'.$prizes->p_seq;
                 $file = $path.'/'.basename($_FILES['pz_img']['name']);
                 move_uploaded_file($_FILES['pz_img']['tmp_name'], $file);
             }
@@ -178,7 +178,7 @@ class cls_hitcounts
 
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp('1', $ini['debug']) == 0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -194,7 +194,7 @@ class cls_hitcounts
             $stmt->execute();
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp('1', $ini['debug']) == 0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }

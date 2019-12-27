@@ -2,11 +2,10 @@
 
 // セッション開始
 session_start();
-
-$ini = $_SESSION['INI'];
+require('session.php');
 
 // ログイン状態チェック
-if (!isset($_SESSION[$ini['sysname']."SEQ"])) {
+if (getSsnIsLogin()==false) {
     header("Location: logoff.php");
     exit;
 }
@@ -22,7 +21,7 @@ $addPt = $_GET['addPt'];
 <html lang="ja">
 
 <head>
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo getSsnMyname(); ?></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="assets/css/main.css" />

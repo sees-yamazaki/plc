@@ -28,7 +28,7 @@ function getSerialCodeBySCode($sc_code)
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
@@ -49,7 +49,7 @@ function updateSerialCode($scode)
         var_dump($scode);
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }

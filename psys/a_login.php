@@ -2,9 +2,10 @@
 
 // セッション開始
 session_start();
+require('session.php');
 
 $ini = parse_ini_file('./common.ini', false);
-$_SESSION["INI"] = $ini;
+setSsnIni($ini);
 
 // エラーメッセージの初期化
 $errorMessage = "";
@@ -42,21 +43,21 @@ if (isset($_POST["login"])) {
                     mkdir($system->path_root."/".$system->path_info, 0777);
                     mkdir($system->path_root."/".$system->path_scode, 0777);
                 }
-                $ary = array();
-                $ary['URL_PARENT'] = $system->url_parent;
-                $ary['URL_CHILD'] = $system->url_child;
-                $ary['PATH_PROMO'] = $system->path_root."/".$system->path_promo;
-                $ary['PATH_GAME'] = $system->path_root."/".$system->path_game;
-                $ary['PATH_INFO'] = $system->path_root."/".$system->path_info;
-                $ary['PATH_SCODE'] = $system->path_root."/".$system->path_scode;
-                $ary['SYSTEM_NAME'] = $system->system_name;
 
-                $_SESSION["SYS"] = $ary;
+                setSsnKV('URL_PARENT',$system->url_parent);
+                setSsnKV('URL_CHILD',$system->url_child);
+                setSsnKV('PATH_PROMO',$system->path_root."/".$system->path_promo);
+                setSsnKV('PATH_GAME',$system->path_root."/".$system->path_game);
+                setSsnKV('PATH_INFO',$system->path_root."/".$system->path_info);
+                setSsnKV('PATH_SCODE',$system->path_root."/".$system->path_scode);
+                setSsnKV('SYSTEM_NAME',$system->system_name);
+                setSsnKV('POINT_ENTRY',$system->point_entry);
+                setSsnKV('POINT_GAME',$system->point_game);
+                setSsnKV('SEQ',$users->users_seq);
+                setSsnKV('ID',$users->users_id);
+                setSsnKV('NAME',$users->users_name);
 
                 $errorMessage = 'ログインできました。';
-                $_SESSION["SEQ"] = $users->users_seq;
-                $_SESSION["ID"] = $users->users_id;
-                $_SESSION["NAME"] = $users->users_name;
 
                 header("Location: ./a_home.php");
             }
@@ -75,7 +76,7 @@ if (isset($_POST["login"])) {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo getSsnMyname(); ?></title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="./assets/vendors/iconfonts/mdi/css/materialdesignicons.css" />
     <link rel="stylesheet" href="./assets/vendors/css/vendor.addons.css" />

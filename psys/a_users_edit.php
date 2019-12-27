@@ -2,13 +2,13 @@
 
 // セッション開始
 session_start();
-$ini = $_SESSION['INI'];
+require('session.php');
 
 // タイムゾーンを設定
 date_default_timezone_set('Asia/Tokyo');
 
 // ログイン状態チェック
-if (!isset($_SESSION["SEQ"])) {
+if (getSsnIsLogin()==false) {
     header("Location: a_logoff.php");
     exit;
 }
@@ -83,7 +83,7 @@ $errorMessage = "";
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
@@ -95,7 +95,7 @@ $errorMessage = "";
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo getSsnMyname(); ?></title>
     <link rel="stylesheet" href="./assets/vendors/iconfonts/mdi/css/materialdesignicons.css">
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">

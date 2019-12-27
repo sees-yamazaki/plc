@@ -2,10 +2,10 @@
 
 // セッション開始
 session_start();
-$ini = $_SESSION['INI'];
+require('session.php');
 
 // ログイン状態チェック
-if (!isset($_SESSION["SEQ"])) {
+if (getSsnIsLogin()==false) {
     header("Location: a_logoff.php");
     exit;
 }
@@ -21,19 +21,18 @@ $errorMessage = "";
 
      $html="";
      foreach ($infos as $info) {
-        $html .= '<tr>';
-        $html .= "<td>".$info->inf_title."</td>";
-        $html .= "<td>".$info->inf_startdt." 〜 ".$info->inf_enddt."</td>";
-        $html .= "<td>";
-        $html .= "<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='infoEdit(".$info->inf_seq.")'>編集</button>";
-        $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='infoView(".$info->inf_seq.")'>プレビュー</button>";
-        $html .= "</td>";
-        $html .= "</tr>";
-    }
-
-} catch (PDOException $e) {
-    $errorMessage = 'データベースエラー:'.$e->getMessage();
-}
+         $html .= '<tr>';
+         $html .= "<td>".$info->inf_title."</td>";
+         $html .= "<td>".$info->inf_startdt." 〜 ".$info->inf_enddt."</td>";
+         $html .= "<td>";
+         $html .= "<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='infoEdit(".$info->inf_seq.")'>編集</button>";
+         $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='infoView(".$info->inf_seq.")'>プレビュー</button>";
+         $html .= "</td>";
+         $html .= "</tr>";
+     }
+ } catch (PDOException $e) {
+     $errorMessage = 'データベースエラー:'.$e->getMessage();
+ }
 
 
 ?>
@@ -43,7 +42,7 @@ $errorMessage = "";
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo getSsnMyname(); ?></title>
     <link rel="stylesheet" href="./assets/vendors/iconfonts/mdi/css/materialdesignicons.css">
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">
@@ -54,8 +53,13 @@ $errorMessage = "";
         document.frm.iSeq.value = vlu;
         document.frm.submit();
     }
+
     function infoView(vlu) {
-        win = window.open('a_infos_preview.php?iSeq=' + vlu, 'newwindow', 'width=400,height=600'); 
+        win = window.open('a_infos_preview.php?iSeq=' + vlu, 'newwindow', 'width=400,height=600');
+    }
+
+    function infoView2() {
+        win = window.open('a_infos_preview.php?tDate=' + document.getElementById('predt').value, 'newwindow', 'width=400,height=600');
     }
     </script>
 </head>
@@ -80,6 +84,18 @@ $errorMessage = "";
                     </thead>
                     <tbody>
                         <?php echo $html; ?>
+                    </tbody>
+                </table>
+                <br>
+                <table class="table table-dark">
+                    <tbody>
+                        <tr>
+                            <td>指定日のプレビュー</td>
+                            <td><input type="date" class="form-control" id="predt"
+                                    value="<?php echo date("Y-m-d"); ?>"></td>
+                            <td><button type='button' name='edit' class='btn btn-inverse-secondary'
+                                    onclick='infoView2()'>プレビュー</button></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

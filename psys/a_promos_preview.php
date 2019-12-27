@@ -2,10 +2,10 @@
 
 // セッション開始
 session_start();
-$ini = $_SESSION['INI'];
+require('session.php');
 
 // ログイン状態チェック
-if (!isset($_SESSION['SEQ'])) {
+if (getSsnIsLogin()==false) {
     header('Location: a_logoff.php');
     exit;
 }
@@ -22,13 +22,13 @@ $promo = getPromo($pSeq);
 $html1 = '';
 $html1 .= "<h1>".$promo->p_title>"aaa</h1>";
 if (isset($promo->p_text1)) {
-    $html1 .= "<h3>".$promo->p_text1."</h3>";
+    $html1 .= "<h3>".nl2br($promo->p_text1)."</h3>";
 }
 if (isset($promo->p_text1)) {
-    $html1 .= "<img class='img80' border=0 src='./".$_SESSION["SYS"]['PATH_PROMO']."/".$promo->p_seq."/".$promo->p_img."'>";
+    $html1 .= "<img class='img80' border=0 src='./".getSsn('PATH_PROMO')."/".$promo->p_seq."/".$promo->p_img."'>";
 }
 if (isset($promo->p_text2)) {
-    $html1 .= "<h3>".$promo->p_text2."</h3>";
+    $html1 .= "<h3>".nl2br($promo->p_text2)."</h3>";
 }
 
 require_once './db/prizes.php';
@@ -39,7 +39,7 @@ foreach ($prizes as $prize) {
         $html2 .= $prize->pz_title.'<br>';
     }
     if (!empty($prize->pz_img)) {
-        $html2 .= "<img class='img80' border=0 src='./".$_SESSION["SYS"]['PATH_PROMO']."/".$promo->p_seq."/".$prize->pz_img."'><br>";
+        $html2 .= "<img class='img80' border=0 src='./".getSsn('PATH_PROMO')."/".$promo->p_seq."/".$prize->pz_img."'><br>";
     }
     if (!empty($prize->p_img)) {
         $html2 .= nl2br($prize->pz_text).'<br>';
@@ -55,17 +55,11 @@ foreach ($prizes as $prize) {
 <html lang="ja">
 
 <head>
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo getSsnMyname(); ?></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="<?php echo $_SESSION["SYS"]['URL_CHILD'] ?>/assets/css/main.css" />
-    <link rel="stylesheet" href="<?php echo $_SESSION["SYS"]['URL_CHILD'] ?>/asset/css/main.css" />
-    <script>
-    function choise(vlu) {
-        document.frm.pzSeq.value = vlu;
-        document.frm.submit();
-    }
-    </script>
+    <link rel="stylesheet" href="../psys_c/assets/css/main.css" />
+    <link rel="stylesheet" href="../psys_c/asset/css/main.css" />
 </head>
 
 <body>

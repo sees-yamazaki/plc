@@ -37,7 +37,7 @@ class cls_members
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -66,7 +66,7 @@ class cls_members
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -96,7 +96,7 @@ class cls_members
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -117,7 +117,7 @@ class cls_members
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -139,11 +139,11 @@ class cls_members
             $stmt->bindParam(':m_post', $members->m_post, PDO::PARAM_INT);
             $stmt->bindParam(':m_address1', $members->m_address1, PDO::PARAM_STR);
             $stmt->bindParam(':m_address2', $members->m_address2, PDO::PARAM_STR);
-            $stmt->bindParam(':m_tel', $members->m_tel, PDO::PARAM_INT);
+            $stmt->bindParam(':m_tel', $members->m_tel, PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -167,7 +167,7 @@ class cls_members
             $stmt->execute();
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -184,7 +184,7 @@ class cls_members
             $stmt->execute();
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }

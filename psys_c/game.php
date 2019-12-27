@@ -2,11 +2,10 @@
 
 // セッション開始
 session_start();
-
-$ini = $_SESSION['INI'];
+require('session.php');
 
 // ログイン状態チェック
-if (!isset($_SESSION[$ini['sysname']."SEQ"])) {
+if (getSsnIsLogin()==false) {
     header("Location: logoff.php");
     exit;
 }
@@ -23,15 +22,13 @@ require_once './db/games.php';
 $game = getGame($gSeq);
 
 
-
-
 ?>
 
 <!DOCTYPE HTML>
 <html lang="ja">
 
 <head>
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo getSsnMyname(); ?></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -47,15 +44,6 @@ $game = getGame($gSeq);
 
 
     <?php include('./menu.php'); ?>
-
-    <!-- Banner -->
-    <?php if(!empty($errorMessage)){ ?>
-    <section id="banner2">
-        <div class="inner">
-            <h3><?php echo $errorMessage; ?></h3>
-        </div>
-    </section>
-    <?php } ?>
 
     <section id="banner9">
         <div class="inner">
@@ -77,7 +65,7 @@ $game = getGame($gSeq);
             <h1>画像をタップ！！</h1>
             <br>
             <a href="javascript:choise()">
-            <img border=0 class="img100" src="<?php echo $ini['parentURL']; ?>/games/<?php echo $game->g_seq; ?>/<?php echo $game->g_image_start; ?>"></a>
+            <img border=0 class="img100" src="../psys/<?php echo getSsn('PATH_GAME'); ?>/<?php echo $game->g_seq; ?>/<?php echo $game->g_image_start; ?>"></a>
         </div>
     </section>
 

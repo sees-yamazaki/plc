@@ -10,6 +10,8 @@ class cls_systems
     public $path_info;
     public $system_name;
     public $path_scode;
+    public $point_game;
+    public $point_entry;
 }
 
 function getSystems()
@@ -28,10 +30,12 @@ function getSystems()
             $result->path_info = $row['path_info'];
             $result->system_name = $row['system_name'];
             $result->path_scode = $row['path_scode'];
+            $result->point_game = $row['point_game'];
+            $result->point_entry = $row['point_entry'];
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp('1', $ini['debug']) == 0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
@@ -43,7 +47,7 @@ function updateSystem($systems)
 {
     try {
         require './db/dns.php';
-        $sql = " UPDATE `systems`  SET  `url_child`=:url_child,  `path_root`=:path_root,  `path_promo`=:path_promo,  `path_game`=:path_game,  `path_info`=:path_info,  `path_scode`=:path_scode,  `system_name`=:system_name WHERE url_parent=:url_parent";
+        $sql = " UPDATE `systems`  SET  `url_child`=:url_child,  `path_root`=:path_root,  `path_promo`=:path_promo,  `path_game`=:path_game,  `path_info`=:path_info,  `path_scode`=:path_scode,  `system_name`=:system_name ,  `point_game`=:point_game ,  `point_entry`=:point_entry, url_parent=:url_parent";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':url_parent', $systems->url_parent, PDO::PARAM_STR);
         $stmt->bindParam(':url_child', $systems->url_child, PDO::PARAM_STR);
@@ -53,10 +57,12 @@ function updateSystem($systems)
         $stmt->bindParam(':path_info', $systems->path_info, PDO::PARAM_STR);
         $stmt->bindParam(':path_scode', $systems->path_scode, PDO::PARAM_STR);
         $stmt->bindParam(':system_name', $systems->system_name, PDO::PARAM_STR);
+        $stmt->bindParam(':point_game', $systems->point_game, PDO::PARAM_INT);
+        $stmt->bindParam(':point_entry', $systems->point_entry, PDO::PARAM_INT);
         $stmt->execute();
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }

@@ -2,10 +2,10 @@
 
 // セッション開始
 session_start();
-$ini = $_SESSION['INI'];
+require('session.php');
 
 // ログイン状態チェック
-if (!isset($_SESSION["SEQ"])) {
+if (getSsnIsLogin()==false) {
     header("Location: a_logoff.php");
     exit;
 }
@@ -22,9 +22,9 @@ $errorMessage = "";
      //CSV出力
      $fileNm = $sSeq.".csv";
      header('Content-Type: application/octet-stream');
-     header('Content-Length: '.filesize("./".$_SESSION["SYS"]['PATH_SCODE']."/".$fileNm));
+     header('Content-Length: '.filesize("./".getSsn('PATH_SCODE')."/".$fileNm));
      header('Content-Disposition: attachment; filename=serialcode_'.$sQty.'.csv');
-     readfile("./".$_SESSION["SYS"]['PATH_SCODE']."/".$fileNm);
+     readfile("./".getSsn('PATH_SCODE')."/".$fileNm);
      exit(0);
      
  } catch (PDOException $e) {

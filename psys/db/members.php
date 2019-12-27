@@ -13,7 +13,16 @@ class cls_members
     public $m_tel;
     public $createdt;
     public $point;
+    public $crnt_point;
     public $logindt;
+    public $sc_cnt;
+    public $sc_point;
+    public $cnt_0;
+    public $up_point_0;
+    public $cnt_1;
+    public $up_point_1;
+    public $cnt_99;
+    public $up_point_99;
 }
 
     function getMembers()
@@ -40,7 +49,7 @@ class cls_members
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp('1', $ini['debug']) == 0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -72,7 +81,7 @@ class cls_members
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp('1', $ini['debug']) == 0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -93,7 +102,7 @@ class cls_members
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp('1', $ini['debug']) == 0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -106,7 +115,7 @@ class cls_members
         try {
             $results = array();
             require './db/dns.php';
-            $stmt = $pdo->prepare('SELECT x.* FROM ( SELECT m.*,CASE v.point IS NULL WHEN 1 THEN 0 ELSE v.point END as point,L.logindt FROM `members` m LEFT JOIN v_point v ON m.m_seq=v.m_seq LEFT JOIN v_lastlogin L ON L.m_seq=m.m_seq ) x '.$where.' ORDER BY x.m_seq LIMIT :lmt OFFSET :ofst');
+            $stmt = $pdo->prepare('SELECT * FROM v_members '.$where.' ORDER BY m_seq LIMIT :lmt OFFSET :ofst');
 
             $stmt->bindParam(':lmt', $limit, PDO::PARAM_INT);
             $stmt->bindParam(':ofst', $offset, PDO::PARAM_INT);
@@ -123,13 +132,21 @@ class cls_members
                 $result->m_address2 = $row['m_address2'];
                 $result->m_tel = $row['m_tel'];
                 $result->createdt = $row['createdt'];
-                $result->point = $row['point'];
+                $result->crnt_point = $row['crnt_point'];
+                $result->sc_cnt = $row['sc_cnt'];
+                $result->sc_point = $row['sc_point'];
+                $result->cnt_0 = $row['cnt_0'];
+                $result->up_point_0 = $row['up_point_0'];
+                $result->cnt_1 = $row['cnt_1'];
+                $result->up_point_1 = $row['up_point_1'];
+                $result->cnt_99 = $row['cnt_99'];
+                $result->up_point_99 = $row['up_point_99'];
                 $result->logindt = $row['logindt'];
                 array_push($results, $result);
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp('1', $ini['debug']) == 0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }

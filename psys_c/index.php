@@ -2,9 +2,10 @@
 
 // セッション開始
 session_start();
+require('session.php');
 
 $ini = parse_ini_file('./common.ini', false);
-$_SESSION['INI'] = $ini;
+setSsnIni($ini);
 
 // エラーメッセージの初期化
 $errorMessage = '';
@@ -29,26 +30,25 @@ if (isset($_POST['login'])) {
             if ($member->m_seq == 0) {
                 $errorMessage = 'ログインできませんでした。';
             } else {
-
                 require_once '../psys/db/systems.php';
                 $system = new cls_systems();
                 $system = getSystems();
 
-                $ary = array();
-                $ary['URL_PARENT'] = $system->url_parent;
-                $ary['PATH_PROMO'] = $system->path_root."/".$system->path_promo;
-                $ary['PATH_GAME'] = $system->path_root."/".$system->path_game;
-                $ary['PATH_INFO'] = $system->path_root."/".$system->path_info;
-                $ary['SYSTEM_NAME'] = $system->system_name;
-                $_SESSION["SYS"] = $ary;
-
+                setSsnKV('URL_PARENT', $system->url_parent);
+                setSsnKV('URL_CHILD', $system->url_child);
+                setSsnKV('PATH_PROMO', $system->path_root."/".$system->path_promo);
+                setSsnKV('PATH_GAME', $system->path_root."/".$system->path_game);
+                setSsnKV('PATH_INFO', $system->path_root."/".$system->path_info);
+                setSsnKV('PATH_SCODE', $system->path_root."/".$system->path_scode);
+                setSsnKV('SYSTEM_NAME', $system->system_name);
+                setSsnKV('POINT_ENTRY',$system->point_entry);
+                setSsnKV('POINT_GAME',$system->point_game);
+                setSsnKV('SEQ', $member->m_seq);
+                setSsnKV('ID', $member->m_id);
+                setSsnKV('NAME', $member->m_name);
 
                 require_once './db/log.php';
                 log_login($member->m_seq);
-                $sn = $ini['sysname'];
-                $_SESSION[$sn.'SEQ'] = $member->m_seq;
-                $_SESSION[$sn.'ID'] = $member->m_id;
-                $_SESSION[$sn.'NAME'] = $member->m_name;
 
                 header('Location: ./home.php');
             }
@@ -66,7 +66,7 @@ if (isset($_POST['login'])) {
 <html lang="ja">
 
 <head>
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo getSsnMyname(); ?></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -77,19 +77,15 @@ if (isset($_POST['login'])) {
 
     <!-- Header -->
     <header id="header">
-        <a href="javascript:void(0)" class="logo"><strong>PointSystem</strong> by SEES</a>
+        <a href="javascript:void(0)" class="logo"><strong><?php echo getSsnMyname(); ?></strong> by SEES</a>
     </header>
 
     <!-- Banner -->
-    <?php if (!empty($errorMessage)) {
-    ?>
-    <section id="banner2">
-        <div class="inner">
+    <?php if (!empty($errorMessage)) { ?>
+    <section id="banner8" class="err">
             <h3><?php echo $errorMessage; ?></h3>
-        </div>
     </section>
-    <?php
-} ?>
+    <?php } ?>
 
     <section id="banner">
         <div class="inner">

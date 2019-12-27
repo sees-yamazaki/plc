@@ -2,11 +2,11 @@
 
 // セッション開始
 session_start();
+require('session.php');
 
-$ini = $_SESSION['INI'];
 
 // ログイン状態チェック
-if (!isset($_SESSION[$ini['sysname']."SEQ"])) {
+if (getSsnIsLogin()==false) {
     header("Location: logoff.php");
     exit;
 }
@@ -21,9 +21,7 @@ $upSeq = $_POST['upSeq'];
     $ship = new cls_ships();
 
     try {
-        
         if (isset($_POST['shipEdit'])) {
-
             $ship->up_seq = $_POST['upSeq'];
             $ship->sp_name = $_POST['sp_name'];
             $ship->sp_post = $_POST['sp_post'];
@@ -31,12 +29,10 @@ $upSeq = $_POST['upSeq'];
             $ship->sp_address2 = $_POST['sp_address2'];
             $ship->sp_tel = $_POST['sp_tel'];
             $ship->sp_text = $_POST['sp_text'];
-            
-        }else{
-
+        } else {
             require_once './db/members.php';
             $member = new cls_members();
-            $member = getMember($_SESSION[$ini['sysname']."SEQ"]);
+            $member = getMember(getSsn("SEQ"));
 
             $ship->sp_name = $member->m_name;
             $ship->sp_post = $member->m_post;
@@ -47,7 +43,7 @@ $upSeq = $_POST['upSeq'];
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
@@ -57,7 +53,7 @@ $upSeq = $_POST['upSeq'];
 <html lang="ja">
 
 <head>
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo getSsnMyname(); ?></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -69,7 +65,7 @@ $upSeq = $_POST['upSeq'];
     <?php include('./menu.php'); ?>
 
     <!-- Banner -->
-    <?php if(!empty($errorMessage)){ ?>
+    <?php if (!empty($errorMessage)) { ?>
     <section id="banner2">
         <div class="inner">
             <h3><?php echo $errorMessage; ?></h3>

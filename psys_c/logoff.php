@@ -2,24 +2,27 @@
 
 // セッション開始
 session_start();
-
-$ini = parse_ini_file('./common.ini', false);
+require('session.php');
 
 // エラーメッセージの初期化
 $errorMessage = "";
 
-// セッションの変数のクリア
-$_SESSION = array();
+// 自セッションのクリア
+$sysname = getSsnMyname();
+unsetSsn();
 
-// セッションクリア
-@session_destroy();
+// // セッションの変数のクリア
+// $_SESSION = array();
+
+// // セッションクリア
+// @session_destroy();
 
 ?>
 <!DOCTYPE HTML>
 <html lang="ja">
 
 <head>
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo $sysname; ?></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -30,20 +33,8 @@ $_SESSION = array();
 
     <!-- Header -->
     <header id="header">
-        <a href="javascript:void(0)" class="logo"><strong>PointSystem</strong> by SEES</a>
-        <nav>
-            <a href="#menu">Menu</a>
-        </nav>
+        <a href="javascript:void(0)" class="logo"><strong><?php echo $sysname; ?></strong> by SEES</a>
     </header>
-
-    <!-- Nav -->
-    <nav id="menu">
-        <ul class="links">
-            <li><a href="index.php">Home</a></li>
-            <li><a href="generic.html">Generic</a></li>
-            <li><a href="elements.html">Elements</a></li>
-        </ul>
-    </nav>
 
     <!-- Banner -->
     <section id="banner">

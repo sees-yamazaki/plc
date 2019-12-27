@@ -35,7 +35,7 @@ class cls_prizes
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -62,7 +62,7 @@ class cls_prizes
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -78,7 +78,7 @@ class cls_prizes
             $stmt->bindParam(':pz_seq', $pzSeq, PDO::PARAM_INT);
             $stmt->execute();
 
-            $stmt = $pdo->prepare("SELECT * FROM `prizes` WHERE pz_seq=:pz_seq");
+            $stmt = $pdo->prepare("SELECT * FROM `v_prizes` WHERE pz_seq=:pz_seq");
             $stmt->bindParam(':pz_seq', $pzSeq, PDO::PARAM_INT);
             $stmt->execute();
             if ($row = $stmt->fetch()) {
@@ -88,12 +88,12 @@ class cls_prizes
                 $result->pz_title = $row['pz_title'];
                 $result->pz_img = $row['pz_img'];
                 $result->pz_text = $row['pz_text'];
-                $result->pz_hitcnt = $row['pz_hitcnt'];
+                $result->pz_hitcnt = $row['hc_no'];
                 $result->pz_nowcnt = $row['pz_nowcnt'];
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }

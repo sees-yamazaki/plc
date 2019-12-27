@@ -35,7 +35,7 @@ function getInfos()
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
@@ -70,7 +70,7 @@ function getOpenInfos($dt)
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
@@ -97,7 +97,7 @@ function getOpenInfos($dt)
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -123,7 +123,7 @@ function getOpenInfos($dt)
             $insertid = $pdo->lastInsertId();
 
             if ($infos->imgStts == 1) {
-                $path = $_SESSION["SYS"]['PATH_INFO'].'/'.$insertid;
+                $path = getSsn('PATH_INFO').'/'.$insertid;
                 mkdir($path,0777);
                 $file = $path.'/'.basename($_FILES['inf_img']['name']);
                 move_uploaded_file($_FILES['inf_img']['tmp_name'], $file);
@@ -133,7 +133,7 @@ function getOpenInfos($dt)
 
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -147,7 +147,7 @@ function getOpenInfos($dt)
             if ($infos->imgStts == 1) {
                 $sql = " UPDATE `infos`  SET  `inf_title`=:inf_title,  `inf_text1`=:inf_text1,  `inf_text2`=:inf_text2,  `inf_img`=:inf_img,  `inf_startdt`=:inf_startdt,  `inf_enddt`=:inf_enddt,  `inf_order`=:inf_order WHERE inf_seq=:inf_seq";
             } elseif ($infos->imgStts == 2) {
-                " UPDATE `infos`  SET  `inf_title`=:inf_title,  `inf_text1`=:inf_text1,  `inf_text2`=:inf_text2, `inf_startdt`=:inf_startdt,  `inf_enddt`=:inf_enddt,  `inf_order`=:inf_order WHERE inf_seq=:inf_seq";
+                $sql = " UPDATE `infos`  SET  `inf_title`=:inf_title,  `inf_text1`=:inf_text1,  `inf_text2`=:inf_text2, `inf_startdt`=:inf_startdt,  `inf_enddt`=:inf_enddt,  `inf_order`=:inf_order WHERE inf_seq=:inf_seq";
             } else {
                 $sql = " UPDATE `infos`  SET  `inf_title`=:inf_title,  `inf_text1`=:inf_text1,  `inf_text2`=:inf_text2,  `inf_img`=:inf_img,  `inf_startdt`=:inf_startdt,  `inf_enddt`=:inf_enddt,  `inf_order`=:inf_order WHERE inf_seq=:inf_seq";
                 $infos->inf_img = '';
@@ -168,7 +168,7 @@ function getOpenInfos($dt)
 
 
             if ($infos->imgStts == 1) {
-                $file = $_SESSION["SYS"]['PATH_INFO'].'/'.$infos->inf_seq.'/'.basename($_FILES['inf_img']['name']);
+                $file = getSsn('PATH_INFO').'/'.$infos->inf_seq.'/'.basename($_FILES['inf_img']['name']);
                 move_uploaded_file($_FILES['inf_img']['tmp_name'], $file);
             }
 
@@ -178,7 +178,7 @@ function getOpenInfos($dt)
 
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -197,7 +197,7 @@ function getOpenInfos($dt)
 
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }

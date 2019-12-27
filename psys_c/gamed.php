@@ -2,11 +2,10 @@
 
 // セッション開始
 session_start();
-
-$ini = $_SESSION['INI'];
+require('session.php');
 
 // ログイン状態チェック
-if (!isset($_SESSION[$ini['sysname']."SEQ"])) {
+if (getSsnIsLogin()==false) {
     header("Location: logoff.php");
     exit;
 }
@@ -23,13 +22,13 @@ require_once './db/games.php';
 $game = getGame($gSeq);
 
 $gameResult = "残念！！";
-$resultImg = $ini['parentURL']."/games/".$game->g_seq."/".$game->g_image_miss;
+$resultImg = "../psys/".getSsn('PATH_GAME')."/".$game->g_seq."/".$game->g_image_miss;
 
 
 require_once './db/usepoints.php';
 $usepoint = new cls_usepoints();
-$usepoint->m_seq = $_SESSION[$ini['sysname']."SEQ"];
-$usepoint->up_point = 20;
+$usepoint->m_seq = getSsn("SEQ");
+$usepoint->up_point = getSsn('POINT_GAME');;
 $usepoint->up_status = 0;
 $usepoint->g_seq = $gSeq;
 $usepoint->p_seq = $pSeq;
@@ -38,14 +37,13 @@ $usepoint->pz_seq = $pzSeq;
 
 require_once './db/prizes.php';
 $prize = countupPrize($pzSeq);
- if($prize->pz_hitcnt==$prize->pz_nowcnt){
+$hitcnts = explode(",",$prize->pz_hitcnt);
+ if (in_array($prize->pz_nowcnt,$hitcnts )) {
+     $gameResult = "WINNER！！";
+     $resultImg = "../psys/".getSsn('PATH_GAME')."/".$game->g_seq."/".$game->g_image_hit;
 
-    $gameResult = "WINNER！！";
-    $resultImg = $ini['parentURL']."/games/".$game->g_seq."/".$game->g_image_hit;
-
-    $usepoint->up_status = 1;
-
-}
+     $usepoint->up_status = 1;
+ }
  
 $upSeq = insertUsepoints($usepoint);
 
@@ -74,15 +72,6 @@ $upSeq = insertUsepoints($usepoint);
 
     <?php include('./menu.php'); ?>
 
-    <!-- Banner -->
-    <?php if(!empty($errorMessage)){ ?>
-    <section id="banner2">
-        <div class="inner">
-            <h3><?php echo $errorMessage; ?></h3>
-        </div>
-    </section>
-    <?php } ?>
-
     <section id="banner9">
         <div class="inner">
             <ul class="actions actions2">
@@ -101,12 +90,13 @@ $upSeq = insertUsepoints($usepoint);
             <h1><?php echo $gameResult; ?></h1>
             <br>
             <img border=0 class="img100" src="<?php echo $resultImg; ?>">
-            <?php if($prize->pz_hitcnt==$prize->pz_nowcnt){ ?>
+            <?php if (in_array($prize->pz_nowcnt,$hitcnts )) {?>
                 <br>
             <ul class="actions">
                 <li><a href="javascript:ship();" class="button alt scrolly big">発送依頼する</a></li>
             </ul>
             <?php } ?>
+
         </div>
     </section>
 

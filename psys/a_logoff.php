@@ -1,13 +1,17 @@
 <?php
 session_start();
+require('session.php');
 
 $errorMessage = "ログオフしました。";
 
-// セッションの変数のクリア
-$_SESSION = array();
+// 自セッションのクリア
+unsetSsn();
 
-// セッションクリア
-@session_destroy();
+// セッションの変数のクリア
+// $_SESSION = array();
+
+// // セッションクリア
+// @session_destroy();
 ?>
 <!DOCTYPE html>
 <html lang="ja">

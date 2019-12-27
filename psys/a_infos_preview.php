@@ -2,13 +2,13 @@
 
 // セッション開始
 session_start();
-$ini = $_SESSION['INI'];
+require('session.php');
 
 // タイムゾーンを設定
 date_default_timezone_set('Asia/Tokyo');
 
 // ログイン状態チェック
-if (!isset($_SESSION['SEQ'])) {
+if (getSsnIsLogin()==false) {
     header('Location: a_logoff.php');
     exit;
 }
@@ -21,19 +21,41 @@ $errorMessage = '';
         $iSeq = $_GET['iSeq'];
     }
 
-    require './db/infos.php';
-    $info = new cls_infos();
-    $info = getInfo($iSeq);
+    $tDate = $_GET['tDate'];
 
-    $html1 = '';
-    if (strlen($info->inf_text1)>0) {
-        $html1 .= "<h3>".nl2br($info->inf_text1)."</h3>";
-    }
-    if (strlen($info->inf_img)>0) {
-        $html1 .= "<img class='img80' border=0 src='./".$_SESSION["SYS"]['PATH_INFO']."/".$info->inf_seq."/".$info->inf_img."'>";
-    }
-    if (strlen($promo->inf_text2)>0) {
-        $html1 .= "<h3>".nl2br($info->inf_text2)."</h3>";
+    require './db/infos.php';
+
+    if (isset($iSeq)) {
+        $info = new cls_infos();
+        $info = getInfo($iSeq);
+
+        $html1 = '';
+        if (strlen($info->inf_text1)>0) {
+            $html1 .= "<h3>".nl2br($info->inf_text1)."</h3>";
+        }
+        if (strlen($info->inf_img)>0) {
+            $html1 .= "<img class='img80' border=0 src='./".getSsn('PATH_INFO')."/".$info->inf_seq."/".$info->inf_img."'>";
+        }
+        if (strlen($info->inf_text2)>0) {
+            $html1 .= "<h3>".nl2br($info->inf_text2)."</h3>";
+        }
+    } else {
+        $infos = getOpenInfos($tDate);
+
+        $html1 = '';
+        foreach ($infos as $info) {
+            if (strlen($info->inf_text1)>0) {
+                $html1 .= "<h3>".nl2br($info->inf_text1)."</h3>";
+            }
+            if (strlen($info->inf_img)>0) {
+                $html1 .= "<img class='img80' border=0 src='../psys/".getSsn('PATH_INFO')."/".$info->inf_seq."/".$info->inf_img."'>";
+            }
+            if (strlen($info->inf_text2)>0) {
+                $html1 .= "<h3>".nl2br($info->inf_text2)."</h3>";
+            }
+            $html1 .= "<hr>";
+        }
+        $html1 = substr($html1, 0, -4);
     }
 
 ?>
@@ -42,7 +64,7 @@ $errorMessage = '';
 <html lang="ja">
 
 <head>
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo getSsnMyname(); ?></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="../psys_c/assets/css/main.css" />

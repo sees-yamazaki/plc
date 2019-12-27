@@ -50,7 +50,7 @@ function getSerials()
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
@@ -74,7 +74,7 @@ function getSerial($sSeq)
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
@@ -94,7 +94,7 @@ function getSerialOnToday()
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
@@ -116,12 +116,13 @@ function countSCodes($sSeq)
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
     return $cnt;
 }
+
 
 function countVSCodes($where)
 {
@@ -136,12 +137,47 @@ function countVSCodes($where)
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
     return $cnt;
 }
+
+
+function getMySCodes($mSeq)
+{
+    try {
+        $results = array();
+        require './db/dns.php';
+        $stmt = $pdo->prepare("SELECT * FROM `v_serialcodes` WHERE m_seq=:m_seq ORDER BY createdt desc");
+        $stmt->bindParam(':m_seq', $mSeq, PDO::PARAM_INT);
+        $stmt->execute();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_v_serialcodes();
+            $result->s_seq = $row['s_seq'];
+            $result->s_title = $row['s_title'];
+            $result->s_qty = $row['s_qty'];
+            $result->createdt = $row['createdt'];
+            $result->users_seq = $row['users_seq'];
+            $result->sc_seq = $row['sc_seq'];
+            $result->sc_code = $row['sc_code'];
+            $result->entrydt = $row['entrydt'];
+            $result->sc_point = $row['sc_point'];
+            $result->m_seq = $row['m_seq'];
+            $result->m_name = $row['m_name'];
+            array_push($results, $result);
+
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'データベースエラー';
+        if (getSsnIsDebug()) {
+            echo $e->getMessage();
+        }
+    }
+    return $results;
+}
+
 
 function getSCodesLimit($limit, $offset, $where)
 {
@@ -170,7 +206,7 @@ function getSCodesLimit($limit, $offset, $where)
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
@@ -192,7 +228,7 @@ function insertSerials($serials)
         $insertid = $pdo->lastInsertId();
         $stmt->closeCursor();
 
-        $fp = fopen("./".$_SESSION["SYS"]['PATH_SCODE']."/".$insertid.".csv", "w");
+        $fp = fopen("./".getSsn('PATH_SCODE')."/".$insertid.".csv", "w");
 
         //シリアルコード生成
         //YY/MM/DDを取得する
@@ -237,7 +273,7 @@ function insertSerials($serials)
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (v) {
             echo $e->getMessage();
         }
     }
@@ -255,7 +291,7 @@ function updateSerials($serials)
         $stmt->execute();
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
@@ -278,7 +314,7 @@ function deleteSerials($sSeq)
         $stmt->execute();
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }

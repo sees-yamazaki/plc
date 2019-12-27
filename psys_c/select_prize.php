@@ -2,12 +2,12 @@
 
 // セッション開始
 session_start();
+require('session.php');
 
-$ini = $_SESSION['INI'];
 
 // ログイン状態チェック
-if (!isset($_SESSION[$ini['sysname'].'SEQ'])) {
-    header('Location: logoff.php');
+if (getSsnIsLogin()==false) {
+    header("Location: logoff.php");
     exit;
 }
 
@@ -25,7 +25,7 @@ if ($promo->p_seq==0) {
         $html1 .= "<h3>".$promo->p_text1."</h3>";
     }
     if (isset($promo->p_text1)) {
-        $html1 .= "<img class='img80' border=0 src='". $ini['parentURL'].'/promos/'.$promo->p_seq."/".$promo->p_img."'>";
+        $html1 .= "<img class='img80' border=0 src='../psys/". getSsn('PATH_PROMO')."/".$promo->p_seq."/".$promo->p_img."'>";
     }
     if (isset($promo->p_text2)) {
         $html1 .= "<h3>".$promo->p_text2."</h3>";
@@ -40,7 +40,7 @@ foreach ($prizes as $prize) {
         $html2 .= $prize->pz_title.'<br>';
     }
     if (!empty($prize->pz_img)) {
-        $html2 .= "<img class='img80' border=0 src='".$ini['parentURL'].'/promos/'.$promo->p_seq.'/'.$prize->pz_img."'><br>";
+        $html2 .= "<img class='img80' border=0 src='../psys/". getSsn('PATH_PROMO')."/".$promo->p_seq.'/'.$prize->pz_img."'><br>";
     }
     if (!empty($prize->p_img)) {
         $html2 .= nl2br($prize->pz_text).'<br>';
@@ -56,7 +56,7 @@ foreach ($prizes as $prize) {
 <html lang="ja">
 
 <head>
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo getSsnMyname(); ?></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="assets/css/main.css" />

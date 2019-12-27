@@ -1,8 +1,23 @@
+#header {
+    background: #0f2350;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+#menu {
+    background: #192f60;
+    color: #fff;
+}
+
 #footer {
     position: fixed;
     bottom: 0;
     width: 100%;
     height: 140px;
+    background: #0f2350;
+}
+
+#footer .copyright {
+    color: rgba(255, 255, 255, 0.5);
 }
 
 #geta {
@@ -18,8 +33,16 @@
     }
 }
 
+.clrRed {
+    color: red;
+}
+
 
 /* Banner */
+
+#banner {
+    padding: 4em;
+}
 
 #banner8 {
     background-color: #fff;
@@ -31,6 +54,10 @@
 
 #banner8 h3 {
     color: #6db1df;
+}
+
+#banner8.err h3 {
+    color: #942020;
 }
 
 #banner9 {
@@ -68,7 +95,7 @@ ul.actions2 li {
     color: #fff;
     text-align: center;
     cursor: default;
-    padding: 10em 4em 9em 4em;
+    padding: 4em 4em 4em 4em;
 }
 
 #banner3 hr {
@@ -100,7 +127,7 @@ ul.actions2 li {
     color: rgba(255, 255, 255, 0.75);
     text-align: center;
     cursor: default;
-    padding: 10em 4em 9em 4em;
+    padding: 4em;
 }
 
 #banner2 input,

@@ -2,11 +2,10 @@
 
 // セッション開始
 session_start();
-
-$ini = $_SESSION['INI'];
+require('session.php');
 
 // ログイン状態チェック
-if (!isset($_SESSION[$ini['sysname']."SEQ"])) {
+if (getSsnIsLogin()==false) {
     header("Location: logoff.php");
     exit;
 }
@@ -27,7 +26,7 @@ $pw2 = $_POST['pw2'];
             } elseif ($pw1<>$pw2) {
                 $errorMessage = 'パスワードが一致しません。';
             } else {
-                updatePw($_SESSION[$ini['sysname']."SEQ"], $pw1);
+                updatePw(getSsn("SEQ"), $pw1);
             }
             
             if (empty($errorMessage)) {
@@ -36,7 +35,7 @@ $pw2 = $_POST['pw2'];
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
@@ -46,7 +45,7 @@ $pw2 = $_POST['pw2'];
 <html lang="ja">
 
 <head>
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo getSsnMyname(); ?></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -60,7 +59,7 @@ $pw2 = $_POST['pw2'];
 
 
     <?php if (!empty($errorMessage)) { ?>
-    <section id="banner2">
+    <section id="banner8" class="err">
         <div class="inner">
             <h3><?php echo $errorMessage; ?></h3>
         </div>

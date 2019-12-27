@@ -31,7 +31,7 @@ class cls_games
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -56,7 +56,7 @@ class cls_games
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -77,7 +77,7 @@ class cls_games
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -100,7 +100,7 @@ class cls_games
 
             $insertid = $pdo->lastInsertId();
 
-            $path = $_SESSION["SYS"]['PATH_GAME'].'/'.$insertid;
+            $path = getSsn('PATH_GAME').'/'.$insertid;
             mkdir($path,0777);
 
             $file = $path."/". basename( $_FILES ['g_image_start'] ['name'] );
@@ -112,7 +112,7 @@ class cls_games
 
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -133,7 +133,7 @@ class cls_games
             $stmt->execute();
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }
@@ -150,7 +150,7 @@ class cls_games
             $stmt->execute();
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }

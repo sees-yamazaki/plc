@@ -2,11 +2,10 @@
 
 // セッション開始
 session_start();
-
-$ini = $_SESSION['INI'];
+require('session.php');
 
 // ログイン状態チェック
-if (!isset($_SESSION[$ini['sysname']."SEQ"])) {
+if (getSsnIsLogin()==false) {
     header("Location: logoff.php");
     exit;
 }
@@ -31,8 +30,8 @@ $errorMessage = "";
 			} else if(isset($scode->sc_point)){
                 $errorMessage = 'このシリアルコードはすでに登録されています。';
 			} else {
-                $scode->sc_point = 5;
-                $scode->m_seq = $_SESSION[$ini['sysname']."SEQ"];
+                $scode->sc_point = getSsn('POINT_ENTRY');
+                $scode->m_seq = getSsn("SEQ");
                 $errorMessage = updateSerialCode($scode);
             }
             
@@ -42,7 +41,7 @@ $errorMessage = "";
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
@@ -52,7 +51,7 @@ $errorMessage = "";
 <html lang="ja">
 
 <head>
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo getSsnMyname(); ?></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -66,7 +65,7 @@ $errorMessage = "";
 
 
     <?php if(!empty($errorMessage)){ ?>
-    <section id="banner2">
+    <section id="banner8" class="err">
         <div class="inner">
             <h3><?php echo $errorMessage; ?></h3>
         </div>

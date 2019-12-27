@@ -2,10 +2,10 @@
 
 // セッション開始
 session_start();
-$ini = $_SESSION['INI'];
+require('session.php');
 
 // ログイン状態チェック
-if (!isset($_SESSION['SEQ'])) {
+if (getSsnIsLogin()==false) {
     header('Location: a_logoff.php');
     exit;
 }
@@ -25,6 +25,25 @@ if (!isset($page)) {
      $search_s_login = $_POST['search_s_login'];
      $search_e_login = $_POST['search_e_login'];
      $search_name = $_POST['search_name'];
+     $search_rows_50="";
+     $search_rows_100="";
+     $search_rows_300="";
+     if ($_POST['search_rows']=="300") {
+         $limitRow = 300;
+         $search_rows_300=" checked";
+     } elseif ($_POST['search_rows']=="100") {
+         $limitRow = 100;
+         $search_rows_100=" checked";
+     } else {
+         $limitRow = 10;
+         $search_rows_50=" checked";
+     }
+     $search_min_cnt_entry = $_POST['search_min_cnt_entry'];
+     $search_max_cnt_entry = $_POST['search_max_cnt_entry'];
+     $search_min_cnt_hit = $_POST['search_min_cnt_hit'];
+     $search_max_cnt_hit = $_POST['search_max_cnt_hit'];
+     $search_min_cnt_miss = $_POST['search_min_cnt_miss'];
+     $search_max_cnt_miss = $_POST['search_max_cnt_miss'];
 
      $openclose = " fClose";
      $formbg = " closeform";
@@ -33,19 +52,37 @@ if (!isset($page)) {
          $tmp = array();
 
          if (!empty($search_name)) {
-             $tmp[] = "(x.m_name LIKE '%".$search_name."%')";
+             $tmp[] = "(m_name LIKE '%".$search_name."%')";
          }
          if (strlen($search_min_point)>0) {
-             $tmp[] = "(x.point>=".$search_min_point.")";
+             $tmp[] = "(crnt_point>=".$search_min_point.")";
          }
          if (strlen($search_max_point)>0) {
-             $tmp[] = "(x.point<=".$search_max_point.")";
+             $tmp[] = "(crnt_point<=".$search_max_point.")";
          }
          if (strlen($search_s_login)>0) {
-             $tmp[] = "(x.logindt>='".$search_s_login." 00:00:00')";
+             $tmp[] = "(logindt>='".$search_s_login." 00:00:00')";
          }
          if (strlen($search_e_login)>0) {
-            $tmp[] = "(x.logindt<='".$search_e_login." 23:59:59')";
+            $tmp[] = "(logindt<='".$search_e_login." 23:59:59')";
+        }
+        if (strlen($search_min_cnt_entry)>0) {
+            $tmp[] = "(sc_cnt>=".$search_min_cnt_entry.")";
+        }
+        if (strlen($search_max_cnt_entry)>0) {
+            $tmp[] = "(sc_cnt<=".$search_max_cnt_entry.")";
+        }
+        if (strlen($search_min_cnt_hit)>0) {
+            $tmp[] = "(cnt_1>=".$search_min_cnt_hit.")";
+        }
+        if (strlen($search_max_cnt_hit)>0) {
+            $tmp[] = "(cnt_1<=".$search_max_cnt_hit.")";
+        }
+        if (strlen($search_min_cnt_miss)>0) {
+            $tmp[] = "(cnt_0>=".$search_min_cnt_miss.")";
+        }
+        if (strlen($search_max_cnt_miss)>0) {
+            $tmp[] = "(cnt_0<=".$search_max_cnt_miss.")";
         }
 
          if (count($tmp)>0) {
@@ -74,16 +111,15 @@ if (!isset($page)) {
      foreach ($members as $member) {
          $html .= '<tr>';
          $html .= '<td>'.$member->m_name.'</td>';
-         if (empty($member->point)) {
-             $html .= '<td>0</td>';
-         } else {
-             $html .= '<td>'.$member->point.'</td>';
-         }
+         $html .= '<td>'.$member->crnt_point.'</td>';
          if (empty($member->logindt)) {
              $html .= '<td>--</td>';
          } else {
              $html .= '<td>'.$member->logindt.'</td>';
          }
+         $html .= '<td>'.$member->sc_cnt.'</td>';
+         $html .= '<td>'.$member->cnt_1.'</td>';
+         $html .= '<td>'.$member->cnt_0.'</td>';
          $html .= '<td><button type="button" name="edit" class="btn btn-inverse-secondary" onclick="mmbrView('.$member->m_seq.')">閲覧</button></td>';
          $html .= '</tr>';
      }
@@ -103,7 +139,7 @@ if (!isset($page)) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo getSsnMyname(); ?></title>
     <link rel="stylesheet" href="./assets/vendors/iconfonts/mdi/css/materialdesignicons.css">
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">
@@ -128,6 +164,21 @@ if (!isset($page)) {
     </form>
     <form action='' method='POST' name="pFrm">
         <input type='hidden' name='page' value=''>
+        <input type='hidden' name='search' value='1'>
+        <input type='hidden' name='search_min_point' value='<?php echo $search_min_point; ?>'>
+        <input type='hidden' name='search_max_point' value='<?php echo $search_max_point; ?>'>
+        <input type='hidden' name='search_s_login' value='<?php echo $search_s_login; ?>'>
+        <input type='hidden' name='search_e_login' value='<?php echo $search_e_login; ?>'>
+        <input type='hidden' name='search_name' value='<?php echo $search_name; ?>'>
+        <input type='hidden' name='search_rows_50' value='<?php echo $search_rows_50; ?>'>
+        <input type='hidden' name='search_rows_100' value='<?php echo $search_rows_100; ?>'>
+        <input type='hidden' name='search_rows_300' value='<?php echo $search_rows_300; ?>'>
+        <input type='hidden' name='search_min_cnt_entry' value='<?php echo $search_min_cnt_entry; ?>'>
+        <input type='hidden' name='search_max_cnt_entry' value='<?php echo $search_max_cnt_entry; ?>'>
+        <input type='hidden' name='search_min_cnt_hit' value='<?php echo $search_min_cnt_hit; ?>'>
+        <input type='hidden' name='search_max_cnt_hit' value='<?php echo $search_max_cnt_hit; ?>'>
+        <input type='hidden' name='search_min_cnt_miss' value='<?php echo $search_min_cnt_miss; ?>'>
+        <input type='hidden' name='search_max_cnt_miss' value='<?php echo $search_max_cnt_miss; ?>'>
     </form>
 
     <?php include './a_menu.php'; ?>
@@ -164,9 +215,41 @@ if (!isset($page)) {
                                 <input type="date" class="form-control w30p search" name="search_e_login"
                                     value="<?php echo $search_e_login; ?>" autocomplete="off">
                             </div>
+                            <div class="col-md-12 showcase_text_area">
+                                <label for="inputType1">登録回数-></label>
+                                <input type="number" class="form-control w20p search" name="search_min_cnt_entry"
+                                    value="<?php echo $search_min_cnt_entry; ?>" autocomplete="off">　〜　
+                                <input type="number" class="form-control w20p search" name="search_max_cnt_entry"
+                                    value="<?php echo $search_max_cnt_entry; ?>" autocomplete="off">
+                            </div>
+                            <div class="col-md-12 showcase_text_area">
+                                <label for="inputType1">当り回数-></label>
+                                <input type="number" class="form-control w20p search" name="search_min_cnt_hit"
+                                    value="<?php echo $search_min_cnt_hit; ?>" autocomplete="off">　〜　
+                                <input type="number" class="form-control w20p search" name="search_max_cnt_hit"
+                                    value="<?php echo $search_max_cnt_hit; ?>" autocomplete="off">
+                            </div>
+                            <div class="col-md-12 showcase_text_area">
+                                <label for="inputType1">外れ回数-></label>
+                                <input type="number" class="form-control w20p search" name="search_min_cnt_miss"
+                                    value="<?php echo $search_min_cnt_miss; ?>" autocomplete="off">　〜　
+                                <input type="number" class="form-control w20p search" name="search_max_cnt_miss"
+                                    value="<?php echo $search_max_cnt_miss; ?>" autocomplete="off">
+                            </div>
+                                <div class="col-md-12 showcase_text_area">
+                                    <label for="inputType1">表示件数-></label>
+                                    <label class="radio-label mr-4">
+                                        <input name="search_rows" type="radio" value="50"
+                                            <?php echo $search_rows_50; ?>>１０件 <i class="input-frame"></i>
+                                        <input name="search_rows" type="radio" value="100"
+                                            <?php echo $search_rows_100; ?>>１００件 <i class="input-frame"></i>
+                                        <input name="search_rows" type="radio" value="300"
+                                            <?php echo $search_rows_300; ?>>３００件 *ページングのテストのため最小人数は少なくしてあります。<i class="input-frame"></i>
+                                    </label>
+                                </div>
                             </div>
                             <br>
-                            <button type="submit" class="btn btn-primary btn-block mt-0" name="search">検索</button>
+                            <button type="submit" class="btn btn-primary btn-block mt-0" name="search">詳細</button>
                         </form>
 
                         <span class="clrRed"><?php echo $errorMessage ?></span>
@@ -184,6 +267,9 @@ if (!isset($page)) {
                             <th>名前</th>
                             <th>保有ポイント</th>
                             <th>最終ログイン</th>
+                            <th>登録回数</th>
+                            <th>当り回数</th>
+                            <th>外れ回数</th>
                             <th></th>
                         </tr>
                     </thead>

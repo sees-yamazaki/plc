@@ -13,7 +13,7 @@
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (strcmp("1", $ini['debug'])==0) {
+            if (getSsnIsDebug()) {
                 echo $e->getMessage();
             }
         }

@@ -2,13 +2,13 @@
 
 // セッション開始
 session_start();
-$ini = $_SESSION['INI'];
+require('session.php');
 
 // タイムゾーンを設定
 date_default_timezone_set('Asia/Tokyo');
 
 // ログイン状態チェック
-if (!isset($_SESSION["SEQ"])) {
+if (getSsnIsLogin()==false) {
     header("Location: a_logoff.php");
     exit;
 }
@@ -30,17 +30,28 @@ $errorMessage = "";
         $system->path_info = $_POST['path_info'];
         $system->system_name = $_POST['system_name'];
         $system->path_scode = $_POST['path_scode'];
+        $system->point_game = $_POST['point_game'];
+        $system->point_entry = $_POST['point_entry'];
         
         if (isset($_POST['sysEdit'])) {
             updateSystem($system);
-            $_SESSION["SYS"] = $system;
+            setSsnKV('URL_PARENT',$system->url_parent);
+            setSsnKV('URL_CHILD',$system->url_child);
+            setSsnKV('PATH_PROMO',$system->path_root."/".$system->path_promo);
+            setSsnKV('PATH_GAME',$system->path_root."/".$system->path_game);
+            setSsnKV('PATH_INFO',$system->path_root."/".$system->path_info);
+            setSsnKV('PATH_SCODE',$system->path_root."/".$system->path_scode);
+            setSsnKV('SYSTEM_NAME',$system->system_name);
+            setSsnKV('POINT_ENTRY',$system->point_entry);
+            setSsnKV('POINT_GAME',$system->point_game);
+
             header("Location: ./a_home.php");
         } else {
             $system = getSystems();
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
@@ -52,7 +63,7 @@ $errorMessage = "";
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo getSsnMyname(); ?></title>
     <link rel="stylesheet" href="./assets/vendors/iconfonts/mdi/css/materialdesignicons.css">
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">
@@ -158,6 +169,26 @@ $errorMessage = "";
                                                 <div class="col-md-9 showcase_content_area">
                                                     <input type="text" class="form-control" name="system_name"
                                                         value="<?php echo $system->system_name; ?>" maxLength=100
+                                                        autocomplete="off" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row showcase_row_area">
+                                                <div class="col-md-3 showcase_text_area">
+                                                    <label for="inputType1">entry point</label>
+                                                </div>
+                                                <div class="col-md-9 showcase_content_area">
+                                                    <input type="number" class="form-control" name="point_entry"
+                                                        value="<?php echo $system->point_entry; ?>" maxLength=2
+                                                        autocomplete="off" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row showcase_row_area">
+                                                <div class="col-md-3 showcase_text_area">
+                                                    <label for="inputType1">game point</label>
+                                                </div>
+                                                <div class="col-md-9 showcase_content_area">
+                                                    <input type="number" class="form-control" name="point_game"
+                                                        value="<?php echo $system->point_game; ?>" maxLength=2
                                                         autocomplete="off" required>
                                                 </div>
                                             </div>

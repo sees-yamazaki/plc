@@ -2,8 +2,7 @@
 
 // セッション開始
 session_start();
-
-$ini = $_SESSION['INI'];
+require('session.php');
 
 // エラーメッセージの初期化
 $errorMessage = "";
@@ -14,7 +13,7 @@ $errorMessage = "";
     $cnt = checkMemberByMail($_POST['m_mail']);
 
     if($cnt<>0){
-        $errorMessage = 'このメールアドレスはすでに登録されています。'.$cnt;
+        $errorMessage = 'このメールアドレスはすでに登録されています。';
     }
 
     try {
@@ -33,14 +32,14 @@ $errorMessage = "";
             $errorMessage = insertMember($member);
 
             if (empty($errorMessage)) {
-				header("Location: ./membershiped.php");
+                header("Location: ./membershiped.php");
             }
 
         }
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
+        if (getSsnIsDebug()) {
             echo $e->getMessage();
         }
     }
@@ -50,7 +49,7 @@ $errorMessage = "";
 <html lang="ja">
 
 <head>
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo getSsnMyname(); ?></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -70,13 +69,13 @@ $errorMessage = "";
 
     <!-- Header -->
     <header id="header">
-        <a href="javascript:void(0)" class="logo"><strong>PointSystem</strong> by SEES</a>
+        <a href="javascript:void(0)" class="logo"><strong><?php echo getSsnMyname(); ?></strong> by SEES</a>
     </header>
 
 
     <!-- Banner -->
     <?php if(!empty($errorMessage)){ ?>
-    <section id="banner2">
+    <section id="banner8" class="err">
         <div class="inner">
             <h3><?php echo $errorMessage; ?></h3>
         </div>

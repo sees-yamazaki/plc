@@ -2,32 +2,16 @@
 
 // セッション開始
 session_start();
-
-$ini = $_SESSION['INI'];
-
-// エラーメッセージの初期化
-$errorMessage = "";
+require('session.php');
 
 // エラーメッセージの初期化
 $errorMessage = "";
-
-    require_once './db/members.php';
-    $member = new cls_members();
-
-    try {
-        
-    } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
-            echo $e->getMessage();
-        }
-    }
 
 ?>
 <!DOCTYPE HTML>
 <html lang="ja">
 	<head>
-    <title><?php echo $ini['sysname']; ?></title>
+    <title><?php echo getSsnMyname(); ?></title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -37,7 +21,7 @@ $errorMessage = "";
 
 		<!-- Header -->
 			<header id="header">
-				<a href="javascript:void(0)" class="logo"><strong>PointSystem</strong> by SEES</a>
+				<a href="javascript:void(0)" class="logo"><strong><?php echo getSsnMyname(); ?></strong> by SEES</a>
 			</header>
 
 
