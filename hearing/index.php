@@ -71,10 +71,9 @@ if (isset($_POST["login"])) {
 <body>
 <?php //print_r($_POST); ?>
     <div class="pen-title">
-        <br><br><img src="./img/logo2.png" width=200px><br><br>
-        <!--
-        <h1>ログイン画面</h1>
--->
+        <br><br><img src="./img/TC_rogomark.png" width=200px><br><br>
+        <h2>ものづくり補助金向け<br>シミュレーションシート</h2>
+
     </div>
     <div class="module form-module">
         <div class=""></div>
@@ -93,6 +92,12 @@ if (isset($_POST["login"])) {
             </form>
 
         </div>
+    </div>
+    <div class="pen-title">
+        <br><br><img src="./img/TC_rogotype.png" width=200px><br><br>
+        <!--
+        <h1>ログイン画面</h1>
+--><br><br><br>Copyright(c)  2019-2020 Total-Consul Inc. All Rights Reserved
     </div>
 
 
