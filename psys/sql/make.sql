@@ -1,14 +1,22 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: 2019 年 12 月 27 日 12:56
--- サーバのバージョン： 5.7.25
--- PHP Version: 7.3.1
+-- Generation Time: Jan 06, 2020 at 01:07 PM
+-- Server version: 5.7.24-log
+-- PHP Version: 7.2.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `psys`
@@ -17,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `games`
+-- Table structure for table `games`
 --
 
 CREATE TABLE `games` (
@@ -30,7 +38,7 @@ CREATE TABLE `games` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `games`
+-- Dumping data for table `games`
 --
 
 INSERT INTO `games` (`g_seq`, `g_title`, `g_image_start`, `g_image_hit`, `g_image_miss`, `g_text`) VALUES
@@ -40,7 +48,7 @@ INSERT INTO `games` (`g_seq`, `g_title`, `g_image_start`, `g_image_hit`, `g_imag
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `hitcounts`
+-- Table structure for table `hitcounts`
 --
 
 CREATE TABLE `hitcounts` (
@@ -51,7 +59,7 @@ CREATE TABLE `hitcounts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `hitcounts`
+-- Dumping data for table `hitcounts`
 --
 
 INSERT INTO `hitcounts` (`hc_seq`, `p_seq`, `pz_seq`, `hc_no`) VALUES
@@ -79,7 +87,7 @@ INSERT INTO `hitcounts` (`hc_seq`, `p_seq`, `pz_seq`, `hc_no`) VALUES
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `infos`
+-- Table structure for table `infos`
 --
 
 CREATE TABLE `infos` (
@@ -94,17 +102,17 @@ CREATE TABLE `infos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `infos`
+-- Dumping data for table `infos`
 --
 
 INSERT INTO `infos` (`inf_seq`, `inf_title`, `inf_text1`, `inf_text2`, `inf_img`, `inf_startdt`, `inf_enddt`, `inf_order`) VALUES
 (8, 'お知らせのタイトル', 'お知らせ本文\r\n上の本文\r\n画像は黒', 'お知らせの下の本文', 'gray.jpg', '2019-12-05', '2019-12-27', 3),
-(10, '１月のお知らせ', 'お知らせ１\r\n２\r\n３\r\n４\r\n', 'お知らせ５\r\n６\r\n７\r\n８\r\n', 'gray.jpg', '2019-12-11', '2020-01-04', 2);
+(10, '１月のお知らせ', 'お知らせ１\r\n２\r\n３\r\n４\r\n', 'お知らせ５\r\n６\r\n７\r\n８\r\n', '2020-1.JPG', '2019-12-11', '2020-01-04', 2);
 
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `log_login`
+-- Table structure for table `log_login`
 --
 
 CREATE TABLE `log_login` (
@@ -113,7 +121,7 @@ CREATE TABLE `log_login` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `log_login`
+-- Dumping data for table `log_login`
 --
 
 INSERT INTO `log_login` (`logindt`, `m_seq`) VALUES
@@ -134,12 +142,15 @@ INSERT INTO `log_login` (`logindt`, `m_seq`) VALUES
 ('2019-12-26 15:39:11', 1),
 ('2019-12-26 16:35:18', 1),
 ('2019-12-26 16:45:39', 1),
-('2019-12-27 10:23:41', 1);
+('2019-12-27 10:23:41', 1),
+('2019-12-29 14:33:01', 1),
+('2019-12-31 14:46:59', 1),
+('2019-12-31 14:51:18', 1);
 
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `members`
+-- Table structure for table `members`
 --
 
 CREATE TABLE `members` (
@@ -156,7 +167,7 @@ CREATE TABLE `members` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `members`
+-- Dumping data for table `members`
 --
 
 INSERT INTO `members` (`m_seq`, `m_id`, `m_pw`, `m_name`, `m_mail`, `m_post`, `m_address1`, `m_address2`, `m_tel`, `createdt`) VALUES
@@ -189,7 +200,7 @@ INSERT INTO `members` (`m_seq`, `m_id`, `m_pw`, `m_name`, `m_mail`, `m_post`, `m
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `prizes`
+-- Table structure for table `prizes`
 --
 
 CREATE TABLE `prizes` (
@@ -204,7 +215,7 @@ CREATE TABLE `prizes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `prizes`
+-- Dumping data for table `prizes`
 --
 
 INSERT INTO `prizes` (`pz_seq`, `p_seq`, `pz_order`, `pz_title`, `pz_code`, `pz_img`, `pz_text`, `pz_nowcnt`) VALUES
@@ -220,7 +231,7 @@ INSERT INTO `prizes` (`pz_seq`, `p_seq`, `pz_order`, `pz_title`, `pz_code`, `pz_
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `promos`
+-- Table structure for table `promos`
 --
 
 CREATE TABLE `promos` (
@@ -235,7 +246,7 @@ CREATE TABLE `promos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `promos`
+-- Dumping data for table `promos`
 --
 
 INSERT INTO `promos` (`p_seq`, `p_title`, `p_text1`, `p_img`, `p_text2`, `p_startdt`, `p_enddt`, `g_seq`) VALUES
@@ -245,7 +256,7 @@ INSERT INTO `promos` (`p_seq`, `p_title`, `p_text1`, `p_img`, `p_text2`, `p_star
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `serialcodes`
+-- Table structure for table `serialcodes`
 --
 
 CREATE TABLE `serialcodes` (
@@ -258,15 +269,15 @@ CREATE TABLE `serialcodes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `serialcodes`
+-- Dumping data for table `serialcodes`
 --
 
 INSERT INTO `serialcodes` (`sc_seq`, `s_seq`, `sc_code`, `entrydt`, `sc_point`, `m_seq`) VALUES
 (16062, 31, '721012131221', '2019-12-19 00:00:00', 100, 1),
 (16063, 31, '483212324232', '2019-12-05 00:00:00', 6, 2),
-(16064, 31, '469432343533', NULL, NULL, NULL),
+(16064, 31, '469432343533', '2019-12-31 14:59:26', 5, 1),
 (16065, 31, '458054345464', '2019-12-13 00:00:00', 4, 1),
-(16066, 31, '756016545655', NULL, NULL, NULL),
+(16066, 31, '756016545655', '2019-12-31 15:07:32', 5, 1),
 (16067, 31, '686722765676', NULL, NULL, NULL),
 (16068, 31, '879784387677', '2019-12-26 16:14:19', 5, 1),
 (16069, 31, '898089649878', '2019-12-26 16:16:15', 5, 1),
@@ -397,12 +408,22 @@ INSERT INTO `serialcodes` (`sc_seq`, `s_seq`, `sc_code`, `entrydt`, `sc_point`, 
 (26194, 34, '879794387677', NULL, NULL, NULL),
 (26195, 34, '898080649878', NULL, NULL, NULL),
 (26196, 34, '890919185099', NULL, NULL, NULL),
-(26197, 34, '109010212060', NULL, NULL, NULL);
+(26197, 34, '109010212060', NULL, NULL, NULL),
+(26198, 35, '221012131421', NULL, NULL, NULL),
+(26199, 35, '433212324252', NULL, NULL, NULL),
+(26200, 35, '664432343533', NULL, NULL, NULL),
+(26201, 35, '478554345464', NULL, NULL, NULL),
+(26202, 35, '758066545655', NULL, NULL, NULL),
+(26203, 35, '686927765676', NULL, NULL, NULL),
+(26204, 35, '879704887677', NULL, NULL, NULL),
+(26205, 35, '898081699878', NULL, NULL, NULL),
+(26206, 35, '890919280099', NULL, NULL, NULL),
+(26207, 35, '109010213010', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `serials`
+-- Table structure for table `serials`
 --
 
 CREATE TABLE `serials` (
@@ -414,18 +435,19 @@ CREATE TABLE `serials` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `serials`
+-- Dumping data for table `serials`
 --
 
 INSERT INTO `serials` (`s_seq`, `s_title`, `s_qty`, `createdt`, `users_seq`) VALUES
 (31, '10123', 10, '2019-12-16 16:52:24', 1),
 (33, '5', 5, '2019-12-25 16:11:54', 1),
-(34, '１０', 10, '2019-12-26 12:26:58', 1);
+(34, '１０', 10, '2019-12-26 12:26:58', 1),
+(35, 'testtest', 10, '2019-12-31 15:34:57', 1);
 
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `ships`
+-- Table structure for table `ships`
 --
 
 CREATE TABLE `ships` (
@@ -443,7 +465,7 @@ CREATE TABLE `ships` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `ships`
+-- Dumping data for table `ships`
 --
 
 INSERT INTO `ships` (`sp_seq`, `m_seq`, `up_seq`, `sp_name`, `sp_post`, `sp_address1`, `sp_address2`, `sp_tel`, `sp_text`, `sp_flg`, `createdt`) VALUES
@@ -454,7 +476,7 @@ INSERT INTO `ships` (`sp_seq`, `m_seq`, `up_seq`, `sp_name`, `sp_post`, `sp_addr
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `systems`
+-- Table structure for table `systems`
 --
 
 CREATE TABLE `systems` (
@@ -471,7 +493,7 @@ CREATE TABLE `systems` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `systems`
+-- Dumping data for table `systems`
 --
 
 INSERT INTO `systems` (`url_parent`, `url_child`, `path_root`, `path_promo`, `path_game`, `path_info`, `path_scode`, `system_name`, `point_entry`, `point_game`) VALUES
@@ -480,7 +502,7 @@ INSERT INTO `systems` (`url_parent`, `url_child`, `path_root`, `path_promo`, `pa
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `usepoints`
+-- Table structure for table `usepoints`
 --
 
 CREATE TABLE `usepoints` (
@@ -495,7 +517,7 @@ CREATE TABLE `usepoints` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `usepoints`
+-- Dumping data for table `usepoints`
 --
 
 INSERT INTO `usepoints` (`up_seq`, `m_seq`, `up_point`, `createdt`, `up_status`, `g_seq`, `p_seq`, `pz_seq`) VALUES
@@ -518,7 +540,7 @@ INSERT INTO `usepoints` (`up_seq`, `m_seq`, `up_point`, `createdt`, `up_status`,
 -- --------------------------------------------------------
 
 --
--- テーブルの構造 `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -529,7 +551,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- テーブルのデータのダンプ `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`users_seq`, `users_id`, `users_pw`, `users_name`) VALUES
@@ -541,8 +563,8 @@ INSERT INTO `users` (`users_seq`, `users_id`, `users_pw`, `users_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- ビュー用の代替構造 `v_lastlogin`
--- (実際のビューを参照するには下にあります)
+-- Stand-in structure for view `v_lastlogin`
+-- (See below for the actual view)
 --
 CREATE TABLE `v_lastlogin` (
 `logindt` datetime
@@ -552,8 +574,8 @@ CREATE TABLE `v_lastlogin` (
 -- --------------------------------------------------------
 
 --
--- ビュー用の代替構造 `v_members`
--- (実際のビューを参照するには下にあります)
+-- Stand-in structure for view `v_members`
+-- (See below for the actual view)
 --
 CREATE TABLE `v_members` (
 `m_seq` int(11)
@@ -581,8 +603,8 @@ CREATE TABLE `v_members` (
 -- --------------------------------------------------------
 
 --
--- ビュー用の代替構造 `v_point`
--- (実際のビューを参照するには下にあります)
+-- Stand-in structure for view `v_point`
+-- (See below for the actual view)
 --
 CREATE TABLE `v_point` (
 `m_seq` int(11)
@@ -592,8 +614,8 @@ CREATE TABLE `v_point` (
 -- --------------------------------------------------------
 
 --
--- ビュー用の代替構造 `v_prizes`
--- (実際のビューを参照するには下にあります)
+-- Stand-in structure for view `v_prizes`
+-- (See below for the actual view)
 --
 CREATE TABLE `v_prizes` (
 `pz_seq` int(11)
@@ -610,8 +632,8 @@ CREATE TABLE `v_prizes` (
 -- --------------------------------------------------------
 
 --
--- ビュー用の代替構造 `v_serialcodes`
--- (実際のビューを参照するには下にあります)
+-- Stand-in structure for view `v_serialcodes`
+-- (See below for the actual view)
 --
 CREATE TABLE `v_serialcodes` (
 `s_seq` int(11)
@@ -630,8 +652,8 @@ CREATE TABLE `v_serialcodes` (
 -- --------------------------------------------------------
 
 --
--- ビュー用の代替構造 `v_ships`
--- (実際のビューを参照するには下にあります)
+-- Stand-in structure for view `v_ships`
+-- (See below for the actual view)
 --
 CREATE TABLE `v_ships` (
 `sp_seq` int(11)
@@ -658,8 +680,8 @@ CREATE TABLE `v_ships` (
 -- --------------------------------------------------------
 
 --
--- ビュー用の代替構造 `v_usepoints`
--- (実際のビューを参照するには下にあります)
+-- Stand-in structure for view `v_usepoints`
+-- (See below for the actual view)
 --
 CREATE TABLE `v_usepoints` (
 `up_seq` int(11)
@@ -678,65 +700,65 @@ CREATE TABLE `v_usepoints` (
 -- --------------------------------------------------------
 
 --
--- ビュー用の構造 `v_lastlogin`
+-- Structure for view `v_lastlogin`
 --
 DROP TABLE IF EXISTS `v_lastlogin`;
 
-CREATE  VIEW `v_lastlogin`  AS  select max(`log_login`.`logindt`) AS `logindt`,`log_login`.`m_seq` AS `m_seq` from `log_login` group by `log_login`.`m_seq` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_lastlogin`  AS  select max(`log_login`.`logindt`) AS `logindt`,`log_login`.`m_seq` AS `m_seq` from `log_login` group by `log_login`.`m_seq` ;
 
 -- --------------------------------------------------------
 
 --
--- ビュー用の構造 `v_members`
+-- Structure for view `v_members`
 --
 DROP TABLE IF EXISTS `v_members`;
 
-CREATE  VIEW `v_members`  AS  select `M`.`m_seq` AS `m_seq`,`M`.`m_id` AS `m_id`,`M`.`m_pw` AS `m_pw`,`M`.`m_name` AS `m_name`,`M`.`m_mail` AS `m_mail`,`M`.`m_post` AS `m_post`,`M`.`m_address1` AS `m_address1`,`M`.`m_address2` AS `m_address2`,`M`.`m_tel` AS `m_tel`,`M`.`createdt` AS `createdt`,(case isnull((((`sc`.`sc_point` - `up99`.`up_point_99`) - `up0`.`up_point_0`) - `up1`.`up_point_1`)) when 1 then 0 else (((`sc`.`sc_point` - `up99`.`up_point_99`) - `up0`.`up_point_0`) - `up1`.`up_point_1`) end) AS `crnt_point`,(case isnull(`sc`.`sc_cnt`) when 1 then 0 else `sc`.`sc_cnt` end) AS `sc_cnt`,(case isnull(`sc`.`sc_point`) when 1 then 0 else `sc`.`sc_point` end) AS `sc_point`,(case isnull(`up0`.`cnt_0`) when 1 then 0 else `up0`.`cnt_0` end) AS `cnt_0`,(case isnull(`up0`.`up_point_0`) when 1 then 0 else `up0`.`up_point_0` end) AS `up_point_0`,(case isnull(`up1`.`cnt_1`) when 1 then 0 else `up1`.`cnt_1` end) AS `cnt_1`,(case isnull(`up1`.`up_point_1`) when 1 then 0 else `up1`.`up_point_1` end) AS `up_point_1`,(case isnull(`up99`.`cnt_99`) when 1 then 0 else `up99`.`cnt_99` end) AS `cnt_99`,(case isnull(`up99`.`up_point_99`) when 1 then 0 else `up99`.`up_point_99` end) AS `up_point_99`,`l`.`logindt` AS `logindt` from (((((`members` `M` left join (select `serialcodes`.`m_seq` AS `m_seq`,count(0) AS `sc_cnt`,sum(`serialcodes`.`sc_point`) AS `sc_point` from `serialcodes` where (`serialcodes`.`m_seq` is not null) group by `serialcodes`.`m_seq`) `sc` on((`sc`.`m_seq` = `M`.`m_seq`))) left join (select `usepoints`.`m_seq` AS `m_seq`,count(0) AS `cnt_0`,sum(`usepoints`.`up_point`) AS `up_point_0` from `usepoints` where (`usepoints`.`up_status` = 0) group by `usepoints`.`m_seq`) `up0` on((`up0`.`m_seq` = `M`.`m_seq`))) left join (select `usepoints`.`m_seq` AS `m_seq`,count(0) AS `cnt_1`,sum(`usepoints`.`up_point`) AS `up_point_1` from `usepoints` where (`usepoints`.`up_status` = 1) group by `usepoints`.`m_seq`) `up1` on((`up1`.`m_seq` = `M`.`m_seq`))) left join (select `usepoints`.`m_seq` AS `m_seq`,count(0) AS `cnt_99`,sum(`usepoints`.`up_point`) AS `up_point_99` from `usepoints` where (`usepoints`.`up_status` = 99) group by `usepoints`.`m_seq`) `up99` on((`up99`.`m_seq` = `M`.`m_seq`))) left join `v_lastlogin` `l` on((`l`.`m_seq` = `M`.`m_seq`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_members`  AS  select `m`.`m_seq` AS `m_seq`,`m`.`m_id` AS `m_id`,`m`.`m_pw` AS `m_pw`,`m`.`m_name` AS `m_name`,`m`.`m_mail` AS `m_mail`,`m`.`m_post` AS `m_post`,`m`.`m_address1` AS `m_address1`,`m`.`m_address2` AS `m_address2`,`m`.`m_tel` AS `m_tel`,`m`.`createdt` AS `createdt`,(case isnull((((`sc`.`sc_point` - `up99`.`up_point_99`) - `up0`.`up_point_0`) - `up1`.`up_point_1`)) when 1 then 0 else (((`sc`.`sc_point` - `up99`.`up_point_99`) - `up0`.`up_point_0`) - `up1`.`up_point_1`) end) AS `crnt_point`,(case isnull(`sc`.`sc_cnt`) when 1 then 0 else `sc`.`sc_cnt` end) AS `sc_cnt`,(case isnull(`sc`.`sc_point`) when 1 then 0 else `sc`.`sc_point` end) AS `sc_point`,(case isnull(`up0`.`cnt_0`) when 1 then 0 else `up0`.`cnt_0` end) AS `cnt_0`,(case isnull(`up0`.`up_point_0`) when 1 then 0 else `up0`.`up_point_0` end) AS `up_point_0`,(case isnull(`up1`.`cnt_1`) when 1 then 0 else `up1`.`cnt_1` end) AS `cnt_1`,(case isnull(`up1`.`up_point_1`) when 1 then 0 else `up1`.`up_point_1` end) AS `up_point_1`,(case isnull(`up99`.`cnt_99`) when 1 then 0 else `up99`.`cnt_99` end) AS `cnt_99`,(case isnull(`up99`.`up_point_99`) when 1 then 0 else `up99`.`up_point_99` end) AS `up_point_99`,`l`.`logindt` AS `logindt` from (((((`members` `m` left join (select `serialcodes`.`m_seq` AS `m_seq`,count(0) AS `sc_cnt`,sum(`serialcodes`.`sc_point`) AS `sc_point` from `serialcodes` where (`serialcodes`.`m_seq` is not null) group by `serialcodes`.`m_seq`) `sc` on((`sc`.`m_seq` = `m`.`m_seq`))) left join (select `usepoints`.`m_seq` AS `m_seq`,count(0) AS `cnt_0`,sum(`usepoints`.`up_point`) AS `up_point_0` from `usepoints` where (`usepoints`.`up_status` = 0) group by `usepoints`.`m_seq`) `up0` on((`up0`.`m_seq` = `m`.`m_seq`))) left join (select `usepoints`.`m_seq` AS `m_seq`,count(0) AS `cnt_1`,sum(`usepoints`.`up_point`) AS `up_point_1` from `usepoints` where (`usepoints`.`up_status` = 1) group by `usepoints`.`m_seq`) `up1` on((`up1`.`m_seq` = `m`.`m_seq`))) left join (select `usepoints`.`m_seq` AS `m_seq`,count(0) AS `cnt_99`,sum(`usepoints`.`up_point`) AS `up_point_99` from `usepoints` where (`usepoints`.`up_status` = 99) group by `usepoints`.`m_seq`) `up99` on((`up99`.`m_seq` = `m`.`m_seq`))) left join `v_lastlogin` `l` on((`l`.`m_seq` = `m`.`m_seq`))) ;
 
 -- --------------------------------------------------------
 
 --
--- ビュー用の構造 `v_point`
+-- Structure for view `v_point`
 --
 DROP TABLE IF EXISTS `v_point`;
 
-CREATE  VIEW `v_point`  AS  select `a`.`m_seq` AS `m_seq`,sum(`a`.`point`) AS `point` from (select `serialcodes`.`m_seq` AS `m_seq`,sum(`serialcodes`.`sc_point`) AS `point` from `serialcodes` where (`serialcodes`.`m_seq` is not null) group by `serialcodes`.`m_seq` union select `usepoints`.`m_seq` AS `m_seq`,(sum(`usepoints`.`up_point`) * -(1)) AS `point` from `usepoints` group by `usepoints`.`m_seq`) `a` group by `a`.`m_seq` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_point`  AS  select `a`.`m_seq` AS `m_seq`,sum(`a`.`point`) AS `point` from (select `serialcodes`.`m_seq` AS `m_seq`,sum(`serialcodes`.`sc_point`) AS `point` from `serialcodes` where (`serialcodes`.`m_seq` is not null) group by `serialcodes`.`m_seq` union select `usepoints`.`m_seq` AS `m_seq`,(sum(`usepoints`.`up_point`) * -(1)) AS `point` from `usepoints` group by `usepoints`.`m_seq`) `a` group by `a`.`m_seq` ;
 
 -- --------------------------------------------------------
 
 --
--- ビュー用の構造 `v_prizes`
+-- Structure for view `v_prizes`
 --
 DROP TABLE IF EXISTS `v_prizes`;
 
-CREATE  VIEW `v_prizes`  AS  select `p`.`pz_seq` AS `pz_seq`,`p`.`p_seq` AS `p_seq`,`p`.`pz_order` AS `pz_order`,`p`.`pz_title` AS `pz_title`,`p`.`pz_code` AS `pz_code`,`p`.`pz_img` AS `pz_img`,`p`.`pz_text` AS `pz_text`,`p`.`pz_nowcnt` AS `pz_nowcnt`,`h`.`hc_no` AS `hc_no` from (`prizes` `p` left join (select `hitcounts`.`p_seq` AS `p_seq`,`hitcounts`.`pz_seq` AS `pz_seq`,group_concat(`hitcounts`.`hc_no` separator ',') AS `hc_no` from `hitcounts` group by `hitcounts`.`p_seq`,`hitcounts`.`pz_seq`) `h` on(((`p`.`p_seq` = `h`.`p_seq`) and (`p`.`pz_seq` = `h`.`pz_seq`)))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_prizes`  AS  select `p`.`pz_seq` AS `pz_seq`,`p`.`p_seq` AS `p_seq`,`p`.`pz_order` AS `pz_order`,`p`.`pz_title` AS `pz_title`,`p`.`pz_code` AS `pz_code`,`p`.`pz_img` AS `pz_img`,`p`.`pz_text` AS `pz_text`,`p`.`pz_nowcnt` AS `pz_nowcnt`,`h`.`hc_no` AS `hc_no` from (`prizes` `p` left join (select `hitcounts`.`p_seq` AS `p_seq`,`hitcounts`.`pz_seq` AS `pz_seq`,group_concat(`hitcounts`.`hc_no` separator ',') AS `hc_no` from `hitcounts` group by `hitcounts`.`p_seq`,`hitcounts`.`pz_seq`) `h` on(((`p`.`p_seq` = `h`.`p_seq`) and (`p`.`pz_seq` = `h`.`pz_seq`)))) ;
 
 -- --------------------------------------------------------
 
 --
--- ビュー用の構造 `v_serialcodes`
+-- Structure for view `v_serialcodes`
 --
 DROP TABLE IF EXISTS `v_serialcodes`;
 
-CREATE  VIEW `v_serialcodes`  AS  select `S`.`s_seq` AS `s_seq`,`S`.`s_title` AS `s_title`,`S`.`s_qty` AS `s_qty`,`S`.`createdt` AS `createdt`,`S`.`users_seq` AS `users_seq`,`SC`.`sc_seq` AS `sc_seq`,`SC`.`sc_code` AS `sc_code`,`SC`.`entrydt` AS `entrydt`,`SC`.`sc_point` AS `sc_point`,`SC`.`m_seq` AS `m_seq`,`M`.`m_name` AS `m_name` from ((`serials` `S` left join `serialcodes` `SC` on((`S`.`s_seq` = `SC`.`s_seq`))) left join `members` `M` on((`SC`.`m_seq` = `M`.`m_seq`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_serialcodes`  AS  select `s`.`s_seq` AS `s_seq`,`s`.`s_title` AS `s_title`,`s`.`s_qty` AS `s_qty`,`s`.`createdt` AS `createdt`,`s`.`users_seq` AS `users_seq`,`sc`.`sc_seq` AS `sc_seq`,`sc`.`sc_code` AS `sc_code`,`sc`.`entrydt` AS `entrydt`,`sc`.`sc_point` AS `sc_point`,`sc`.`m_seq` AS `m_seq`,`m`.`m_name` AS `m_name` from ((`serials` `s` left join `serialcodes` `sc` on((`s`.`s_seq` = `sc`.`s_seq`))) left join `members` `m` on((`sc`.`m_seq` = `m`.`m_seq`))) ;
 
 -- --------------------------------------------------------
 
 --
--- ビュー用の構造 `v_ships`
+-- Structure for view `v_ships`
 --
 DROP TABLE IF EXISTS `v_ships`;
 
-CREATE  VIEW `v_ships`  AS  select `ships`.`sp_seq` AS `sp_seq`,`ships`.`m_seq` AS `m_seq`,`ships`.`up_seq` AS `up_seq`,`ships`.`sp_name` AS `sp_name`,`ships`.`sp_post` AS `sp_post`,`ships`.`sp_address1` AS `sp_address1`,`ships`.`sp_address2` AS `sp_address2`,`ships`.`sp_tel` AS `sp_tel`,`ships`.`sp_text` AS `sp_text`,`ships`.`sp_flg` AS `sp_flg`,`ships`.`createdt` AS `createdt`,`v_usepoints`.`p_title` AS `p_title`,`v_usepoints`.`pz_title` AS `pz_title`,`members`.`m_name` AS `m_name`,`members`.`m_mail` AS `m_mail`,`members`.`m_post` AS `m_post`,`members`.`m_address1` AS `m_address1`,`members`.`m_address2` AS `m_address2`,`members`.`m_tel` AS `m_tel` from ((`ships` left join `v_usepoints` on((`ships`.`up_seq` = `v_usepoints`.`up_seq`))) left join `members` on((`members`.`m_seq` = `ships`.`m_seq`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_ships`  AS  select `ships`.`sp_seq` AS `sp_seq`,`ships`.`m_seq` AS `m_seq`,`ships`.`up_seq` AS `up_seq`,`ships`.`sp_name` AS `sp_name`,`ships`.`sp_post` AS `sp_post`,`ships`.`sp_address1` AS `sp_address1`,`ships`.`sp_address2` AS `sp_address2`,`ships`.`sp_tel` AS `sp_tel`,`ships`.`sp_text` AS `sp_text`,`ships`.`sp_flg` AS `sp_flg`,`ships`.`createdt` AS `createdt`,`v_usepoints`.`p_title` AS `p_title`,`v_usepoints`.`pz_title` AS `pz_title`,`members`.`m_name` AS `m_name`,`members`.`m_mail` AS `m_mail`,`members`.`m_post` AS `m_post`,`members`.`m_address1` AS `m_address1`,`members`.`m_address2` AS `m_address2`,`members`.`m_tel` AS `m_tel` from ((`ships` left join `v_usepoints` on((`ships`.`up_seq` = `v_usepoints`.`up_seq`))) left join `members` on((`members`.`m_seq` = `ships`.`m_seq`))) ;
 
 -- --------------------------------------------------------
 
 --
--- ビュー用の構造 `v_usepoints`
+-- Structure for view `v_usepoints`
 --
 DROP TABLE IF EXISTS `v_usepoints`;
 
-CREATE  VIEW `v_usepoints`  AS  select `U`.`up_seq` AS `up_seq`,`U`.`m_seq` AS `m_seq`,`U`.`up_point` AS `up_point`,`U`.`createdt` AS `createdt`,`U`.`up_status` AS `up_status`,`U`.`g_seq` AS `g_seq`,`U`.`p_seq` AS `p_seq`,`U`.`pz_seq` AS `pz_seq`,`M`.`m_name` AS `m_name`,`P`.`p_title` AS `p_title`,`PZ`.`pz_title` AS `pz_title` from (((`usepoints` `U` left join `members` `M` on((`U`.`m_seq` = `M`.`m_seq`))) left join `promos` `P` on((`P`.`p_seq` = `U`.`p_seq`))) left join `prizes` `PZ` on((`U`.`pz_seq` = `PZ`.`pz_seq`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_usepoints`  AS  select `u`.`up_seq` AS `up_seq`,`u`.`m_seq` AS `m_seq`,`u`.`up_point` AS `up_point`,`u`.`createdt` AS `createdt`,`u`.`up_status` AS `up_status`,`u`.`g_seq` AS `g_seq`,`u`.`p_seq` AS `p_seq`,`u`.`pz_seq` AS `pz_seq`,`m`.`m_name` AS `m_name`,`p`.`p_title` AS `p_title`,`pz`.`pz_title` AS `pz_title` from (((`usepoints` `u` left join `members` `m` on((`u`.`m_seq` = `m`.`m_seq`))) left join `promos` `p` on((`p`.`p_seq` = `u`.`p_seq`))) left join `prizes` `pz` on((`u`.`pz_seq` = `pz`.`pz_seq`))) ;
 
 --
 -- Indexes for dumped tables
@@ -853,13 +875,13 @@ ALTER TABLE `promos`
 -- AUTO_INCREMENT for table `serialcodes`
 --
 ALTER TABLE `serialcodes`
-  MODIFY `sc_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26198;
+  MODIFY `sc_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26208;
 
 --
 -- AUTO_INCREMENT for table `serials`
 --
 ALTER TABLE `serials`
-  MODIFY `s_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `s_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `ships`
@@ -878,3 +900,8 @@ ALTER TABLE `usepoints`
 --
 ALTER TABLE `users`
   MODIFY `users_seq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
