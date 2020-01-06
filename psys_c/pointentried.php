@@ -16,6 +16,11 @@ $errorMessage = "";
 $addPt = $_GET['addPt'];
 
 
+require_once './db/members.php';
+$member = new cls_members();
+$member = getMyPoints(getSsn("SEQ"));
+
+
 ?>
 <!DOCTYPE HTML>
 <html lang="ja">
@@ -46,8 +51,9 @@ $addPt = $_GET['addPt'];
     <section id="banner">
 				<div class="inner">
                 <h1>ポイント登録完了</h1>
-					<h2><br><?php echo $addPt; ?>ポイント加算されました。<br></h2>
+					<h2><br><?php echo $addPt; ?>ポイント加算されて、合計<?php echo $member->crnt_point; ?>ポイントになりました。<br></h2>
 					<ul class="actions">
+						<li><a href="pointentry.php" class="button alt scrolly big">続けて登録する</a></li>
 						<li><a href="home.php" class="button alt scrolly big">ホームに戻る</a></li>
 					</ul>
 

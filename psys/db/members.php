@@ -132,7 +132,7 @@ class cls_members
                 $result->m_address2 = $row['m_address2'];
                 $result->m_tel = $row['m_tel'];
                 $result->createdt = $row['createdt'];
-                $result->crnt_point = $row['crnt_point'];
+                //$result->crnt_point = $row['crnt_point'];
                 $result->sc_cnt = $row['sc_cnt'];
                 $result->sc_point = $row['sc_point'];
                 $result->cnt_0 = $row['cnt_0'];
@@ -142,6 +142,7 @@ class cls_members
                 $result->cnt_99 = $row['cnt_99'];
                 $result->up_point_99 = $row['up_point_99'];
                 $result->logindt = $row['logindt'];
+                $result->crnt_point = $row['sc_point'] - $row['up_point_0'] - $row['up_point_1'] - $row['up_point_99'];
                 array_push($results, $result);
             }
         } catch (PDOException $e) {

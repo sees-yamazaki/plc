@@ -24,7 +24,7 @@ $html1 .= "<h1>".$promo->p_title>"aaa</h1>";
 if (isset($promo->p_text1)) {
     $html1 .= "<h3>".nl2br($promo->p_text1)."</h3>";
 }
-if (isset($promo->p_text1)) {
+if (isset($promo->p_img)) {
     $html1 .= "<img class='img80' border=0 src='./".getSsn('PATH_PROMO')."/".$promo->p_seq."/".$promo->p_img."'>";
 }
 if (isset($promo->p_text2)) {
@@ -41,7 +41,7 @@ foreach ($prizes as $prize) {
     if (!empty($prize->pz_img)) {
         $html2 .= "<img class='img80' border=0 src='./".getSsn('PATH_PROMO')."/".$promo->p_seq."/".$prize->pz_img."'><br>";
     }
-    if (!empty($prize->p_img)) {
+    if (!empty($prize->pz_text)) {
         $html2 .= nl2br($prize->pz_text).'<br>';
     }
     $html2 .= "<ul class='actions'>";

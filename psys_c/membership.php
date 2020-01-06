@@ -61,20 +61,21 @@ $errorMessage = "";
                 <div class="">
                     お名前
                     <input type="text" name="m_name" id="m_name" value="<?php echo $member->m_name ?>"
-                        placeholder="name" />
+                        placeholder="name" maxlength='20' required />
                     MAIL
                     <input type="text" name="m_mail" id="m_mail" value="<?php echo $member->m_mail ?>"
-                        placeholder="e-mail" />
-                    郵便番号
-                    <input type="text" name="m_post" id="m_post" value="<?php echo $member->m_post ?>"
-                        placeholder="postcode" />
-                    住所
+                        placeholder="e-mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required />
+                    郵便番号(ハイフン無し)
+                    <input type="number" name="m_post" id="m_post" value="<?php echo $member->m_post ?>"
+                        placeholder="postcode" maxlength='7'  onKeyUp="AjaxZip3.zip2addr('m_post', '', 'm_address1', 'm_address1');" required />
+                    住所（番地まで）
                     <input type="text" name="m_address1" id="m_address1" value="<?php echo $member->m_address1 ?>"
-                        placeholder="address" />
+                        placeholder="address" maxlength='50'  required />
+                        （マンション名・部屋番号）
                     <input type="text" name="m_address2" id="m_address2" value="<?php echo $member->m_address2 ?>"
-                        placeholder="address" />
+                        placeholder="address" maxlength='50' />
                     電話番号
-                    <input type="text" name="m_tel" id="m_tel" value="<?php echo $member->m_tel ?>" placeholder="tel" />
+                    <input type="text" name="m_tel" id="m_tel" value="<?php echo $member->m_tel ?>" placeholder="tel" maxlength='13' pattern="^[-0-9]+$" required />
                 </div><br>
                 <ul class="actions">
                     <li><a href="javascript:editFrm.submit()" class="button alt scrolly big">登録する</a></li>
@@ -108,6 +109,7 @@ $errorMessage = "";
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="asset/js/main.js"></script>
+    <script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 
 </body>
 

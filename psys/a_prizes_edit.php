@@ -38,7 +38,7 @@ $errorMessage = '';
                 //アップロードファイルの検証
                 $filepath = pathinfo($_FILES['pz_img']['name']);
 
-                if (!($filepath['extension'] == 'png' || $filepath['extension'] == 'bmp' || $filepath['extension'] == 'jpg')) {
+                if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
                     $errorMessage .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
                 }
 

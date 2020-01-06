@@ -112,7 +112,7 @@ $ship = new cls_ships();
         </form>
 
         <div class="inner">
-            <h1>会員情報の確認</h1>
+            <h1>発送先情報の確認</h1>
             <form action="" method="POST" onsubmit="return addcheck()" name="editFrm">
                 <div class="">
                     <h3>

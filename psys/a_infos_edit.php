@@ -42,7 +42,7 @@ if (!isset($iSeq)) {
                 //アップロードファイルの検証
                 $filepath = pathinfo($_FILES['inf_img']['name']);
 
-                if (!($filepath['extension'] == 'png' || $filepath['extension'] == 'bmp' || $filepath['extension'] == 'jpg')) {
+                if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
                     $errorMessage .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
                 }
 
@@ -201,6 +201,27 @@ if ($iSeq>0) {
                                                 <label class="radio-label">
                                                     <input name="imgStts" type="radio" value="3">画像を削除する<i
                                                         class="input-frame"></i>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <?php } ?>
+                                    
+                                    <?php if ($iSeq > 0) {    ?>
+                                    <div class="form-group row showcase_row_area">
+                                        <div class="col-md-3 showcase_text_area">
+                                            <label for="inputType1">現在の登録画像</label>
+                                        </div>
+
+                                        <div class="form-inline">
+                                            <div class="radio mb-3">
+                                                <label class="radio-label">
+                                                    <?php if (empty($info->inf_img)) {    ?>
+                                                        画像登録無し
+                                                    <?php }else{ ?>
+                                                        <img src="./mydata/info/<?php echo $iSeq; ?>/<?php echo $info->inf_img; ?>" height=200>
+                                                    <?php } ?>
                                                 </label>
                                             </div>
                                         </div>

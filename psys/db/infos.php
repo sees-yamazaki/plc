@@ -169,6 +169,8 @@ function getOpenInfos($dt)
 
             if ($infos->imgStts == 1) {
                 $file = getSsn('PATH_INFO').'/'.$infos->inf_seq.'/'.basename($_FILES['inf_img']['name']);
+                echo "----------------------------------------------------";
+                echo $file;
                 move_uploaded_file($_FILES['inf_img']['tmp_name'], $file);
             }
 

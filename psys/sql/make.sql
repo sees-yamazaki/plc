@@ -682,7 +682,7 @@ CREATE TABLE `v_usepoints` (
 --
 DROP TABLE IF EXISTS `v_lastlogin`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_lastlogin`  AS  select max(`log_login`.`logindt`) AS `logindt`,`log_login`.`m_seq` AS `m_seq` from `log_login` group by `log_login`.`m_seq` ;
+CREATE  VIEW `v_lastlogin`  AS  select max(`log_login`.`logindt`) AS `logindt`,`log_login`.`m_seq` AS `m_seq` from `log_login` group by `log_login`.`m_seq` ;
 
 -- --------------------------------------------------------
 
@@ -691,7 +691,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_members`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_members`  AS  select `M`.`m_seq` AS `m_seq`,`M`.`m_id` AS `m_id`,`M`.`m_pw` AS `m_pw`,`M`.`m_name` AS `m_name`,`M`.`m_mail` AS `m_mail`,`M`.`m_post` AS `m_post`,`M`.`m_address1` AS `m_address1`,`M`.`m_address2` AS `m_address2`,`M`.`m_tel` AS `m_tel`,`M`.`createdt` AS `createdt`,(case isnull((((`sc`.`sc_point` - `up99`.`up_point_99`) - `up0`.`up_point_0`) - `up1`.`up_point_1`)) when 1 then 0 else (((`sc`.`sc_point` - `up99`.`up_point_99`) - `up0`.`up_point_0`) - `up1`.`up_point_1`) end) AS `crnt_point`,(case isnull(`sc`.`sc_cnt`) when 1 then 0 else `sc`.`sc_cnt` end) AS `sc_cnt`,(case isnull(`sc`.`sc_point`) when 1 then 0 else `sc`.`sc_point` end) AS `sc_point`,(case isnull(`up0`.`cnt_0`) when 1 then 0 else `up0`.`cnt_0` end) AS `cnt_0`,(case isnull(`up0`.`up_point_0`) when 1 then 0 else `up0`.`up_point_0` end) AS `up_point_0`,(case isnull(`up1`.`cnt_1`) when 1 then 0 else `up1`.`cnt_1` end) AS `cnt_1`,(case isnull(`up1`.`up_point_1`) when 1 then 0 else `up1`.`up_point_1` end) AS `up_point_1`,(case isnull(`up99`.`cnt_99`) when 1 then 0 else `up99`.`cnt_99` end) AS `cnt_99`,(case isnull(`up99`.`up_point_99`) when 1 then 0 else `up99`.`up_point_99` end) AS `up_point_99`,`l`.`logindt` AS `logindt` from (((((`members` `M` left join (select `serialcodes`.`m_seq` AS `m_seq`,count(0) AS `sc_cnt`,sum(`serialcodes`.`sc_point`) AS `sc_point` from `serialcodes` where (`serialcodes`.`m_seq` is not null) group by `serialcodes`.`m_seq`) `SC` on((`sc`.`m_seq` = `M`.`m_seq`))) left join (select `usepoints`.`m_seq` AS `m_seq`,count(0) AS `cnt_0`,sum(`usepoints`.`up_point`) AS `up_point_0` from `usepoints` where (`usepoints`.`up_status` = 0) group by `usepoints`.`m_seq`) `UP0` on((`up0`.`m_seq` = `M`.`m_seq`))) left join (select `usepoints`.`m_seq` AS `m_seq`,count(0) AS `cnt_1`,sum(`usepoints`.`up_point`) AS `up_point_1` from `usepoints` where (`usepoints`.`up_status` = 1) group by `usepoints`.`m_seq`) `UP1` on((`up1`.`m_seq` = `M`.`m_seq`))) left join (select `usepoints`.`m_seq` AS `m_seq`,count(0) AS `cnt_99`,sum(`usepoints`.`up_point`) AS `up_point_99` from `usepoints` where (`usepoints`.`up_status` = 99) group by `usepoints`.`m_seq`) `UP99` on((`up99`.`m_seq` = `M`.`m_seq`))) left join `v_lastlogin` `L` on((`l`.`m_seq` = `M`.`m_seq`))) ;
+CREATE  VIEW `v_members`  AS  select `M`.`m_seq` AS `m_seq`,`M`.`m_id` AS `m_id`,`M`.`m_pw` AS `m_pw`,`M`.`m_name` AS `m_name`,`M`.`m_mail` AS `m_mail`,`M`.`m_post` AS `m_post`,`M`.`m_address1` AS `m_address1`,`M`.`m_address2` AS `m_address2`,`M`.`m_tel` AS `m_tel`,`M`.`createdt` AS `createdt`,(case isnull((((`sc`.`sc_point` - `up99`.`up_point_99`) - `up0`.`up_point_0`) - `up1`.`up_point_1`)) when 1 then 0 else (((`sc`.`sc_point` - `up99`.`up_point_99`) - `up0`.`up_point_0`) - `up1`.`up_point_1`) end) AS `crnt_point`,(case isnull(`sc`.`sc_cnt`) when 1 then 0 else `sc`.`sc_cnt` end) AS `sc_cnt`,(case isnull(`sc`.`sc_point`) when 1 then 0 else `sc`.`sc_point` end) AS `sc_point`,(case isnull(`up0`.`cnt_0`) when 1 then 0 else `up0`.`cnt_0` end) AS `cnt_0`,(case isnull(`up0`.`up_point_0`) when 1 then 0 else `up0`.`up_point_0` end) AS `up_point_0`,(case isnull(`up1`.`cnt_1`) when 1 then 0 else `up1`.`cnt_1` end) AS `cnt_1`,(case isnull(`up1`.`up_point_1`) when 1 then 0 else `up1`.`up_point_1` end) AS `up_point_1`,(case isnull(`up99`.`cnt_99`) when 1 then 0 else `up99`.`cnt_99` end) AS `cnt_99`,(case isnull(`up99`.`up_point_99`) when 1 then 0 else `up99`.`up_point_99` end) AS `up_point_99`,`l`.`logindt` AS `logindt` from (((((`members` `M` left join (select `serialcodes`.`m_seq` AS `m_seq`,count(0) AS `sc_cnt`,sum(`serialcodes`.`sc_point`) AS `sc_point` from `serialcodes` where (`serialcodes`.`m_seq` is not null) group by `serialcodes`.`m_seq`) `sc` on((`sc`.`m_seq` = `M`.`m_seq`))) left join (select `usepoints`.`m_seq` AS `m_seq`,count(0) AS `cnt_0`,sum(`usepoints`.`up_point`) AS `up_point_0` from `usepoints` where (`usepoints`.`up_status` = 0) group by `usepoints`.`m_seq`) `up0` on((`up0`.`m_seq` = `M`.`m_seq`))) left join (select `usepoints`.`m_seq` AS `m_seq`,count(0) AS `cnt_1`,sum(`usepoints`.`up_point`) AS `up_point_1` from `usepoints` where (`usepoints`.`up_status` = 1) group by `usepoints`.`m_seq`) `up1` on((`up1`.`m_seq` = `M`.`m_seq`))) left join (select `usepoints`.`m_seq` AS `m_seq`,count(0) AS `cnt_99`,sum(`usepoints`.`up_point`) AS `up_point_99` from `usepoints` where (`usepoints`.`up_status` = 99) group by `usepoints`.`m_seq`) `up99` on((`up99`.`m_seq` = `M`.`m_seq`))) left join `v_lastlogin` `l` on((`l`.`m_seq` = `M`.`m_seq`))) ;
 
 -- --------------------------------------------------------
 
@@ -700,7 +700,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_point`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_point`  AS  select `a`.`m_seq` AS `m_seq`,sum(`a`.`point`) AS `point` from (select `serialcodes`.`m_seq` AS `m_seq`,sum(`serialcodes`.`sc_point`) AS `point` from `serialcodes` where (`serialcodes`.`m_seq` is not null) group by `serialcodes`.`m_seq` union select `usepoints`.`m_seq` AS `m_seq`,(sum(`usepoints`.`up_point`) * -(1)) AS `point` from `usepoints` group by `usepoints`.`m_seq`) `a` group by `a`.`m_seq` ;
+CREATE  VIEW `v_point`  AS  select `a`.`m_seq` AS `m_seq`,sum(`a`.`point`) AS `point` from (select `serialcodes`.`m_seq` AS `m_seq`,sum(`serialcodes`.`sc_point`) AS `point` from `serialcodes` where (`serialcodes`.`m_seq` is not null) group by `serialcodes`.`m_seq` union select `usepoints`.`m_seq` AS `m_seq`,(sum(`usepoints`.`up_point`) * -(1)) AS `point` from `usepoints` group by `usepoints`.`m_seq`) `a` group by `a`.`m_seq` ;
 
 -- --------------------------------------------------------
 
@@ -709,7 +709,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_prizes`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_prizes`  AS  select `p`.`pz_seq` AS `pz_seq`,`p`.`p_seq` AS `p_seq`,`p`.`pz_order` AS `pz_order`,`p`.`pz_title` AS `pz_title`,`p`.`pz_code` AS `pz_code`,`p`.`pz_img` AS `pz_img`,`p`.`pz_text` AS `pz_text`,`p`.`pz_nowcnt` AS `pz_nowcnt`,`h`.`hc_no` AS `hc_no` from (`prizes` `p` left join (select `hitcounts`.`p_seq` AS `p_seq`,`hitcounts`.`pz_seq` AS `pz_seq`,group_concat(`hitcounts`.`hc_no` separator ',') AS `hc_no` from `hitcounts` group by `hitcounts`.`p_seq`,`hitcounts`.`pz_seq`) `h` on(((`p`.`p_seq` = `h`.`p_seq`) and (`p`.`pz_seq` = `h`.`pz_seq`)))) ;
+CREATE  VIEW `v_prizes`  AS  select `p`.`pz_seq` AS `pz_seq`,`p`.`p_seq` AS `p_seq`,`p`.`pz_order` AS `pz_order`,`p`.`pz_title` AS `pz_title`,`p`.`pz_code` AS `pz_code`,`p`.`pz_img` AS `pz_img`,`p`.`pz_text` AS `pz_text`,`p`.`pz_nowcnt` AS `pz_nowcnt`,`h`.`hc_no` AS `hc_no` from (`prizes` `p` left join (select `hitcounts`.`p_seq` AS `p_seq`,`hitcounts`.`pz_seq` AS `pz_seq`,group_concat(`hitcounts`.`hc_no` separator ',') AS `hc_no` from `hitcounts` group by `hitcounts`.`p_seq`,`hitcounts`.`pz_seq`) `h` on(((`p`.`p_seq` = `h`.`p_seq`) and (`p`.`pz_seq` = `h`.`pz_seq`)))) ;
 
 -- --------------------------------------------------------
 
@@ -718,7 +718,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_serialcodes`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_serialcodes`  AS  select `S`.`s_seq` AS `s_seq`,`S`.`s_title` AS `s_title`,`S`.`s_qty` AS `s_qty`,`S`.`createdt` AS `createdt`,`S`.`users_seq` AS `users_seq`,`SC`.`sc_seq` AS `sc_seq`,`SC`.`sc_code` AS `sc_code`,`SC`.`entrydt` AS `entrydt`,`SC`.`sc_point` AS `sc_point`,`SC`.`m_seq` AS `m_seq`,`M`.`m_name` AS `m_name` from ((`serials` `S` left join `serialcodes` `SC` on((`S`.`s_seq` = `SC`.`s_seq`))) left join `members` `M` on((`SC`.`m_seq` = `M`.`m_seq`))) ;
+CREATE  VIEW `v_serialcodes`  AS  select `S`.`s_seq` AS `s_seq`,`S`.`s_title` AS `s_title`,`S`.`s_qty` AS `s_qty`,`S`.`createdt` AS `createdt`,`S`.`users_seq` AS `users_seq`,`SC`.`sc_seq` AS `sc_seq`,`SC`.`sc_code` AS `sc_code`,`SC`.`entrydt` AS `entrydt`,`SC`.`sc_point` AS `sc_point`,`SC`.`m_seq` AS `m_seq`,`M`.`m_name` AS `m_name` from ((`serials` `S` left join `serialcodes` `SC` on((`S`.`s_seq` = `SC`.`s_seq`))) left join `members` `M` on((`SC`.`m_seq` = `M`.`m_seq`))) ;
 
 -- --------------------------------------------------------
 
@@ -727,7 +727,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_ships`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_ships`  AS  select `ships`.`sp_seq` AS `sp_seq`,`ships`.`m_seq` AS `m_seq`,`ships`.`up_seq` AS `up_seq`,`ships`.`sp_name` AS `sp_name`,`ships`.`sp_post` AS `sp_post`,`ships`.`sp_address1` AS `sp_address1`,`ships`.`sp_address2` AS `sp_address2`,`ships`.`sp_tel` AS `sp_tel`,`ships`.`sp_text` AS `sp_text`,`ships`.`sp_flg` AS `sp_flg`,`ships`.`createdt` AS `createdt`,`v_usepoints`.`p_title` AS `p_title`,`v_usepoints`.`pz_title` AS `pz_title`,`members`.`m_name` AS `m_name`,`members`.`m_mail` AS `m_mail`,`members`.`m_post` AS `m_post`,`members`.`m_address1` AS `m_address1`,`members`.`m_address2` AS `m_address2`,`members`.`m_tel` AS `m_tel` from ((`ships` left join `v_usepoints` on((`ships`.`up_seq` = `v_usepoints`.`up_seq`))) left join `members` on((`members`.`m_seq` = `ships`.`m_seq`))) ;
+CREATE  VIEW `v_ships`  AS  select `ships`.`sp_seq` AS `sp_seq`,`ships`.`m_seq` AS `m_seq`,`ships`.`up_seq` AS `up_seq`,`ships`.`sp_name` AS `sp_name`,`ships`.`sp_post` AS `sp_post`,`ships`.`sp_address1` AS `sp_address1`,`ships`.`sp_address2` AS `sp_address2`,`ships`.`sp_tel` AS `sp_tel`,`ships`.`sp_text` AS `sp_text`,`ships`.`sp_flg` AS `sp_flg`,`ships`.`createdt` AS `createdt`,`v_usepoints`.`p_title` AS `p_title`,`v_usepoints`.`pz_title` AS `pz_title`,`members`.`m_name` AS `m_name`,`members`.`m_mail` AS `m_mail`,`members`.`m_post` AS `m_post`,`members`.`m_address1` AS `m_address1`,`members`.`m_address2` AS `m_address2`,`members`.`m_tel` AS `m_tel` from ((`ships` left join `v_usepoints` on((`ships`.`up_seq` = `v_usepoints`.`up_seq`))) left join `members` on((`members`.`m_seq` = `ships`.`m_seq`))) ;
 
 -- --------------------------------------------------------
 
@@ -736,7 +736,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_usepoints`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_usepoints`  AS  select `U`.`up_seq` AS `up_seq`,`U`.`m_seq` AS `m_seq`,`U`.`up_point` AS `up_point`,`U`.`createdt` AS `createdt`,`U`.`up_status` AS `up_status`,`U`.`g_seq` AS `g_seq`,`U`.`p_seq` AS `p_seq`,`U`.`pz_seq` AS `pz_seq`,`M`.`m_name` AS `m_name`,`P`.`p_title` AS `p_title`,`PZ`.`pz_title` AS `pz_title` from (((`usepoints` `U` left join `members` `M` on((`U`.`m_seq` = `M`.`m_seq`))) left join `promos` `P` on((`P`.`p_seq` = `U`.`p_seq`))) left join `prizes` `PZ` on((`U`.`pz_seq` = `PZ`.`pz_seq`))) ;
+CREATE  VIEW `v_usepoints`  AS  select `U`.`up_seq` AS `up_seq`,`U`.`m_seq` AS `m_seq`,`U`.`up_point` AS `up_point`,`U`.`createdt` AS `createdt`,`U`.`up_status` AS `up_status`,`U`.`g_seq` AS `g_seq`,`U`.`p_seq` AS `p_seq`,`U`.`pz_seq` AS `pz_seq`,`M`.`m_name` AS `m_name`,`P`.`p_title` AS `p_title`,`PZ`.`pz_title` AS `pz_title` from (((`usepoints` `U` left join `members` `M` on((`U`.`m_seq` = `M`.`m_seq`))) left join `promos` `P` on((`P`.`p_seq` = `U`.`p_seq`))) left join `prizes` `PZ` on((`U`.`pz_seq` = `PZ`.`pz_seq`))) ;
 
 --
 -- Indexes for dumped tables

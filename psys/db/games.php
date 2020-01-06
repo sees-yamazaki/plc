@@ -105,10 +105,10 @@ class cls_games
 
             $file = $path."/". basename( $_FILES ['g_image_start'] ['name'] );
             move_uploaded_file ( $_FILES ['g_image_start'] ['tmp_name'], $file );
-            $file = $path."/". basename( $_FILES ['g_image_hit'] ['name'] );
-            move_uploaded_file ( $_FILES ['g_image_hit'] ['tmp_name'], $file );
-            $file = $path."/". basename( $_FILES ['g_image_miss'] ['name'] );
-            move_uploaded_file ( $_FILES ['g_image_miss'] ['tmp_name'], $file );
+            $file = $path."/". basename($_FILES ['g_image_hit'] ['name']);
+            move_uploaded_file($_FILES ['g_image_hit'] ['tmp_name'], $file);
+            $file = $path."/". basename($_FILES ['g_image_miss'] ['name']);
+            move_uploaded_file($_FILES ['g_image_miss'] ['tmp_name'], $file);
 
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
@@ -122,15 +122,42 @@ class cls_games
     {
         try {
             require './db/dns.php';
-            $sql = " UPDATE `games`  SET  `g_title`=:g_title,  `g_image_start`=:g_image_start,  `g_image_hit`=:g_image_hit,  `g_image_miss`=:g_image_miss,  `g_text`=:g_text WHERE g_seq=:g_seq";
+            $sql = " UPDATE `games`  SET  `g_title`=:g_title,  `g_text`=:g_text WHERE g_seq=:g_seq";
             $stmt = $pdo -> prepare($sql);
             $stmt->bindParam(':g_seq', $games->g_seq, PDO::PARAM_INT);
             $stmt->bindParam(':g_title', $games->g_title, PDO::PARAM_STR);
-            $stmt->bindParam(':g_image_start', $games->g_image_start, PDO::PARAM_STR);
-            $stmt->bindParam(':g_image_hit', $games->g_image_hit, PDO::PARAM_STR);
-            $stmt->bindParam(':g_image_miss', $games->g_image_miss, PDO::PARAM_STR);
             $stmt->bindParam(':g_text', $games->g_text, PDO::PARAM_STR);
             $stmt->execute();
+            
+            $path = getSsn('PATH_GAME').'/'.$games->g_seq;
+            
+            if ($games->imgStts_start=="1") {
+                $sql = "UPDATE `games` SET `g_image_start`=:g_image_start WHERE g_seq=:g_seq";
+                $stmt = $pdo -> prepare($sql);
+                $stmt->bindParam(':g_seq', $games->g_seq, PDO::PARAM_INT);
+                $stmt->bindParam(':g_image_start', $games->g_image_start, PDO::PARAM_STR);
+                $stmt->execute();
+                $file = $path."/". basename( $_FILES ['g_image_start'] ['name'] );
+                move_uploaded_file ( $_FILES ['g_image_start'] ['tmp_name'], $file );
+                }
+                if ($games->imgStts_hit=="1") {
+                    $sql = "UPDATE `games` SET `g_image_hit`=:g_image_hit WHERE g_seq=:g_seq";
+                    $stmt = $pdo -> prepare($sql);
+                    $stmt->bindParam(':g_seq', $games->g_seq, PDO::PARAM_INT);
+                    $stmt->bindParam(':g_image_hit', $games->g_image_hit, PDO::PARAM_STR);
+                    $stmt->execute();
+                    $file = $path."/". basename($_FILES ['g_image_hit'] ['name']);
+                    move_uploaded_file($_FILES ['g_image_hit'] ['tmp_name'], $file);
+                }
+                if ($games->imgStts_miss=="1") {
+                    $sql = "UPDATE `games` SET `g_image_miss`=:g_image_miss WHERE g_seq=:g_seq";
+                    $stmt = $pdo -> prepare($sql);
+                    $stmt->bindParam(':g_seq', $games->g_seq, PDO::PARAM_INT);
+                    $stmt->bindParam(':g_image_miss', $games->g_image_miss, PDO::PARAM_STR);
+                    $stmt->execute();
+                    $file = $path."/". basename($_FILES ['g_image_miss'] ['name']);
+                    move_uploaded_file($_FILES ['g_image_miss'] ['tmp_name'], $file);
+                }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
             if (getSsnIsDebug()) {

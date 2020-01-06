@@ -150,7 +150,7 @@ function getMySCodes($mSeq)
     try {
         $results = array();
         require './db/dns.php';
-        $stmt = $pdo->prepare("SELECT * FROM `v_serialcodes` WHERE m_seq=:m_seq ORDER BY createdt desc");
+        $stmt = $pdo->prepare("SELECT * FROM `v_serialcodes` WHERE m_seq=:m_seq ORDER BY entrydt desc");
         $stmt->bindParam(':m_seq', $mSeq, PDO::PARAM_INT);
         $stmt->execute();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

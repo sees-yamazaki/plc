@@ -43,7 +43,7 @@ $errorMessage = "";
                 //アップロードファイルの検証
                 $filepath = pathinfo($_FILES ['g_image_start'] ['name']);
     
-                if (!($filepath['extension']=="png" || $filepath['extension']=="bmp" || $filepath['extension']=="jpg")) {
+                if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
                     $tmpMgs .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
                 }
     
@@ -60,7 +60,7 @@ $errorMessage = "";
                 //アップロードファイルの検証
                 $filepath = pathinfo($_FILES ['g_image_hit'] ['name']);
     
-                if (!($filepath['extension']=="png" || $filepath['extension']=="bmp" || $filepath['extension']=="jpg")) {
+                if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
                     $tmpMgs .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
                 }
     
@@ -77,7 +77,7 @@ $errorMessage = "";
                 //アップロードファイルの検証
                 $filepath = pathinfo($_FILES ['g_image_miss'] ['name']);
     
-                if (!($filepath['extension']=="png" || $filepath['extension']=="bmp" || $filepath['extension']=="jpg")) {
+                if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
                     $tmpMgs .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
                 }
     

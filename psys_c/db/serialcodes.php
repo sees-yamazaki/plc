@@ -16,7 +16,7 @@ function getSerialCodeBySCode($sc_code)
         $result = new cls_serialcodes();
         require './db/dns.php';
         $stmt = $pdo->prepare("SELECT * FROM `serialcodes` WHERE sc_code=:sc_code");
-        $stmt->bindParam(':sc_code', $sc_code, PDO::PARAM_INT);
+        $stmt->bindParam(':sc_code', $sc_code, PDO::PARAM_STR);
         $stmt->execute();
         if ($row = $stmt->fetch()) {
             $result->sc_seq = $row['sc_seq'];

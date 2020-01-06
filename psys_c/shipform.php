@@ -81,18 +81,17 @@ $upSeq = $_POST['upSeq'];
                 <div class="">
                     お名前
                     <input type="text" name="sp_name" id="sp_name" value="<?php echo $ship->sp_name ?>"
-                        placeholder="name" required />
-                    郵便番号
+                    placeholder="name" maxlength='20'  required />
+                        郵便番号(ハイフン無し)
                     <input type="text" name="sp_post" id="sp_post" value="<?php echo $ship->sp_post ?>"
-                        placeholder="postcode" required />
+                        placeholder="postcode" maxlength='7'  onKeyUp="AjaxZip3.zip2addr('sp_post', '', 'sp_address1', 'sp_address1');"/>
                     住所
                     <input type="text" name="sp_address1" id="sp_address1" value="<?php echo $ship->sp_address1 ?>"
-                        placeholder="address" required />
+                        placeholder="address" maxlength='50'  required />
                     <input type="text" name="sp_address2" id="sp_address2" value="<?php echo $ship->sp_address2 ?>"
-                        placeholder="address" />
+                        placeholder="address" maxlength='50'  />
                     電話番号
-                    <input type="text" name="sp_tel" id="sp_tel" value="<?php echo $ship->sp_tel ?>"
-                        placeholder="tel" required />
+                    <input type="text" name="sp_tel" id="sp_tel" value="<?php echo $ship->sp_tel ?>" placeholder="tel" maxlength='13' pattern="^[-0-9]+$" required />
                     備考
                     <textarea name="sp_text" id="sp_text" placeholder="Enter your message"
                         rows="6"><?php echo $ship->sp_text ?></textarea>
@@ -110,6 +109,7 @@ $upSeq = $_POST['upSeq'];
 
 
     <?php include('./footer.php'); ?>
+    <script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 
 </body>
 

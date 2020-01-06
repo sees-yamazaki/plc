@@ -19,7 +19,7 @@ $errorMessage = "";
     try {
         $member->m_name = $_POST['m_name'];
         $member->m_mail = $_POST['m_mail'];
-        $member->m_post = $_POST['m_post'];
+        $member->m_post = str_replace("-","",$_POST['m_post']);
         $member->m_address1 = $_POST['m_address1'];
         $member->m_address2 = $_POST['m_address2'];
 		$member->m_tel = $_POST['m_tel'];
