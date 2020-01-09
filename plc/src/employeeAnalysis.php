@@ -15,6 +15,8 @@ $ini = parse_ini_file('../common.ini', FALSE);
 
 try {
 
+    $emp = $_POST['emp'];
+
     //期間
     $term = $_POST['term'];
     if($term=="1"){
@@ -48,22 +50,40 @@ try {
     $diff = $s->diff($e);
     $days = $diff->days;
     $days++;
-    echo $days;
 
 
 
     require_once 'dns.php';
+    $sql = "";
+
+    if ($emp=="1") {
+        $sql = "SELECT officer_employee_seq as `user_seq`,`officer_employee_id` as `employee_id`,`officer_name` as `name`,COUNT(`user_seq`) as `works`,SUM(`worked`) as `worked`,SUM(`noleave`) as `noleave`,SUM(`nogoing`) as `nogoing`,SUM(`delayed`) as `delayed`,SUM(`lated`) as `lated`,SUM(`leftearly`) as `leftearly`,SUM(`covered`) as `covered`,COUNT(`alert_time`) as `alert_count`,SUM(`alert_count`) as `alert_sum` FROM v_schedule where  plan_leave_time BETWEEN ? AND ? GROUP BY officer_employee_seq";
+    }else{
+        $sql = "SELECT user_seq,`employee_id`,`name`,COUNT(`user_seq`) as `works`,SUM(`worked`) as `worked`,SUM(`noleave`) as `noleave`,SUM(`nogoing`) as `nogoing`,SUM(`delayed`) as `delayed`,SUM(`lated`) as `lated`,SUM(`leftearly`) as `leftearly`,SUM(`covered`) as `covered`,COUNT(`alert_time`) as `alert_count`,SUM(`alert_count`) as `alert_sum` FROM (select DISTINCT `sche_seq`, `user_seq`, `work_y`, `work_m`, `work_d`, `plan_leave_time`, `plan_start_time`, `plan_end_time`, `leave_time`, `start_time`, `end_time`, `job_seq`, `client_seq`, `alert_count`, `alert_time`, `cover_user_seq`, `cover_time`, `name`, `employee_id`, `worked`, `noleave`, `nogoing`, `delayed`, `lated`, `leftearly`, `covered` from `v_schedule`) x where  plan_leave_time BETWEEN ? AND ? GROUP BY user_seq";
+    }
     
-    $stmt = $pdo->prepare('SELECT user_seq,`employee_id`,`name`,COUNT(`user_seq`) as `worked`,SUM(`noleave`) as `noleave`,SUM(`nogoing`) as `nogoing`,SUM(`delayed`) as `delayed`,SUM(`lated`) as `lated`,SUM(`leftearly`) as `leftearly`,SUM(`covered`) as `covered` FROM v_schedule where  plan_leave_time BETWEEN ? AND ? GROUP BY user_seq');
+    // $stmt = $pdo->prepare('SELECT user_seq,`employee_id`,`name`,COUNT(`user_seq`) as `worked`,SUM(`noleave`) as `noleave`,SUM(`nogoing`) as `nogoing`,SUM(`delayed`) as `delayed`,SUM(`lated`) as `lated`,SUM(`leftearly`) as `leftearly`,SUM(`covered`) as `covered`,COUNT(`alert_time`) as `alert_count`,SUM(`alert_count`) as `alert_sum` FROM v_schedule where  plan_leave_time BETWEEN ? AND ? GROUP BY user_seq');
+    $stmt = $pdo->prepare($sql);
     $stmt->execute(array($sDate." 00:00:00",$eDate." 23:59:59"));
 
     $html="";
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
         
-        $html .= '<tr><form id="useredit" action="employeeAlert.php" method="POST" onsubmit="return coverCheck()">';
-        $html .= "<input type='hidden' name='user_seq' value='".$row["user_seq"]."'>";
-        $html .= "<td>".$row['employee_id']."</td>";
-        $html .= "<td>".$row['name']."</td>";
+        $html .= '<tr><form id="useredit" action="employeeAnalysisDetail.php" method="POST">';
+        $html .= "<input type='hidden' name='sDate' value='".$sDate."'>";
+        $html .= "<input type='hidden' name='eDate' value='".$eDate."'>";
+        $html .= "<input type='hidden' name='term' value='".$term."'>";
+        $html .= "<input type='hidden' name='emp' value='".$emp."'>";
+        if (isset($row['employee_id'])) {
+            $html .= "<input type='hidden' name='user_seq' value='".$row["user_seq"]."'>";
+            $html .= "<td>".$row['employee_id']."</td>";
+            $html .= "<td>".$row['name']."</td>";
+        }else{
+            $html .= "<input type='hidden' name='user_seq' value='0'>";
+            $html .= "<td>--</td>";
+            $html .= "<td>--</td>";
+        }
+        $html .= "<td>".$row['works']."</td>";
         $html .= "<td>".$row['worked']."</td>";
         $html .= "<td>".$row['noleave']."</td>";
         $html .= "<td>".$row['nogoing']."</td>";
@@ -71,9 +91,8 @@ try {
         $html .= "<td>".$row['lated']."</td>";
         $html .= "<td>".$row['leftearly']."</td>";
         $html .= "<td>".$row['covered']."</td>";
-        $html .= "<td width='90px' >";
-        $html .= "<button type='submit' class='f100P' name='coverTime'>出発登録</button>";
-        $html .= "</td>";
+        $html .= "<td>".$row['alert_count']."</td>";
+        $html .= "<td><input type='submit' value='詳細'></td>";
         $html .= "</form></tr>";
         
             
@@ -88,7 +107,7 @@ try {
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
 <head>
     <meta charset="utf-8">
@@ -128,7 +147,7 @@ try {
                             $term4 = " checked";
                         }
                     ?>
-                    <input type="radio" name="term" value="1" <?php echo $term1; ?> >今月　
+                    <input type="radio" name="term" value="1" <?php echo $term1; ?> >今月(1日〜昨日)　
                     <input type="radio" name="term" value="2" <?php echo $term2; ?>>前月　
                     <input type="radio" name="term" value="3" <?php echo $term3; ?>>前々月　<br>
                     <input type="radio" name="term" value="4" <?php echo $term4; ?>>任意
@@ -136,15 +155,19 @@ try {
                 </td>
             </tr>
             <tr>
-                <th>表示対象</th>
+                <th>対象者</th>
                 <td>
-                    <input type="checkbox" name="worked" value="1" <?php echo $term1; ?> >正常勤務　
-                    <input type="checkbox" name="absence" value="1" <?php echo $term1; ?> >欠勤　
-                    <input type="checkbox" name="noleave" value="1" <?php echo $term1; ?> >未退勤　
-                    <input type="checkbox" name="delayed" value="1" <?php echo $term1; ?> >遅延　
-                    <input type="checkbox" name="lated" value="1" <?php echo $term1; ?> >遅刻　
-                    <input type="checkbox" name="leftearly" value="1" <?php echo $term1; ?> >早退　
-                    <input type="checkbox" name="covered" value="1" <?php echo $term1; ?> >代行登録　
+                    <?php
+                        $emp1 = "";
+                        $emp2 = "";
+                        if(!isset($emp) || $emp=="1"){
+                            $emp1 = " checked";
+                        }else{
+                            $emp2 = " checked";
+                        }
+                    ?>
+                    <input type="radio" name="emp" value="1" <?php echo $emp1; ?>>社員　
+                    <input type="radio" name="emp" value="2" <?php echo $emp2; ?>>派遣　
                 </td>
             </tr>
             <tr>
@@ -160,6 +183,7 @@ try {
         <tr>
             <th width='100px'>社員番号</th>
             <th width='250px'>名前</th>
+            <th width='50px'>稼働日</th>
             <th width='50px'>出勤日</th>
             <th width='50px'>欠勤日</th>
             <th width='50px'>未退勤</th>
@@ -167,6 +191,7 @@ try {
             <th width='50px'>遅刻</th>
             <th width='50px'>早退</th>
             <th width='50px'>代行</th>
+            <th width='50px'>警告</th>
             <th></th>
         </tr><?php echo $html; ?>
     </table>

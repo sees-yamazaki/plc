@@ -21,7 +21,7 @@ try {
             //alert回数をインクリメント
             $cnt = intval($row["alert_count"]);
             $cnt++; 
-            $stmt2 = $pdo->prepare('UPDATE `schedule` SET alert_count=? WHERE sche_seq = ?');
+            $stmt2 = $pdo->prepare('UPDATE `schedule` SET alert_count=?, alert_time=NOW() WHERE sche_seq = ?');
             $stmt2->execute(array($cnt,$row['sche_seq']));
     
         }
