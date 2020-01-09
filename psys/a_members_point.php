@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // タイムゾーンを設定
 date_default_timezone_set('Asia/Tokyo');
@@ -18,32 +19,28 @@ $errorMessage = '';
 
 $mSeq = $_POST['mSeq'];
 
-    try {
-        require './db/usepoints.php';
-        $usepoint = new cls_usepoints();
 
-        $point = $_POST['point'];
+require './db/usepoints.php';
+$usepoint = new cls_usepoints();
 
-        if (isset($_POST['point'])) {
-            $usepoint->m_seq = $_POST['mSeq'];
-            $usepoint->up_point = -1 * $_POST['point'];
-            $usepoint->up_status = 99;
-            $usepoint->g_seq = 0;
-            $usepoint->p_seq = 0;
-            $usepoint->pz_seq = 0;
+$point = $_POST['point'];
 
-            insertUsepoints($usepoint);
+if (isset($_POST['point'])) {
+    $usepoint->m_seq = $_POST['mSeq'];
+    $usepoint->up_point = -1 * $_POST['point'];
+    $usepoint->up_status = 99;
+    $usepoint->g_seq = 0;
+    $usepoint->p_seq = 0;
+    $usepoint->pz_seq = 0;
 
-            if (empty($errorMessage)) {
-                header('Location: ./a_members_view.php?mSeq='.$mSeq);
-            }
-        }
-    } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+    insertUsepoints($usepoint);
+
+    if (empty($errorMessage)) {
+        header('Location: ./a_members_view.php?mSeq='.$mSeq);
     }
+}
+
+
 
 ?>
 <!DOCTYPE html>

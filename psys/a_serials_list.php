@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // ログイン状態チェック
 if (getSsnIsLogin()==false) {
@@ -14,27 +15,26 @@ if (getSsnIsLogin()==false) {
 $errorMessage = "";
 
 
- try {
 
-    require_once './db/serials.php';
-     $serials = new cls_serials();
-     $serials = getSerials();
 
-     $html="";
-     foreach ($serials as $serial) {
-         $html .= '<tr>';
-         $html .= "<td>".$serial->s_title."</td>";
-         $html .= "<td>".$serial->s_qty."</td>";
-         $html .= "<td>".substr($serial->createdt,0,16)."</td>";
-         $html .= "<td>";
-         $html .= "<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='scEdit(".$serial->s_seq.")'>編集</button>";
-         $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='scDL(".$serial->s_seq.",".$serial->s_qty.")'>DL</button>";
-         $html .= "</td>";
-         $html .= "</tr>";
-     }
- } catch (PDOException $e) {
-     $errorMessage = 'データベースエラー:'.$e->getMessage();
- }
+require_once './db/serials.php';
+$serials = new cls_serials();
+$serials = getSerials();
+
+$html="";
+foreach ($serials as $serial) {
+    $html .= '<tr>';
+    $html .= "<td>".$serial->s_title."</td>";
+    $html .= "<td>".$serial->s_qty."</td>";
+    $html .= "<td>".substr($serial->createdt, 0, 16)."</td>";
+    $html .= "<td>";
+    $html .= "<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='scEdit(".$serial->s_seq.")'>編集</button>";
+    $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='scDL(".$serial->s_seq.",".$serial->s_qty.")'>DL</button>";
+    $html .= "</td>";
+    $html .= "</tr>";
+}
+
+
 
 
 ?>

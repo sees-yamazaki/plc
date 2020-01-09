@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // タイムゾーンを設定
 date_default_timezone_set('Asia/Tokyo');
@@ -18,43 +19,41 @@ $errorMessage = "";
 
 
 
-    require './db/systems.php';
-    $system = new cls_systems();
+require './db/systems.php';
+$system = new cls_systems();
 
-    try {
-        $system->url_parent = $_POST['url_parent'];
-        $system->url_child = $_POST['url_child'];
-        $system->path_root = $_POST['path_root'];
-        $system->path_promo = $_POST['path_promo'];
-        $system->path_game = $_POST['path_game'];
-        $system->path_info = $_POST['path_info'];
-        $system->system_name = $_POST['system_name'];
-        $system->path_scode = $_POST['path_scode'];
-        $system->point_game = $_POST['point_game'];
-        $system->point_entry = $_POST['point_entry'];
-        
-        if (isset($_POST['sysEdit'])) {
-            updateSystem($system);
-            setSsnKV('URL_PARENT',$system->url_parent);
-            setSsnKV('URL_CHILD',$system->url_child);
-            setSsnKV('PATH_PROMO',$system->path_root."/".$system->path_promo);
-            setSsnKV('PATH_GAME',$system->path_root."/".$system->path_game);
-            setSsnKV('PATH_INFO',$system->path_root."/".$system->path_info);
-            setSsnKV('PATH_SCODE',$system->path_root."/".$system->path_scode);
-            setSsnKV('SYSTEM_NAME',$system->system_name);
-            setSsnKV('POINT_ENTRY',$system->point_entry);
-            setSsnKV('POINT_GAME',$system->point_game);
 
-            header("Location: ./a_home.php");
-        } else {
-            $system = getSystems();
-        }
-    } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
-    }
+$system->url_parent = $_POST['url_parent'];
+$system->url_child = $_POST['url_child'];
+$system->path_root = $_POST['path_root'];
+$system->path_promo = $_POST['path_promo'];
+$system->path_game = $_POST['path_game'];
+$system->path_info = $_POST['path_info'];
+$system->system_name = $_POST['system_name'];
+$system->path_scode = $_POST['path_scode'];
+$system->point_game = $_POST['point_game'];
+$system->point_entry = $_POST['point_entry'];
+$system->ship_limit = $_POST['ship_limit'];
+
+if (isset($_POST['sysEdit'])) {
+    updateSystem($system);
+    setSsnKV('URL_PARENT', $system->url_parent);
+    setSsnKV('URL_CHILD', $system->url_child);
+    setSsnKV('PATH_PROMO', $system->path_root."/".$system->path_promo);
+    setSsnKV('PATH_GAME', $system->path_root."/".$system->path_game);
+    setSsnKV('PATH_INFO', $system->path_root."/".$system->path_info);
+    setSsnKV('PATH_SCODE', $system->path_root."/".$system->path_scode);
+    setSsnKV('SYSTEM_NAME', $system->system_name);
+    setSsnKV('POINT_ENTRY', $system->point_entry);
+    setSsnKV('POINT_GAME', $system->point_game);
+    setSsnKV('SHIP_LIMIT', $system->ship_limit);
+
+    header("Location: ./a_home.php");
+} else {
+    $system = getSystems();
+}
+
+
 
 ?>
 <!DOCTYPE html>
@@ -193,6 +192,16 @@ $errorMessage = "";
                                                 </div>
                                             </div>
 
+                                            <div class="form-group row showcase_row_area">
+                                                <div class="col-md-3 showcase_text_area">
+                                                    <label for="inputType1">ship limit</label>
+                                                </div>
+                                                <div class="col-md-9 showcase_content_area">
+                                                    <input type="number" class="form-control" name="ship_limit"
+                                                        value="<?php echo $system->ship_limit; ?>" maxLength=2
+                                                        autocomplete="off" required>
+                                                </div>
+                                            </div>
 
                                             <button type="submit" class="btn btn-primary btn-block mt-0"
                                                 name="sysEdit">更新</button>

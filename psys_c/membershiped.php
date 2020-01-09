@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('../psys/logging.php');
 
 // エラーメッセージの初期化
 $errorMessage = "";
@@ -21,7 +22,7 @@ $errorMessage = "";
 
 		<!-- Header -->
 			<header id="header">
-				<a href="javascript:void(0)" class="logo"><strong><?php echo getSsnMyname(); ?></strong> by SEES</a>
+				<a href="javascript:void(0)" class="logo"><strong><?php echo getSsnMyname(); ?></strong> by itty</a>
 			</header>
 
 
@@ -47,7 +48,7 @@ $errorMessage = "";
 		<!-- Footer -->
 			<footer id="footer">
 				<div class="copyright">
-					&copy; SEES
+					&copy; itty
 				</div>
 			</footer>
 

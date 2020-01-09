@@ -2,7 +2,7 @@
 <section id="geta"></section>
 <footer id="footer">
     <div class="copyright">
-        &copy; SEES
+        &copy; itty
     </div>
 </footer>
 

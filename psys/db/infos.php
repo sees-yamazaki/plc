@@ -35,9 +35,9 @@ function getInfos()
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
     return $results;
 }
@@ -70,9 +70,9 @@ function getOpenInfos($dt)
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
     return $results;
 }
@@ -97,9 +97,9 @@ function getOpenInfos($dt)
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
         return $result;
     }
@@ -133,9 +133,9 @@ function getOpenInfos($dt)
 
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
     }
     
@@ -169,20 +169,23 @@ function getOpenInfos($dt)
 
             if ($infos->imgStts == 1) {
                 $file = getSsn('PATH_INFO').'/'.$infos->inf_seq.'/'.basename($_FILES['inf_img']['name']);
-                echo "----------------------------------------------------";
-                echo $file;
                 move_uploaded_file($_FILES['inf_img']['tmp_name'], $file);
             }
 
 
+            if ($stmt->rowCount()==0) {
+                logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                logging("UPDATE ERROR : ". $sql);
+                logging("ARGS : ". json_encode(func_get_args()));
+            }
 
 
 
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
     }
 
@@ -199,9 +202,9 @@ function getOpenInfos($dt)
 
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
     }
 

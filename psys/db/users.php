@@ -24,10 +24,9 @@ function loginUsers($uID,$uPW){
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        //$errorMessage = $sql;
-        if(strcmp("1",$ini['debug'])==0){
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
 
     return $users;
@@ -55,10 +54,9 @@ function getUsers($where){
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        //$errorMessage = $sql;
-        if(strcmp("1",$ini['debug'])==0){
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
 
     return $results;
@@ -83,10 +81,9 @@ function getUser($uSeq){
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        //$errorMessage = $sql;
-        if(strcmp("1",$ini['debug'])==0){
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
 
     return $result;
@@ -150,10 +147,9 @@ function getUserByID($user){
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        //$errorMessage = $sql;
-        if(strcmp("1",$ini['debug'])==0){
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
 
     return $result;
@@ -173,10 +169,9 @@ function insertUser($user){
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        //$errorMessage = $sql;
-        if(strcmp("1",$ini['debug'])==0){
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
 
 }
@@ -194,10 +189,9 @@ function updateUser($user){
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        //$errorMessage = $sql;
-        if(strcmp("1",$ini['debug'])==0){
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
 
 }
@@ -215,10 +209,9 @@ function pwUser($user){
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        //$errorMessage = $sql;
-        if(strcmp("1",$ini['debug'])==0){
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
 
 }
@@ -238,10 +231,9 @@ function deleteUser($user){
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        //$errorMessage = $sql;
-        if(strcmp("1",$ini['debug'])==0){
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
 
 }

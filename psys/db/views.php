@@ -27,9 +27,9 @@ function getVUsepointRows($where)
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
     return $cnt;
 }
@@ -59,9 +59,9 @@ function getVUsepointRows($where)
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
         return $results;
     }
@@ -92,9 +92,9 @@ function getVUsepointRows($where)
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
         return $results;
     }
@@ -135,9 +135,9 @@ function getVUsepointRows($where)
                 }
             } catch (PDOException $e) {
                 $errorMessage = 'データベースエラー';
-                if (getSsnIsDebug()) {
-                    echo $e->getMessage();
-                }
+                logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                logging("DATABASE ERROR : ".$e->getMessage());
+                logging("ARGS : ". json_encode(func_get_args()));
             }
             return $cnt;
         }
@@ -177,9 +177,9 @@ function getVUsepointRows($where)
                 }
             } catch (PDOException $e) {
                 $errorMessage = 'データベースエラー';
-                if (getSsnIsDebug()) {
-                    echo $e->getMessage();
-                }
+                logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                logging("DATABASE ERROR : ".$e->getMessage());
+                logging("ARGS : ". json_encode(func_get_args()));
             }
             return $results;
         }
@@ -215,9 +215,35 @@ function getVUsepointRows($where)
                 }
             } catch (PDOException $e) {
                 $errorMessage = 'データベースエラー';
-                if (getSsnIsDebug()) {
-                    echo $e->getMessage();
-                }
+                logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                logging("DATABASE ERROR : ".$e->getMessage());
+                logging("ARGS : ". json_encode(func_get_args()));
             }
             return $result;
         }
+
+
+
+        function getPoint($mSeq)
+        {
+            $point=0;
+            try {
+                require './db/dns.php';
+                $stmt = $pdo->prepare("SELECT * FROM `v_point` WHERE m_seq=:m_seq");
+                $stmt->bindParam(':m_seq', $mSeq, PDO::PARAM_INT);
+                $stmt->execute();
+                if ($row = $stmt->fetch()) {
+                    $point = $row['point'];
+                }
+            } catch (PDOException $e) {
+                $errorMessage = 'データベースエラー';
+                logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                logging("DATABASE ERROR : ".$e->getMessage());
+                logging("ARGS : ". json_encode(func_get_args()));
+            }
+            return $point;
+        }
+        
+
+
+

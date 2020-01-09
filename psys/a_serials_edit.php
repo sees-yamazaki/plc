@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // タイムゾーンを設定
 date_default_timezone_set('Asia/Tokyo');
@@ -17,49 +18,45 @@ if (getSsnIsLogin()==false) {
 $errorMessage = "";
 
 
-    $sSeq = $_POST['sSeq'];
+$sSeq = $_POST['sSeq'];
 
-    require_once './db/serials.php';
-    $serial = new cls_serials();
+require_once './db/serials.php';
+$serial = new cls_serials();
 
-    try {
-        $serial->s_seq = $_POST['sSeq'];
-        $serial->s_title = $_POST['s_title'];
-        $serial->s_qty = $_POST['s_qty'];
-        $serial->users_seq = getSsn('SEQ');
-        
-        if (isset($_POST['edit'])) {
-            if (!empty($sSeq)) {
-                $errorMessage = updateSerials($serial);
-            } else {
-                $errorMessage = insertSerials($serial);
-            }
-            
-            
-            if (empty($errorMessage)) {
-                header("Location: ./a_serials_list.php");
-            }
-        } elseif (isset($_POST['del'])) {
-            $cnt = countSCodes($sSeq);
-            if ($cnt==0) {
-                deleteSerials($sSeq);
 
-                header("Location: ./a_serials_list.php");
-            } else {
-                $errorMessage = 'このシリアルコードはすでに使用されているため削除できません';
-                
-                $serial = getSerial($sSeq);
-            }
-        } else {
-            $serial = getSerial($sSeq);
-            $cnt = getSerialOnToday();
-        }
-    } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+$serial->s_seq = $_POST['sSeq'];
+$serial->s_title = $_POST['s_title'];
+$serial->s_qty = $_POST['s_qty'];
+$serial->users_seq = getSsn('SEQ');
+
+if (isset($_POST['edit'])) {
+    if (!empty($sSeq)) {
+        $errorMessage = updateSerials($serial);
+    } else {
+        $errorMessage = insertSerials($serial);
     }
+
+
+    if (empty($errorMessage)) {
+        header("Location: ./a_serials_list.php");
+    }
+} elseif (isset($_POST['del'])) {
+    $cntc = countSCodes($sSeq);
+    if ($cntc==0) {
+        deleteSerials($sSeq);
+
+        header("Location: ./a_serials_list.php");
+    } else {
+        $errorMessage = 'このシリアルコードはすでに使用されているため削除できません';
+
+        $serial = getSerial($sSeq);
+    }
+} else {
+    $serial = getSerial($sSeq);
+    $cnt = getSerialOnToday();
+}
+
+
 
 ?>
 <!DOCTYPE html>
@@ -93,8 +90,10 @@ $errorMessage = "";
                                 <div class="row mb-3">
                                     <div class="col-md-8 mx-auto">
 
+                                    <span class="clrRed"><?php echo $errorMessage ?></span>
+
                                         <p class="grid-header">シリアルコード新規登録画面</p>
-                                        <?php  if($cnt>0){ ?>
+                                        <?php  if ($cnt>0) { ?>
                                         <p class="clrRed">本日は既にシリアルコードを作成しています。<br>コードの取り扱いに気をつけてください。<br>&nbsp;</p>
                                         <?php } ?>
 
@@ -115,14 +114,14 @@ $errorMessage = "";
                                                 <div class="col-md-3 showcase_text_area">
                                                     <label for="inputType1">発行数</label>
                                                 </div>
-                                                <?php if($sSeq==""){ ?>
+                                                <?php if ($sSeq=="") { ?>
                                                 <div class="col-md-9 showcase_content_area">
                                                     <input type="text" class="form-control" name="s_qty"
                                                         value="<?php echo $serial->s_qty; ?>" placeholder="5文字まで"
                                                         maxLength=5 pattern="[0-9]+" title="数字" autocomplete="off"
                                                         required>
                                                 </div>
-                                                <?php }else{ ?>
+                                                <?php } else { ?>
                                                 <div class="col-md-9 showcase_content_area">
                                                     <input type="text" class="form-control"
                                                         value="<?php echo $serial->s_qty; ?>" readonly>
@@ -138,7 +137,7 @@ $errorMessage = "";
                                                 name="edit">登　録</button>
                                             <input type="hidden" name="sSeq" value="<?php echo $serial->s_seq; ?>">
                                         </form>
-                                        <?php if($sSeq<>""){ ?>
+                                        <?php if ($sSeq<>"") { ?>
                                         <br><br>
                                         <form action="" method="POST" onsubmit="return delcheck()">
                                             <button type="submit" class="btn btn-danger btn-block mt-0"
@@ -147,7 +146,6 @@ $errorMessage = "";
                                         </form>
                                         <?php } ?>
 
-                                        <span class="clrRed"><?php echo $errorMessage ?></span>
                                     </div>
                                 </div>
                             </div>

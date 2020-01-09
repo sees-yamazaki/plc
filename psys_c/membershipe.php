@@ -3,46 +3,40 @@
 // セッション開始
 session_start();
 require('session.php');
+require('../psys/logging.php');
 
 // エラーメッセージの初期化
 $errorMessage = "";
 
-    require_once './db/members.php';
-    $member = new cls_members();
+require_once '../psys/db/members.php';
+$member = new cls_members();
 
-    $cnt = checkMemberByMail($_POST['m_mail']);
+$cnt = checkMemberByMail($_POST['m_mail']);
 
-    if($cnt<>0){
-        $errorMessage = 'このメールアドレスはすでに登録されています。';
+if ($cnt<>0) {
+    $errorMessage = 'このメールアドレスはすでに登録されています。';
+}
+
+$member->m_name = $_POST['m_name'];
+$member->m_mail = $_POST['m_mail'];
+$member->m_post = str_replace("-", "", $_POST['m_post']);
+$member->m_address1 = $_POST['m_address1'];
+$member->m_address2 = $_POST['m_address2'];
+$member->m_tel = $_POST['m_tel'];
+
+if (isset($_POST['mmbrEdit'])) {
+
+    $member->m_id = strtotime("now");
+    $member->m_pw = "999";
+
+    $errorMessage = insertMember($member);
+
+    if (empty($errorMessage)) {
+        header("Location: ./membershiped.php");
     }
+}
 
-    try {
-        $member->m_name = $_POST['m_name'];
-        $member->m_mail = $_POST['m_mail'];
-        $member->m_post = str_replace("-","",$_POST['m_post']);
-        $member->m_address1 = $_POST['m_address1'];
-        $member->m_address2 = $_POST['m_address2'];
-		$member->m_tel = $_POST['m_tel'];
-        
-        if (isset($_POST['mmbrEdit'])) {
 
-            $member->m_id = strtotime("now");
-            $member->m_pw = "999";
-
-            $errorMessage = insertMember($member);
-
-            if (empty($errorMessage)) {
-                header("Location: ./membershiped.php");
-            }
-
-        }
-
-    } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
-    }
 
 ?>
 <!DOCTYPE HTML>
@@ -69,12 +63,12 @@ $errorMessage = "";
 
     <!-- Header -->
     <header id="header">
-        <a href="javascript:void(0)" class="logo"><strong><?php echo getSsnMyname(); ?></strong> by SEES</a>
+        <a href="javascript:void(0)" class="logo"><strong><?php echo getSsnMyname(); ?></strong> by itty</a>
     </header>
 
 
     <!-- Banner -->
-    <?php if(!empty($errorMessage)){ ?>
+    <?php if (!empty($errorMessage)) { ?>
     <section id="banner8" class="err">
         <div class="inner">
             <h3><?php echo $errorMessage; ?></h3>
@@ -114,7 +108,7 @@ $errorMessage = "";
                         電話番号：<?php echo $member->m_tel ?>
                     </h3>
                 </div><br>
-                <?php if(empty($errorMessage)){ ?>
+                <?php if (empty($errorMessage)) { ?>
                 <ul class="actions">
                     <li><a href="javascript:actn(1)" class="button alt scrolly big">登録する</a></li>
                 </ul>
@@ -138,7 +132,7 @@ $errorMessage = "";
     <!-- Footer -->
     <footer id="footer">
         <div class="copyright">
-            &copy; SEES
+            &copy; itty
         </div>
     </footer>
 

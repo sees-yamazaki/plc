@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('../psys/logging.php');
 
 // ログイン状態チェック
 if (getSsnIsLogin()==false) {
@@ -25,7 +26,7 @@ $gameResult = "残念！！";
 $resultImg = "../psys/".getSsn('PATH_GAME')."/".$game->g_seq."/".$game->g_image_miss;
 
 
-require_once './db/usepoints.php';
+require '../psys/db/usepoints.php';
 $usepoint = new cls_usepoints();
 $usepoint->m_seq = getSsn("SEQ");
 $usepoint->up_point = getSsn('POINT_GAME');;

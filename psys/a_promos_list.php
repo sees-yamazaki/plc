@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // ログイン状態チェック
 if (getSsnIsLogin()==false) {
@@ -14,27 +15,25 @@ if (getSsnIsLogin()==false) {
 $errorMessage = "";
 
 
- try {
-     require_once './db/promos.php';
-     $promos = new cls_promos();
-     $promos = getPromos();
 
-     $html="";
-     foreach ($promos as $promo) {
-        $html .= '<tr>';
-        $html .= "<td>".$promo->p_title."</td>";
-        $html .= "<td>".$promo->p_startdt." 〜 ".$promo->p_enddt."</td>";
-        $html .= "<td>";
-        $html .= "<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='prmEdit(".$promo->p_seq.")'>編集</button>";
-        $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='prmPrize(".$promo->p_seq.")'>賞品</button>";
-        $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='prmView(".$promo->p_seq.")'>プレビュー</button>";
-        $html .= "</td>";
-        $html .= "</tr>";
-    }
+require_once './db/promos.php';
+$promos = new cls_promos();
+$promos = getPromos();
 
-} catch (PDOException $e) {
-    $errorMessage = 'データベースエラー:'.$e->getMessage();
+$html="";
+foreach ($promos as $promo) {
+    $html .= '<tr>';
+    $html .= "<td>".$promo->p_title."</td>";
+    $html .= "<td>".$promo->p_startdt." 〜 ".$promo->p_enddt."</td>";
+    $html .= "<td>";
+    $html .= "<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='prmEdit(".$promo->p_seq.")'>編集</button>";
+    $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='prmPrize(".$promo->p_seq.")'>賞品</button>";
+    $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='prmView(".$promo->p_seq.")'>プレビュー</button>";
+    $html .= "</td>";
+    $html .= "</tr>";
 }
+
+
 
 
 ?>

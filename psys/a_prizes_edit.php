@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // タイムゾーンを設定
 date_default_timezone_set('Asia/Tokyo');
@@ -16,70 +17,66 @@ if (getSsnIsLogin()==false) {
 // エラーメッセージの初期化
 $errorMessage = '';
 
-    $pSeq = $_POST['pSeq'];
-    $pzSeq = $_POST['pzSeq'];
+$pSeq = $_POST['pSeq'];
+$pzSeq = $_POST['pzSeq'];
 
-    require './db/prizes.php';
-    $prize = new cls_prizes();
+require './db/prizes.php';
+$prize = new cls_prizes();
 
-    try {
-        $prize->p_seq = $_POST['pSeq'];
-        $prize->pz_seq = $_POST['pzSeq'];
-        $prize->pz_order = $_POST['pz_order'];
-        $prize->pz_title = $_POST['pz_title'];
-        $prize->pz_code = $_POST['pz_code'];
-        $prize->pz_text = $_POST['pz_text'];
-        $prize->pz_img = basename($_FILES['pz_img']['name']);
-        $prize->pz_hitcnt = $_POST['pz_hitcnt'];
-        $prize->imgStts = $_POST['imgStts'];
 
-        if (isset($_POST['prizeEdit'])) {
-            if ($prize->imgStts == '1') {
-                //アップロードファイルの検証
-                $filepath = pathinfo($_FILES['pz_img']['name']);
+$prize->p_seq = $_POST['pSeq'];
+$prize->pz_seq = $_POST['pzSeq'];
+$prize->pz_order = $_POST['pz_order'];
+$prize->pz_title = $_POST['pz_title'];
+$prize->pz_code = $_POST['pz_code'];
+$prize->pz_text = $_POST['pz_text'];
+$prize->pz_img = basename($_FILES['pz_img']['name']);
+$prize->pz_hitcnt = $_POST['pz_hitcnt'];
+$prize->imgStts = $_POST['imgStts'];
 
-                if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
-                    $errorMessage .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
-                }
+if (isset($_POST['prizeEdit'])) {
+    if ($prize->imgStts == '1') {
+        //アップロードファイルの検証
+        $filepath = pathinfo($_FILES['pz_img']['name']);
 
-                if (mb_strlen($prize->pz_img) > 20) {
-                    $errorMessage .= '<br>・アップロード画像のファイル名は20文字以内にしてください。';
-                }
-            }
-
-            if (empty($errorMessage)) {
-                if (!empty($pzSeq)) {
-                    updateprize($prize);
-                } else {
-                    insertprize($prize);
-                }
-
-                header('Location: ./a_prizes_list.php?pSeq='.$pSeq);
-            } else {
-                $errorMessage = '<br>アップロードされたファイル：'.basename($_FILES['pz_img']['name']).$errorMessage.'<br>';
-            }
-        } elseif (isset($_POST['del'])) {
-            require './db/usepoints.php';
-            $rtn = countUsepointsByPzseq($pzSeq);
-
-            if ($rtn == 0) {
-                deleteprize($pzSeq);
-
-                header('Location: ./a_prizes_list.php?pSeq='.$pSeq);
-            } else {
-                $errorMessage = 'この賞品はエントリー済のため削除できません';
-
-                $prize = getprize($pzSeq);
-            }
-        } else {
-            $prize = getprize($pzSeq);
+        if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
+            $errorMessage .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
         }
-    } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
+
+        if (mb_strlen($prize->pz_img) > 20) {
+            $errorMessage .= '<br>・アップロード画像のファイル名は20文字以内にしてください。';
         }
     }
+
+    if (empty($errorMessage)) {
+        if (!empty($pzSeq)) {
+            updateprize($prize);
+        } else {
+            insertprize($prize);
+        }
+
+        header('Location: ./a_prizes_list.php?pSeq='.$pSeq);
+    } else {
+        $errorMessage = '<br>アップロードされたファイル：'.basename($_FILES['pz_img']['name']).$errorMessage.'<br>';
+    }
+} elseif (isset($_POST['del'])) {
+    require './db/usepoints.php';
+    $rtn = countUsepointsByPzseq($pzSeq);
+
+    if ($rtn == 0) {
+        deleteprize($pzSeq);
+
+        header('Location: ./a_prizes_list.php?pSeq='.$pSeq);
+    } else {
+        $errorMessage = 'この賞品はエントリー済のため削除できません';
+
+        $prize = getprize($pzSeq);
+    }
+} else {
+    $prize = getprize($pzSeq);
+}
+
+
 
 $ckImg1 = ' checked';
 $ckImg2 = '';
@@ -87,6 +84,7 @@ if (!empty($pzSeq)) {
     $ckImg1 = '';
     $ckImg2 = ' checked';
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -128,6 +126,7 @@ if (!empty($pzSeq)) {
                         <div class="grid-body">
                             <div class="item-wrapper">
 
+                            <span class="clrRed"><?php echo $errorMessage; ?></span>
 
                                 <p class="grid-header">賞品登録</p>
 
@@ -229,6 +228,36 @@ if (!empty($pzSeq)) {
                                     </div>
                                     <?php } ?>
 
+
+
+                                    <?php if ($pzSeq > 0) {    ?>
+                                    <div class="form-group row showcase_row_area">
+                                        <div class="col-md-3 showcase_text_area">
+                                            <label for="inputType1">現在の登録画像</label>
+                                        </div>
+
+                                        <div class="form-inline">
+                                            <div class="radio mb-3">
+                                                <label class="radio-label">
+                                                    <?php if (empty($prize->pz_img)) {    ?>
+                                                        画像登録無し
+                                                    <?php } else { ?>
+                                                        <img src="./mydata/promo/<?php echo $pzSeq; ?>/<?php echo $prize->pz_img; ?>" height=200>
+                                                    <?php } ?>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <?php } ?>
+
+
+
+
+
+
+
+
                                     <div class="form-group row showcase_row_area">
                                         <div class="col-md-3 showcase_text_area">
                                             <label for="inputType1">当選カウント</label>
@@ -256,7 +285,6 @@ if (!empty($pzSeq)) {
                                 </form>
                                 <?php } ?>
 
-                                <span class="clrRed"><?php echo $errorMessage; ?></span>
                             </div>
                         </div>
                     </div>

@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // ログイン状態チェック
 if (getSsnIsLogin()==false) {
@@ -16,43 +17,41 @@ $errorMessage = "";
 $search_id = $_POST['search_id'];
 $search_name = $_POST['search_name'];
 
- try {
-     $openclose = " fClose";
-     $formbg = " closeform";
-     $where = "";
-     if (isset($_POST['search'])) {
-        $tmp = array();
 
-        if (!empty($search_id)) {
-            $tmp[] = "(users_id=".$search_id.")"; 
-        }
-        if (!empty($search_name)) {
-            $tmp[] = "(users_name LIKE '%".$search_name."%')"; 
-        }
+$openclose = " fClose";
+$formbg = " closeform";
+$where = "";
+if (isset($_POST['search'])) {
+    $tmp = array();
 
-        if(count($tmp)>0){
-            $where = " WHERE ".implode(" AND ",$tmp);
-        }
+    if (!empty($search_id)) {
+        $tmp[] = "(users_id=".$search_id.")";
+    }
+    if (!empty($search_name)) {
+        $tmp[] = "(users_name LIKE '%".$search_name."%')";
+    }
 
-        $openclose = " ";
-        $formbg = " openform";
+    if (count($tmp)>0) {
+        $where = " WHERE ".implode(" AND ", $tmp);
+    }
 
-     }
-     require_once './db/users.php';
-     $users = new cls_users();
-     $users = getUsers($where);
+    $openclose = " ";
+    $formbg = " openform";
+}
+require_once './db/users.php';
+$users = new cls_users();
+$users = getUsers($where);
 
-     $html="";
-     foreach ($users as $user) {
-         $html .= '<tr>';
-         $html .= "<td>".$user->users_id."</td>";
-         $html .= "<td>".$user->users_name."</td>";
-         $html .= "<td><button type='button' name='edit' class='btn btn-inverse-secondary' onclick='usrEdit(".$user->users_seq.")'>編集</button></td>";
-         $html .= "</tr>";
-     }
- } catch (PDOException $e) {
-     $errorMessage = 'データベースエラー:'.$e->getMessage();
- }
+$html="";
+foreach ($users as $user) {
+    $html .= '<tr>';
+    $html .= "<td>".$user->users_id."</td>";
+    $html .= "<td>".$user->users_name."</td>";
+    $html .= "<td><button type='button' name='edit' class='btn btn-inverse-secondary' onclick='usrEdit(".$user->users_seq.")'>編集</button></td>";
+    $html .= "</tr>";
+}
+
+     
 
 
 ?>

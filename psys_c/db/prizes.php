@@ -35,9 +35,9 @@ class cls_prizes
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."()");
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
         return $results;
     }
@@ -62,9 +62,9 @@ class cls_prizes
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."()");
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
         return $result;
     }
@@ -93,9 +93,9 @@ class cls_prizes
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."()");
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
         return $result;
     }

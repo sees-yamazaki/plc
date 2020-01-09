@@ -1,6 +1,7 @@
 <?php
 session_start();
 require('session.php');
+require('logging.php');
 
 $errorMessage = "ログオフしました。";
 
@@ -64,7 +65,7 @@ unsetSsn();
             </div>
         </div>
         <div class="auth_footer">
-            <p class="text-muted text-center">© SEES</p>
+            <p class="text-muted text-center">© itty</p>
         </div>
     </div>
     <!--page body ends -->

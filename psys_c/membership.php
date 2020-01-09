@@ -3,19 +3,20 @@
 // セッション開始
 session_start();
 require('session.php');
+require('../psys/logging.php');
 
 // エラーメッセージの初期化
 $errorMessage = "";
 
-    require_once './db/members.php';
+    require_once '../psys/db/members.php';
     $member = new cls_members();
 
-	$member->m_name = $_POST['m_name'];
-	$member->m_mail = $_POST['m_mail'];
-	$member->m_post = $_POST['m_post'];
-	$member->m_address1 = $_POST['m_address1'];
-	$member->m_address2 = $_POST['m_address2'];
-	$member->m_tel = $_POST['m_tel'];
+    $member->m_name = $_POST['m_name'];
+    $member->m_mail = $_POST['m_mail'];
+    $member->m_post = $_POST['m_post'];
+    $member->m_address1 = $_POST['m_address1'];
+    $member->m_address2 = $_POST['m_address2'];
+    $member->m_tel = $_POST['m_tel'];
 
 ?>
 <!DOCTYPE HTML>
@@ -33,12 +34,12 @@ $errorMessage = "";
 
     <!-- Header -->
     <header id="header">
-        <a href="javascript:void(0)" class="logo"><strong><?php echo getSsnMyname(); ?></strong> by SEES</a>
+        <a href="javascript:void(0)" class="logo"><strong><?php echo getSsnMyname(); ?></strong> by itty</a>
     </header>
 
 
     <!-- Banner -->
-    <?php if(!empty($errorMessage)){ ?>
+    <?php if (!empty($errorMessage)) { ?>
     <section id="banner2">
         <div class="inner">
             <h3><?php echo $errorMessage; ?></h3>
@@ -66,7 +67,7 @@ $errorMessage = "";
                     <input type="text" name="m_mail" id="m_mail" value="<?php echo $member->m_mail ?>"
                         placeholder="e-mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required />
                     郵便番号(ハイフン無し)
-                    <input type="number" name="m_post" id="m_post" value="<?php echo $member->m_post ?>"
+                    <input type="text" name="m_post" id="m_post" value="<?php echo $member->m_post ?>"
                         placeholder="postcode" maxlength='7'  onKeyUp="AjaxZip3.zip2addr('m_post', '', 'm_address1', 'm_address1');" required />
                     住所（番地まで）
                     <input type="text" name="m_address1" id="m_address1" value="<?php echo $member->m_address1 ?>"
@@ -98,7 +99,7 @@ $errorMessage = "";
     <section id="geta"></section>
     <footer id="footer">
         <div class="copyright">
-            &copy; SEES
+            &copy; itty
         </div>
     </footer>
 

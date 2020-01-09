@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('../psys/logging.php');
 
 // ログイン状態チェック
 if (getSsnIsLogin()==false) {
@@ -16,7 +17,7 @@ $errorMessage = "";
 $addPt = $_GET['addPt'];
 
 
-require_once './db/members.php';
+require_once '../psys/db/members.php';
 $member = new cls_members();
 $member = getMyPoints(getSsn("SEQ"));
 

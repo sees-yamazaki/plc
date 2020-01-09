@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('../psys/logging.php');
 
 
 // ログイン状態チェック
@@ -17,7 +18,7 @@ $errorMessage = "";
 
 $upSeq = $_POST['upSeq'];
 
-require_once './db/ships.php';
+require_once '../psys/db/ships.php';
 $ship = new cls_ships();
 
     try {
@@ -38,6 +39,7 @@ $ship = new cls_ships();
                 header("Location: ./shipformed.php");
             }
         }
+
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
         if (getSsnIsDebug()) {

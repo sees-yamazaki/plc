@@ -50,9 +50,9 @@ function getSerials()
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
     return $results;
 }
@@ -74,9 +74,9 @@ function getSerial($sSeq)
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
     return $result;
 }
@@ -94,9 +94,9 @@ function getSerialOnToday()
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
     return $cnt;
 }
@@ -116,9 +116,9 @@ function countSCodes($sSeq)
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
     return $cnt;
 }
@@ -137,9 +137,9 @@ function countVSCodes($where)
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
     return $cnt;
 }
@@ -171,9 +171,9 @@ function getMySCodes($mSeq)
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
     return $results;
 }
@@ -206,9 +206,9 @@ function getSCodesLimit($limit, $offset, $where)
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
     return $results;
 }
@@ -273,9 +273,9 @@ function insertSerials($serials)
 
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (v) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
     return $errorMessage ;
 }
@@ -291,9 +291,9 @@ function updateSerials($serials)
         $stmt->execute();
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
 }
 
@@ -314,9 +314,9 @@ function deleteSerials($sSeq)
         $stmt->execute();
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
     return $cnt;
 }

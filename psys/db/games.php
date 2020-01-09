@@ -31,9 +31,9 @@ class cls_games
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
         return $results;
     }
@@ -56,9 +56,9 @@ class cls_games
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
         return $result;
     }
@@ -77,9 +77,9 @@ class cls_games
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
         return $cnt;
     }
@@ -101,20 +101,19 @@ class cls_games
             $insertid = $pdo->lastInsertId();
 
             $path = getSsn('PATH_GAME').'/'.$insertid;
-            mkdir($path,0777);
+            mkdir($path, 0777);
 
-            $file = $path."/". basename( $_FILES ['g_image_start'] ['name'] );
-            move_uploaded_file ( $_FILES ['g_image_start'] ['tmp_name'], $file );
+            $file = $path."/". basename($_FILES ['g_image_start'] ['name']);
+            move_uploaded_file($_FILES ['g_image_start'] ['tmp_name'], $file);
             $file = $path."/". basename($_FILES ['g_image_hit'] ['name']);
             move_uploaded_file($_FILES ['g_image_hit'] ['tmp_name'], $file);
             $file = $path."/". basename($_FILES ['g_image_miss'] ['name']);
             move_uploaded_file($_FILES ['g_image_miss'] ['tmp_name'], $file);
-
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
     }
     
@@ -128,6 +127,12 @@ class cls_games
             $stmt->bindParam(':g_title', $games->g_title, PDO::PARAM_STR);
             $stmt->bindParam(':g_text', $games->g_text, PDO::PARAM_STR);
             $stmt->execute();
+
+            if ($stmt->rowCount()==0) {
+                logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                logging("UPDATE ERROR : ". $sql);
+                logging("ARGS : ". json_encode(func_get_args()));
+            }
             
             $path = getSsn('PATH_GAME').'/'.$games->g_seq;
             
@@ -137,32 +142,50 @@ class cls_games
                 $stmt->bindParam(':g_seq', $games->g_seq, PDO::PARAM_INT);
                 $stmt->bindParam(':g_image_start', $games->g_image_start, PDO::PARAM_STR);
                 $stmt->execute();
-                $file = $path."/". basename( $_FILES ['g_image_start'] ['name'] );
-                move_uploaded_file ( $_FILES ['g_image_start'] ['tmp_name'], $file );
+                $file = $path."/". basename($_FILES ['g_image_start'] ['name']);
+                move_uploaded_file($_FILES ['g_image_start'] ['tmp_name'], $file);
+
+                if ($stmt->rowCount()==0) {
+                    logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                    logging("UPDATE ERROR : ". $sql);
+                    logging("ARGS : ". json_encode(func_get_args()));
                 }
-                if ($games->imgStts_hit=="1") {
-                    $sql = "UPDATE `games` SET `g_image_hit`=:g_image_hit WHERE g_seq=:g_seq";
-                    $stmt = $pdo -> prepare($sql);
-                    $stmt->bindParam(':g_seq', $games->g_seq, PDO::PARAM_INT);
-                    $stmt->bindParam(':g_image_hit', $games->g_image_hit, PDO::PARAM_STR);
-                    $stmt->execute();
-                    $file = $path."/". basename($_FILES ['g_image_hit'] ['name']);
-                    move_uploaded_file($_FILES ['g_image_hit'] ['tmp_name'], $file);
+            }
+            if ($games->imgStts_hit=="1") {
+                $sql = "UPDATE `games` SET `g_image_hit`=:g_image_hit WHERE g_seq=:g_seq";
+                $stmt = $pdo -> prepare($sql);
+                $stmt->bindParam(':g_seq', $games->g_seq, PDO::PARAM_INT);
+                $stmt->bindParam(':g_image_hit', $games->g_image_hit, PDO::PARAM_STR);
+                $stmt->execute();
+                $file = $path."/". basename($_FILES ['g_image_hit'] ['name']);
+                move_uploaded_file($_FILES ['g_image_hit'] ['tmp_name'], $file);
+
+                if ($stmt->rowCount()==0) {
+                    logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                    logging("UPDATE ERROR : ". $sql);
+                    logging("ARGS : ". json_encode(func_get_args()));
                 }
-                if ($games->imgStts_miss=="1") {
-                    $sql = "UPDATE `games` SET `g_image_miss`=:g_image_miss WHERE g_seq=:g_seq";
-                    $stmt = $pdo -> prepare($sql);
-                    $stmt->bindParam(':g_seq', $games->g_seq, PDO::PARAM_INT);
-                    $stmt->bindParam(':g_image_miss', $games->g_image_miss, PDO::PARAM_STR);
-                    $stmt->execute();
-                    $file = $path."/". basename($_FILES ['g_image_miss'] ['name']);
-                    move_uploaded_file($_FILES ['g_image_miss'] ['tmp_name'], $file);
+            }
+            if ($games->imgStts_miss=="1") {
+                $sql = "UPDATE `games` SET `g_image_miss`=:g_image_miss WHERE g_seq=:g_seq";
+                $stmt = $pdo -> prepare($sql);
+                $stmt->bindParam(':g_seq', $games->g_seq, PDO::PARAM_INT);
+                $stmt->bindParam(':g_image_miss', $games->g_image_miss, PDO::PARAM_STR);
+                $stmt->execute();
+                $file = $path."/". basename($_FILES ['g_image_miss'] ['name']);
+                move_uploaded_file($_FILES ['g_image_miss'] ['tmp_name'], $file);
+
+                if ($stmt->rowCount()==0) {
+                    logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                    logging("UPDATE ERROR : ". $sql);
+                    logging("ARGS : ". json_encode(func_get_args()));
                 }
+            }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
     }
 
@@ -177,13 +200,8 @@ class cls_games
             $stmt->execute();
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
     }
-
-
-
-
-    ?>

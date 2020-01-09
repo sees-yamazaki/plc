@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // ログイン状態チェック
 if (getSsnIsLogin()==false) {
@@ -21,116 +22,130 @@ if (!isset($page)) {
     $page = 1;
 }
 
- try {
-     $search_s_entry = $_POST['search_s_entry'];
-     $search_e_entry = $_POST['search_e_entry'];
-     $search_name = $_POST['search_name'];
-     $stts0 = empty($_POST['stts0']) ? "":" checked";
-     $stts1 = empty($_POST['stts1']) ? "":" checked";
-     $stts99 = empty($_POST['stts99']) ? "":" checked";
 
-     $search_promo_title = $_POST['search_promo_title'];
-     $search_rows = $_POST['search_rows'];
-     
-     $search_rows_100="";
-     $search_rows_300="";
-     $search_rows_500="";
-     if ($_POST['search_rows']=="500") {
-         $limitRow = 500;
-         $search_rows_500=" checked";
-     } elseif ($_POST['search_rows']=="300") {
-         $limitRow = 300;
-         $search_rows_300=" checked";
-     } else {
-         $limitRow = 100;
-         $search_rows_100=" checked";
-     }
+$searchData = array();
 
-     $openclose = " fClose";
-     $formbg = " closeform";
-     $where = "";
-     if (isset($_POST['search'])) {
-         $tmp = array();
+if (isset($_POST['back']) || isset($_POST['paging'])) {
+    $searchData = getSsn(__CLASS__);
+    if (isset($_POST['back'])) {
+        $page = $searchData['page'];
+    }
+} else {
+    $searchData['search_s_entry'] = $_POST['search_s_entry'];
+    $searchData['search_e_entry'] = $_POST['search_e_entry'];
+    $searchData['search_name'] = $_POST['search_name'];
+    $searchData['stts0'] = empty($_POST['stts0']) ? "":" checked";
+    $searchData['stts1'] = empty($_POST['stts1']) ? "":" checked";
+    $searchData['stts99'] = empty($_POST['stts99']) ? "":" checked";
+    $searchData['search_promo_title'] = $_POST['search_promo_title'];
+    $searchData['search_rows'] = $_POST['search_rows'];
+}
 
-         if (strlen($sSeq)>0) {
-            $tmp[] = "(sp_seq=".$sSeq.")";
-        }
-         if (strlen($search_s_entry)>0) {
-             $tmp[] = "(createdt>='".$search_s_entry." 00:00:00')";
-         }
-         if (strlen($search_e_login)>0) {
-             $tmp[] = "(createdt<='".$search_e_entry." 23:59:59')";
-         }
-
-         if (!empty($search_name)) {
-             $tmp[] = "(m_name LIKE '%".$search_name."%')";
-         }
-
-         if (!empty($stts0)) {
-             $tmp2[] = " sp_flg=0";
-         }
-         if (!empty($stts1)) {
-             $tmp2[] = "sp_flg=1";
-         }
-         if (count($tmp2)>0) {
-             $tmp[] = "(".implode(" OR ", $tmp2).")";
-         }
-
-         if (!empty($search_promo_title)) {
-            $tmp[] = "(p_title LIKE '%".$search_promo_title."%')";
-        }
+//検索条件をセッションに格納
+$searchData['page']=$page;
+setSsnKV(__CLASS__, $searchData);
 
 
+$search_rows_100="";
+$search_rows_300="";
+$search_rows_500="";
+if ($searchData['search_rows']=="500") {
+    $limitRow = 500;
+    $search_rows_500=" checked";
+} elseif ($searchData['search_rows']=="300") {
+    $limitRow = 300;
+    $search_rows_300=" checked";
+} else {
+    $limitRow = 100;
+    $search_rows_100=" checked";
+}
 
-         if (count($tmp)>0) {
-             $where = " WHERE ".implode(" AND ", $tmp);
-         }
 
-         $openclose = " ";
-         $formbg = " openform";
-     }
+$where = "";
+
+$tmp = array();
+
+if (strlen($sSeq)>0) {
+    $tmp[] = "(sp_seq=".$sSeq.")";
+}
+if (strlen($searchData['search_s_entry'])>0) {
+    $tmp[] = "(createdt>='".$searchData['search_s_entry']." 00:00:00')";
+}
+if (strlen($search_e_login)>0) {
+    $tmp[] = "(createdt<='".$searchData['search_e_entry']." 23:59:59')";
+}
+
+if (!empty($searchData['search_name'])) {
+    $tmp[] = "(m_name LIKE '%".$searchData['search_name']."%')";
+}
+
+if (!empty($searchData['stts0'])) {
+    $tmp2[] = " sp_flg=0";
+}
+if (!empty($searchData['stts1'])) {
+    $tmp2[] = "sp_flg=1";
+}
+if (count($tmp2)>0) {
+    $tmp[] = "(".implode(" OR ", $tmp2).")";
+}
+
+if (!empty($searchData['search_promo_title'])) {
+    $tmp[] = "(p_title LIKE '%".$searchData['search_promo_title']."%')";
+}
+
+
+
+if (count($tmp)>0) {
+    $where = " WHERE ".implode(" AND ", $tmp);
+}
+
+ 
+$openclose = " fClose";
+$formbg = " closeform";
+if (!empty($where)) {
+    $openclose = " ";
+    $formbg = " openform";
+}
 
 
 
 
 
-     require_once './db/views.php';
+require_once './db/views.php';
 
-     $ups = array();
+$ups = array();
 
-     $cnt = getVShipsRows($where);
-     $maxPage = ceil($cnt / $limitRow);
+$cnt = getVShipsRows($where);
+$maxPage = ceil($cnt / $limitRow);
 
-     $offset = $limitRow * ($page - 1);
+$offset = $limitRow * ($page - 1);
 
-     $ships = getVShipsLimit($limitRow, $offset, $where);
+$ships = getVShipsLimit($limitRow, $offset, $where);
 
-     $html = '';
-     foreach ($ships as $ship) {
-         $html .= '<tr>';
-         $html .= '<td>'.substr($ship->createdt, 0, 16).'</td>';
-         $html .= '<td>'.$ship->p_title.'</td>';
-         $html .= '<td>'.$ship->pz_title.'</td>';
-         $html .= '<td>'.$ship->m_name.'</td>';
-         $html .= '<td>'.$ship->sp_name.'</td>';
-         if ($ship->sp_flg==1) {
-             $html .= '<td>発送済み</td>';
-         } else {
-             $html .= '<td class="clrRed">未発送</td>';
-         }
-         $html .= "<td>";
-         $html .= "<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='shipEdit(".$ship->sp_seq.",".$page.")'>詳細</button>";
-         $html .= "</td>";
-          $html .= '</tr>';
-     }
+$html = '';
+foreach ($ships as $ship) {
+    $html .= '<tr>';
+    $html .= '<td>'.substr($ship->createdt, 0, 16).'</td>';
+    $html .= '<td>'.$ship->p_title.'</td>';
+    $html .= '<td>'.$ship->pz_title.'</td>';
+    $html .= '<td>'.$ship->m_name.'</td>';
+    $html .= '<td>'.$ship->sp_name.'</td>';
+    if ($ship->sp_flg==1) {
+        $html .= '<td>発送済み</td>';
+    } else {
+        $html .= '<td class="clrRed">未発送</td>';
+    }
+    $html .= "<td>";
+    $html .= "<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='shipEdit(".$ship->sp_seq.",".$page.")'>詳細</button>";
+    $html .= "</td>";
+    $html .= '</tr>';
+}
 
-     $pHtml = '';
-     for ($i = 1; $i <= $maxPage; ++$i) {
-         $pHtml .= "<a href='javascript:paging(".$i.")'>".$i.'</a>&nbsp;&nbsp;';
-     }
- } catch (PDOException $e) {
-     $errorMessage = 'データベースエラー:'.$e->getMessage();
- }
+$pHtml = '';
+for ($i = 1; $i <= $maxPage; ++$i) {
+    $pHtml .= "<a href='javascript:paging(".$i.")'>".$i.'</a>&nbsp;&nbsp;';
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -166,15 +181,7 @@ if (!isset($page)) {
     </form>
     <form action='' method='POST' name="pFrm">
         <input type='hidden' name='page' value=''>
-        <input type='hidden' name='search' value='1'>
-        <input type='hidden' name='search_s_entry' value='<?php echo $search_s_entry; ?>'>
-        <input type='hidden' name='search_e_entry' value='<?php echo $search_e_entry; ?>'>
-        <input type='hidden' name='search_name' value='<?php echo $search_name; ?>'>
-        <input type='hidden' name='search_rows' value='<?php echo $search_rows; ?>'>
-        <input type='hidden' name='stts0' value='<?php echo $stts0; ?>'>
-        <input type='hidden' name='stts1' value='<?php echo $stts1; ?>'>
-        <input type='hidden' name='stts99' value='<?php echo $stts99; ?>'>
-        <input type='hidden' name='search_promo_title' value='<?php echo $search_promo_title; ?>'>
+        <input type='hidden' name='paging' value=''>
     </form>
 
     <?php include './a_menu.php'; ?>
@@ -195,31 +202,31 @@ if (!isset($page)) {
                                 <div class="col-md-12 showcase_text_area">
                                     <label for="inputType1">日付-></label>
                                     <input type="date" class="form-control w30p search" name="search_s_entry"
-                                        value="<?php echo $search_s_entry; ?>" autocomplete="off">　〜　
+                                        value="<?php echo $searchData['search_s_entry']; ?>" autocomplete="off">　〜　
                                     <input type="date" class="form-control w30p search" name="search_e_entry"
-                                        value="<?php echo $search_e_entry; ?>" autocomplete="off">
+                                        value="<?php echo $searchData['search_e_entry']; ?>" autocomplete="off">
                                 </div>
                                 <div class="col-md-12 showcase_text_area">
                                     <label for="inputType1">キャンペーン名-></label>
                                     <input type="text" class="form-control w50p search" name="search_promo_title"
-                                        value="<?php echo $search_promo_title; ?>">
+                                        value="<?php echo $searchData['search_promo_title']; ?>">
                                 </div>
                                 <div class="col-md-12 showcase_text_area">
                                     <label for="inputType1">当選者-></label>
                                     <input type="text" class="form-control w50p search" name="search_name"
-                                        value="<?php echo $search_name; ?>">
+                                        value="<?php echo $searchData['search_name']; ?>">
                                 </div>
                                 <div class="col-md-12 showcase_text_area">
                                     <label for="inputType1">区分-></label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <label>
                                         <input type="checkbox" class="form-check-input" name="stts0"
-                                            <?php echo $stts0; ?>>未発送<i class="input-frame"></i>
+                                            <?php echo $searchData['stts0']; ?>>未発送<i class="input-frame"></i>
                                     </label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <label>
                                         <input type="checkbox" class="form-check-input" name="stts1"
-                                            <?php echo $stts1; ?>>発送済み<i class="input-frame"></i>
+                                            <?php echo $searchData['stts1']; ?>>発送済み<i class="input-frame"></i>
                                     </label>
                                 </div>
                                 <div class="col-md-12 showcase_text_area">

@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('../psys/logging.php');
 
 $ini = parse_ini_file('./common.ini', false);
 setSsnIni($ini);
@@ -22,41 +23,36 @@ if (isset($_POST['login'])) {
         $m_mail = $_POST['m_mail'];
         $m_pw = $_POST['m_pw'];
 
-        try {
-            require_once './db/members.php';
-            $member = new cls_members();
-            $member = loginMember($m_mail, $m_pw);
 
-            if ($member->m_seq == 0) {
-                $errorMessage = 'ログインできませんでした。';
-            } else {
-                require_once '../psys/db/systems.php';
-                $system = new cls_systems();
-                $system = getSystems();
+        require_once '../psys/db/members.php';
+        $member = new cls_members();
+        $member = loginMember($m_mail, $m_pw);
 
-                setSsnKV('URL_PARENT', $system->url_parent);
-                setSsnKV('URL_CHILD', $system->url_child);
-                setSsnKV('PATH_PROMO', $system->path_root."/".$system->path_promo);
-                setSsnKV('PATH_GAME', $system->path_root."/".$system->path_game);
-                setSsnKV('PATH_INFO', $system->path_root."/".$system->path_info);
-                setSsnKV('PATH_SCODE', $system->path_root."/".$system->path_scode);
-                setSsnKV('SYSTEM_NAME', $system->system_name);
-                setSsnKV('POINT_ENTRY',$system->point_entry);
-                setSsnKV('POINT_GAME',$system->point_game);
-                setSsnKV('SEQ', $member->m_seq);
-                setSsnKV('ID', $member->m_id);
-                setSsnKV('NAME', $member->m_name);
+        if ($member->m_seq == 0) {
+            $errorMessage = 'ログインできませんでした。';
+        } else {
+            require_once '../psys/db/systems.php';
+            $system = new cls_systems();
+            $system = getSystems();
 
-                require_once './db/log.php';
-                log_login($member->m_seq);
+            setSsnKV('URL_PARENT', $system->url_parent);
+            setSsnKV('URL_CHILD', $system->url_child);
+            setSsnKV('PATH_PROMO', $system->path_root."/".$system->path_promo);
+            setSsnKV('PATH_GAME', $system->path_root."/".$system->path_game);
+            setSsnKV('PATH_INFO', $system->path_root."/".$system->path_info);
+            setSsnKV('PATH_SCODE', $system->path_root."/".$system->path_scode);
+            setSsnKV('SYSTEM_NAME', $system->system_name);
+            setSsnKV('POINT_ENTRY', $system->point_entry);
+            setSsnKV('POINT_GAME', $system->point_game);
+            setSsnKV('SHIP_LIMIT', $system->ship_limit);
+            setSsnKV('SEQ', $member->m_seq);
+            setSsnKV('ID', $member->m_id);
+            setSsnKV('NAME', $member->m_name);
 
-                header('Location: ./home.php');
-            }
-        } catch (PDOException $e) {
-            $errorMessage = 'データベースエラー';
-            //$errorMessage = $sql;
-            // $e->getMessage() でエラー内容を参照可能（デバッグ時のみ表示）
-            echo $e->getMessage();
+            require_once '../psys/db/log.php';
+            log_login($member->m_seq);
+
+            header('Location: ./home.php');
         }
     }
 }
@@ -77,7 +73,7 @@ if (isset($_POST['login'])) {
 
     <!-- Header -->
     <header id="header">
-        <a href="javascript:void(0)" class="logo"><strong><?php echo getSsnMyname(); ?></strong> by SEES</a>
+        <a href="javascript:void(0)" class="logo"><strong><?php echo getSsnMyname(); ?></strong> by itty</a>
     </header>
 
     <!-- Banner -->

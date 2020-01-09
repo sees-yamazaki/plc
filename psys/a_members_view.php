@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // タイムゾーンを設定
 date_default_timezone_set('Asia/Tokyo');
@@ -62,11 +63,6 @@ $errorMessage = '';
         $html3 .= "</tr>";
     }
 
-
-
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -86,12 +82,18 @@ $errorMessage = '';
         document.frm.mSeq.value = vlu;
         document.frm.submit();
     }
+    function back() {  
+        document.pFrm.submit();
+    }
     </script>
 </head>
 
 <body class="header-fixed">
     <form action='a_members_point.php' method='POST' name="frm">
         <input type='hidden' name='mSeq' value=''>
+    </form>
+    <form action='a_members_list.php' method='POST' name="pFrm">
+        <input type='hidden' name='back'>
     </form>
 
     <?php include './a_menu.php'; ?>
@@ -108,7 +110,7 @@ $errorMessage = '';
                                 <div class="row mb-3">
                                     <div class="col-md-8 mx-auto">
                                         <button type="button" class="btn btn-inverse-info"
-                                            onclick="location.href='./a_members_list.php'">＜＜戻る</button>
+                                            onclick="back()">＜＜戻る</button>
                                         <button type="button" class="btn btn-inverse-dark"
                                             onclick='mmbrPoint(<?php echo $member->m_seq; ?>)'>ポイント付与する</button>
                                         <br><br>

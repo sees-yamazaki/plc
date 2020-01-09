@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('../psys/logging.php');
 
 // ログイン状態チェック
 if (getSsnIsLogin()==false) {
@@ -17,7 +18,7 @@ $pw1 = $_POST['pw1'];
 $pw2 = $_POST['pw2'];
 
 
-    require_once './db/members.php';
+    require_once '../psys/db/members.php';
 
     try {
         if (isset($_POST['pwChange'])) {

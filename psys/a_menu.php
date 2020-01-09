@@ -1,7 +1,7 @@
 <!-- partial:partials/_header.html -->
 <nav class="t-header">
     <div class="t-header-brand-wrapper">
-        <a href="index.html">
+        <a href="#s">
             <img class="logo" src="./assets/images/logo.png" alt="">
             <img class="logo-mini" src="./assets/images/logo.png" alt="">
         </a>
@@ -18,17 +18,6 @@
 <div class="page-body">
     <!-- partial:partials/_sidebar.html -->
     <div class="sidebar">
-        <!--
-        <div class="user-profile">
-          <div class="display-avatar animated-avatar">
-            <img class="profile-img img-lg rounded-circle" src="./assets/images/profile/male/image_1.png" alt="profile image">
-          </div>
-          <div class="info-wrapper">
-            <p class="user-name">Allen Clerk</p>
-            <h6 class="display-income">$3,400,00</h6>
-          </div>
-        </div>
-      -->
         <ul class="navigation-menu">
             <li class="nav-category-divider">MAIN</li>
             <li>
@@ -66,11 +55,6 @@
                     <li>
                         <a href="a_promos_edit.php">キャンペーン新規登録</a>
                     </li>
-                    <!--
-                        <li>
-                            <a href="javascript:void(0)">景品一覧</a>
-                        </li>
--->
                     <li>
                         <a href="a_games_list.php">ゲーム一覧</a>
                     </li>
@@ -142,32 +126,6 @@
                     <i class="mdi mdi-home link-icon"></i>
                 </a>
             </li>
-            <!--
-                <li>
-                    <a href="pages/forms/form-elements.html">
-                        <span class="link-title">Forms</span>
-                        <i class="mdi mdi-clipboard-outline link-icon"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="pages/charts/chartjs.html">
-                        <span class="link-title">Charts</span>
-                        <i class="mdi mdi-chart-donut link-icon"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="pages/icons/material-icons.html">
-                        <span class="link-title">Icons</span>
-                        <i class="mdi mdi-flower-tulip-outline link-icon"></i>
-                    </a>
-                </li>
-                <li class="nav-category-divider">DOCS</li>
-                <li>
-                    <a href="../docs/docs.html">
-                        <span class="link-title">Documentation</span>
-                        <i class="mdi mdi-asterisk link-icon"></i>
-                    </a>
-                </li>
--->
+
         </ul>
     </div>

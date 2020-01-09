@@ -12,6 +12,27 @@ class cls_usepoints
     public $pz_seq;
 }
 
+function countUsepointsByPseq($pSeq)
+{
+    try {
+        $cnt = 0;
+        require './db/dns.php';
+        $stmt = $pdo->prepare('SELECT count(*) as cnt FROM `usepoints` WHERE p_seq=:p_seq');
+        $stmt->bindParam(':p_seq', $pSeq, PDO::PARAM_INT);
+        $stmt->execute();
+        if ($row = $stmt->fetch()) {
+            $cnt = $row['cnt'];
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'データベースエラー';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+
+    return $cnt;
+}
+
     function countUsepointsByPzseq($pzSeq)
     {
         try {
@@ -22,13 +43,12 @@ class cls_usepoints
             $stmt->execute();
             if ($row = $stmt->fetch()) {
                 $cnt = $row['cnt'];
-                array_push($results, $result);
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
 
         return $cnt;
@@ -50,12 +70,54 @@ class cls_usepoints
             $stmt->execute();
 
             $id = $pdo->lastInsertId();
+
+            if ($pdo->exec()==0) {
+                logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                logging("INSERT ERROR : ". $sql);
+                logging("ARGS : ". json_encode(func_get_args()));
+            }
+
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
 
         return $id;
     }
+
+
+    function getUnShip($mSeq)
+    {
+
+        try {
+
+            $results = array();
+            require './db/dns.php';
+            $stmt = $pdo->prepare("SELECT * FROM `v_unships` WHERE `m_seq`=:m_seq ORDER BY createdt");
+            $stmt->bindParam(':m_seq', $mSeq, PDO::PARAM_INT);
+            $stmt->execute();
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $result = new cls_usepoints();
+                $result->up_seq = $row['up_seq'];
+                $result->m_seq = $row['m_seq'];
+                $result->up_point = $row['up_point'];
+                $result->createdt = $row['createdt'];
+                $result->up_status = $row['up_status'];
+                $result->g_seq = $row['g_seq'];
+                $result->p_seq = $row['p_seq'];
+                $result->pz_seq = $row['pz_seq'];
+                array_push($results, $result);
+            }
+
+        } catch (PDOException $e) {
+            $errorMessage = 'データベースエラー';
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                logging("DATABASE ERROR : ".$e->getMessage());
+                logging("ARGS : ". json_encode(func_get_args()));
+        }
+        return $results;
+    }
+
+    

@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // タイムゾーンを設定
 date_default_timezone_set('Asia/Tokyo');
@@ -18,75 +19,65 @@ $errorMessage = "";
 
 
 
-    $uSeq = $_POST['uSeq'];
+$uSeq = $_POST['uSeq'];
 
-    require './db/users.php';
-    $user = new cls_users();
+require './db/users.php';
+$user = new cls_users();
 
-    try {
-        $user->users_seq = $_POST['uSeq'];
-        $user->users_id = $_POST['users_id'];
-        $user->users_pw = $_POST['users_pw'];
-        $user->users_name = $_POST['users_name'];
-        
-        if (isset($_POST['userEdit'])) {
 
-            $tmp = getUserByID($user);
+$user->users_seq = $_POST['uSeq'];
+$user->users_id = $_POST['users_id'];
+$user->users_pw = $_POST['users_pw'];
+$user->users_name = $_POST['users_name'];
 
-            if (empty($tmp->users_seq)) {
-                if (!empty($uSeq)) {
-                    updateUser($user);
-                } else {
-                    insertUser($user);
-                }
-            } else {
-                $errorMessage = 'このIDはすでに使用されています';
-            }
-            
-            
-            if (empty($errorMessage)) {
-                header("Location: ./a_users_list.php");
-            }
+if (isset($_POST['userEdit'])) {
+    $tmp = getUserByID($user);
 
-        } elseif (isset($_POST['myPw'])) {
-
-            //パスワードをIDと同値で初期化する
-            $user = getUser($uSeq);
-            $user->users_pw = $_POST['users_pw'];
-            updateUserPW($user);
-
-            header("Location: ./a_users_list.php");
-
-        } elseif (isset($_POST['userPw'])) {
-
-            //パスワードをIDと同値で初期化する
-            $user = getUser($uSeq);
-            $user->users_pw = $user->users_id ;
-            updateUserPW($user);
-
-            header("Location: ./a_users_list.php");
-
-        } elseif (isset($_POST['userDel'])) {
-            $rtn = checkUsers($user);
-            if (count($rtn)==0) {
-                deleteUser($user);
-
-                header("Location: ./users_list.php");
-
-            } else {
-                $errorMessage = 'このユーザはシミュレーションデータが登録されているため削除できません';
-                
-                $user = getUser($uSeq);
-            }
+    if (empty($tmp->users_seq)) {
+        if (!empty($uSeq)) {
+            updateUser($user);
         } else {
-            $user = getUser($uSeq);
+            insertUser($user);
         }
-    } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+    } else {
+        $errorMessage = 'このIDはすでに使用されています';
     }
+
+
+    if (empty($errorMessage)) {
+        header("Location: ./a_users_list.php");
+    }
+} elseif (isset($_POST['myPw'])) {
+
+//パスワードをIDと同値で初期化する
+    $user = getUser($uSeq);
+    $user->users_pw = $_POST['users_pw'];
+    updateUserPW($user);
+
+    header("Location: ./a_users_list.php");
+} elseif (isset($_POST['userPw'])) {
+
+//パスワードをIDと同値で初期化する
+    $user = getUser($uSeq);
+    $user->users_pw = $user->users_id ;
+    updateUserPW($user);
+
+    header("Location: ./a_users_list.php");
+} elseif (isset($_POST['userDel'])) {
+    $rtn = checkUsers($user);
+    if (count($rtn)==0) {
+        deleteUser($user);
+
+        header("Location: ./users_list.php");
+    } else {
+        $errorMessage = 'このユーザはシミュレーションデータが登録されているため削除できません';
+
+        $user = getUser($uSeq);
+    }
+} else {
+    $user = getUser($uSeq);
+}
+
 
 ?>
 <!DOCTYPE html>

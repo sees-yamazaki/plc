@@ -28,9 +28,9 @@ function getSerialCodeBySCode($sc_code)
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."()");
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
     return $result;
 }
@@ -49,9 +49,9 @@ function updateSerialCode($scode)
         var_dump($scode);
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."()");
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
 }
 

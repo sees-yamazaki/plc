@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // ログイン状態チェック
 if (getSsnIsLogin()==false) {
@@ -14,25 +15,24 @@ if (getSsnIsLogin()==false) {
 $errorMessage = "";
 
 
- try {
-     require_once './db/infos.php';
-     $infos = new cls_infos();
-     $infos = getInfos();
 
-     $html="";
-     foreach ($infos as $info) {
-         $html .= '<tr>';
-         $html .= "<td>".$info->inf_title."</td>";
-         $html .= "<td>".$info->inf_startdt." 〜 ".$info->inf_enddt."</td>";
-         $html .= "<td>";
-         $html .= "<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='infoEdit(".$info->inf_seq.")'>編集</button>";
-         $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='infoView(".$info->inf_seq.")'>プレビュー</button>";
-         $html .= "</td>";
-         $html .= "</tr>";
-     }
- } catch (PDOException $e) {
-     $errorMessage = 'データベースエラー:'.$e->getMessage();
- }
+require_once './db/infos.php';
+$infos = new cls_infos();
+$infos = getInfos();
+
+$html="";
+foreach ($infos as $info) {
+    $html .= '<tr>';
+    $html .= "<td>".$info->inf_title."</td>";
+    $html .= "<td>".$info->inf_startdt." 〜 ".$info->inf_enddt."</td>";
+    $html .= "<td>";
+    $html .= "<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='infoEdit(".$info->inf_seq.")'>編集</button>";
+    $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='infoView(".$info->inf_seq.")'>プレビュー</button>";
+    $html .= "</td>";
+    $html .= "</tr>";
+}
+
+
 
 
 ?>

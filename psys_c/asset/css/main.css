@@ -29,7 +29,7 @@
 @media screen and (max-width: 736px) {
     #footer {
         height: 40px;
-        padding: 0.5em 0 ;
+        padding: 0.5em 0;
     }
     #geta {
         height: 40px;
@@ -53,6 +53,10 @@
     text-align: center;
     cursor: default;
     padding: 2em;
+}
+
+#banner8 h1 {
+    color: #1c577e;
 }
 
 #banner8 h3 {

@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('../psys/logging.php');
 
 // エラーメッセージの初期化
 $errorMessage = "";
@@ -33,7 +34,7 @@ unsetSsn();
 
     <!-- Header -->
     <header id="header">
-        <a href="javascript:void(0)" class="logo"><strong><?php echo $sysname; ?></strong> by SEES</a>
+        <a href="javascript:void(0)" class="logo"><strong><?php echo $sysname; ?></strong> by itty</a>
     </header>
 
     <!-- Banner -->

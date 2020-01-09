@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('../psys/logging.php');
 
 
 // ログイン状態チェック
@@ -17,7 +18,7 @@ $errorMessage = "";
 
 $upSeq = $_POST['upSeq'];
 
-    require_once './db/ships.php';
+    require_once '../psys/db/ships.php';
     $ship = new cls_ships();
 
     try {
@@ -30,7 +31,7 @@ $upSeq = $_POST['upSeq'];
             $ship->sp_tel = $_POST['sp_tel'];
             $ship->sp_text = $_POST['sp_text'];
         } else {
-            require_once './db/members.php';
+            require_once '../psys/db/members.php';
             $member = new cls_members();
             $member = getMember(getSsn("SEQ"));
 

@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // ログイン状態チェック
 if (getSsnIsLogin()==false) {
@@ -15,28 +16,24 @@ $errorMessage = "";
 
 
 $pSeq = $_POST['pSeq'];
-if(!isset($pSeq)){
+if (!isset($pSeq)) {
     $pSeq = $_GET['pSeq'];
 }
 
- try {
-     require_once './db/prizes.php';
-     $prizes = new cls_prizes();
-     $prizes = getPrizes($pSeq);
 
-     $html="";
-     foreach ($prizes as $prize) {
-        $html .= '<tr>';
-        $html .= "<td>".$prize->pz_order."</td>";
-        $html .= "<td>".$prize->pz_title."</td>";
-        $html .= "<td>".$prize->pz_nowcnt."</td>";
-        $html .= "<td>".$prize->pz_hitcnt."</td>";
-        $html .= "<td><button type='button' name='edit' class='btn btn-inverse-secondary' onclick='przEdit(".$prize->pz_seq.")'>編集</button></td>";
-        $html .= "</tr>";
-    }
+require_once './db/prizes.php';
+$prizes = new cls_prizes();
+$prizes = getPrizes($pSeq);
 
-} catch (PDOException $e) {
-    $errorMessage = 'データベースエラー:'.$e->getMessage();
+$html="";
+foreach ($prizes as $prize) {
+    $html .= '<tr>';
+    $html .= "<td>".$prize->pz_order."</td>";
+    $html .= "<td>".$prize->pz_title."</td>";
+    $html .= "<td>".$prize->pz_nowcnt."</td>";
+    $html .= "<td>".$prize->pz_hitcnt."</td>";
+    $html .= "<td><button type='button' name='edit' class='btn btn-inverse-secondary' onclick='przEdit(".$prize->pz_seq.")'>編集</button></td>";
+    $html .= "</tr>";
 }
 
 

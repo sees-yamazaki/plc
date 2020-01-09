@@ -8,7 +8,7 @@ function setSsnIni($data){
     global $cnst_app_name;
     global $cnst_ini_name;
 
-    if (is_array($$_SESSION[$cnst_app_name])) {
+    if (is_array($_SESSION[$cnst_app_name])) {
         $_SESSION[$cnst_app_name][$cnst_ini_name] = $data;
     }else{
         $_SESSION[$cnst_app_name] = array($cnst_ini_name=>$data);
@@ -52,7 +52,7 @@ function setSsnSys($data){
     global $cnst_app_name;
     global $cnst_sys_name;
 
-    if (is_array($$_SESSION[$cnst_app_name][$cnst_sys_name])) {
+    if (is_array($_SESSION[$cnst_app_name][$cnst_sys_name])) {
         $_SESSION[$cnst_app_name][$cnst_sys_name] = $data;
     }else{
         $_SESSION[$cnst_app_name] = array($cnst_sys_name=>$data);

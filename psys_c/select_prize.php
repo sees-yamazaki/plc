@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('../psys/logging.php');
 
 
 // ログイン状態チェック
@@ -14,7 +15,7 @@ if (getSsnIsLogin()==false) {
 // エラーメッセージの初期化
 $errorMessage = '';
 
-require_once './db/promos.php';
+require_once '../psys/db/promos.php';
 $promo = getOpenPromo();
 $html1 = '';
 if ($promo->p_seq==0) {
@@ -22,13 +23,13 @@ if ($promo->p_seq==0) {
 } else {
     $html1 .= "<h1>".$promo->p_title>"aaa</h1>";
     if (isset($promo->p_text1)) {
-        $html1 .= "<h3>".$promo->p_text1."</h3>";
+        $html1 .= "<h3>".nl2br($promo->p_text1)."</h3>";
     }
     if (isset($promo->p_text1)) {
         $html1 .= "<img class='img80' border=0 src='../psys/". getSsn('PATH_PROMO')."/".$promo->p_seq."/".$promo->p_img."'>";
     }
     if (isset($promo->p_text2)) {
-        $html1 .= "<h3>".$promo->p_text2."</h3>";
+        $html1 .= "<h3>".nl2br($promo->p_text2)."</h3>";
     }
 }
 

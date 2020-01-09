@@ -78,3 +78,15 @@
 .fClose {
     display: none;
 }
+
+@media (max-width: 580px) {
+    .t-header .t-header-content-wrapper .t-header-content {
+        margin-top: 80px;
+    }
+    .t-header-brand-wrapper {
+        height: 0px;
+    }
+    .t-header {
+        height: 0px;
+    }
+}

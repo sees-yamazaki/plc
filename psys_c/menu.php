@@ -1,6 +1,6 @@
 <!-- Header -->
 <header id="header">
-    <a href="javascript:void(0)" class="logo"><strong><?php echo getSsnMyname(); ?></strong> by SEES</a>
+    <a href="javascript:void(0)" class="logo"><strong><?php echo getSsnMyname(); ?></strong> by itty</a>
     <nav>
         <a href="#menu">Menu</a>
     </nav>

@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 $ini = parse_ini_file('./common.ini', false);
 setSsnIni($ini);
@@ -13,62 +14,60 @@ $errorMessage = "";
 // ログインボタンが押された場合
 if (isset($_POST["login"])) {
 
-    // 1. ユーザIDの入力チェック
-    if (empty($_POST["users_id"])) {  // emptyは値が空のとき
-        $errorMessage = 'ユーザーIDが未入力です。';
-    } elseif (empty($_POST["users_pw"])) {
-        $errorMessage = 'パスワードが未入力です。';
+// 1. ユーザIDの入力チェック
+if (empty($_POST["users_id"])) {  // emptyは値が空のとき
+$errorMessage = 'ユーザーIDが未入力です。';
+} elseif (empty($_POST["users_pw"])) {
+    $errorMessage = 'パスワードが未入力です。';
+} else {
+    // 入力したユーザIDを格納
+    $users_id = $_POST["users_id"];
+    $users_pw = $_POST["users_pw"];
+
+
+    require_once './db/users.php';
+    $users = new cls_users();
+    $users = loginUsers($users_id, $users_pw);
+
+    if ($users->users_seq==0) {
+        $errorMessage = 'ログインできませんでした。';
     } else {
-        // 入力したユーザIDを格納
-        $users_id = $_POST["users_id"];
-        $users_pw = $_POST["users_pw"];
+        require_once './db/systems.php';
+        $system = new cls_systems();
+        $system = getSystems();
 
-
-        try {
-            require_once './db/users.php';
-            $users = new cls_users();
-            $users = loginUsers($users_id, $users_pw);
-
-            if ($users->users_seq==0) {
-                $errorMessage = 'ログインできませんでした。';
-            } else {
-                require_once './db/systems.php';
-                $system = new cls_systems();
-                $system = getSystems();
-
-                if (!file_exists($system->path_root)) {
-                    mkdir($system->path_root, 0777);
-                    mkdir($system->path_root."/".$system->path_promo, 0777);
-                    mkdir($system->path_root."/".$system->path_game, 0777);
-                    mkdir($system->path_root."/".$system->path_info, 0777);
-                    mkdir($system->path_root."/".$system->path_scode, 0777);
-                }
-
-                setSsnKV('URL_PARENT',$system->url_parent);
-                setSsnKV('URL_CHILD',$system->url_child);
-                setSsnKV('PATH_PROMO',$system->path_root."/".$system->path_promo);
-                setSsnKV('PATH_GAME',$system->path_root."/".$system->path_game);
-                setSsnKV('PATH_INFO',$system->path_root."/".$system->path_info);
-                setSsnKV('PATH_SCODE',$system->path_root."/".$system->path_scode);
-                setSsnKV('SYSTEM_NAME',$system->system_name);
-                setSsnKV('POINT_ENTRY',$system->point_entry);
-                setSsnKV('POINT_GAME',$system->point_game);
-                setSsnKV('SEQ',$users->users_seq);
-                setSsnKV('ID',$users->users_id);
-                setSsnKV('NAME',$users->users_name);
-
-                $errorMessage = 'ログインできました。';
-
-                header("Location: ./a_home.php");
-            }
-        } catch (PDOException $e) {
-            $errorMessage = 'データベースエラー';
-            //$errorMessage = $sql;
-            // $e->getMessage() でエラー内容を参照可能（デバッグ時のみ表示）
-            echo $e->getMessage();
+        if (!file_exists($system->path_root)) {
+            mkdir($system->path_root, 0777);
+            mkdir($system->path_root."/".$system->path_promo, 0777);
+            mkdir($system->path_root."/".$system->path_game, 0777);
+            mkdir($system->path_root."/".$system->path_info, 0777);
+            mkdir($system->path_root."/".$system->path_scode, 0777);
         }
+
+        setSsnKV('URL_PARENT', $system->url_parent);
+        setSsnKV('URL_CHILD', $system->url_child);
+        setSsnKV('PATH_PROMO', $system->path_root."/".$system->path_promo);
+        setSsnKV('PATH_GAME', $system->path_root."/".$system->path_game);
+        setSsnKV('PATH_INFO', $system->path_root."/".$system->path_info);
+        setSsnKV('PATH_SCODE', $system->path_root."/".$system->path_scode);
+        setSsnKV('SYSTEM_NAME', $system->system_name);
+        setSsnKV('POINT_ENTRY', $system->point_entry);
+        setSsnKV('POINT_GAME', $system->point_game);
+        setSsnKV('SEQ', $users->users_seq);
+        setSsnKV('ID', $users->users_id);
+        setSsnKV('NAME', $users->users_name);
+
+        if (!file_exists("log")) {
+            mkdir("log", 0777);
+        }
+
+        $errorMessage = 'ログインできました。';
+
+        header("Location: ./a_home.php");
     }
 }
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -125,7 +124,7 @@ if (isset($_POST["login"])) {
         </div>
       </div>
       <div class="auth_footer">
-        <p class="text-muted text-center">© SEES</p>
+        <p class="text-muted text-center">© itty</p>
       </div>
     </div>
     <!--page body ends -->

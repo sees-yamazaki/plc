@@ -45,9 +45,9 @@ class cls_hitcounts
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
 
         return $results;
@@ -75,9 +75,9 @@ class cls_hitcounts
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
 
         return $result;
@@ -96,7 +96,7 @@ class cls_hitcounts
             $stmt->bindParam(':pz_img', $prizes->pz_img, PDO::PARAM_STR);
             $stmt->bindParam(':pz_text', $prizes->pz_text, PDO::PARAM_STR);
 //            $stmt->bindParam(':pz_hitcnt', $prizes->pz_hitcnt, PDO::PARAM_INT);
-             $stmt->execute();
+            $stmt->execute();
 
             $insertid = $pdo->lastInsertId();
 
@@ -106,8 +106,10 @@ class cls_hitcounts
                 move_uploaded_file($_FILES['pz_img']['tmp_name'], $file);
             }
 
-            $hitcnts = explode(",",$prizes->pz_hitcnt);
-            foreach($hitcnts as $hitcnt){
+            $hitcnts00 = explode(",", $prizes->pz_hitcnt);
+            $hitcnts = array_unique($hitcnts00);
+            asort($hitcnts);
+            foreach ($hitcnts as $hitcnt) {
                 if (strlen($hitcnt)>0) {
                     $sql = 'INSERT  INTO `hitcounts` (  `p_seq`,  `pz_seq`,  `hc_no`) VALUES (:p_seq, :pz_seq,:hc_no)';
                     $stmt = $pdo->prepare($sql);
@@ -117,13 +119,11 @@ class cls_hitcounts
                     $stmt->execute();
                 }
             }
-
-
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
     }
 
@@ -152,6 +152,12 @@ class cls_hitcounts
             $stmt->bindParam(':pz_text', $prizes->pz_text, PDO::PARAM_STR);
             $stmt->execute();
 
+            if ($stmt->rowCount()==0) {
+                logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                logging("UPDATE ERROR : ". $sql);
+                logging("ARGS : ". json_encode(func_get_args()));
+            }
+
             if ($prizes->imgStts == 1) {
                 $path = getSsn('PATH_PROMO').'/'.$prizes->p_seq;
                 $file = $path.'/'.basename($_FILES['pz_img']['name']);
@@ -164,8 +170,10 @@ class cls_hitcounts
             $stmt->bindParam(':pz_seq', $prizes->pz_seq, PDO::PARAM_INT);
             $stmt->execute();
 
-            $hitcnts = explode(",",$prizes->pz_hitcnt);
-            foreach($hitcnts as $hitcnt){
+            $hitcnts00 = explode(",", $prizes->pz_hitcnt);
+            $hitcnts = array_unique($hitcnts00);
+            asort($hitcnts);
+            foreach ($hitcnts as $hitcnt) {
                 if (strlen($hitcnt)>0) {
                     $sql = 'INSERT  INTO `hitcounts` (`p_seq`, `pz_seq`, `hc_no`) VALUES (:p_seq, :pz_seq,:hc_no)';
                     $stmt = $pdo->prepare($sql);
@@ -173,14 +181,19 @@ class cls_hitcounts
                     $stmt->bindParam(':pz_seq', $prizes->pz_seq, PDO::PARAM_INT);
                     $stmt->bindParam(':hc_no', $hitcnt, PDO::PARAM_INT);
                     $stmt->execute();
+
+                    if ($stmt->rowCount()==0) {
+                        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                        logging("INSERT ERROR : ". $sql);
+                        logging("ARGS : ". json_encode(func_get_args()));
+                    }
                 }
             }
-
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
     }
 
@@ -194,8 +207,8 @@ class cls_hitcounts
             $stmt->execute();
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
     }

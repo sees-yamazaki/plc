@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // タイムゾーンを設定
 date_default_timezone_set('Asia/Tokyo');
@@ -16,121 +17,115 @@ if (getSsnIsLogin()==false) {
 // エラーメッセージの初期化
 $errorMessage = "";
 
-    $gSeq = $_POST['gSeq'];
-    if(!isset($gSeq)){
-        $gSeq = 0;
+$gSeq = $_POST['gSeq'];
+if (!isset($gSeq)) {
+    $gSeq = 0;
+}
+
+require './db/games.php';
+$game = new cls_games();
+
+
+$game->g_seq = $gSeq;
+$game->g_title = $_POST['g_title'];
+$game->g_image_start = basename($_FILES ['g_image_start'] ['name']);
+$game->imgStts_start = $_POST['imgStts_start'];
+$game->g_image_hit = basename($_FILES ['g_image_hit'] ['name']);
+$game->imgStts_hit = $_POST['imgStts_hit'];
+$game->g_image_miss =basename($_FILES ['g_image_miss'] ['name']);
+$game->imgStts_miss = $_POST['imgStts_miss'];
+$game->g_text = $_POST['g_text'];
+
+if (isset($_POST['gameEdit'])) {
+    if ($game->imgStts_start=="1") {
+        $tmpMgs="";
+        //アップロードファイルの検証
+        $filepath = pathinfo($_FILES ['g_image_start'] ['name']);
+
+        if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
+            $tmpMgs .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
+        }
+
+        if (mb_strlen($game->g_image_start)>20) {
+            $tmpMgs .= '<br>・アップロード画像のファイル名は20文字以内にしてください。';
+        }
+        if (!empty($tmpMgs)) {
+            $errorMessage .= '<br>アップロードされたファイル：'.basename($_FILES ['g_image_start'] ['name']).$tmpMgs."<br>";
+        }
     }
 
-    require './db/games.php';
-    $game = new cls_games();
+    if ($game->imgStts_hit=="1") {
+        $tmpMgs="";
+        //アップロードファイルの検証
+        $filepath = pathinfo($_FILES ['g_image_hit'] ['name']);
 
-    try {
+        if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
+            $tmpMgs .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
+        }
 
-        $game->g_seq = $gSeq;
-        $game->g_title = $_POST['g_title'];
-        $game->g_image_start = basename( $_FILES ['g_image_start'] ['name'] );
-        $game->imgStts_start = $_POST['imgStts_start'];
-        $game->g_image_hit = basename( $_FILES ['g_image_hit'] ['name'] );
-        $game->imgStts_hit = $_POST['imgStts_hit'];
-        $game->g_image_miss =basename( $_FILES ['g_image_miss'] ['name'] );
-        $game->imgStts_miss = $_POST['imgStts_miss'];
-        $game->g_text = $_POST['g_text'];
-        
-        if (isset($_POST['gameEdit'])) {
+        if (mb_strlen($game->g_image_hit)>20) {
+            $tmpMgs .= '<br>・アップロード画像のファイル名は20文字以内にしてください。';
+        }
+        if (!empty($tmpMgs)) {
+            $errorMessage .= '<br>アップロードされたファイル：'.basename($_FILES ['g_image_hit'] ['name']).$tmpMgs."<br>";
+        }
+    }
 
-            if ($game->imgStts_start=="1") {
-                $tmpMgs="";
-                //アップロードファイルの検証
-                $filepath = pathinfo($_FILES ['g_image_start'] ['name']);
-    
-                if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
-                    $tmpMgs .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
-                }
-    
-                if (mb_strlen($game->g_image_start)>20) {
-                    $tmpMgs .= '<br>・アップロード画像のファイル名は20文字以内にしてください。';
-                }
-                if (!empty($tmpMgs)) {
-                    $errorMessage .= '<br>アップロードされたファイル：'.basename( $_FILES ['g_image_start'] ['name'] ).$tmpMgs."<br>";
-                }
-            }
+    if ($game->imgStts_miss=="1") {
+        $tmpMgs="";
+        //アップロードファイルの検証
+        $filepath = pathinfo($_FILES ['g_image_miss'] ['name']);
 
-            if ($game->imgStts_hit=="1") {
-                $tmpMgs="";
-                //アップロードファイルの検証
-                $filepath = pathinfo($_FILES ['g_image_hit'] ['name']);
-    
-                if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
-                    $tmpMgs .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
-                }
-    
-                if (mb_strlen($game->g_image_hit)>20) {
-                    $tmpMgs .= '<br>・アップロード画像のファイル名は20文字以内にしてください。';
-                }
-                if (!empty($tmpMgs)) {
-                    $errorMessage .= '<br>アップロードされたファイル：'.basename( $_FILES ['g_image_hit'] ['name'] ).$tmpMgs."<br>";
-                }
-            }
+        if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
+            $tmpMgs .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
+        }
 
-            if ($game->imgStts_miss=="1") {
-                $tmpMgs="";
-                //アップロードファイルの検証
-                $filepath = pathinfo($_FILES ['g_image_miss'] ['name']);
-    
-                if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
-                    $tmpMgs .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
-                }
-    
-                if (mb_strlen($game->g_image_miss)>20) {
-                    $tmpMgs .= '<br>・アップロード画像のファイル名は20文字以内にしてください。';
-                }
-                if (!empty($tmpMgs)) {
-                    $errorMessage .= '<br>アップロードされたファイル：'.basename( $_FILES ['g_image_miss'] ['name'] ).$tmpMgs."<br>";
-                }
-            }
-            
-            
-            if (empty($errorMessage)) {
-                if (!empty($gSeq)) {
-                    updateGame($game);
-                } else {
-                    insertGame($game);
-                }
+        if (mb_strlen($game->g_image_miss)>20) {
+            $tmpMgs .= '<br>・アップロード画像のファイル名は20文字以内にしてください。';
+        }
+        if (!empty($tmpMgs)) {
+            $errorMessage .= '<br>アップロードされたファイル：'.basename($_FILES ['g_image_miss'] ['name']).$tmpMgs."<br>";
+        }
+    }
 
-                header("Location: ./a_games_list.php?pSeq=".$pSeq);
-            }
 
-        } elseif (isset($_POST['del'])) {
-
-            $rtn = countGames($gSeq);
-            if ($rtn==0) {
-                deleteGame($gSeq);
-
-                header("Location: ./a_games_list.php");
-            } else {
-                $errorMessage = 'このゲームはキャンペーンで使用されているため削除できません';
-                
-            $game = getGame($gSeq);
-            }
+    if (empty($errorMessage)) {
+        if (!empty($gSeq)) {
+            updateGame($game);
         } else {
-            $game = getGame($gSeq);
+            insertGame($game);
         }
-    } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+
+        header("Location: ./a_games_list.php?pSeq=".$pSeq);
     }
+} elseif (isset($_POST['del'])) {
+    $rtn = countGames($gSeq);
+    if ($rtn==0) {
+        deleteGame($gSeq);
+
+        header("Location: ./a_games_list.php");
+    } else {
+        $errorMessage = 'このゲームはキャンペーンで使用されているため削除できません';
+
+        $game = getGame($gSeq);
+    }
+} else {
+    $game = getGame($gSeq);
+}
+
 
 
 $ckImg1 = " checked";
 $ckImg2 = "";
 $required = " required";
-if($gSeq<>0){
+if ($gSeq<>0) {
     $ckImg1 = "";
     $ckImg2 = " checked";
     $required = "";
 }
+
+
+
 
 ?>
 <!DOCTYPE html>
@@ -215,7 +210,7 @@ if($gSeq<>0){
                                             </div>
                                         </div>
                                     </div>
-                                    <?php if($gSeq<>0){ ?>
+                                    <?php if ($gSeq<>0) { ?>
                                     <div class="form-group row showcase_row_area">
                                         <div class="col-md-3 showcase_text_area">
                                             <label for="inputType1"></label>
@@ -247,7 +242,7 @@ if($gSeq<>0){
                                             </div>
                                         </div>
                                     </div>
-                                    <?php if($gSeq<>0){ ?>
+                                    <?php if ($gSeq<>0) { ?>
                                     <div class="form-group row showcase_row_area">
                                         <div class="col-md-3 showcase_text_area">
                                             <label for="inputType1"></label>
@@ -279,7 +274,7 @@ if($gSeq<>0){
                                             </div>
                                         </div>
                                     </div>
-                                    <?php if($gSeq<>0){ ?>
+                                    <?php if ($gSeq<>0) { ?>
                                     <div class="form-group row showcase_row_area">
                                         <div class="col-md-3 showcase_text_area">
                                             <label for="inputType1"></label>
@@ -301,7 +296,7 @@ if($gSeq<>0){
                                     <input type="hidden" name="gSeq" value="<?php echo $gSeq; ?>">
                                 </form>
 
-                                <?php if($gSeq<>0){ ?>
+                                <?php if ($gSeq<>0) { ?>
                                 <br><br>
                                 <form action="" method="POST" onsubmit="return delcheck()">
                                     <button type="submit" class="btn btn-danger btn-block mt-0" name="del">削　除</button>

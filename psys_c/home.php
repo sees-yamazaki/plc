@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('../psys/logging.php');
 
 
 // ログイン状態チェック
@@ -17,7 +18,7 @@ $errorMessage = "";
 $gamePt = getSsn('POINT_GAME');
 
 
-require_once './db/view.php';
+require_once '../psys/db/views.php';
 $point = getPoint(getSsn("SEQ"));
 
 
@@ -39,6 +40,33 @@ foreach ($infos as $info) {
 }
 $html1 = substr($html1,0,-4);
 
+
+require '../psys/db/usepoints.php';
+$ups = getUnShip(getSsn('SEQ'));
+
+require '../psys/db/prizes.php';
+$html2 = '';
+$shiplimit = getSsn('SHIP_LIMIT');
+$today = date("Y-m-d");
+foreach ($ups as $up) {
+    $prize = getPrize($up->pz_seq);
+    $createdt = substr($up->createdt,0,10);
+    $limitdt = date("Y-m-d",strtotime($createdt."+".$shiplimit." day"));
+
+    if($today<$limitdt){
+        $html2 .= '申し込み期限：'.$limitdt.'まで<br>';
+        $html2 .= "<img class='img80' border=0 src='../psys/". getSsn('PATH_PROMO')."/".$prize->p_seq.'/'.$prize->pz_img."'><br>";
+        $html2 .= "<ul class='actions'>";
+        $html2 .= "<li><a href='javascript:ship(".$up->up_seq.")' class='button alt big'>発送先を登録する</a></li>";
+        $html2 .= '</ul><hr>';
+
+    }
+
+
+}
+
+
+
 ?>
 
 <!DOCTYPE HTML>
@@ -50,6 +78,12 @@ $html1 = substr($html1,0,-4);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <link rel="stylesheet" href="asset/css/main.css" />
+    <script>
+    function ship(vlu) {
+        document.frm.upSeq.value = vlu;
+        document.frm.submit();
+    }
+    </script>
 </head>
 
 <body>
@@ -57,11 +91,23 @@ $html1 = substr($html1,0,-4);
 
     <?php include('./menu.php'); ?>
 
-    <section id="banner8">
-        <div class="inner">
-            <?php echo $html1; ?>
-        </div>
-    </section>
+    <?php if($html2<>''){ ?>
+        <form action='shipform.php' method='POST' name="frm">
+            <input type='hidden' name='upSeq' value=''>
+        </form>
+        <section id="banner8">
+            <div class="inner">
+                <h1>未発送の当選品があります</h1>
+                <?php echo $html2; ?>
+            </div>
+        </section>
+    <?php }elseif($html1<>''){ ?>
+        <section id="banner8">
+            <div class="inner">
+                <?php echo $html1; ?>
+            </div>
+        </section>
+    <?php } ?>
 
     <section id="banner">
         <div class="inner">

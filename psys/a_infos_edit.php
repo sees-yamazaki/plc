@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // タイムゾーンを設定
 date_default_timezone_set('Asia/Tokyo');
@@ -23,57 +24,53 @@ if (!isset($iSeq)) {
 }
 
 
-    require './db/infos.php';
-    $info = new cls_infos($iSeq);
+require './db/infos.php';
+$info = new cls_infos($iSeq);
 
-    try {
-        $info->inf_seq = $iSeq;
-        $info->inf_title = $_POST['inf_title'];
-        $info->inf_text1 = $_POST['inf_text1'];
-        $info->inf_text2 = $_POST['inf_text2'];
-        $info->inf_img = basename($_FILES['inf_img']['name']);
-        $info->inf_startdt = $_POST['inf_startdt'];
-        $info->inf_enddt = $_POST['inf_enddt'];
-        $info->imgStts = $_POST['imgStts'];
-        $info->inf_order = $_POST['inf_order'];
 
-        if (isset($_POST['infoEdit'])) {
-            if ($info->imgStts == '1') {
-                //アップロードファイルの検証
-                $filepath = pathinfo($_FILES['inf_img']['name']);
+$info->inf_seq = $iSeq;
+$info->inf_title = $_POST['inf_title'];
+$info->inf_text1 = $_POST['inf_text1'];
+$info->inf_text2 = $_POST['inf_text2'];
+$info->inf_img = basename($_FILES['inf_img']['name']);
+$info->inf_startdt = $_POST['inf_startdt'];
+$info->inf_enddt = $_POST['inf_enddt'];
+$info->imgStts = $_POST['imgStts'];
+$info->inf_order = $_POST['inf_order'];
 
-                if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
-                    $errorMessage .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
-                }
+if (isset($_POST['infoEdit'])) {
+    if ($info->imgStts == '1') {
+        //アップロードファイルの検証
+        $filepath = pathinfo($_FILES['inf_img']['name']);
 
-                if (mb_strlen($info->inf_img) > 20) {
-                    $errorMessage .= '<br>・アップロード画像のファイル名は20文字以内にしてください。';
-                }
-            }
-
-            if (empty($errorMessage)) {
-                if ($iSeq==0) {
-                    insertInfo($info);
-                } else {
-                    updateInfo($info);
-                }
-
-                //header('Location: ./a_infos_list.php');
-            } else {
-                $errorMessage = '<br>アップロードされたファイル：'.basename($_FILES['inf_img']['name']).$errorMessage.'<br>';
-            }
-        } elseif (isset($_POST['del'])) {
-            deleteInfo($iSeq);
-            header('Location: ./a_infos_list.php');
-        } else {
-            $info = getInfo($iSeq);
+        if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
+            $errorMessage .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
         }
-    } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
+
+        if (mb_strlen($info->inf_img) > 20) {
+            $errorMessage .= '<br>・アップロード画像のファイル名は20文字以内にしてください。';
         }
     }
+
+    if (empty($errorMessage)) {
+        if ($iSeq==0) {
+            insertInfo($info);
+        } else {
+            updateInfo($info);
+        }
+
+        header('Location: ./a_infos_list.php');
+    } else {
+        $errorMessage = '<br>アップロードされたファイル：'.basename($_FILES['inf_img']['name']).$errorMessage.'<br>';
+    }
+} elseif (isset($_POST['del'])) {
+    deleteInfo($iSeq);
+    header('Location: ./a_infos_list.php');
+} else {
+    $info = getInfo($iSeq);
+}
+
+
 
 $ckImg1 = ' checked';
 $ckImg2 = '';
@@ -81,6 +78,8 @@ if ($iSeq>0) {
     $ckImg1 = '';
     $ckImg2 = ' checked';
 }
+
+
 
 ?>
 <!DOCTYPE html>
@@ -118,6 +117,7 @@ if ($iSeq>0) {
                         <div class="grid-body">
                             <div class="item-wrapper">
 
+                            <span class="clrRed"><?php echo $errorMessage; ?></span>
 
                                 <p class="grid-header">お知らせ登録</p>
 
@@ -219,7 +219,7 @@ if ($iSeq>0) {
                                                 <label class="radio-label">
                                                     <?php if (empty($info->inf_img)) {    ?>
                                                         画像登録無し
-                                                    <?php }else{ ?>
+                                                    <?php } else { ?>
                                                         <img src="./mydata/info/<?php echo $iSeq; ?>/<?php echo $info->inf_img; ?>" height=200>
                                                     <?php } ?>
                                                 </label>
@@ -274,7 +274,6 @@ if ($iSeq>0) {
                                 </form>
                                 <?php    } ?>
 
-                                <span class="clrRed"><?php echo $errorMessage; ?></span>
                             </div>
                         </div>
                     </div>

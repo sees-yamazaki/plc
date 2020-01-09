@@ -33,9 +33,9 @@ class cls_promos
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
         return $results;
     }
@@ -60,12 +60,42 @@ class cls_promos
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
-            if (getSsnIsDebug()) {
-                echo $e->getMessage();
-            }
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
         }
         return $result;
     }
+
+
+    function getOpenPromo()
+    {
+        try {
+            $result = new cls_promos();
+            require './db/dns.php';
+            $stmt = $pdo->prepare("SELECT * FROM  promos WHERE CURDATE() BETWEEN `p_startdt`AND`p_enddt` ORDER BY `p_startdt`");
+            $stmt->execute();
+            if ($row = $stmt->fetch()) {
+                $result->p_seq = $row['p_seq'];
+                $result->p_title = $row['p_title'];
+                $result->p_text1 = $row['p_text1'];
+                $result->p_img = $row['p_img'];
+                $result->p_text2 = $row['p_text2'];
+                $result->p_startdt = $row['p_startdt'];
+                $result->p_enddt = $row['p_enddt'];
+                $result->g_seq = $row['g_seq'];
+            }
+        } catch (PDOException $e) {
+            $errorMessage = 'データベースエラー';
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
+        return $result;
+    }
+    
+
+
     
     function insertPromo($promos)
     {
@@ -149,6 +179,12 @@ class cls_promos
         try {
             require './db/dns.php';
             $sql = " DELETE FROM `promos` WHERE p_seq=:p_seq";
+            $stmt = $pdo -> prepare($sql);
+            $stmt->bindParam(':p_seq', $pSeq, PDO::PARAM_INT);
+            $stmt->execute();
+
+            require './db/dns.php';
+            $sql = " DELETE FROM `prizes` WHERE p_seq=:p_seq";
             $stmt = $pdo -> prepare($sql);
             $stmt->bindParam(':p_seq', $pSeq, PDO::PARAM_INT);
             $stmt->execute();

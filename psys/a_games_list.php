@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // ログイン状態チェック
 if (getSsnIsLogin()==false) {
@@ -15,26 +16,24 @@ $errorMessage = "";
 
 
 $gSeq = $_POST['gSeq'];
-if(!isset($gSeq)){
+if (!isset($gSeq)) {
     $gSeq = $_GET['gSeq'];
 }
 
- try {
-     require_once './db/games.php';
-     $games = new cls_games();
-     $games = getGames();
 
-     $html="";
-     foreach ($games as $game) {
-        $html .= '<tr>';
-        $html .= "<td>".$game->g_title."</td>";
-        $html .= "<td><button type='button' name='edit' class='btn btn-inverse-secondary' onclick='gameEdit(".$game->g_seq.")'>編集</button></td>";
-        $html .= "</tr>";
-    }
+require_once './db/games.php';
+$games = new cls_games();
+$games = getGames();
 
-} catch (PDOException $e) {
-    $errorMessage = 'データベースエラー:'.$e->getMessage();
+$html="";
+foreach ($games as $game) {
+    $html .= '<tr>';
+    $html .= "<td>".$game->g_title."</td>";
+    $html .= "<td><button type='button' name='edit' class='btn btn-inverse-secondary' onclick='gameEdit(".$game->g_seq.")'>編集</button></td>";
+    $html .= "</tr>";
 }
+
+
 
 
 ?>

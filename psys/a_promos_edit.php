@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // タイムゾーンを設定
 date_default_timezone_set('Asia/Tokyo');
@@ -17,75 +18,70 @@ if (getSsnIsLogin()==false) {
 $errorMessage = "";
 
 
-    $pSeq = $_POST['pSeq'];
+$pSeq = $_POST['pSeq'];
 
-    require './db/promos.php';
-    $promo = new cls_promos();
+require './db/promos.php';
+$promo = new cls_promos();
 
-    try {
-        $promo->p_seq = $_POST['pSeq'];
-        $promo->p_title = $_POST['p_title'];
-        $promo->p_text1 = $_POST['p_text1'];
-        $promo->p_text2 = $_POST['p_text2'];
-        $promo->p_img = basename($_FILES ['p_img'] ['name']);
-        $promo->p_startdt = $_POST['p_startdt'];
-        $promo->p_enddt = $_POST['p_enddt'];
-        $promo->g_seq = $_POST['g_seq'];
-        $promo->imgStts = $_POST['imgStts'];
-        
-        if (isset($_POST['promoEdit'])) {
 
-            if ($promo->imgStts=="1") {
-                //アップロードファイルの検証
-                $filepath = pathinfo($_FILES ['p_img'] ['name']);
+$promo->p_seq = $_POST['pSeq'];
+$promo->p_title = $_POST['p_title'];
+$promo->p_text1 = $_POST['p_text1'];
+$promo->p_text2 = $_POST['p_text2'];
+$promo->p_img = basename($_FILES ['p_img'] ['name']);
+$promo->p_startdt = $_POST['p_startdt'];
+$promo->p_enddt = $_POST['p_enddt'];
+$promo->g_seq = $_POST['g_seq'];
+$promo->imgStts = $_POST['imgStts'];
 
-                if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
-                    $errorMessage .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。<br>';
-                }
+if (isset($_POST['promoEdit'])) {
+    if ($promo->imgStts=="1") {
+        //アップロードファイルの検証
+        $filepath = pathinfo($_FILES ['p_img'] ['name']);
 
-                if (mb_strlen($promo->p_img)>20) {
-                    $errorMessage .= '<br>・アップロード画像のファイル名は20文字以内にしてください。<br>';
-                }
-            }
-            
-            
-            if (empty($errorMessage)) {
-                if (!empty($pSeq)) {
-                    updatePromo($promo);
-                } else {
-                    insertPromo($promo);
-                }
-
-                header("Location: ./a_promos_list.php");
-            } else {
-                $errorMessage .= '<br>今回アップロードされたファイル：'.basename($_FILES ['p_img'] ['name']);
-            }
-        } elseif (isset($_POST['del'])) {
-            //$rtn = checkUsers($user);
-            //if (count($rtn)==0) {
-            deletePromo($pSeq);
-
-            header("Location: ./a_promos_list.php");
-            //} else {
-            $errorMessage = 'このユーザはシミュレーションデータが登録されているため削除できません';
-                
-        //$user = getUser($pSeq);
-            //}
-        } else {
-            $promo = getPromo($pSeq);
+        if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
+            $errorMessage .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。<br>';
         }
-    } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
+
+        if (mb_strlen($promo->p_img)>20) {
+            $errorMessage .= '<br>・アップロード画像のファイル名は20文字以内にしてください。<br>';
         }
     }
+
+
+    if (empty($errorMessage)) {
+        if (!empty($pSeq)) {
+            updatePromo($promo);
+        } else {
+            insertPromo($promo);
+        }
+
+        header("Location: ./a_promos_list.php");
+    } else {
+        $errorMessage .= '<br>今回アップロードされたファイル：'.basename($_FILES ['p_img'] ['name']);
+    }
+} elseif (isset($_POST['del'])) {
+    require './db/usepoints.php';
+    $cnt = countUsepointsByPseq($pSeq);
+    if ($cnt==0) {
+        deletePromo($pSeq);
+        header("Location: ./a_promos_list.php");
+    } else {
+        $errorMessage = 'このキャンペーンはすでに応募情報があるため削除できません';
+
+        $promo = getPromo($pSeq);
+    }
+} else {
+    $promo = getPromo($pSeq);
+}
+
+
 
 
 
 $ckImg1 = " checked";
 $ckImg2 = "";
-if(!empty($pSeq)){
+if (!empty($pSeq)) {
     $ckImg1 = "";
     $ckImg2 = " checked";
 }
@@ -94,8 +90,12 @@ if(!empty($pSeq)){
 require_once './db/games.php';
 $games = new cls_games();
 $games = getGames();
-foreach ($games as $game) { 
-    if ($game->g_seq == $promo->g_seq){ $wk="selected"; }else{ $wk=""; }
+foreach ($games as $game) {
+    if ($game->g_seq == $promo->g_seq) {
+        $wk="selected";
+    } else {
+        $wk="";
+    }
     $opt_tmp .= "<option value='".$game->g_seq."' {$wk}>".$game->g_title."</option>";
 }
 
@@ -130,6 +130,7 @@ foreach ($games as $game) {
                         <div class="grid-body">
                             <div class="item-wrapper">
 
+                            <span class="clrRed"><?php echo $errorMessage ?></span>
 
                                 <p class="grid-header">キャンペーン登録</p>
 
@@ -212,6 +213,26 @@ foreach ($games as $game) {
 
 
 
+                                    <?php if ($pSeq <> "") {    ?>
+                                    <div class="form-group row showcase_row_area">
+                                        <div class="col-md-3 showcase_text_area">
+                                            <label for="inputType1">現在の登録画像</label>
+                                        </div>
+
+                                        <div class="form-inline">
+                                            <div class="radio mb-3">
+                                                <label class="radio-label">
+                                                    <?php if (empty($promo->p_img)) {    ?>
+                                                        画像登録無し
+                                                    <?php } else { ?>
+                                                        <img src="./mydata/promo/<?php echo $pSeq; ?>/<?php echo $promo->p_img; ?>" height=200>
+                                                    <?php } ?>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <?php } ?>
 
 
 
@@ -276,7 +297,6 @@ foreach ($games as $game) {
                                 </form>
                                 <?php } ?>
 
-                                <span class="clrRed"><?php echo $errorMessage ?></span>
                             </div>
                         </div>
                     </div>

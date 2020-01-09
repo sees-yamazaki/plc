@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+require('logging.php');
 
 // タイムゾーンを設定
 date_default_timezone_set('Asia/Tokyo');
@@ -16,48 +17,40 @@ if (getSsnIsLogin()==false) {
 // エラーメッセージの初期化
 $errorMessage = '';
 
-    $sSeq = $_POST['sSeq'];
-    if (!isset($sSeq)) {
-        $sSeq = $_GET['sSeq'];
-    }
-    $spFlg = $_POST['spFlg'];
+$sSeq = $_POST['sSeq'];
+if (!isset($sSeq)) {
+    $sSeq = $_GET['sSeq'];
+}
+$spFlg = $_POST['spFlg'];
 
 
 
 
 
-try {
-    $page = $_POST['page'];
-    $search_s_entry = $_POST['search_s_entry'];
-    $search_e_entry = $_POST['search_e_entry'];
-    $search_name = $_POST['search_name'];
-    $stts0 = empty($_POST['stts0']) ? "":" checked";
-    $stts1 = empty($_POST['stts1']) ? "":" checked";
-    $stts99 = empty($_POST['stts99']) ? "":" checked";
-    $search_promo_title = $_POST['search_promo_title'];
-    $search_rows = $_POST['search_rows'];
 
-    if (isset($_POST['shiped'])) {
+$page = $_POST['page'];
+$search_s_entry = $_POST['search_s_entry'];
+$search_e_entry = $_POST['search_e_entry'];
+$search_name = $_POST['search_name'];
+$stts0 = empty($_POST['stts0']) ? "":" checked";
+$stts1 = empty($_POST['stts1']) ? "":" checked";
+$stts99 = empty($_POST['stts99']) ? "":" checked";
+$search_promo_title = $_POST['search_promo_title'];
+$search_rows = $_POST['search_rows'];
 
-        require_once './db/ships.php';
-        updateShipFlg($sSeq,$spFlg);
+if (isset($_POST['shiped'])) {
+    require_once './db/ships.php';
+    updateShipFlg($sSeq, $spFlg);
 
-        header('Location: ./a_ships_list.php?search=1&sSeq='.$sSeq);
-    }
-} catch (PDOException $e) {
-    $errorMessage = 'データベースエラー';
-    if (getSsnIsDebug()) {
-        echo $e->getMessage();
-    }
+    header('Location: ./a_ships_list.php?search=1&sSeq='.$sSeq);
 }
 
 
 
 
 
-
-    require './db/views.php';
-    $ship = getVShip($sSeq);
+require './db/views.php';
+$ship = getVShip($sSeq);
 
 ?>
 <!DOCTYPE html>
@@ -90,15 +83,7 @@ try {
         <input type='hidden' name='mSeq' value=''>
     </form>
     <form action='a_ships_list.php' method='POST' name="pFrm">
-        <input type='hidden' name='page' value='<?php echo $page; ?>''>
-        <input type=' hidden' name='search' value='1'>
-        <input type='hidden' name='search_s_entry' value='<?php echo $search_s_entry; ?>'>
-        <input type='hidden' name='search_e_entry' value='<?php echo $search_e_entry; ?>'>
-        <input type='hidden' name='search_name' value='<?php echo $search_name; ?>'>
-        <input type='hidden' name='stts0' value='<?php echo $stts0; ?>'>
-        <input type='hidden' name='stts1' value='<?php echo $stts1; ?>'>
-        <input type='hidden' name='stts99' value='<?php echo $stts99; ?>'>
-        <input type='hidden' name='search_promo_title' value='<?php echo $search_promo_title; ?>'>
+        <input type=' hidden' name='back'>
     </form>
 
     <?php include './a_menu.php'; ?>
@@ -241,7 +226,7 @@ try {
                                             <input type="hidden" name="sSeq" value="<?php echo $sSeq; ?>">
                                             <input type="hidden" name="spFlg" value="1">
                                         </form>
-                                        <?php }elseif($ship->sp_flg==1){ ?>
+                                        <?php } elseif ($ship->sp_flg==1) { ?>
                                         <br><br>
                                         <form action="" method="POST" onsubmit="return addcheck()">
                                             <button type="submit" class="btn btn-warning btn-block mt-0"

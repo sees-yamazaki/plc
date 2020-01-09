@@ -12,6 +12,7 @@ class cls_systems
     public $path_scode;
     public $point_game;
     public $point_entry;
+    public $ship_limit;
 }
 
 function getSystems()
@@ -32,12 +33,13 @@ function getSystems()
             $result->path_scode = $row['path_scode'];
             $result->point_game = $row['point_game'];
             $result->point_entry = $row['point_entry'];
+            $result->ship_limit = $row['ship_limit'];
         }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
 
     return $result;
@@ -47,7 +49,7 @@ function updateSystem($systems)
 {
     try {
         require './db/dns.php';
-        $sql = " UPDATE `systems`  SET  `url_child`=:url_child,  `path_root`=:path_root,  `path_promo`=:path_promo,  `path_game`=:path_game,  `path_info`=:path_info,  `path_scode`=:path_scode,  `system_name`=:system_name ,  `point_game`=:point_game ,  `point_entry`=:point_entry, url_parent=:url_parent";
+        $sql = " UPDATE `systems`  SET  `url_child`=:url_child,  `path_root`=:path_root,  `path_promo`=:path_promo,  `path_game`=:path_game,  `path_info`=:path_info,  `path_scode`=:path_scode,  `system_name`=:system_name ,  `point_game`=:point_game ,  `point_entry`=:point_entry, url_parent=:url_parent, ship_limit=:ship_limit ";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':url_parent', $systems->url_parent, PDO::PARAM_STR);
         $stmt->bindParam(':url_child', $systems->url_child, PDO::PARAM_STR);
@@ -59,11 +61,19 @@ function updateSystem($systems)
         $stmt->bindParam(':system_name', $systems->system_name, PDO::PARAM_STR);
         $stmt->bindParam(':point_game', $systems->point_game, PDO::PARAM_INT);
         $stmt->bindParam(':point_entry', $systems->point_entry, PDO::PARAM_INT);
+        $stmt->bindParam(':ship_limit', $systems->ship_limit, PDO::PARAM_INT);
         $stmt->execute();
+
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("UPDATE ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
+
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
-        if (getSsnIsDebug()) {
-            echo $e->getMessage();
-        }
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
 }
