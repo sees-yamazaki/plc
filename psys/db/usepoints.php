@@ -71,11 +71,11 @@ function countUsepointsByPseq($pSeq)
 
             $id = $pdo->lastInsertId();
 
-            if ($pdo->exec()==0) {
-                logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
-                logging("INSERT ERROR : ". $sql);
-                logging("ARGS : ". json_encode(func_get_args()));
-            }
+            // if ($pdo->exec()==0) {
+            //     logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            //     logging("INSERT ERROR : ". $sql);
+            //     logging("ARGS : ". json_encode(func_get_args()));
+            // }
 
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
