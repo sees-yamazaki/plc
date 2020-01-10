@@ -20,7 +20,7 @@ function getInfos()
         $results = array();
         require './db/dns.php';
         $stmt = $pdo->prepare("SELECT * FROM  `infos` ORDER BY inf_seq");
-        $stmt->execute();
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result = new cls_infos();
             $result->inf_seq = $row['inf_seq'];
@@ -45,8 +45,7 @@ function getInfos()
 function getOpenInfos($dt)
 {
     try {
-
-        if($dt==""){
+        if ($dt=="") {
             $dt = date("Y-m-d");
         }
 
@@ -55,7 +54,7 @@ function getOpenInfos($dt)
         require './db/dns.php';
         $stmt = $pdo->prepare("SELECT * FROM `infos`WHERE :dt BETWEEN inf_startdt AND inf_enddt ORDER BY inf_order");
         $stmt->bindParam(':dt', $dt, PDO::PARAM_STR);
-        $stmt->execute();
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result = new cls_infos();
             $result->inf_seq = $row['inf_seq'];
@@ -84,7 +83,7 @@ function getOpenInfos($dt)
             require './db/dns.php';
             $stmt = $pdo->prepare("SELECT * FROM `infos` WHERE inf_seq=:inf_seq");
             $stmt->bindParam(':inf_seq', $iSeq, PDO::PARAM_INT);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             if ($row = $stmt->fetch()) {
                 $result->inf_seq = $row['inf_seq'];
                 $result->inf_title = $row['inf_title'];
@@ -117,20 +116,22 @@ function getOpenInfos($dt)
             $stmt->bindParam(':inf_startdt', $infos->inf_startdt, PDO::PARAM_STR);
             $stmt->bindParam(':inf_enddt', $infos->inf_enddt, PDO::PARAM_STR);
             $stmt->bindParam(':inf_order', $infos->inf_order, PDO::PARAM_INT);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
+            if ($stmt->rowCount()==0) {
+                logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                logging("INSERT ERROR : ". $sql);
+                logging("ARGS : ". json_encode(func_get_args()));
+            } else {
+                $insertid = $pdo->lastInsertId();
 
-            $insertid = $pdo->lastInsertId();
-
-            if ($infos->imgStts == 1) {
-                $path = getSsn('PATH_INFO').'/'.$insertid;
-                mkdir($path,0777);
-                $file = $path.'/'.basename($_FILES['inf_img']['name']);
-                move_uploaded_file($_FILES['inf_img']['tmp_name'], $file);
+                if ($infos->imgStts == 1) {
+                    $path = getSsn('PATH_INFO').'/'.$insertid;
+                    mkdir($path, 0777);
+                    $file = $path.'/'.basename($_FILES['inf_img']['name']);
+                    move_uploaded_file($_FILES['inf_img']['tmp_name'], $file);
+                }
             }
-
-
-
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
             logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -145,11 +146,11 @@ function getOpenInfos($dt)
             require './db/dns.php';
             $sql = '';
             if ($infos->imgStts == 1) {
-                $sql = " UPDATE `infos`  SET  `inf_title`=:inf_title,  `inf_text1`=:inf_text1,  `inf_text2`=:inf_text2,  `inf_img`=:inf_img,  `inf_startdt`=:inf_startdt,  `inf_enddt`=:inf_enddt,  `inf_order`=:inf_order WHERE inf_seq=:inf_seq";
+                $sql = " UPDATE `infos`  SET  `inf_title`=:inf_title,  `inf_text1`=:inf_text1,  `inf_text2`=:inf_text2,  `inf_img`=:inf_img,  `inf_startdt`=:inf_startdt,  `inf_enddt`=:inf_enddt,  `inf_order`=:inf_order,editdt=NOW() WHERE inf_seq=:inf_seq";
             } elseif ($infos->imgStts == 2) {
-                $sql = " UPDATE `infos`  SET  `inf_title`=:inf_title,  `inf_text1`=:inf_text1,  `inf_text2`=:inf_text2, `inf_startdt`=:inf_startdt,  `inf_enddt`=:inf_enddt,  `inf_order`=:inf_order WHERE inf_seq=:inf_seq";
+                $sql = " UPDATE `infos`  SET  `inf_title`=:inf_title,  `inf_text1`=:inf_text1,  `inf_text2`=:inf_text2, `inf_startdt`=:inf_startdt,  `inf_enddt`=:inf_enddt,  `inf_order`=:inf_order,editdt=NOW() WHERE inf_seq=:inf_seq";
             } else {
-                $sql = " UPDATE `infos`  SET  `inf_title`=:inf_title,  `inf_text1`=:inf_text1,  `inf_text2`=:inf_text2,  `inf_img`=:inf_img,  `inf_startdt`=:inf_startdt,  `inf_enddt`=:inf_enddt,  `inf_order`=:inf_order WHERE inf_seq=:inf_seq";
+                $sql = " UPDATE `infos`  SET  `inf_title`=:inf_title,  `inf_text1`=:inf_text1,  `inf_text2`=:inf_text2,  `inf_img`=:inf_img,  `inf_startdt`=:inf_startdt,  `inf_enddt`=:inf_enddt,  `inf_order`=:inf_order,editdt=NOW() WHERE inf_seq=:inf_seq";
                 $infos->inf_img = '';
             }
 
@@ -164,23 +165,19 @@ function getOpenInfos($dt)
             $stmt->bindParam(':inf_startdt', $infos->inf_startdt, PDO::PARAM_STR);
             $stmt->bindParam(':inf_enddt', $infos->inf_enddt, PDO::PARAM_STR);
             $stmt->bindParam(':inf_order', $infos->inf_order, PDO::PARAM_INT);
-            $stmt->execute();
-
-
-            if ($infos->imgStts == 1) {
-                $file = getSsn('PATH_INFO').'/'.$infos->inf_seq.'/'.basename($_FILES['inf_img']['name']);
-                move_uploaded_file($_FILES['inf_img']['tmp_name'], $file);
-            }
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
 
             if ($stmt->rowCount()==0) {
                 logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
                 logging("UPDATE ERROR : ". $sql);
                 logging("ARGS : ". json_encode(func_get_args()));
+            } else {
+                if ($infos->imgStts == 1) {
+                    $file = getSsn('PATH_INFO').'/'.$infos->inf_seq.'/'.basename($_FILES['inf_img']['name']);
+                    move_uploaded_file($_FILES['inf_img']['tmp_name'], $file);
+                }
             }
-
-
-
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
             logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -198,8 +195,7 @@ function getOpenInfos($dt)
             $sql = "DELETE FROM `infos` WHERE inf_seq=:inf_seq";
             $stmt = $pdo -> prepare($sql);
             $stmt->bindParam(':inf_seq', $iSeq, PDO::PARAM_INT);
-            $stmt->execute();
-
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
             logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -207,6 +203,3 @@ function getOpenInfos($dt)
             logging("ARGS : ". json_encode(func_get_args()));
         }
     }
-
-
-    ?>

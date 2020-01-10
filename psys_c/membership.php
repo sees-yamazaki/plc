@@ -1,22 +1,44 @@
 <?php
 
-// セッション開始
-session_start();
 require('session.php');
 require('../psys/logging.php');
+require('../psys/db/members.php');
+
+// セッション開始
+session_start();
+setSsnCrntPage(__FILE__);
+
+//遷移元の確認
+if(!checkPrev(__FILE__)){
+    setSsnMsg('Invalid transition');
+    header('Location: ./error.php');
+}
+
 
 // エラーメッセージの初期化
 $errorMessage = "";
 
-    require_once '../psys/db/members.php';
-    $member = new cls_members();
+// 変数の初期化
+$member = new cls_members();
 
+
+if (isset($_POST['mEdit'])) {
     $member->m_name = $_POST['m_name'];
     $member->m_mail = $_POST['m_mail'];
     $member->m_post = $_POST['m_post'];
     $member->m_address1 = $_POST['m_address1'];
     $member->m_address2 = $_POST['m_address2'];
     $member->m_tel = $_POST['m_tel'];
+
+    setSsnKV('prm_member', $member);
+    header('Location: ./membershipe.php');
+}elseif(getSsnPrevPage()=="membershipe.php"){
+    $member=getSsn('prm_member');
+} else {
+    //
+}
+
+
 
 ?>
 <!DOCTYPE HTML>
@@ -58,7 +80,7 @@ $errorMessage = "";
     <section id="banner">
         <div class="inner">
             <h1>会員情報</h1>
-            <form action="membershipe.php" method="POST" name="editFrm">
+            <form action="" method="POST" name="editFrm">
                 <div class="">
                     お名前
                     <input type="text" name="m_name" id="m_name" value="<?php echo $member->m_name ?>"
@@ -68,19 +90,22 @@ $errorMessage = "";
                         placeholder="e-mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required />
                     郵便番号(ハイフン無し)
                     <input type="text" name="m_post" id="m_post" value="<?php echo $member->m_post ?>"
-                        placeholder="postcode" maxlength='7'  onKeyUp="AjaxZip3.zip2addr('m_post', '', 'm_address1', 'm_address1');" required />
+                        placeholder="postcode" maxlength='7'
+                        onKeyUp="AjaxZip3.zip2addr('m_post', '', 'm_address1', 'm_address1');" required />
                     住所（番地まで）
                     <input type="text" name="m_address1" id="m_address1" value="<?php echo $member->m_address1 ?>"
-                        placeholder="address" maxlength='50'  required />
-                        （マンション名・部屋番号）
+                        placeholder="address" maxlength='50' required />
+                    （マンション名・部屋番号）
                     <input type="text" name="m_address2" id="m_address2" value="<?php echo $member->m_address2 ?>"
                         placeholder="address" maxlength='50' />
                     電話番号
-                    <input type="text" name="m_tel" id="m_tel" value="<?php echo $member->m_tel ?>" placeholder="tel" maxlength='13' pattern="^[-0-9]+$" required />
+                    <input type="text" name="m_tel" id="m_tel" value="<?php echo $member->m_tel ?>" placeholder="tel"
+                        maxlength='13' pattern="^[-0-9]+$" required />
                 </div><br>
                 <ul class="actions">
                     <li><a href="javascript:editFrm.submit()" class="button alt scrolly big">登録する</a></li>
                 </ul>
+                <input type="hidden" name="mEdit" value="1">
 
             </form>
 

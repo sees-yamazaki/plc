@@ -6,15 +6,10 @@ require('session.php');
 setSsnCrntPage(basename(__FILE__));
 require('../psys/logging.php');
 
-// ログイン状態チェック
-if (getSsnIsLogin()==false) {
-    header("Location: logoff.php");
-    exit;
-}
-
-
 // エラーメッセージの初期化
 $errorMessage = "";
+
+setSsnKV('m_mail','');
 
 ?>
 <!DOCTYPE HTML>
@@ -31,15 +26,17 @@ $errorMessage = "";
 <body>
 
 
-    <?php include('./menu.php'); ?>
+<header id="header">
+        <a href="javascript:void(0)" class="logo"><strong><?php echo getSsnMyname(); ?></strong> by itty</a>
+    </header>
 
     <!-- Banner -->
     <section id="banner">
         <div class="inner">
-            <h1>更新完了</h1>
-            <h2><br>パスワードを更新しました。</h2>
+            <h1>送信完了</h1>
+            <h2><br>新しいパスワードを送信しました。</h2>
             <ul class="actions">
-                <li><a href="home.php" class="button alt scrolly big">戻る</a></li>
+                <li><a href="index.php" class="button alt scrolly big">戻る</a></li>
             </ul>
 
         </div>

@@ -30,7 +30,13 @@ function insertShip($ships)
         $stmt->bindParam(':sp_address2', $ships->sp_address2, PDO::PARAM_STR);
         $stmt->bindParam(':sp_tel', $ships->sp_tel, PDO::PARAM_INT);
         $stmt->bindParam(':sp_text', $ships->sp_text, PDO::PARAM_STR);
-        $stmt->execute();
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("INSERT ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -43,11 +49,17 @@ function updateShipFlg($sSeq, $flg)
 {
     try {
         require './db/dns.php';
-        $sql = " UPDATE `ships` SET `sp_flg`=:sp_flg  WHERE sp_seq=:sp_seq";
+        $sql = " UPDATE `ships` SET `sp_flg`=:sp_flg,editdt=NOW()  WHERE sp_seq=:sp_seq";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':sp_seq', $sSeq, PDO::PARAM_INT);
         $stmt->bindParam(':sp_flg', $flg, PDO::PARAM_INT);
-        $stmt->execute();
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("UPDATE ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);

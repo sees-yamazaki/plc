@@ -19,7 +19,7 @@ function countUsepointsByPseq($pSeq)
         require './db/dns.php';
         $stmt = $pdo->prepare('SELECT count(*) as cnt FROM `usepoints` WHERE p_seq=:p_seq');
         $stmt->bindParam(':p_seq', $pSeq, PDO::PARAM_INT);
-        $stmt->execute();
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         if ($row = $stmt->fetch()) {
             $cnt = $row['cnt'];
         }
@@ -40,7 +40,7 @@ function countUsepointsByPseq($pSeq)
             require './db/dns.php';
             $stmt = $pdo->prepare('SELECT count(*) as cnt FROM `usepoints` WHERE pz_seq=:pz_seq');
             $stmt->bindParam(':pz_seq', $pzSeq, PDO::PARAM_INT);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             if ($row = $stmt->fetch()) {
                 $cnt = $row['cnt'];
             }
@@ -67,15 +67,16 @@ function countUsepointsByPseq($pSeq)
             $stmt->bindParam(':g_seq', $usepoints->g_seq, PDO::PARAM_INT);
             $stmt->bindParam(':p_seq', $usepoints->p_seq, PDO::PARAM_INT);
             $stmt->bindParam(':pz_seq', $usepoints->pz_seq, PDO::PARAM_INT);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
             $id = $pdo->lastInsertId();
 
-            // if ($pdo->exec()==0) {
-            //     logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
-            //     logging("INSERT ERROR : ". $sql);
-            //     logging("ARGS : ". json_encode(func_get_args()));
-            // }
+
+            if ($stmt->rowCount()==0) {
+                logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                logging("INSERT ERROR : ". $sql);
+                logging("ARGS : ". json_encode(func_get_args()));
+            }
 
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
@@ -97,7 +98,7 @@ function countUsepointsByPseq($pSeq)
             require './db/dns.php';
             $stmt = $pdo->prepare("SELECT * FROM `v_unships` WHERE `m_seq`=:m_seq ORDER BY createdt");
             $stmt->bindParam(':m_seq', $mSeq, PDO::PARAM_INT);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $result = new cls_usepoints();
                 $result->up_seq = $row['up_seq'];

@@ -21,7 +21,7 @@ function getVUsepointRows($where)
         $cnt = 0;
         require './db/dns.php';
         $stmt = $pdo->prepare("SELECT count(*) as cnt FROM  `v_usepoints` ".$where);
-        $stmt->execute();
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         if ($row = $stmt->fetch()) {
             $cnt= $row['cnt'];
         }
@@ -41,7 +41,7 @@ function getVUsepointRows($where)
             $stmt = $pdo->prepare("SELECT * FROM  `v_usepoints` ".$where." ORDER BY createdt desc  LIMIT :lmt OFFSET :ofst");
             $stmt->bindParam(':lmt', $limit, PDO::PARAM_INT);
             $stmt->bindParam(':ofst', $offset, PDO::PARAM_INT);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $result = new cls_v_usepoints();
                 $result->up_seq = $row['up_seq'];
@@ -74,7 +74,7 @@ function getVUsepointRows($where)
             require './db/dns.php';
             $stmt = $pdo->prepare("SELECT * FROM  `v_usepoints` WHERE m_seq=:m_seq ORDER BY createdt desc");
             $stmt->bindParam(':m_seq', $mSeq, PDO::PARAM_INT);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $result = new cls_v_usepoints();
                 $result->up_seq = $row['up_seq'];
@@ -129,7 +129,7 @@ function getVUsepointRows($where)
                 $cnt = 0;
                 require './db/dns.php';
                 $stmt = $pdo->prepare("SELECT count(*) cnt FROM  `v_ships` ".$where);
-                $stmt->execute();
+                execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
                 if ($row = $stmt->fetch()) {
                     $cnt= $row['cnt'];
                 }
@@ -151,7 +151,7 @@ function getVUsepointRows($where)
                 $stmt = $pdo->prepare("SELECT * FROM  `v_ships` ".$where." ORDER BY createdt desc LIMIT :lmt OFFSET :ofst");
                 $stmt->bindParam(':lmt', $limit, PDO::PARAM_INT);
                 $stmt->bindParam(':ofst', $offset, PDO::PARAM_INT);
-                $stmt->execute();
+                execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $result = new cls_v_ships();
                     $result->sp_seq = $row['sp_seq'];
@@ -191,7 +191,7 @@ function getVUsepointRows($where)
                 require './db/dns.php';
                 $stmt = $pdo->prepare("SELECT * FROM  `v_ships` WHERE sp_seq=:sp_seq");
                 $stmt->bindParam(':sp_seq', $sSeq, PDO::PARAM_INT);
-                $stmt->execute();
+                execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
                 if ($row = $stmt->fetch()) {
                     $result->sp_seq = $row['sp_seq'];
                     $result->m_seq = $row['m_seq'];
@@ -231,7 +231,7 @@ function getVUsepointRows($where)
                 require './db/dns.php';
                 $stmt = $pdo->prepare("SELECT * FROM `v_point` WHERE m_seq=:m_seq");
                 $stmt->bindParam(':m_seq', $mSeq, PDO::PARAM_INT);
-                $stmt->execute();
+                execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
                 if ($row = $stmt->fetch()) {
                     $point = $row['point'];
                 }

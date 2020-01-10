@@ -29,7 +29,7 @@ class cls_hitcounts
             require './db/dns.php';
             $stmt = $pdo->prepare('SELECT * FROM  `v_prizes` WHERE p_seq = :p_seq ORDER BY pz_order');
             $stmt->bindParam(':p_seq', $pSeq, PDO::PARAM_INT);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $result = new cls_prizes();
                 $result->pz_seq = $row['pz_seq'];
@@ -60,7 +60,7 @@ class cls_hitcounts
             require './db/dns.php';
             $stmt = $pdo->prepare('SELECT * FROM `v_prizes` WHERE pz_seq=:pz_seq');
             $stmt->bindParam(':pz_seq', $pzSeq, PDO::PARAM_INT);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             if ($row = $stmt->fetch()) {
                 $result->pz_seq = $row['pz_seq'];
                 $result->p_seq = $row['p_seq'];
@@ -96,27 +96,40 @@ class cls_hitcounts
             $stmt->bindParam(':pz_img', $prizes->pz_img, PDO::PARAM_STR);
             $stmt->bindParam(':pz_text', $prizes->pz_text, PDO::PARAM_STR);
 //            $stmt->bindParam(':pz_hitcnt', $prizes->pz_hitcnt, PDO::PARAM_INT);
-            $stmt->execute();
+execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
-            $insertid = $pdo->lastInsertId();
 
-            if ($prizes->imgStts == 1) {
-                $path = getSsn('PATH_PROMO').'/'.$prizes->p_seq;
-                $file = $path.'/'.basename($_FILES['pz_img']['name']);
-                move_uploaded_file($_FILES['pz_img']['tmp_name'], $file);
-            }
+            if ($stmt->rowCount()==0) {
+                logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                logging("INSERT ERROR : ". $sql);
+                logging("ARGS : ". json_encode(func_get_args()));
+            } else {
+                $insertid = $pdo->lastInsertId();
 
-            $hitcnts00 = explode(",", $prizes->pz_hitcnt);
-            $hitcnts = array_unique($hitcnts00);
-            asort($hitcnts);
-            foreach ($hitcnts as $hitcnt) {
-                if (strlen($hitcnt)>0) {
-                    $sql = 'INSERT  INTO `hitcounts` (  `p_seq`,  `pz_seq`,  `hc_no`) VALUES (:p_seq, :pz_seq,:hc_no)';
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->bindParam(':p_seq', $prizes->p_seq, PDO::PARAM_INT);
-                    $stmt->bindParam(':pz_seq', $insertid, PDO::PARAM_INT);
-                    $stmt->bindParam(':hc_no', $hitcnt, PDO::PARAM_INT);
-                    $stmt->execute();
+                if ($prizes->imgStts == 1) {
+                    $path = getSsn('PATH_PROMO').'/'.$prizes->p_seq;
+                    $file = $path.'/'.basename($_FILES['pz_img']['name']);
+                    move_uploaded_file($_FILES['pz_img']['tmp_name'], $file);
+                }
+
+                $hitcnts00 = explode(",", $prizes->pz_hitcnt);
+                $hitcnts = array_unique($hitcnts00);
+                asort($hitcnts);
+                foreach ($hitcnts as $hitcnt) {
+                    if (strlen($hitcnt)>0) {
+                        $sql = 'INSERT  INTO `hitcounts` (  `p_seq`,  `pz_seq`,  `hc_no`) VALUES (:p_seq, :pz_seq,:hc_no)';
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->bindParam(':p_seq', $prizes->p_seq, PDO::PARAM_INT);
+                        $stmt->bindParam(':pz_seq', $insertid, PDO::PARAM_INT);
+                        $stmt->bindParam(':hc_no', $hitcnt, PDO::PARAM_INT);
+                        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+                        if ($stmt->rowCount()==0) {
+                            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                            logging("INSERT ERROR : ". $sql);
+                            logging("ARGS : ". json_encode(func_get_args()));
+                        }
+                    }
                 }
             }
         } catch (PDOException $e) {
@@ -133,11 +146,11 @@ class cls_hitcounts
             require './db/dns.php';
             $sql = '';
             if ($prizes->imgStts == 1) {
-                $sql = ' UPDATE `prizes`  SET  `p_seq`=:p_seq, `pz_order`=:pz_order, `pz_title`=:pz_title,  `pz_img`=:pz_img,  `pz_text`=:pz_text, `pz_code`=:pz_code WHERE pz_seq=:pz_seq';
+                $sql = ' UPDATE `prizes`  SET  `p_seq`=:p_seq, `pz_order`=:pz_order, `pz_title`=:pz_title,  `pz_img`=:pz_img,  `pz_text`=:pz_text, `pz_code`=:pz_code,editdt=NOW() WHERE pz_seq=:pz_seq';
             } elseif ($prizes->imgStts == 2) {
-                $sql = ' UPDATE `prizes`  SET  `p_seq`=:p_seq, `pz_order`=:pz_order, `pz_title`=:pz_title,   `pz_text`=:pz_text, `pz_code`=:pz_code WHERE pz_seq=:pz_seq';
+                $sql = ' UPDATE `prizes`  SET  `p_seq`=:p_seq, `pz_order`=:pz_order, `pz_title`=:pz_title,   `pz_text`=:pz_text, `pz_code`=:pz_code,editdt=NOW() WHERE pz_seq=:pz_seq';
             } else {
-                $sql = ' UPDATE `prizes`  SET  `p_seq`=:p_seq, `pz_order`=:pz_order, `pz_title`=:pz_title,  `pz_img`=:pz_img,  `pz_text`=:pz_text, `pz_code`=:pz_code WHERE pz_seq=:pz_seq';
+                $sql = ' UPDATE `prizes`  SET  `p_seq`=:p_seq, `pz_order`=:pz_order, `pz_title`=:pz_title,  `pz_img`=:pz_img,  `pz_text`=:pz_text, `pz_code`=:pz_code,editdt=NOW() WHERE pz_seq=:pz_seq';
                 $prizes->pz_img = '';
             }
             $stmt = $pdo->prepare($sql);
@@ -150,42 +163,42 @@ class cls_hitcounts
                 $stmt->bindParam(':pz_img', $prizes->pz_img, PDO::PARAM_STR);
             }
             $stmt->bindParam(':pz_text', $prizes->pz_text, PDO::PARAM_STR);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
             if ($stmt->rowCount()==0) {
                 logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
                 logging("UPDATE ERROR : ". $sql);
                 logging("ARGS : ". json_encode(func_get_args()));
-            }
+            } else {
+                if ($prizes->imgStts == 1) {
+                    $path = getSsn('PATH_PROMO').'/'.$prizes->p_seq;
+                    $file = $path.'/'.basename($_FILES['pz_img']['name']);
+                    move_uploaded_file($_FILES['pz_img']['tmp_name'], $file);
+                }
 
-            if ($prizes->imgStts == 1) {
-                $path = getSsn('PATH_PROMO').'/'.$prizes->p_seq;
-                $file = $path.'/'.basename($_FILES['pz_img']['name']);
-                move_uploaded_file($_FILES['pz_img']['tmp_name'], $file);
-            }
 
+                $sql = 'DELETE FROM `hitcounts` WHERE `pz_seq`=:pz_seq';
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(':pz_seq', $prizes->pz_seq, PDO::PARAM_INT);
+                execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
-            $sql = 'DELETE FROM `hitcounts` WHERE `pz_seq`=:pz_seq';
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':pz_seq', $prizes->pz_seq, PDO::PARAM_INT);
-            $stmt->execute();
+                $hitcnts00 = explode(",", $prizes->pz_hitcnt);
+                $hitcnts = array_unique($hitcnts00);
+                asort($hitcnts);
+                foreach ($hitcnts as $hitcnt) {
+                    if (strlen($hitcnt)>0) {
+                        $sql = 'INSERT  INTO `hitcounts` (`p_seq`, `pz_seq`, `hc_no`) VALUES (:p_seq, :pz_seq,:hc_no)';
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->bindParam(':p_seq', $prizes->p_seq, PDO::PARAM_INT);
+                        $stmt->bindParam(':pz_seq', $prizes->pz_seq, PDO::PARAM_INT);
+                        $stmt->bindParam(':hc_no', $hitcnt, PDO::PARAM_INT);
+                        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
-            $hitcnts00 = explode(",", $prizes->pz_hitcnt);
-            $hitcnts = array_unique($hitcnts00);
-            asort($hitcnts);
-            foreach ($hitcnts as $hitcnt) {
-                if (strlen($hitcnt)>0) {
-                    $sql = 'INSERT  INTO `hitcounts` (`p_seq`, `pz_seq`, `hc_no`) VALUES (:p_seq, :pz_seq,:hc_no)';
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->bindParam(':p_seq', $prizes->p_seq, PDO::PARAM_INT);
-                    $stmt->bindParam(':pz_seq', $prizes->pz_seq, PDO::PARAM_INT);
-                    $stmt->bindParam(':hc_no', $hitcnt, PDO::PARAM_INT);
-                    $stmt->execute();
-
-                    if ($stmt->rowCount()==0) {
-                        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
-                        logging("INSERT ERROR : ". $sql);
-                        logging("ARGS : ". json_encode(func_get_args()));
+                        if ($stmt->rowCount()==0) {
+                            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                            logging("INSERT ERROR : ". $sql);
+                            logging("ARGS : ". json_encode(func_get_args()));
+                        }
                     }
                 }
             }
@@ -204,7 +217,7 @@ class cls_hitcounts
             $sql = 'DELETE FROM `prizes` WHERE pz_seq=:pz_seq';
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':pz_seq', $pzSeq, PDO::PARAM_INT);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';
             logging(__FILE__." : ".__METHOD__."() : ".__LINE__);

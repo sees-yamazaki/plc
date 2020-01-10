@@ -179,8 +179,8 @@ if ($gSeq<>0) {
                                         </div>
                                         <div class="col-md-9 showcase_content_area">
                                             <input type="text" class="form-control" name="g_title"
-                                                value="<?php echo $game->g_title; ?>" placeholder="20文字まで"
-                                                maxLength=20 autocomplete="off" required>
+                                                value="<?php echo $game->g_title; ?>" placeholder="20文字まで" maxLength=20
+                                                autocomplete="off" required>
                                         </div>
                                     </div>
 
@@ -194,6 +194,10 @@ if ($gSeq<>0) {
                                         </div>
                                     </div>
 
+                                    <?php if ($gSeq<>0) { ?>
+                                    <hr>
+                                    <?php } ?>
+                                    
                                     <div class="form-group row showcase_row_area">
                                         <div class="col-md-3 showcase_text_area">
                                             <label for="inputType1">スタート画像</label>
@@ -201,11 +205,12 @@ if ($gSeq<>0) {
                                         <div class="form-inline">
                                             <div class="radio mb-3">
                                                 <label class="radio-label mr-4">
-                                                    <input name="imgStts_start" type="radio" value="1" <?php echo $ckImg1; ?>>アップロードする<i
-                                                        class="input-frame"></i>
+                                                    <input name="imgStts_start" type="radio" value="1"
+                                                        <?php echo $ckImg1; ?>>アップロードする<i class="input-frame"></i>
                                                 </label>
                                                 <div class="col-md-9 showcase_content_area">
-                                                    <input type="file" class="btn" name="g_image_start" <?php echo $required; ?>>
+                                                    <input type="file" class="btn" name="g_image_start"
+                                                        <?php echo $required; ?>>
                                                 </div>
                                             </div>
                                         </div>
@@ -218,12 +223,35 @@ if ($gSeq<>0) {
                                         <div class="form-inline">
                                             <div class="radio mb-3">
                                                 <label class="radio-label">
-                                                    <input name="imgStts_start" type="radio" value="2" <?php echo $ckImg2; ?>>アップロードしない<i
-                                                        class="input-frame"></i>
+                                                    <input name="imgStts_start" type="radio" value="2"
+                                                        <?php echo $ckImg2; ?>>アップロードしない<i class="input-frame"></i>
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
+                                    <?php } ?>
+
+                                    <?php if ($gSeq<>0) { ?>
+                                    <div class="form-group row showcase_row_area">
+                                        <div class="col-md-3 showcase_text_area">
+                                            <label for="inputType1">現在の登録画像</label>
+                                        </div>
+
+                                        <div class="form-inline">
+                                            <div class="radio mb-3">
+                                                <label class="radio-label">
+                                                    <?php if (empty($game->g_image_start)) {    ?>
+                                                    画像登録無し
+                                                    <?php } else { ?>
+                                                    <img src="./mydata/game/<?php echo $gSeq; ?>/<?php echo $game->g_image_start; ?>"
+                                                        height=200>
+                                                    <?php } ?>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr>
                                     <?php } ?>
 
                                     <div class="form-group row showcase_row_area">
@@ -233,11 +261,12 @@ if ($gSeq<>0) {
                                         <div class="form-inline">
                                             <div class="radio mb-3">
                                                 <label class="radio-label mr-4">
-                                                    <input name="imgStts_hit" type="radio" value="1" <?php echo $ckImg1; ?>>アップロードする<i
-                                                        class="input-frame"></i>
+                                                    <input name="imgStts_hit" type="radio" value="1"
+                                                        <?php echo $ckImg1; ?>>アップロードする<i class="input-frame"></i>
                                                 </label>
                                                 <div class="col-md-9 showcase_content_area">
-                                                    <input type="file" class="btn" name="g_image_hit" <?php echo $required; ?>>
+                                                    <input type="file" class="btn" name="g_image_hit"
+                                                        <?php echo $required; ?>>
                                                 </div>
                                             </div>
                                         </div>
@@ -250,12 +279,35 @@ if ($gSeq<>0) {
                                         <div class="form-inline">
                                             <div class="radio mb-3">
                                                 <label class="radio-label">
-                                                    <input name="imgStts_hit" type="radio" value="2" <?php echo $ckImg2; ?>>アップロードしない<i
-                                                        class="input-frame"></i>
+                                                    <input name="imgStts_hit" type="radio" value="2"
+                                                        <?php echo $ckImg2; ?>>アップロードしない<i class="input-frame"></i>
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
+                                    <?php } ?>
+
+                                    <?php if ($gSeq<>0) { ?>
+                                    <div class="form-group row showcase_row_area">
+                                        <div class="col-md-3 showcase_text_area">
+                                            <label for="inputType1">現在の登録画像</label>
+                                        </div>
+
+                                        <div class="form-inline">
+                                            <div class="radio mb-3">
+                                                <label class="radio-label">
+                                                    <?php if (empty($game->g_image_hit)) {    ?>
+                                                    画像登録無し
+                                                    <?php } else { ?>
+                                                    <img src="./mydata/game/<?php echo $gSeq; ?>/<?php echo $game->g_image_hit; ?>"
+                                                        height=200>
+                                                    <?php } ?>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr>
                                     <?php } ?>
 
                                     <div class="form-group row showcase_row_area">
@@ -265,11 +317,12 @@ if ($gSeq<>0) {
                                         <div class="form-inline">
                                             <div class="radio mb-3">
                                                 <label class="radio-label mr-4">
-                                                    <input name="imgStts_miss" type="radio" value="1" <?php echo $ckImg1; ?>>アップロードする<i
-                                                        class="input-frame"></i>
+                                                    <input name="imgStts_miss" type="radio" value="1"
+                                                        <?php echo $ckImg1; ?>>アップロードする<i class="input-frame"></i>
                                                 </label>
                                                 <div class="col-md-9 showcase_content_area">
-                                                    <input type="file" class="btn" name="g_image_miss" <?php echo $required; ?>>
+                                                    <input type="file" class="btn" name="g_image_miss"
+                                                        <?php echo $required; ?>>
                                                 </div>
                                             </div>
                                         </div>
@@ -282,12 +335,35 @@ if ($gSeq<>0) {
                                         <div class="form-inline">
                                             <div class="radio mb-3">
                                                 <label class="radio-label">
-                                                    <input name="imgStts_miss" type="radio" value="2" <?php echo $ckImg2; ?>>アップロードしない<i
-                                                        class="input-frame"></i>
+                                                    <input name="imgStts_miss" type="radio" value="2"
+                                                        <?php echo $ckImg2; ?>>アップロードしない<i class="input-frame"></i>
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
+                                    <?php } ?>
+
+                                    <?php if ($gSeq<>0) { ?>
+                                    <div class="form-group row showcase_row_area">
+                                        <div class="col-md-3 showcase_text_area">
+                                            <label for="inputType1">現在の登録画像</label>
+                                        </div>
+
+                                        <div class="form-inline">
+                                            <div class="radio mb-3">
+                                                <label class="radio-label">
+                                                    <?php if (empty($game->g_image_miss)) {    ?>
+                                                    画像登録無し
+                                                    <?php } else { ?>
+                                                    <img src="./mydata/game/<?php echo $gSeq; ?>/<?php echo $game->g_image_miss; ?>"
+                                                        height=200>
+                                                    <?php } ?>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr>
                                     <?php } ?>
 
 

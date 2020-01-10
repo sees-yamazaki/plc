@@ -36,6 +36,18 @@ function getSsnIsDebug(){
     }
 }
 
+function getSsnDebugLv(){
+    global $cnst_app_name;
+    global $cnst_ini_name;
+    if ($_SESSION[$cnst_app_name][$cnst_ini_name]['debug']=="1") {
+        return 1;
+    }elseif ($_SESSION[$cnst_app_name][$cnst_ini_name]['debug']=="2") {
+        return 2;
+    }else{
+        return 0;
+    }
+}
+
 function getSsnIsLogin(){
     global $cnst_app_name;
     if (isset($_SESSION[$cnst_app_name]['SEQ'])) {

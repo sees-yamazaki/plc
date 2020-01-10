@@ -12,7 +12,6 @@ function logging($msg)
 
 function devLog($msg)
 {
-
     $logRoot = "../psys/log/";
     $fn = $logRoot.date('Ymd', strtotime('now')).".log";
 
@@ -21,4 +20,36 @@ function devLog($msg)
 }
 
 
+
+function callback($buffer)
+{
+    $lns = explode(PHP_EOL, $buffer);
+    if (getSsnDebugLv()==2) {
+        foreach ($lns as $ln) {
+            devLog($ln);
+        }
+    } elseif (getSsnDebugLv()==1) {
+        devLog($lns[0]);
+        devLog($lns[1]);
+    }
+    return '';
+}
+
+function execSql($stmt, $location)
+{
+    $stmt->execute();
+    if (getSsnDebugLv()>0) {
+        devLog('');
+        devLog($location);
+    }
+    if (ob_start('callback')) {
+        try {
+            $stmt->debugDumpParams();
+        } finally {
+            ob_end_flush();
+        }
+    }
+}
+
+?>
 

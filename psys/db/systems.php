@@ -19,9 +19,13 @@ function getSystems()
 {
     try {
         $result = new cls_systems();
+        echo "0";
         require './db/dns.php';
+        echo "1";
         $stmt = $pdo->prepare('SELECT * FROM `systems`');
-        $stmt->execute();
+        echo "2";
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        echo "3";
         if ($row = $stmt->fetch()) {
             $result->url_parent = $row['url_parent'];
             $result->url_child = $row['url_child'];
@@ -49,7 +53,7 @@ function updateSystem($systems)
 {
     try {
         require './db/dns.php';
-        $sql = " UPDATE `systems`  SET  `url_child`=:url_child,  `path_root`=:path_root,  `path_promo`=:path_promo,  `path_game`=:path_game,  `path_info`=:path_info,  `path_scode`=:path_scode,  `system_name`=:system_name ,  `point_game`=:point_game ,  `point_entry`=:point_entry, url_parent=:url_parent, ship_limit=:ship_limit ";
+        $sql = " UPDATE `systems`  SET  `url_child`=:url_child,  `path_root`=:path_root,  `path_promo`=:path_promo,  `path_game`=:path_game,  `path_info`=:path_info,  `path_scode`=:path_scode,  `system_name`=:system_name ,  `point_game`=:point_game ,  `point_entry`=:point_entry, url_parent=:url_parent, ship_limit=:ship_limit,editdt=NOW() ";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':url_parent', $systems->url_parent, PDO::PARAM_STR);
         $stmt->bindParam(':url_child', $systems->url_child, PDO::PARAM_STR);
@@ -62,7 +66,7 @@ function updateSystem($systems)
         $stmt->bindParam(':point_game', $systems->point_game, PDO::PARAM_INT);
         $stmt->bindParam(':point_entry', $systems->point_entry, PDO::PARAM_INT);
         $stmt->bindParam(':ship_limit', $systems->ship_limit, PDO::PARAM_INT);
-        $stmt->execute();
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
         if ($stmt->rowCount()==0) {
             logging(__FILE__." : ".__METHOD__."() : ".__LINE__);

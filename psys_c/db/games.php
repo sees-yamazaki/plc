@@ -18,7 +18,7 @@ class cls_games
             $results = array();
             require './db/dns.php';
             $stmt = $pdo->prepare("SELECT * FROM  `games` ORDER BY g_seq");
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $result = new cls_games();
                 $result->g_seq = $row['g_seq'];
@@ -45,7 +45,7 @@ class cls_games
             require './db/dns.php';
             $stmt = $pdo->prepare("SELECT * FROM `games` WHERE g_seq=:g_seq");
             $stmt->bindParam(':g_seq', $gSeq, PDO::PARAM_INT);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             if ($row = $stmt->fetch()) {
                 $result->g_seq = $row['g_seq'];
                 $result->g_title = $row['g_title'];
@@ -71,7 +71,7 @@ class cls_games
             require './db/dns.php';
             $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `promos` WHERE g_seq=:g_seq");
             $stmt->bindParam(':g_seq', $gSeq, PDO::PARAM_INT);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             if ($row = $stmt->fetch()) {
                 $cnt = $row['cnt'];
             }

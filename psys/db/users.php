@@ -1,15 +1,16 @@
 <?php
 
-class cls_users{
+class cls_users
+{
     public $users_seq=0;
     public $users_id;
     public $users_pw;
     public $users_name;
-  }
+}
 
 
-function loginUsers($uID,$uPW){
-
+function loginUsers($uID, $uPW)
+{
     try {
         $users = new cls_users();
         require './db/dns.php';
@@ -21,7 +22,6 @@ function loginUsers($uID,$uPW){
             $users->users_pw = $row['users_pw'];
             $users->users_name = $row['users_name'];
         }
-
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -32,26 +32,24 @@ function loginUsers($uID,$uPW){
     return $users;
 }
 
-function getUsers($where){
-
+function getUsers($where)
+{
     try {
-    
         $results = array();
 
         require './db/dns.php';
         $stmt = $pdo->prepare("SELECT * FROM `users` ".$where." ORDER BY users_id");
         $stmt->execute(array());
 
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result = new cls_users();
             $result->users_seq = $row['users_seq'];
             $result->users_id = $row['users_id'];
             $result->users_pw = $row['users_pw'];
             $result->users_name = $row['users_name'];
 
-            array_push($results,$result);
+            array_push($results, $result);
         }
-
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -62,10 +60,9 @@ function getUsers($where){
     return $results;
 }
 
-function getUser($uSeq){
-
+function getUser($uSeq)
+{
     try {
-    
         $result = new cls_users();
 
         require './db/dns.php';
@@ -78,7 +75,6 @@ function getUser($uSeq){
             $result->users_pw = $row['users_pw'];
             $result->users_name = $row['users_name'];
         }
-
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -128,10 +124,9 @@ function getUser($uSeq){
 // }
 
 
-function getUserByID($user){
-
+function getUserByID($user)
+{
     try {
-    
         $result = new cls_users();
 
         require './db/dns.php';
@@ -144,7 +139,6 @@ function getUserByID($user){
             $result->users_pw = $row['users_pw'];
             $result->users_name = $row['users_name'];
         }
-
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -156,10 +150,9 @@ function getUserByID($user){
 }
 
 
-function insertUser($user){
-
+function insertUser($user)
+{
     try {
-
         require './db/dns.php';
 
         $sql = "INSERT INTO `users`( `users_id`, `users_pw`, `users_name`) VALUES (?,?,?)";
@@ -167,75 +160,79 @@ function insertUser($user){
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array( $user->users_id , $user->users_id  , $user->users_name   ));
 
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("INSERT ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
         logging("DATABASE ERROR : ".$e->getMessage());
         logging("ARGS : ". json_encode(func_get_args()));
     }
-
 }
 
-function updateUser($user){
-
+function updateUser($user)
+{
     try {
-
         require './db/dns.php';
 
-        $sql = "UPDATE `users` SET `users_id`=?,`users_name`=? WHERE `users_seq`=?";
+        $sql = "UPDATE `users` SET `users_id`=?,`users_name`=?,editdt=NOW() WHERE `users_seq`=?";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array($user->users_id, $user->users_name, $user->users_seq));
 
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("UPDATE ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
         logging("DATABASE ERROR : ".$e->getMessage());
         logging("ARGS : ". json_encode(func_get_args()));
     }
-
 }
 
-function pwUser($user){
-
+function pwUser($user)
+{
     try {
-
         require './db/dns.php';
 
-        $sql = "UPDATE `users` SET `users_pw`=`users_id` WHERE `users_seq`=?";
+        $sql = "UPDATE `users` SET `users_pw`=`users_id`,editdt=NOW() WHERE `users_seq`=?";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array($user->users_seq));
 
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("UPDATE ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
         logging("DATABASE ERROR : ".$e->getMessage());
         logging("ARGS : ". json_encode(func_get_args()));
     }
-
 }
 
 
-function deleteUser($user){
-
+function deleteUser($user)
+{
     try {
-
         require './db/dns.php';
 
         // ユーザを削除する
         $sql = "DELETE FROM `users` WHERE `users_seq`=?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(array($user->users_seq));
-
-
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
         logging("DATABASE ERROR : ".$e->getMessage());
         logging("ARGS : ". json_encode(func_get_args()));
     }
-
 }
-
-?>

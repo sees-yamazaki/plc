@@ -3,6 +3,7 @@
 // セッション開始
 session_start();
 require('session.php');
+setSsnCrntPage(basename(__FILE__));
 require('../psys/logging.php');
 
 

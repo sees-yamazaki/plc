@@ -1,12 +1,17 @@
 <?php
 
-// セッション開始
-session_start();
 require('session.php');
 require('../psys/logging.php');
 
+// セッション開始
+session_start();
+
+// 基本情報の格納
 $ini = parse_ini_file('./common.ini', false);
 setSsnIni($ini);
+setSsnTran(parse_ini_file('./transition.ini', false));
+
+setSsnCrntPage(basename(__FILE__));
 
 // エラーメッセージの初期化
 $errorMessage = '';
@@ -79,7 +84,7 @@ if (isset($_POST['login'])) {
     <!-- Banner -->
     <?php if (!empty($errorMessage)) { ?>
     <section id="banner8" class="err">
-            <h3><?php echo $errorMessage; ?></h3>
+        <h3><?php echo $errorMessage; ?></h3>
     </section>
     <?php } ?>
 
@@ -99,11 +104,13 @@ if (isset($_POST['login'])) {
         </div>
     </section>
 
-    <section id="banner2">
+    <section id="banner8">
         <div class="inner">
-            <h1><a href="membership.php">新規登録はこちら</a></h1>
+            <h2><a href="membership.php">新規登録はこちら</a></h2>
+            <h2><a href="forgetpw.php">パスワードを忘れた</a></h2>
         </div>
     </section>
+
 
 
     <?php include './footer.php'; ?>

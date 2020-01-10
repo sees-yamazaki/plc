@@ -1,9 +1,17 @@
 <?php
 
-// セッション開始
-session_start();
 require('session.php');
 require('../psys/logging.php');
+
+// セッション開始
+session_start();
+setSsnCrntPage(__FILE__);
+
+// 遷移元の確認
+if(!checkPrev(__FILE__)){
+    setSsnMsg('Invalid transition');
+    header('Location: ./error.php');
+}
 
 // エラーメッセージの初期化
 $errorMessage = "";
@@ -30,7 +38,7 @@ $errorMessage = "";
 			<section id="banner">
 				<div class="inner">
                 <h1>会員登録完了</h1>
-					<h2><br><s>メールアドレスにPWを送信しました。</s><br>テスト中のためメールは送信しません。<br>パスワードは「999」です。</h2>
+					<h2><br><s>メールアドレスにパスワードを送信しました。</s><br>テスト中のためメールは送信しません。<br>パスワードは「999」です。</h2>
 					<ul class="actions">
 						<li><a href="index.php" class="button alt scrolly big">ログインする</a></li>
 					</ul>

@@ -31,7 +31,7 @@ class cls_members
             $results = array();
             require './db/dns.php';
             $stmt = $pdo->prepare('SELECT m.*,v.point FROM  `members` m LEFT JOIN v_point v ON m.m_seq=v.m_seq ORDER BY m_seq');
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $result = new cls_members();
                 $result->m_seq = $row['m_seq'];
@@ -64,7 +64,39 @@ class cls_members
             require './db/dns.php';
             $stmt = $pdo->prepare('SELECT m.*,v.point,L.logindt FROM  `members` m LEFT JOIN v_point v ON m.m_seq=v.m_seq LEFT JOIN v_lastlogin L ON L.m_seq=m.m_seq  WHERE m.m_seq=:m_seq');
             $stmt->bindParam(':m_seq', $mSeq, PDO::PARAM_INT);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+            if ($row = $stmt->fetch()) {
+                $result->m_seq = $row['m_seq'];
+                $result->m_id = $row['m_id'];
+                $result->m_pw = $row['m_pw'];
+                $result->m_name = $row['m_name'];
+                $result->m_mail = $row['m_mail'];
+                $result->m_post = $row['m_post'];
+                $result->m_address1 = $row['m_address1'];
+                $result->m_address2 = $row['m_address2'];
+                $result->m_tel = $row['m_tel'];
+                $result->createdt = $row['createdt'];
+                $result->point = $row['point'];
+                $result->logindt = $row['logindt'];
+            }
+        } catch (PDOException $e) {
+            $errorMessage = 'データベースエラー';
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
+
+        return $result;
+    }
+
+    function getMemberByMial($m_mail)
+    {
+        try {
+            $result = new cls_members();
+            require './db/dns.php';
+            $stmt = $pdo->prepare('SELECT m.*,v.point,L.logindt FROM  `members` m LEFT JOIN v_point v ON m.m_seq=v.m_seq LEFT JOIN v_lastlogin L ON L.m_seq=m.m_seq  WHERE m.m_mail=:m_mail');
+            $stmt->bindParam(':m_mail', $m_mail, PDO::PARAM_STR);
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             if ($row = $stmt->fetch()) {
                 $result->m_seq = $row['m_seq'];
                 $result->m_id = $row['m_id'];
@@ -97,7 +129,7 @@ class cls_members
             // $stmt = $pdo->prepare('SELECT count(*) as cnt FROM ( SELECT m.*,CASE v.point IS NULL WHEN 1 THEN 0 ELSE v.point END as point,L.logindt FROM `members` m LEFT JOIN v_point v ON m.m_seq=v.m_seq LEFT JOIN v_lastlogin L ON L.m_seq=m.m_seq ) x '.$where);
             $stmt = $pdo->prepare('SELECT count(*) as cnt FROM v_members '.$where);
 
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             if ($row = $stmt->fetch()) {
                 $cnt = $row['cnt'];
             }
@@ -120,7 +152,7 @@ class cls_members
 
             $stmt->bindParam(':lmt', $limit, PDO::PARAM_INT);
             $stmt->bindParam(':ofst', $offset, PDO::PARAM_INT);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $result = new cls_members();
                 $result->m_seq = $row['m_seq'];
@@ -165,7 +197,7 @@ class cls_members
             $stmt = $pdo->prepare("SELECT * FROM `members` WHERE m_mail=:m_mail and m_pw=:m_pw");
             $stmt->bindParam(':m_mail', $m_mail, PDO::PARAM_STR);
             $stmt->bindParam(':m_pw', $m_pw, PDO::PARAM_STR);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             if ($row = $stmt->fetch()) {
                 $result->m_seq = $row['m_seq'];
                 $result->m_id = $row['m_id'];
@@ -195,7 +227,7 @@ class cls_members
             require './db/dns.php';
             $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `members` WHERE m_mail=:m_mail");
             $stmt->bindParam(':m_mail', $m_mail, PDO::PARAM_STR);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             if ($row = $stmt->fetch()) {
                 $cnt = $row['cnt'];
             }
@@ -216,7 +248,7 @@ class cls_members
             $stmt = $pdo->prepare('SELECT * FROM v_members WHERE m_seq=:m_seq');
 
             $stmt->bindParam(':m_seq', $mSeq, PDO::PARAM_INT);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             if ($row = $stmt->fetch()) {
                 $result->m_seq = $row['m_seq'];
                 $result->m_id = $row['m_id'];
@@ -265,7 +297,7 @@ class cls_members
             $stmt->bindParam(':m_address1', $members->m_address1, PDO::PARAM_STR);
             $stmt->bindParam(':m_address2', $members->m_address2, PDO::PARAM_STR);
             $stmt->bindParam(':m_tel', $members->m_tel, PDO::PARAM_STR);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
             if ($stmt->rowCount()==0) {
                 logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -284,7 +316,7 @@ class cls_members
     {
         try {
             require './db/dns.php';
-            $sql = " UPDATE `members`  SET  `m_id`=:m_id,  `m_pw`=:m_pw,  `m_name`=:m_name,  `m_mail`=:m_mail,  `m_post`=:m_post,  `m_address1`=:m_address1,  `m_address2`=:m_address2,  `m_tel`=:m_tel WHERE m_seq=:m_seq";
+            $sql = " UPDATE `members`  SET  `m_id`=:m_id,  `m_pw`=:m_pw,  `m_name`=:m_name,  `m_mail`=:m_mail,  `m_post`=:m_post,  `m_address1`=:m_address1,  `m_address2`=:m_address2,  `m_tel`=:m_tel,editdt=NOW() WHERE m_seq=:m_seq";
             $stmt = $pdo -> prepare($sql);
             $stmt->bindParam(':m_seq', $members->m_seq, PDO::PARAM_INT);
             $stmt->bindParam(':m_id', $members->m_id, PDO::PARAM_STR);
@@ -295,7 +327,7 @@ class cls_members
             $stmt->bindParam(':m_address1', $members->m_address1, PDO::PARAM_STR);
             $stmt->bindParam(':m_address2', $members->m_address2, PDO::PARAM_STR);
             $stmt->bindParam(':m_tel', $members->m_tel, PDO::PARAM_INT);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
             if ($stmt->rowCount()==0) {
                 logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -314,11 +346,11 @@ class cls_members
     {
         try {
             require './db/dns.php';
-            $sql = "UPDATE `members` SET `m_pw`=:m_pw WHERE m_seq=:m_seq";
+            $sql = "UPDATE `members` SET `m_pw`=:m_pw,editdt=NOW() WHERE m_seq=:m_seq";
             $stmt = $pdo -> prepare($sql);
             $stmt->bindParam(':m_seq', $m_seq, PDO::PARAM_INT);
             $stmt->bindParam(':m_pw', $m_pw, PDO::PARAM_STR);
-            $stmt->execute();
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
             if ($stmt->rowCount()==0) {
                 logging(__FILE__." : ".__METHOD__."() : ".__LINE__);

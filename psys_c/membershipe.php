@@ -1,39 +1,41 @@
 <?php
 
-// セッション開始
-session_start();
 require('session.php');
 require('../psys/logging.php');
+require('../psys/db/members.php');
+
+// セッション開始
+session_start();
+setSsnCrntPage(__FILE__);
+
+//遷移元の確認
+if(!checkPrev(__FILE__)){
+    setSsnMsg('Invalid transition');
+    header('Location: ./error.php');
+}
 
 // エラーメッセージの初期化
 $errorMessage = "";
 
-require_once '../psys/db/members.php';
-$member = new cls_members();
+$member = getSsn('prm_member');
 
-$cnt = checkMemberByMail($_POST['m_mail']);
+//$cnt = checkMemberByMail($_POST['m_mail']);
+$cnt = checkMemberByMail($member->m_mail );
 
 if ($cnt<>0) {
     $errorMessage = 'このメールアドレスはすでに登録されています。';
 }
 
-$member->m_name = $_POST['m_name'];
-$member->m_mail = $_POST['m_mail'];
-$member->m_post = str_replace("-", "", $_POST['m_post']);
-$member->m_address1 = $_POST['m_address1'];
-$member->m_address2 = $_POST['m_address2'];
-$member->m_tel = $_POST['m_tel'];
-
-if (isset($_POST['mmbrEdit'])) {
+//if (isset($_POST['mmbrEdit'])) {
+if (getSsnPrevPage()==basename(__FILE__)) {
 
     $member->m_id = strtotime("now");
     $member->m_pw = "999";
 
-    $errorMessage = insertMember($member);
+    insertMember($member);
 
-    if (empty($errorMessage)) {
-        header("Location: ./membershiped.php");
-    }
+    header("Location: ./membershiped.php");
+
 }
 
 
@@ -88,12 +90,6 @@ if (isset($_POST['mmbrEdit'])) {
             <input type="hidden" name="mmbrEdit" value="1" />
         </form>
         <form action='membership.php' method='POST' name="frm2">
-            <input type="hidden" name="m_name" id="m_name" value="<?php echo $member->m_name ?>" />
-            <input type="hidden" name="m_mail" id="m_mail" value="<?php echo $member->m_mail ?>" />
-            <input type="hidden" name="m_post" id="m_post" value="<?php echo $member->m_post ?>" />
-            <input type="hidden" name="m_address1" id="m_address1" value="<?php echo $member->m_address1 ?>" />
-            <input type="hidden" name="m_address2" id="m_address2" value="<?php echo $member->m_address2 ?>" />
-            <input type="hidden" name="m_tel" id="m_tel" value="<?php echo $member->m_tel ?>" />
         </form>
 
         <div class="inner">
@@ -110,11 +106,11 @@ if (isset($_POST['mmbrEdit'])) {
                 </div><br>
                 <?php if (empty($errorMessage)) { ?>
                 <ul class="actions">
-                    <li><a href="javascript:actn(1)" class="button alt scrolly big">登録する</a></li>
+                    <li><a href="" class="button alt scrolly big">登録する</a></li>
                 </ul>
                 <?php } ?>
                 <ul class="actions">
-                    <li><a href="javascript:actn(2)" class="button special scrolly big">戻る</a></li>
+                    <li><a href="membership.php" class="button special scrolly big">戻る</a></li>
                 </ul>
 
             </form>
