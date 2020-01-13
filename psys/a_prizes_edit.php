@@ -101,6 +101,21 @@ if (!empty($pzSeq)) {
     <link rel="stylesheet" href="./asset/css/main.css">
     <script src="./asset/js/main.js"></script>
     <script>
+        function makeHitcnt(){
+            stepper = document.getElementById('stepper').value;
+            limitter = document.getElementById('limitter').value;
+            hitcnt="";
+            if(isNaN(stepper)==false && isNaN(limitter)==false){
+                var stp=stepper*1;
+                var lmt=limitter*1;
+                for( var i = 0; i <= lmt; i += stp ) {
+                    if(i > 0){
+                    hitcnt = hitcnt + i + ",";
+                    }
+                }
+                document.getElementById('pz_hitcnt').value = hitcnt;
+            }
+        }
     function back() {
         document.frm.submit();
     }
@@ -263,9 +278,20 @@ if (!empty($pzSeq)) {
                                             <label for="inputType1">当選カウント</label>
                                         </div>
                                         <div class="col-md-9 showcase_content_area">
-                                            <input type="text" class="form-control" name="pz_hitcnt"
+                                            <input type="text" class="form-control" name="pz_hitcnt" id="pz_hitcnt"
                                                 value="<?php echo $prize->pz_hitcnt; ?>" placeholder="複数の場合は , で区切ってください" maxLength=100
                                                 pattern="[0-9,]+" title="数字、半角カンマ" autocomplete="off" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row showcase_row_area">
+                                        <div class="col-md-3 showcase_text_area">
+                                            <label for="inputType1"></label>
+                                        </div>
+                                        <div class="col-md-9 showcase_content_area">
+                                            <input type="text" class="form-control inline w20p" id="stepper">ごと
+                                            <input type="text" class="form-control inline w20p" id="limitter">まで
+                                            <button type="button" class="btn btn-primary btn-block mt-0 inline w20p" onclick="makeHitcnt()">生成</button>
                                         </div>
                                     </div>
 

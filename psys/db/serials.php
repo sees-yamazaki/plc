@@ -37,7 +37,7 @@ function getSerials()
     try {
         $results = array();
         require './db/dns.php';
-        $stmt = $pdo->prepare("SELECT * FROM  `serials` ORDER BY s_seq");
+        $stmt = $pdo->prepare("SELECT * FROM  `serials` ORDER BY createdt desc");
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result = new cls_serials();

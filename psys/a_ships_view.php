@@ -161,7 +161,7 @@ $ship = getVShip($sSeq);
                                         </div>
 
 
-                                        <p class="grid-header">発送先情報</p>
+                                        <p class="grid-header">会員情報</p>
 
 
                                         <div class="form-group row showcase_row_area">

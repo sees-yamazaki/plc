@@ -316,17 +316,15 @@ class cls_members
     {
         try {
             require './db/dns.php';
-            $sql = " UPDATE `members`  SET  `m_id`=:m_id,  `m_pw`=:m_pw,  `m_name`=:m_name,  `m_mail`=:m_mail,  `m_post`=:m_post,  `m_address1`=:m_address1,  `m_address2`=:m_address2,  `m_tel`=:m_tel,editdt=NOW() WHERE m_seq=:m_seq";
+            $sql = " UPDATE `members`  SET  `m_name`=:m_name,  `m_mail`=:m_mail,  `m_post`=:m_post,  `m_address1`=:m_address1,  `m_address2`=:m_address2,  `m_tel`=:m_tel,editdt=NOW() WHERE m_seq=:m_seq";
             $stmt = $pdo -> prepare($sql);
             $stmt->bindParam(':m_seq', $members->m_seq, PDO::PARAM_INT);
-            $stmt->bindParam(':m_id', $members->m_id, PDO::PARAM_STR);
-            $stmt->bindParam(':m_pw', $members->m_pw, PDO::PARAM_STR);
             $stmt->bindParam(':m_name', $members->m_name, PDO::PARAM_STR);
             $stmt->bindParam(':m_mail', $members->m_mail, PDO::PARAM_STR);
             $stmt->bindParam(':m_post', $members->m_post, PDO::PARAM_INT);
             $stmt->bindParam(':m_address1', $members->m_address1, PDO::PARAM_STR);
             $stmt->bindParam(':m_address2', $members->m_address2, PDO::PARAM_STR);
-            $stmt->bindParam(':m_tel', $members->m_tel, PDO::PARAM_INT);
+            $stmt->bindParam(':m_tel', $members->m_tel, PDO::PARAM_STR);
             execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
             if ($stmt->rowCount()==0) {

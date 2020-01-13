@@ -23,11 +23,10 @@ $sQty = $_POST['sQty'];
 $dt = date("Ymd");
 
 //CSV出力
-$fileNm = $sSeq.".csv";
 header('Content-Type: application/octet-stream');
-header('Content-Length: '.filesize("./".getSsn('PATH_SCODE')."/".$fileNm));
-header('Content-Disposition: attachment; filename=serialcode_'.$sQty.'_'.$dt.'.csv');
-readfile("./".getSsn('PATH_SCODE')."/".$fileNm);
+header('Content-Length: '.filesize("./files/ships_".getSsn('SEQ').".csv"));
+header('Content-Disposition: attachment; filename=ships_'.$dt.'.csv');
+readfile("./files/ships_".getSsn('SEQ').".csv");
 exit(0);
 
 

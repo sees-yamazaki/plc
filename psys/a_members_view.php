@@ -70,7 +70,8 @@ $errorMessage = '';
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo getSsnMyname(); ?></title>
+    <title><?php echo getSsnMyname(); ?>
+    </title>
     <link rel="stylesheet" href="./assets/vendors/iconfonts/mdi/css/materialdesignicons.css">
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">
@@ -78,18 +79,27 @@ $errorMessage = '';
     <link rel="stylesheet" href="./asset/css/main.css">
     <script src="./asset/js/main.js"></script>
     <script>
-    function mmbrPoint(vlu) {
-        document.frm.mSeq.value = vlu;
-        document.frm.submit();
-    }
-    function back() {  
-        document.pFrm.submit();
-    }
+        function mmbrPoint(vlu) {
+            document.frm.mSeq.value = vlu;
+            document.frm.submit();
+        }
+
+        function mmbrEdit(vlu) {
+            document.frm2.mSeq.value = vlu;
+            document.frm2.submit();
+        }
+
+        function back() {
+            document.pFrm.submit();
+        }
     </script>
 </head>
 
 <body class="header-fixed">
     <form action='a_members_point.php' method='POST' name="frm">
+        <input type='hidden' name='mSeq' value=''>
+    </form>
+    <form action='a_members_edit.php' method='POST' name="frm2">
         <input type='hidden' name='mSeq' value=''>
     </form>
     <form action='a_members_list.php' method='POST' name="pFrm">
@@ -111,6 +121,8 @@ $errorMessage = '';
                                     <div class="col-md-8 mx-auto">
                                         <button type="button" class="btn btn-inverse-info"
                                             onclick="back()">＜＜戻る</button>
+                                        <button type="button" class="btn btn-inverse-dark"
+                                            onclick='mmbrEdit(<?php echo $member->m_seq; ?>)'>編集する</button>
                                         <button type="button" class="btn btn-inverse-dark"
                                             onclick='mmbrPoint(<?php echo $member->m_seq; ?>)'>ポイント付与する</button>
                                         <br><br>

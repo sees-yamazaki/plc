@@ -66,6 +66,9 @@
 .search {
     display: inline;
 }
+.inline {
+    display: inline;
+}
 
 .closeform {
     background-color: #e4e4e4;
