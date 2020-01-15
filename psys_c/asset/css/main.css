@@ -407,3 +407,16 @@ body.is-loading #banner2>.inner {
         font-size: 2em;
     }
 }
+
+.inline {
+    display: inline;
+}
+
+input[type="text"].nn {
+    width: 30%;
+    display: inline;
+}
+
+.w40p {
+    width: 40%;
+}

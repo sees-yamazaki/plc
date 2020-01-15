@@ -237,6 +237,9 @@ function insertSerials($serials)
             //シリアルコード生成
             //YY/MM/DDを取得する
             $ymd = substr(date("Ymd"), 2);
+            // 20/01/10 の数字種を増やすために桁上がりしない変数を加算する
+            // 変数　48 36 24
+            $ymd = $ymd + 483624;
 
             //指定回数をLOOPする
             for ($i = 1; $i <= $serials->s_qty; $i++) {

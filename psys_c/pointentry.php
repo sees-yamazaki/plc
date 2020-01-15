@@ -20,7 +20,10 @@ $errorMessage = "";
     $scode = new cls_serialcodes();
 
     try {
-		$scode->sc_code = $_POST['sc_code'];
+        $sc_code_f = $_POST['sc_code_f'];
+        $sc_code_m = $_POST['sc_code_m'];
+        $sc_code_e = $_POST['sc_code_e'];
+		$scode->sc_code = $sc_code_f.$sc_code_m.$sc_code_e;
         
         if (isset($_POST['pointEntry'])) {
 
@@ -58,6 +61,13 @@ $errorMessage = "";
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <link rel="stylesheet" href="asset/css/main.css" />
+    <script type="text/javascript">
+    function nextField(i, n, m) {
+        if (i.value.length >= m) {
+            i.form.elements[n].focus();
+        }
+    }
+    </script>
 </head>
 
 <body>
@@ -87,9 +97,13 @@ $errorMessage = "";
             <h1>ポイント登録</h1>
             <form action="" method="POST" name="editFrm">
                 <div class="">
-                    １２桁のポイントを入力してください
-                    <input type="text" name="sc_code" id="sc_code" value="<?php echo $scode->sc_code； ?>"
-                        placeholder="123456789012" />
+                    １２桁のポイントを入力してください<br>
+                    <input type="text" name="sc_code_f" id="sc_code_f" value="<?php echo $sc_code_f; ?>"
+                        placeholder="1234" maxlength=4 class="nn" required onKeyUp="nextField(this, 'sc_code_m', 4)" />-
+                    <input type="text" name="sc_code_m" id="sc_code_m" value="<?php echo $sc_code_m; ?>"
+                        placeholder="1234" maxlength=4 class="nn" required onKeyUp="nextField(this, 'sc_code_e', 4)" />-
+                    <input type="text" name="sc_code_e" id="sc_code_e" value="<?php echo $sc_code_e; ?>"
+                        placeholder="1234" maxlength=4 class="nn" required />
                 </div><br>
                 <ul class="actions">
                     <li><a href="javascript:editFrm.submit()" class="button alt scrolly big">登録する</a></li>
