@@ -4,6 +4,11 @@ $cnst_ini_name="INI";
 $cnst_sys_name="SYS";
 $tmpData=array();
 
+function setMyName($nm){
+    global $cnst_app_name;
+    $cnst_app_name=$nm;
+}
+
 function setSsnIni($data){
     global $cnst_app_name;
     global $cnst_ini_name;
