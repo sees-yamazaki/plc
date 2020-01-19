@@ -30,6 +30,11 @@ foreach ($prizes as $prize) {
     $html .= '<tr>';
     $html .= "<td>".$prize->pz_order."</td>";
     $html .= "<td>".$prize->pz_title."</td>";
+    if ($prize->pz_kind=="0") {
+        $html .= "<td>当たり用</td>";
+    } else {
+        $html .= "<td>外れ用</td>";
+    }
     $html .= "<td>".$prize->pz_nowcnt."</td>";
     $html .= "<td>".$prize->pz_hitcnt."</td>";
     $html .= "<td><button type='button' name='edit' class='btn btn-inverse-secondary' onclick='przEdit(".$prize->pz_seq.")'>編集</button></td>";
@@ -44,23 +49,25 @@ foreach ($prizes as $prize) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo getSsnMyname(); ?></title>
+    <title><?php echo getSsnMyname(); ?>
+    </title>
     <link rel="stylesheet" href="./assets/vendors/iconfonts/mdi/css/materialdesignicons.css">
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">
     <link rel="shortcut icon" href="../asssets/images/favicon.ico" />
     <link rel="stylesheet" href="./asset/css/main.css">
     <script>
-    function przEdit(vlu) {
-        document.frm.pzSeq.value = vlu;
-        document.frm.submit();
-    }
+        function przEdit(vlu) {
+            document.frm.pzSeq.value = vlu;
+            document.frm.submit();
+        }
     </script>
 </head>
 
 <body class="header-fixed">
     <form action='a_prizes_edit.php' method='POST' name="frm">
-        <input type='hidden' name='pSeq' value='<?php echo $pSeq; ?>'>
+        <input type='hidden' name='pSeq'
+            value='<?php echo $pSeq; ?>'>
         <input type='hidden' name='pzSeq' value=''>
     </form>
 
@@ -69,7 +76,8 @@ foreach ($prizes as $prize) {
     <div class="page-content-wrapper">
         <div class="page-content-wrapper-inner">
             <div class="content-viewport">
-                <button type="button" class="btn btn-inverse-info"  onclick="location.href='./a_promos_list.php'">＜＜戻る</button>
+                <button type="button" class="btn btn-inverse-info"
+                    onclick="location.href='./a_promos_list.php'">＜＜戻る</button>
                 <button type="button" class="btn btn-inverse-dark" onclick='przEdit(0)'>新規登録</button>
                 <br><br>
 
@@ -78,6 +86,7 @@ foreach ($prizes as $prize) {
                         <tr>
                             <th>並び順</th>
                             <th>賞品</th>
+                            <th>用途</th>
                             <th>現在カウント</th>
                             <th>当たりカウント</th>
                             <th></th>

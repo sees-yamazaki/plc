@@ -17,7 +17,8 @@ setSsnCrntPage(basename(__FILE__));
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo getSsnMyname(); ?></title>
+    <title><?php echo getSsnMyname(); ?>
+    </title>
     <link rel="stylesheet" href="./asset/css/u_main.css">
 </head>
 
@@ -36,19 +37,13 @@ setSsnCrntPage(basename(__FILE__));
 
 
     <div id="contents">
-        <div id="addmember">
-            <input type="button" onclick="location.href='u_login.php'" class="rButton w60p btn-red" value="新規登録" />
-        </div>
-        <div id="login">
-            <input type="button" onclick="location.href='u_login.php'"  class="rButton w60p btn-blue" value="ログイン" />
-        </div>
-
+        <img class="bgimage" src="./asset/image/u_index_bg_1.png">
+        <img class="bgimage" src="./asset/image/u_index_bg_2.png" onclick="location.href='u_login.php'">
+        <img class="bgimage" src="./asset/image/u_index_bg_3.png" onclick="location.href='u_login.php'">
+        <img class="bgimage" src="./asset/image/u_index_bg_4.png">
 
     </div>
-    <div class="auth_footer">
-        <p class="text-muted text-center">© itty</p>
-    </div>
-    </div>
+
 </body>
 
 </html>

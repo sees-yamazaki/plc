@@ -33,6 +33,7 @@ $prize->pz_text = $_POST['pz_text'];
 $prize->pz_img = basename($_FILES['pz_img']['name']);
 $prize->pz_hitcnt = $_POST['pz_hitcnt'];
 $prize->imgStts = $_POST['imgStts'];
+$prize->pz_kind = $_POST['pz_kind'];
 
 if (isset($_POST['prizeEdit'])) {
     if ($prize->imgStts == '1') {
@@ -85,6 +86,12 @@ if (!empty($pzSeq)) {
     $ckImg2 = ' checked';
 }
 
+$ckKind1 = ' checked';
+$ckKind2 = '';
+if ($prize->pz_kind=="1") {
+    $ckKind1 = '';
+    $ckKind2 = ' checked';
+}
 
 ?>
 <!DOCTYPE html>
@@ -93,7 +100,8 @@ if (!empty($pzSeq)) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo getSsnMyname(); ?></title>
+    <title><?php echo getSsnMyname(); ?>
+    </title>
     <link rel="stylesheet" href="./assets/vendors/iconfonts/mdi/css/materialdesignicons.css">
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">
@@ -101,30 +109,32 @@ if (!empty($pzSeq)) {
     <link rel="stylesheet" href="./asset/css/main.css">
     <script src="./asset/js/main.js"></script>
     <script>
-        function makeHitcnt(){
+        function makeHitcnt() {
             stepper = document.getElementById('stepper').value;
             limitter = document.getElementById('limitter').value;
-            hitcnt="";
-            if(isNaN(stepper)==false && isNaN(limitter)==false){
-                var stp=stepper*1;
-                var lmt=limitter*1;
-                for( var i = 0; i <= lmt; i += stp ) {
-                    if(i > 0){
-                    hitcnt = hitcnt + i + ",";
+            hitcnt = "";
+            if (isNaN(stepper) == false && isNaN(limitter) == false) {
+                var stp = stepper * 1;
+                var lmt = limitter * 1;
+                for (var i = 0; i <= lmt; i += stp) {
+                    if (i > 0) {
+                        hitcnt = hitcnt + i + ",";
                     }
                 }
                 document.getElementById('pz_hitcnt').value = hitcnt;
             }
         }
-    function back() {
-        document.frm.submit();
-    }
+
+        function back() {
+            document.frm.submit();
+        }
     </script>
 </head>
 
 <body class="header-fixed">
     <form action='a_prizes_list.php' method='POST' name="frm">
-        <input type='hidden' name='pSeq' value='<?php echo $pSeq; ?>'>
+        <input type='hidden' name='pSeq'
+            value='<?php echo $pSeq; ?>'>
     </form>
 
     <?php include './a_menu.php'; ?>
@@ -141,7 +151,7 @@ if (!empty($pzSeq)) {
                         <div class="grid-body">
                             <div class="item-wrapper">
 
-                            <span class="clrRed"><?php echo $errorMessage; ?></span>
+                                <span class="clrRed"><?php echo $errorMessage; ?></span>
 
                                 <p class="grid-header">賞品登録</p>
 
@@ -154,8 +164,9 @@ if (!empty($pzSeq)) {
                                         </div>
                                         <div class="col-md-9 showcase_content_area">
                                             <input type="text" class="form-control" name="pz_order"
-                                                value="<?php echo $prize->pz_order; ?>" placeholder="2文字まで" maxLength=2
-                                                pattern="[0-9]+" title="数字" autocomplete="off" required>
+                                                value="<?php echo $prize->pz_order; ?>"
+                                                placeholder="2文字まで" maxLength=2 pattern="[0-9]+" title="数字"
+                                                autocomplete="off" required>
                                         </div>
                                     </div>
 
@@ -165,8 +176,8 @@ if (!empty($pzSeq)) {
                                         </div>
                                         <div class="col-md-9 showcase_content_area">
                                             <input type="text" class="form-control" name="pz_title"
-                                                value="<?php echo $prize->pz_title; ?>" placeholder="20文字まで"
-                                                maxLength=20 autocomplete="off" required>
+                                                value="<?php echo $prize->pz_title; ?>"
+                                                placeholder="20文字まで" maxLength=20 autocomplete="off" required>
                                         </div>
                                     </div>
 
@@ -176,8 +187,8 @@ if (!empty($pzSeq)) {
                                         </div>
                                         <div class="col-md-9 showcase_content_area">
                                             <input type="text" class="form-control" name="pz_code"
-                                                value="<?php echo $prize->pz_code; ?>" placeholder="30文字まで"
-                                                maxLength=30 autocomplete="off" required>
+                                                value="<?php echo $prize->pz_code; ?>"
+                                                placeholder="30文字まで" maxLength=30 autocomplete="off" required>
                                         </div>
                                     </div>
 
@@ -255,9 +266,10 @@ if (!empty($pzSeq)) {
                                             <div class="radio mb-3">
                                                 <label class="radio-label">
                                                     <?php if (empty($prize->pz_img)) {    ?>
-                                                        画像登録無し
+                                                    画像登録無し
                                                     <?php } else { ?>
-                                                        <img src="./mydata/promo/<?php echo $pzSeq; ?>/<?php echo $prize->pz_img; ?>" height=200>
+                                                    <img src="./mydata/promo/<?php echo $pzSeq; ?>/<?php echo $prize->pz_img; ?>"
+                                                        height=200>
                                                     <?php } ?>
                                                 </label>
                                             </div>
@@ -271,6 +283,21 @@ if (!empty($pzSeq)) {
 
 
 
+                                    <div class="form-group row showcase_row_area">
+                                        <div class="col-md-3 showcase_text_area">
+                                            <label for="inputType1">用途</label>
+                                        </div>
+                                        <div class="col-md-9 showcase_content_area">
+                                            <label class="radio-label">
+                                                <input name="pz_kind" type="radio" value="0" <?php echo $ckKind1; ?>>当たり用<i
+                                                    class="input-frame"></i>
+                                                <input name="pz_kind" type="radio" value="1" <?php echo $ckKind2; ?>>外れ用<i
+                                                    class="input-frame"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+
+
 
 
                                     <div class="form-group row showcase_row_area">
@@ -279,8 +306,9 @@ if (!empty($pzSeq)) {
                                         </div>
                                         <div class="col-md-9 showcase_content_area">
                                             <input type="text" class="form-control" name="pz_hitcnt" id="pz_hitcnt"
-                                                value="<?php echo $prize->pz_hitcnt; ?>" placeholder="複数の場合は , で区切ってください" maxLength=100
-                                                pattern="[0-9,]+" title="数字、半角カンマ" autocomplete="off" required>
+                                                value="<?php echo $prize->pz_hitcnt; ?>"
+                                                placeholder="複数の場合は , で区切ってください" maxLength=100 pattern="[0-9,]+"
+                                                title="数字、半角カンマ" autocomplete="off" required>
                                         </div>
                                     </div>
 
@@ -291,23 +319,28 @@ if (!empty($pzSeq)) {
                                         <div class="col-md-9 showcase_content_area">
                                             <input type="text" class="form-control inline w20p" id="stepper">ごと
                                             <input type="text" class="form-control inline w20p" id="limitter">まで
-                                            <button type="button" class="btn btn-primary btn-block mt-0 inline w20p" onclick="makeHitcnt()">生成</button>
+                                            <button type="button" class="btn btn-primary btn-block mt-0 inline w20p"
+                                                onclick="makeHitcnt()">生成</button>
                                         </div>
                                     </div>
 
 
                                     <button type="submit" class="btn btn-primary btn-block mt-0"
                                         name="prizeEdit">登　録</button>
-                                    <input type="hidden" name="pSeq" value="<?php echo $pSeq; ?>">
-                                    <input type="hidden" name="pzSeq" value="<?php echo $pzSeq; ?>">
+                                    <input type="hidden" name="pSeq"
+                                        value="<?php echo $pSeq; ?>">
+                                    <input type="hidden" name="pzSeq"
+                                        value="<?php echo $pzSeq; ?>">
                                 </form>
 
                                 <?php if ($pzSeq != '0') { ?>
                                 <br><br>
                                 <form action="" method="POST" onsubmit="return delcheck()">
                                     <button type="submit" class="btn btn-danger btn-block mt-0" name="del">削　除</button>
-                                    <input type="hidden" name="pSeq" value="<?php echo $pSeq; ?>">
-                                    <input type="hidden" name="pzSeq" value="<?php echo $pzSeq; ?>">
+                                    <input type="hidden" name="pSeq"
+                                        value="<?php echo $pSeq; ?>">
+                                    <input type="hidden" name="pzSeq"
+                                        value="<?php echo $pzSeq; ?>">
                                 </form>
                                 <?php } ?>
 

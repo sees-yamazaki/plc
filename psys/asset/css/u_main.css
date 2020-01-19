@@ -9,9 +9,14 @@ body {
     justify-content: space-around;
     background-color: #fff;
     padding: 5px;
+    width: 100%;
+    position: fixed;   
+    top: 0; 
+    height: 50px;
 }
 
 #contents {
+    margin-top: 60px;
     text-align: center;
 }
 
@@ -34,7 +39,13 @@ span.err {
     color: #fff;
     border-radius: 10px;
 }
+.f1rem{
+    font-size: 1rem;
+}
 
+.w25p {
+    width: 25%;
+}
 .w60p {
     width: 60%;
 }
@@ -43,21 +54,23 @@ span.err {
     width: 80%;
 }
 
+.w100p {
+    width: 100%;
+}
 .btn-red {
-    background-color: #d44949;
+    background-color: #D90012;
+}
+
+.btn-red-rev {
+    color: #D90012;
+    background-color: #ffffff;
+    border: solid 1px #D90012;
 }
 
 .btn-blue {
-    background-color: #000b9e;
+    background-color: #16176C;
 }
 
-#addmember {
-    padding-top: 200px;
-}
-
-#login {
-    padding-top: 20px;
-}
 
 .input-text {
     border: 0;
@@ -67,9 +80,92 @@ span.err {
     border: solid 1px #ccc;
     margin: 0 0 30px;
 }
+.bgimage{
+    border: 0;
+    width: 100%;
+    display: block;
+}
+
+.top_menu_contents img {
+    height: 3rem;
+}
+
+#point{
+    background-color: #ee0000;
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 0;
+    margin: 0;
+}
+
+#point img{
+    height: 3rem;
+}
+
+div.msg{
+    border: 1px solid #006fb6;
+    color: #006fb6;
+    font-size: 0.8rem;
+    margin: 0 auto;
+}
+
+div.waku{
+    margin: 0 auto;
+}
+
+div.info{
+    border: 1px solid #ee0000;
+    color: #ee0000;
+    font-size: 0.8rem;
+    margin: 0 auto;
+}
+.red{
+    color: #ee0000;
+    font-weight: bold;
+}
+
+.rDiv {
+    margin: 0 auto;
+    border-radius: 10px; /* ボックスの四つ角を丸くする */
+    background-color: white;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+.rDivTitle{
+    background-color: #006fb6;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 10px 10px 0 0;
+    margin-bottom: 20px;
+}
+.rDivTitleGrey{
+    background-color: #b0b0b0;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 10px 10px 0 0;
+    margin-bottom: 20px;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  width: 32px;
+  height: 32px;
+  margin-top: -16px;
+}
+.swiper-button-prev {
+    background: url(../image/swiper3.png) no-repeat center center / contain;
+}
+.swiper-button-next {
+    background: url(../image/swiper4.png) no-repeat center center / contain;
+}
 
 @media screen and (max-width: 736px) {
-    .top_menu_contents img {
-        height: 3rem;
-    }
+
+    
 }

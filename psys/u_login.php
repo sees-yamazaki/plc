@@ -50,7 +50,7 @@ if (isset($_POST['login'])) {
             require_once './db/log.php';
             log_login($member->m_seq);
 
-            header('Location: ./home.php');
+            header('Location: ./u_home.php');
         }
     }
 }
@@ -62,7 +62,8 @@ if (isset($_POST['login'])) {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo getSsnMyname(); ?></title>
+    <title><?php echo getSsnMyname(); ?>
+    </title>
     <link rel="stylesheet" href="./asset/css/u_main.css">
 </head>
 
@@ -72,7 +73,7 @@ if (isset($_POST['login'])) {
             <img src="./asset/image/title_logo.png" alt="logo" />
         </div>
         <div class="top_menu_contents">
-            <img src="./asset/image/title_login.png" alt="logo" />
+            <img src="./asset/image/title_mypage.png" alt="logo" onclick="location.href='u_index.php'" />
         </div>
         <div class="top_menu_contents">
             <img src="./asset/image/title_menu.png" alt="logo" />
@@ -81,26 +82,26 @@ if (isset($_POST['login'])) {
 
 
     <div id="contents">
-        <h3>ログイン</h3>
+        <h3><br>ログイン</h3>
         <?php if (!empty($errorMessage)) { ?>
-            <span class="err"><?php echo $errorMessage; ?></span>
+        <span class="err"><?php echo $errorMessage; ?></span>
         <?php } ?>
-        <div name="editFrm" >
-        <form action="" method="POST" name="frm">
-            <input type="text" name="m_mail" id="m_mail" class="input-text w80p" placeholder="メールアドレス"
-                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" value="<?php echo $m_mail; ?>" required /><br><br>
-            <input type="password" name="m_pw" id="m_pw" class="input-text w80p" placeholder="パスワード" required><br><br>
-            <input type="button" class="rButton w60p btn-blue" onclick="javascript:frm.submit()" value="ログイン" />
+        <div name="editFrm">
+            <form action="" method="POST" name="frm">
+                <input type="text" name="m_mail" id="m_mail" class="input-text w80p" placeholder="メールアドレス"
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                    value="<?php echo $m_mail; ?>"
+                    required /><br><br>
+                <input type="password" name="m_pw" id="m_pw" class="input-text w80p" placeholder="パスワード"
+                    required><br><br>
+                <input type="button" class="rButton w80p btn-blue" onclick="javascript:frm.submit()" value="ログイン" />
                 <input type="hidden" name="login" id="login" value="1" />
-</form>
+            </form>
         </div>
         <br><br>パスワードをお忘れですか？
 
     </div>
-    <div class="auth_footer">
-        <p class="text-muted text-center">© itty</p>
-    </div>
-    </div>
+
 </body>
 
 </html>
