@@ -2,6 +2,7 @@
 $cnst_app_name="psys";
 $cnst_ini_name="INI";
 $cnst_sys_name="SYS";
+$cnst_tran_name="TRAN";
 $tmpData=array();
 
 function setMyName($nm)
@@ -19,6 +20,16 @@ function setSsnIni($data)
         $_SESSION[$cnst_app_name][$cnst_ini_name] = $data;
     } else {
         $_SESSION[$cnst_app_name] = array($cnst_ini_name=>$data);
+    }
+}
+function setSsnTran($data){
+    global $cnst_app_name;
+    global $cnst_tran_name;
+
+    if (is_array($_SESSION[$cnst_app_name])) {
+        $_SESSION[$cnst_app_name][$cnst_tran_name] = $data;
+    }else{
+        $_SESSION[$cnst_app_name] = array($cnst_tran_name=>$data);
     }
 }
 function getSsnIni($key)

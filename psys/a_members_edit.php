@@ -33,7 +33,7 @@ if (isset($_POST['mmbrEdit'])) {
     $member->m_address2 = $_POST['m_address2'];
     $member->m_tel = $_POST['m_tel'];
 
-    $tmp =getMemberByMial($member->m_mail);
+    $tmp =getMemberByMail($member->m_mail);
     if ($tmp->m_seq<>0 && $tmp->m_seq<>$mSeq) {
         $errorMessage = 'このMAILはすでに登録されています';
     }else{

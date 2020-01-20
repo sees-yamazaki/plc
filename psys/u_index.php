@@ -1,14 +1,21 @@
 <?php
 
-// セッション開始
-session_start();
 require('session.php');
-setMyName('psys_m');
 require('logging.php');
 
-$ini = parse_ini_file('./common.ini', false);
-setSsnIni($ini);
+// セッション開始
+session_start();
+setMyName('psys_m');
+
+setSsnIni(parse_ini_file('./common.ini', false));
+setSsnTran(parse_ini_file('./transition.ini', false));
 setSsnCrntPage(basename(__FILE__));
+
+//メニュー内容
+$menu_m_url="./asset/image/title_login.png";
+$menu_m_click="location.href='u_login.php'";
+$menu_r_url="./asset/image/title_menu.png";
+$menu_r_click="location.href='u_info.php'";
 
 ?>
 <!DOCTYPE html>
@@ -23,22 +30,13 @@ setSsnCrntPage(basename(__FILE__));
 </head>
 
 <body>
-    <div id="top_menu">
-        <div class="top_menu_contents">
-            <img src="./asset/image/title_logo.png" alt="logo" />
-        </div>
-        <div class="top_menu_contents">
-            <img src="./asset/image/title_login.png" alt="logo" />
-        </div>
-        <div class="top_menu_contents">
-            <img src="./asset/image/title_menu.png" alt="logo" />
-        </div>
-    </div>
+
+<?php include('./u_top_menu.php'); ?>
 
 
     <div id="contents">
         <img class="bgimage" src="./asset/image/u_index_bg_1.png">
-        <img class="bgimage" src="./asset/image/u_index_bg_2.png" onclick="location.href='u_login.php'">
+        <img class="bgimage" src="./asset/image/u_index_bg_2.png" onclick="location.href='u_membership.php'">
         <img class="bgimage" src="./asset/image/u_index_bg_3.png" onclick="location.href='u_login.php'">
         <img class="bgimage" src="./asset/image/u_index_bg_4.png">
 

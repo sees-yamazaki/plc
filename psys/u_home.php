@@ -95,8 +95,8 @@ $htmlImg .= '</p>';
             value='<?php echo $promo->p_seq; ?>'>
     </form>
 
+    <?php $menuflg="on"; ?>
     <?php include('./u_menu.php'); ?>
-
 
     <div id="contents">
         <?php include('./u_point.php'); ?>

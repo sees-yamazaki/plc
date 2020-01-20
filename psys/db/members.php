@@ -89,7 +89,7 @@ class cls_members
         return $result;
     }
 
-    function getMemberByMial($m_mail)
+    function getMemberByMail($m_mail)
     {
         try {
             $result = new cls_members();
@@ -220,13 +220,14 @@ class cls_members
     }
     
 
-    function checkMemberByMail($m_mail)
+    function checkMemberByMail($mSeq, $m_mail)
     {
         try {
             $cnt = 0;
             require './db/dns.php';
-            $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `members` WHERE m_mail=:m_mail");
+            $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `members` WHERE m_mail=:m_mail AND m_seq<>:m_seq");
             $stmt->bindParam(':m_mail', $m_mail, PDO::PARAM_STR);
+            $stmt->bindParam(':m_seq', $mSeq, PDO::PARAM_INT);
             execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             if ($row = $stmt->fetch()) {
                 $cnt = $row['cnt'];

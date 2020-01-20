@@ -8,12 +8,6 @@ session_start();
 setMyName('psys_m');
 setSsnCrntPage(basename(__FILE__));
 
-//メニュー内容
-$menu_m_url="./asset/image/title_login.png";
-$menu_m_click="location.href='u_login.php'";
-$menu_r_url="./asset/image/title_menu.png";
-$menu_r_click="location.href='u_info.php'";
-
 // エラーメッセージの初期化
 $errorMessage = '';
 
@@ -76,28 +70,27 @@ if (isset($_POST['login'])) {
 </head>
 
 <body>
-
-<?php include('./u_top_menu.php'); ?>
+<div id="menu">
+    <div id="top_menu_info">
+        <div class="top_menu_contents">
+            <img src="./asset/image/u_menu_logo.png" alt="logo" onclick="location.href='u_login.php'" />
+        </div>
+        <div class="top_menu_contents">
+            <img src="./asset/image/u_menu_exit.png" alt="logo" onclick="location.href='u_login.php'" />
+        </div>
+    </div>
+</div>
 
 
     <div id="contents">
-        <h3><br>ログイン</h3>
-        <?php if (!empty($errorMessage)) { ?>
-        <span class="err"><?php echo $errorMessage; ?></span>
-        <?php } ?>
-        <div name="editFrm">
-            <form action="" method="POST" name="frm">
-                <input type="text" name="m_mail" id="m_mail" class="input-text w80p" placeholder="メールアドレス"
-                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
-                    value="<?php echo $m_mail; ?>"
-                    required /><br><br>
-                <input type="password" name="m_pw" id="m_pw" class="input-text w80p" placeholder="パスワード"
-                    required><br><br>
-                <input type="button" class="rButton w80p btn-blue" onclick="javascript:frm.submit()" value="ログイン" />
-                <input type="hidden" name="login" id="login" value="1" />
-            </form>
-        </div>
-        <br><br><a href='u_forgetpw.php'>パスワードをお忘れですか？</a>
+        <div class="infoMenu">お知らせ</div>
+        <div class="infoText">現在発送できない商品がございます。</div>
+
+        <div class="infoMenu">利用規約</div>
+        <div class="infoText">利用規約。利用規約。利用規約。利用規約。利用規約。利用規約。利用規約。利用規約。利用規約。</div>
+
+        <div class="infoMenuJump" onclick="location.href='u_membership.php'">新規登録</div>
+        <div class="infoMenuJump" onclick="location.href='u_login.php'">ログイン</div>
 
     </div>
 
