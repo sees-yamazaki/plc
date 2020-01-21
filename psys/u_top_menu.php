@@ -7,7 +7,7 @@
             <img src="<?php echo $menu_m_url; ?>" alt="logo" onclick="<?php echo $menu_m_click; ?>" />
         </div>
         <div class="top_menu_contents">
-        <img src="<?php echo $menu_r_url; ?>" alt="logo" onclick="<?php echo $menu_r_click; ?>" />
+        <?php include('./u_xmenu.php'); ?>
         </div>
     </div>
 </div>

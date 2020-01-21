@@ -7,11 +7,7 @@
             <img src="./asset/image/title_login.png" alt="logo" onclick="location.href='u_login.php'" />
         </div>
         <div class="top_menu_contents">
-            <?php if($menuflg=="on"){ ?>
-            <img src="./asset/image/title_menu.png" alt="logo" onclick="location.href='u_info.php'" />
-            <?php }else{ ?>
-            <img src="./asset/image/title_menu_off.png" alt="logo" />
-            <?php } ?>
+        <?php include('./u_xmenu.php'); ?>
         </div>
     </div>
 </div>

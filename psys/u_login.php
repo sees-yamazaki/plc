@@ -12,7 +12,7 @@ setSsnCrntPage(basename(__FILE__));
 $menu_m_url="./asset/image/title_login.png";
 $menu_m_click="location.href='u_login.php'";
 $menu_r_url="./asset/image/title_menu.png";
-$menu_r_click="location.href='u_info.php'";
+$menu_r_click="location.href='u_info2.php'";
 
 // エラーメッセージの初期化
 $errorMessage = '';
