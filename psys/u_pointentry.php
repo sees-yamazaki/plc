@@ -9,6 +9,9 @@ require('logging.php');
 // エラーメッセージの初期化
 $errorMessage = '';
 
+//メニュー内容
+$menu_m_url="./asset/image/title_mypage.png";
+$menu_m_click="location.href='u_home.php'";
 
 require_once './db/views.php';
 $point = getPoint(getSsn("SEQ"));
@@ -54,21 +57,22 @@ if (isset($_POST['pointEntry'])) {
     </title>
     <link rel="stylesheet" href="./asset/css/u_main.css">
     <script type="text/javascript">
-        function nextField(i, n, m) {
-            if (i.value.length >= m) {
-                i.form.elements[n].focus();
-            }
+    function nextField(i, n, m) {
+        if (i.value.length >= m) {
+            i.form.elements[n].focus();
         }
+    }
     </script>
 </head>
 
 <body>
 
-    <?php include('./u_menu.php'); ?>
+    <div id="menu">
+        <?php include('./u_top_menu.php'); ?>
+    </div>
 
 
     <div id="contents">
-        <?php include('./u_point.php'); ?>
 
         <h3><br>ポイント登録</h3>
         <?php if (!empty($errorMessage)) { ?>
@@ -79,16 +83,15 @@ if (isset($_POST['pointEntry'])) {
         <form action="" method="POST" name="editFrm">
             <div class="rDiv w80p">
                 <img src="./asset/image/pointcard_entry.png" class="w80p" /><br>
+        </div>
+        <div class="waku w90p" style="text-align:left;">
                 12桁のシリアルコードを入力する<br>
-                <input type="text" name="sc_code_f" id="sc_code_f"
-                    value="<?php echo $sc_code_f; ?>"
-                    placeholder="1234" maxlength=4 class="w25p" required onKeyUp="nextField(this, 'sc_code_m', 4)" />-
-                <input type="text" name="sc_code_m" id="sc_code_m"
-                    value="<?php echo $sc_code_m; ?>"
-                    placeholder="1234" maxlength=4 class="w25p" required onKeyUp="nextField(this, 'sc_code_e', 4)" />-
-                <input type="text" name="sc_code_e" id="sc_code_e"
-                    value="<?php echo $sc_code_e; ?>"
-                    placeholder="1234" maxlength=4 class="w25p" required /><br><br>
+                <input type="text" name="sc_code_f" id="sc_code_f" value="<?php echo $sc_code_f; ?>" placeholder="1234"
+                    maxlength=4 class="input-text w25p" required onKeyUp="nextField(this, 'sc_code_m', 4)" />-
+                <input type="text" name="sc_code_m" id="sc_code_m" value="<?php echo $sc_code_m; ?>" placeholder="1234"
+                    maxlength=4 class="input-text w25p" required onKeyUp="nextField(this, 'sc_code_e', 4)" />-
+                <input type="text" name="sc_code_e" id="sc_code_e" value="<?php echo $sc_code_e; ?>" placeholder="1234"
+                    maxlength=4 class="input-text w25p" required /><br><br>
                 <input type="button" class="rButton w80p f1rem btn-red" onclick="javascript:editFrm.submit()"
                     value="シリアルコードを登録する" />
                 <input type="hidden" name="pointEntry" value="1">

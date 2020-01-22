@@ -1,7 +1,7 @@
 <content>
 
     <input id="hamburger" class="hamburger" type="checkbox" />
-    <label class="hamburger" for="hamburger">
+    <label class="hamburger" for="hamburger" onclick="prizeHide()">
         <i></i>
         <text>
             <close>close</close>
@@ -58,6 +58,7 @@
     </section>
 </content>
 
+<script type="text/javascript" src="./asset/js/main.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 <script type="text/javascript" src="./asset/js/accordion/jquery.accordion.js"></script>
 <script type="text/javascript" src="./asset/js/accordion/jquery.easing.1.3.js"></script>

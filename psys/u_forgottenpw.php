@@ -18,8 +18,6 @@ if(!checkPrev(__FILE__)){
 //メニュー内容
 $menu_m_url="./asset/image/title_login.png";
 $menu_m_click="location.href='u_login.php'";
-$menu_r_url="./asset/image/title_menu_off.png";
-$menu_r_click="javascript:void(0);";
 
 // エラーメッセージの初期化
 $errorMessage = '';
@@ -44,7 +42,9 @@ setSsnKV('m_mail','');
     </form>
 
 
-    <?php include('./u_top_menu.php'); ?>
+    <div id="premenu">
+        <?php include('./u_top_menu.php'); ?>
+    </div>
 
 
     <div id="contents">

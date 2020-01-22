@@ -1,13 +1,19 @@
 <?php
 
+require('logging.php');
+require('session.php');
+
 // セッション開始
 session_start();
-require('session.php');
 setMyName('psys_m');
-require('logging.php');
 
 // エラーメッセージの初期化
 $errorMessage = '';
+
+
+//メニュー内容
+$menu_m_url="./asset/image/title_mypage.png";
+$menu_m_click="location.href='u_home.php'";
 
 require_once './db/views.php';
 $point = getPoint(getSsn("SEQ"));
@@ -27,12 +33,12 @@ if (!empty($prize->pz_title)) {
     $html2 .= '<div class="rDivTitle">'.$prize->pz_title.'に応募する</div>';
 }
 if (!empty($prize->pz_img)) {
-    $html2 .= "<img class='w80p' border=0 src='./". getSsn('PATH_PROMO')."/".$pSeq.'/'.$prize->pz_img."'><br>";
+    $html2 .= "<img class='w90p' border=0 src='./". getSsn('PATH_PROMO')."/".$pSeq.'/'.$prize->pz_img."'><br>";
 }
 if (!empty($prize->pz_text)) {
     $html2 .= nl2br($prize->pz_text)."<br>";
 }
-$html2 .= "<input type='button' class='rButton w80p f1rem btn-red' onclick='javascript:doGame()' value='ゲームにチャレンジ' />";
+$html2 .= "<div class='entryBtn'><input type='button' onclick='javascript:doGame()' value='ゲームにチャレンジ' /></div>";
 $html2 .= '</div>';
 
 $missPrize = getMissPrize($pSeq);
@@ -42,7 +48,7 @@ if (!empty($missPrize->pz_title)) {
     $html3 .= '<div class="rDivTitleGrey">今月の'.$missPrize->pz_title.'はコレ！</div>';
 }
 if (!empty($missPrize->pz_img)) {
-    $html3 .= "<img class='w80p' border=0 src='./". getSsn('PATH_PROMO')."/".$pSeq.'/'.$missPrize->pz_img."'><br>";
+    $html3 .= "<img class='w90p' border=0 src='./". getSsn('PATH_PROMO')."/".$pSeq.'/'.$missPrize->pz_img."'><br>";
 }
 if (!empty($prize->pz_text)) {
     $html3 .= nl2br($missPrize->pz_text)."<br>";
@@ -77,13 +83,14 @@ $html3 .= '</div>';
             value='<?php echo $promo->g_seq; ?>'>
     </form>
 
-    <?php include('./u_menu.php'); ?>
+    <div id="menu">
+        <?php include('./u_top_menu.php'); ?>
+    </div>
 
 
     <div id="contents">
-        <?php include('./u_point.php'); ?>
 
-        <h3><br>商品を選択</h3>
+    <br><br><img class="w70p" src="./asset/image/select_prize.png"><br><br>
         <?php if (!empty($errorMessage)) { ?>
         <div class="info w80p"><?php echo $errorMessage; ?>
         </div>

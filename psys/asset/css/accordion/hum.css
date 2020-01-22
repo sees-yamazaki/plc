@@ -14,6 +14,7 @@
     border-bottom-left-radius: 100vw;
     background-color: #2e2cb6;
     background-color: rgba(27, 30, 177, 0.8);
+    z-index: 9998;
 }
 
 @media (min-width: 768px) {
@@ -297,6 +298,11 @@ input.hamburger:checked~label>i {
 input.hamburger:checked~label>i:before {
     transform: translate(-50%, -50%) rotate(315deg);
     background-color: #FEFEFE;
+}
+
+input.hamburger:checked~label>i:before+#scrl {
+    display: none;
+    background-color: #ec0000;
 }
 
 input.hamburger:checked~label>i:after {

@@ -9,6 +9,9 @@ require('logging.php');
 // エラーメッセージの初期化
 $errorMessage = '';
 
+//メニュー内容
+$menu_m_url="./asset/image/title_mypage.png";
+$menu_m_click="location.href='u_home.php'";
 
 require_once './db/views.php';
 $point = getPoint(getSsn("SEQ"));
@@ -28,11 +31,12 @@ $point = getPoint(getSsn("SEQ"));
 
 <body>
 
-    <?php include('./u_menu.php'); ?>
+    <div id="menu">
+        <?php include('./u_top_menu.php'); ?>
+    </div>
 
 
     <div id="contents">
-        <?php include('./u_point.php'); ?>
 
         <h3><br>ポイント登録完了</h3>
         <div class="msg w80p">
@@ -42,9 +46,9 @@ $point = getPoint(getSsn("SEQ"));
         </div>
         <br><br>
         <div class="waku w80p">
-            <input type="button" class="rButton w80p f1rem btn-red" onclick="location.href='u_pointentry.php'"
+            <input type="button" class="rButton w100p f1rem btn-red" onclick="location.href='u_pointentry.php'"
                 value="続けてシリアルコードを登録する" /><br>
-            <input type="button" class="rButton w80p f1rem btn-red-rev" onclick="location.href='u_home.php'"
+            <input type="button" class="rButton w100p f1rem btn-red-rev" onclick="location.href='u_home.php'"
                 value="ホームへ戻る" />
         </div>
 

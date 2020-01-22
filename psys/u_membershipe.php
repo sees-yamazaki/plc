@@ -18,8 +18,6 @@ if(!checkPrev(__FILE__)){
 //メニュー内容
 $menu_m_url="./asset/image/title_login.png";
 $menu_m_click="location.href='u_login.php'";
-$menu_r_url="./asset/image/title_menu_off.png";
-$menu_r_click="javascript:void(0);";
 
 // エラーメッセージの初期化
 $errorMessage = '';
@@ -63,10 +61,12 @@ if (isset($_POST['doEdit'])) {
     </form>
 
 
-    <?php include('./u_top_menu.php'); ?>
+    <div id="premenu">
+        <?php include('./u_top_menu.php'); ?>
+    </div>
 
 
-    <div id="contents">
+    <div id="precontents">
         <h3><br>会員情報確認</h3>
         <?php if (empty($errorMessage)) { ?>
             <span class="err">下記内容で登録します。<br>登録内容を確認してください。<br><br></span>

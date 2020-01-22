@@ -10,10 +10,14 @@ require('logging.php');
 $errorMessage = '';
 
 
+//メニュー内容
+$menu_m_url="./asset/image/title_mypage.png";
+$menu_m_click="location.href='u_home.php'";
+
 $pSeq = $_POST['pSeq'];
 $gSeq = $_POST['gSeq'];
 $pzSeq = $_POST['pzSeq'];
-
+$sendPzSeq = $pzSeq;
 
 
 require_once './db/games.php';
@@ -37,31 +41,34 @@ $result = "miss";
 require_once './db/prizes.php';
 $prize = countupPrize($pzSeq);
 $hitcnts = explode(",",$prize->pz_hitcnt);
-if (in_array($prize->pz_nowcnt,$hitcnts )) {
-     $gameResult = "WINNER！！";
-     $resultImg = "./".getSsn('PATH_GAME')."/".$game->g_seq."/".$game->g_image_hit;
+if (in_array($prize->pz_nowcnt, $hitcnts)) {
+    $gameResult = "WINNER！！";
+    $resultImg = "./".getSsn('PATH_GAME')."/".$game->g_seq."/".$game->g_image_hit;
 
-     $usepoint->up_status = 1;
-     $result = "hit";
-     
-    require_once './db/members.php';
-    $member = getMember(getSsn("SEQ"));
-
-    require_once './db/ships.php';
-    $ship = new cls_ships();
-    $ship->m_seq = getSsn("SEQ");
-    $ship->up_seq = getSsn("SEQ");
-    $ship->sp_name = $member->m_name;
-    $ship->sp_post = $member->m_post;
-    $ship->sp_address1 = $member->m_address1;
-    $ship->sp_address2 = $member->m_address2;
-    $ship->sp_tel = $member->m_tel;
-    $ship->sp_text = "";
-    insertShip($ship);
+    $usepoint->up_status = 1;
+    $result = "hit";
+}else{
+    $missPrize = getMissPrize($pSeq);
+    $sendPzSeq = $missPrize->pz_seq;
 }
  
 $upSeq = insertUsepoints($usepoint);
 
+require_once './db/members.php';
+$member = getMember(getSsn("SEQ"));
+
+require_once './db/ships.php';
+$ship = new cls_ships();
+$ship->m_seq = getSsn("SEQ");
+$ship->up_seq = $upSeq;
+$ship->sp_name = $member->m_name;
+$ship->sp_post = $member->m_post;
+$ship->sp_address1 = $member->m_address1;
+$ship->sp_address2 = $member->m_address2;
+$ship->sp_tel = $member->m_tel;
+$ship->sp_text = "";
+$ship->pz_seq = $sendPzSeq;
+insertShip($ship);
 
 require_once './db/views.php';
 $point = getPoint(getSsn("SEQ"));
@@ -94,11 +101,12 @@ $point = getPoint(getSsn("SEQ"));
             value='<?php echo $result; ?>'>
     </form>
 
-    <?php include('./u_menu.php'); ?>
+    <div id="menu">
+        <?php include('./u_top_menu.php'); ?>
+    </div>
 
 
     <div id="contents">
-        <?php include('./u_point.php'); ?>
             <a href="javascript:doResult()">
         <img border=0 class="w100p" src="<?php echo $resultImg; ?>"></a>
     </div>

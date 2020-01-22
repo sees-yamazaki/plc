@@ -17,8 +17,6 @@ if(!checkPrev(__FILE__)){
 //メニュー内容
 $menu_m_url="./asset/image/title_login.png";
 $menu_m_click="location.href='u_login.php'";
-$menu_r_url="./asset/image/title_menu.png";
-$menu_r_click="location.href='u_info.php'";
 
 // エラーメッセージの初期化
 $errorMessage = '';
@@ -41,7 +39,9 @@ if (getSsnPrevPage()=="u_forgotpw.php") {
 
 <body>
 
-<?php include('./u_top_menu.php'); ?>
+<div id="premenu">
+        <?php include('./u_top_menu.php'); ?>
+    </div>
 
 
     <div id="contents">

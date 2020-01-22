@@ -11,8 +11,6 @@ setSsnCrntPage(basename(__FILE__));
 //メニュー内容
 $menu_m_url="./asset/image/title_login.png";
 $menu_m_click="location.href='u_login.php'";
-$menu_r_url="./asset/image/title_menu.png";
-$menu_r_click="location.href='u_info2.php'";
 
 // エラーメッセージの初期化
 $errorMessage = '';
@@ -77,27 +75,28 @@ if (isset($_POST['login'])) {
 
 <body>
 
-<?php include('./u_top_menu.php'); ?>
+    <div id="premenu">
+        <?php include('./u_top_menu.php'); ?>
+    </div>
 
-
-    <div id="contents">
-        <h3><br>ログイン</h3>
+    <div id="precontents">
+        <h3>ログイン</h3>
         <?php if (!empty($errorMessage)) { ?>
         <span class="err"><?php echo $errorMessage; ?></span>
         <?php } ?>
         <div name="editFrm">
             <form action="" method="POST" name="frm">
                 <input type="text" name="m_mail" id="m_mail" class="input-text w80p" placeholder="メールアドレス"
-                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
-                    value="<?php echo $m_mail; ?>"
-                    required /><br><br>
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" value="<?php echo $m_mail; ?>" required /><br><br>
                 <input type="password" name="m_pw" id="m_pw" class="input-text w80p" placeholder="パスワード"
                     required><br><br>
                 <input type="button" class="rButton w80p btn-blue" onclick="javascript:frm.submit()" value="ログイン" />
                 <input type="hidden" name="login" id="login" value="1" />
             </form>
         </div>
-        <br><br><a href='u_forgetpw.php'>パスワードをお忘れですか？</a>
+        <div class="forgotpw">
+        <a href='u_forgetpw.php'>パスワードをお忘れですか？</a>
+        </div>
 
     </div>
 

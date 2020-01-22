@@ -4,9 +4,19 @@ body {
     background-color: #fff5d7;
     margin: 0 auto;
     width: 100%;
+    font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Noto Sans Japanese", "Yu Gothic Medium", "游ゴシック Medium", YuGothic, "游ゴシック体", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
 }
 
 #menu {
+    display: flex;
+    width: 100%;
+    height: 120px;
+    margin: 0 auto;
+    align-items: stretch;
+    justify-content: center;
+}
+
+#premenu {
     display: flex;
     width: 100%;
     height: 60px;
@@ -18,28 +28,34 @@ body {
 #top_menu {
     display: flex;
     align-items: stretch;
-    justify-content: space-around;
+    justify-content: space-between;
+    flex-wrap: wrap;
     background-color: #fff;
     padding: 5px;
-    width: 800px;
+    width: 100%;
     position: fixed;
     top: 0;
     height: 50px;
 }
 
-#top_menu_info {
+.inln {
     display: flex;
-    align-items: stretch;
-    justify-content: space-around;
-    background-color: #ffc9ce;
-    padding: 5px;
-    width: 800px;
-    position: fixed;
-    top: 0;
-    height: 50px;
+    margin-right: 10px;
+}
+
+.inln img {
+    margin-right: 10px;
 }
 
 #contents {
+    width: 800px;
+    margin-top: 120px;
+    text-align: center;
+    margin: 0 auto;
+    padding-bottom: 50px;
+}
+
+#precontents {
     width: 800px;
     margin-top: 60px;
     text-align: center;
@@ -47,7 +63,8 @@ body {
     padding-bottom: 50px;
 }
 
-#contents div input {
+#contents div input,
+#precontents div input {
     margin: 0 auto;
 }
 
@@ -57,18 +74,37 @@ span.err {
 }
 
 .rButton {
-    font-size: 1.5rem;
+    font-size: 0.8rem;
     font-weight: bold;
     text-decoration: none;
     display: block;
     text-align: center;
-    padding: 5px 0 5px;
+    padding: 12px 0 12px;
     color: #fff;
     border-radius: 10px;
 }
 
-.f1rem {
-    font-size: 1rem;
+.editFrm {
+    text-align: left;
+    width: 80%;
+    margin: 0 auto;
+    font-weight: bold;
+}
+
+div.entryBtn {
+    margin: 10px 0;
+}
+
+div.entryBtn input {
+    font-size: 0.8rem;
+    font-weight: bold;
+    display: block;
+    text-align: center;
+    padding: 12px 0 12px;
+    color: #fff;
+    border-radius: 10px;
+    background-color: #D90012;
+    width: 85%;
 }
 
 .w25p {
@@ -79,8 +115,16 @@ span.err {
     width: 60%;
 }
 
+.w70p {
+    width: 70%;
+}
+
 .w80p {
     width: 80%;
+}
+
+.w90p {
+    width: 90%;
 }
 
 .w100p {
@@ -123,11 +167,13 @@ span.err {
 #point {
     background-color: #ee0000;
     color: white;
-    font-size: 2.5rem;
+    font-size: 3.0rem;
     font-weight: bold;
-    padding-top: 10px;
+    padding-top: 0px;
     padding-bottom: 0;
     margin: 0;
+    width: 100%;
+    text-align: center;
 }
 
 #point img {
@@ -139,6 +185,8 @@ div.msg {
     color: #006fb6;
     font-size: 0.8rem;
     margin: 0 auto;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 div.waku {
@@ -154,7 +202,6 @@ div.info {
 
 .red {
     color: #ee0000;
-    font-weight: bold;
 }
 
 .lightgrey {
@@ -175,8 +222,9 @@ div.info {
 .rDivTitle {
     background-color: #006fb6;
     color: #fff;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: bold;
+    padding: 12px 0;
     border-radius: 10px 10px 0 0;
     margin-bottom: 20px;
 }
@@ -243,15 +291,85 @@ div.info {
     margin: 0 auto;
 }
 
+.forgotpw {
+    margin-top: 10px;
+    margin-left: 400px;
+}
+
+.forgotpw a {
+    text-decoration: none;
+}
+
+#img_pt1 {
+    display: inline-block;
+    position: relative;
+    top: 9px;
+    right: -12px;
+    z-index: auto;
+}
+
+#img_pt2 {
+    display: inline-block;
+    position: relative;
+    top: 10px;
+    right: 15px;
+}
+
+.swiper-container {
+    height: 320px;
+}
+
+#scrl {
+    z-index: auto;
+}
+
 @media screen and (max-width: 736px) {
+    #menu {
+        display: flex;
+        width: 100%;
+        height: 120px;
+        margin: 0 auto;
+        align-items: stretch;
+        justify-content: center;
+    }
+    #premenu {
+        display: flex;
+        width: 100%;
+        height: 60px;
+        margin: 0 auto;
+        align-items: stretch;
+        justify-content: center;
+    }
     #top_menu {
         width: 100%;
-    }
-    #top_menu_info {
-        width: 100%;
+        display: flex;
+        align-items: stretch;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        background-color: #fff;
+        padding: 5px;
+        position: fixed;
+        top: 0;
+        height: 50px;
     }
     #contents {
         width: 100%;
+        margin-top: 120px;
         text-align: center;
+        margin: 0 auto;
+        padding-bottom: 50px;
+    }
+    #precontents {
+        width: 100%;
+        margin-top: 60px;
+        text-align: center;
+        margin: 0 auto;
+        padding-bottom: 50px;
+    }
+    .forgotpw {
+        margin-left: 120px
+    }
+    .swiper-container {
+        height: 180px;
     }
 }

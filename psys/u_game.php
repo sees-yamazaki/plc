@@ -1,13 +1,18 @@
 <?php
 
+require('session.php');
+require('logging.php');
+
 // セッション開始
 session_start();
-require('session.php');
 setMyName('psys_m');
-require('logging.php');
 
 // エラーメッセージの初期化
 $errorMessage = '';
+
+//メニュー内容
+$menu_m_url="./asset/image/title_mypage.png";
+$menu_m_click="location.href='u_home.php'";
 
 require_once './db/views.php';
 $point = getPoint(getSsn("SEQ"));
@@ -48,11 +53,12 @@ $game = getGame($gSeq);
             value='<?php echo $gSeq; ?>'>
     </form>
 
-    <?php include('./u_menu.php'); ?>
+    <div id="menu">
+        <?php include('./u_top_menu.php'); ?>
+    </div>
 
 
     <div id="contents">
-        <?php include('./u_point.php'); ?>
             <a href="javascript:doGame()">
         <img border=0 class="w100p" src="./<?php echo getSsn('PATH_GAME'); ?>/<?php echo $game->g_seq; ?>/<?php echo $game->g_image_start; ?>"></a>
     </div>

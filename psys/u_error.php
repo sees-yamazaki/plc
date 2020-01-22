@@ -21,8 +21,6 @@ unsetSsn();
 //メニュー内容
 $menu_m_url="./asset/image/title_login.png";
 $menu_m_click="location.href='u_login.php'";
-$menu_r_url="./asset/image/title_menu_off.png";
-$menu_r_click="javascript:void(0);";
 
 ?>
 <!DOCTYPE html>
@@ -38,19 +36,17 @@ $menu_r_click="javascript:void(0);";
 
 <body>
 
-<?php include('./u_top_menu.php'); ?>
-
-
-    <div id="contents">
-
-        <div id="contents">
-            <?php if (!empty($errorMessage)) { ?>
-            <span class="err"><br><br><br><?php echo $errorMessage; ?><br><br></span>
-            <?php } ?>
-            <input type="button" class="rButton w80p btn-red" onclick="location.href='u_index.php'" value="トップに戻る" />
-        </div>
-
+    <div id="premenu">
+        <?php include('./u_top_menu.php'); ?>
     </div>
+
+    <div id="precontents">
+        <?php if (!empty($errorMessage)) { ?>
+        <span class="err"><br><br><br><?php echo $errorMessage; ?><br><br></span>
+        <?php } ?>
+        <input type="button" class="rButton w80p btn-red" onclick="location.href='u_index.php'" value="トップに戻る" />
+    </div>
+
 
 </body>
 

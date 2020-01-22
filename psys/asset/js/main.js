@@ -100,3 +100,27 @@ function openclose() {
     }
 
 }
+
+function prizeHide() {
+    const p1 = document.getElementById("scrl");
+
+    if (p1 != null) {
+        var p2 = document.getElementsByName('scrl');
+        for (var i = 0; p2.length; i++) {
+            // if (p2[i].style.display != "none") {
+            //     // noneで非表示
+            //     p2[i].style.display = "none";
+            // } else {
+            //     // blockで表示
+            //     p2[i].style.display = "block";
+            //     p2[i].style.width = "10%";
+            // }
+            if (p2[i].clientWidth < 100) {
+                p2[i].style.width = "100%";
+            } else {
+                p2[i].style.width = "0px";
+            }
+
+        }
+    }
+}

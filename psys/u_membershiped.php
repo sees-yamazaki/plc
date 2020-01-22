@@ -18,8 +18,6 @@ if(!checkPrev(__FILE__)){
 //メニュー内容
 $menu_m_url="./asset/image/title_login.png";
 $menu_m_click="location.href='u_login.php'";
-$menu_r_url="./asset/image/title_menu_off.png";
-$menu_r_click="javascript:void(0);";
 
 // エラーメッセージの初期化
 $errorMessage = '';
@@ -42,15 +40,17 @@ $errorMessage = '';
     </form>
 
 
-    <?php include('./u_top_menu.php'); ?>
+    <div id="premenu">
+        <?php include('./u_top_menu.php'); ?>
+    </div>
 
 
-    <div id="contents">
+    <div id="precontents">
         <div class="waku w80p">
             <h3><br>会員登録完了</h3>
             <span class="info">
                 <h2><br><s>メールアドレスにパスワードを送信しました。</s>
-                <br>テスト中のためメールは送信しません。<br>パスワードは「999」です。</h2><br>
+                    <br>テスト中のためメールは送信しません。<br>パスワードは「999」です。</h2><br>
             </span>
             <input type="button" class="rButton w80p btn-red" onclick="location.href='u_login.php'" value="ログインする" />
 
