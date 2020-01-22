@@ -12,6 +12,8 @@ class cls_ships
     public $sp_tel ;
     public $sp_text ;
     public $sp_flg ;
+    public $pz_seq ;
+    public $edit_flg ;
     public $createdt ;
 }
 
@@ -20,7 +22,7 @@ function insertShip($ships)
 {
     try {
         require './db/dns.php';
-        $sql = "INSERT  INTO `ships` (  `m_seq`,  `up_seq`,  `sp_name`,  `sp_post`, `sp_address1`,  `sp_address2`,  `sp_tel`,  `sp_text`) VALUES (:m_seq, :up_seq, :sp_name, :sp_post, :sp_address1, :sp_address2, :sp_tel, :sp_text)";
+        $sql = "INSERT  INTO `ships` (  `m_seq`,  `up_seq`,  `sp_name`,  `sp_post`, `sp_address1`,  `sp_address2`,  `sp_tel`,  `sp_text`,  `pz_seq`) VALUES (:m_seq, :up_seq, :sp_name, :sp_post, :sp_address1, :sp_address2, :sp_tel, :sp_text, :pz_seq)";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':m_seq', $ships->m_seq, PDO::PARAM_INT);
         $stmt->bindParam(':up_seq', $ships->up_seq, PDO::PARAM_INT);
@@ -30,6 +32,7 @@ function insertShip($ships)
         $stmt->bindParam(':sp_address2', $ships->sp_address2, PDO::PARAM_STR);
         $stmt->bindParam(':sp_tel', $ships->sp_tel, PDO::PARAM_INT);
         $stmt->bindParam(':sp_text', $ships->sp_text, PDO::PARAM_STR);
+        $stmt->bindParam(':pz_seq', $ships->pz_seq, PDO::PARAM_INT);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
         if ($stmt->rowCount()==0) {
