@@ -35,9 +35,13 @@ $menu_m_click="location.href='u_login.php'";
 
     <div id="precontents">
         <img class="bgimage" src="./asset/image/u_index_bg_1.png">
-        <img class="bgimage" src="./asset/image/u_index_bg_2.png" onclick="location.href='u_membership.php'">
-        <img class="bgimage" src="./asset/image/u_index_bg_3.png" onclick="location.href='u_login.php'">
-        <img class="bgimage" src="./asset/image/u_index_bg_4.png">
+        <img class="bgimage" src="./asset/image/u_index_bg_2.png"
+            onmouseover="this.src='./asset/image/u_index_bg_2_on.png'"
+            onmouseout="this.src='./asset/image/u_index_bg_2.png'" onclick="location.href='u_membership.php'">
+        <img class="bgimage" src='./asset/image/u_index_bg_3.png'
+            onmouseover="this.src='./asset/image/u_index_bg_3_on.png'"
+            onmouseout="this.src='./asset/image/u_index_bg_3.png'" onclick=" location.href='u_login.php'">
+        <img class=" bgimage" src="./asset/image/u_index_bg_4.png">
 
     </div>
 
