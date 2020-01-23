@@ -189,9 +189,9 @@ for ($i = 1; $i <= $maxPage; ++$i) {
     <link rel="stylesheet" href="./asset/css/main.css">
     <script>
     function shipEdit(vlu, vlu2) {
-        document.frm.sSeq.value = vlu;
-        document.frm.page.value = vlu2;
-        document.frm.submit();
+        document.eFrm.sSeq.value = vlu;
+        document.eFrm.page.value = vlu2;
+        document.eFrm.submit();
     }
 
     function paging(vlu) {
@@ -227,7 +227,7 @@ for ($i = 1; $i <= $maxPage; ++$i) {
 </head>
 
 <body class="header-fixed">
-    <form action='a_ships_view.php' method='POST' name="frm">
+    <form action='a_ships_view.php' method='POST' name="eFrm">
         <input type='hidden' name='sSeq' value=''>
         <input type='hidden' name='page' value=''>
     </form>

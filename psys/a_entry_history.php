@@ -82,7 +82,7 @@ if (!empty($searchData['stts1'])) {
 if (!empty($searchData['stts99'])) {
     $tmp2[] = "up_status=99";
 }
-if (count($tmp2)>0) {
+if (!empty($tmp2)) {
     $tmp[] = "(".implode(" OR ", $tmp2).")";
 }
 
@@ -151,22 +151,23 @@ for ($i = 1; $i <= $maxPage; ++$i) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo getSsnMyname(); ?></title>
+    <title><?php echo getSsnMyname(); ?>
+    </title>
     <link rel="stylesheet" href="./assets/vendors/iconfonts/mdi/css/materialdesignicons.css">
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">
     <link rel="shortcut icon" href="../asssets/images/favicon.ico" />
     <link rel="stylesheet" href="./asset/css/main.css">
     <script>
-    function mmbrView(vlu) {
-        document.frm.mSeq.value = vlu;
-        document.frm.submit();
-    }
+        function mmbrView(vlu) {
+            document.frm.mSeq.value = vlu;
+            document.frm.submit();
+        }
 
-    function paging(vlu) {
-        document.pFrm.page.value = vlu;
-        document.pFrm.submit();
-    }
+        function paging(vlu) {
+            document.pFrm.page.value = vlu;
+            document.pFrm.submit();
+        }
     </script>
 </head>
 
@@ -186,20 +187,24 @@ for ($i = 1; $i <= $maxPage; ++$i) {
             <div class="content-viewport">
 
 
-                <div id="searchfrom" class="grid <?php echo $formbg; ?>">
+                <div id="searchfrom"
+                    class="grid <?php echo $formbg; ?>">
                     <div class="btn btn-rounded social-icon-btn btn-facebook">
                         <i class="mdi mdi-magnify" onclick="openclose()"></i>
                     </div>
-                    <div class="grid-body <?php echo $openclose; ?>" id="open">
+                    <div class="grid-body <?php echo $openclose; ?>"
+                        id="open">
                         <form action="" method="POST">
 
                             <div class="form-group row">
                                 <div class="col-md-12 showcase_text_area">
                                     <label for="inputType1">日付-></label>
                                     <input type="date" class="form-control w30p search" name="search_s_entry"
-                                        value="<?php echo $searchData['search_s_entry']; ?>" autocomplete="off">　〜　
+                                        value="<?php echo $searchData['search_s_entry']; ?>"
+                                        autocomplete="off">　〜　
                                     <input type="date" class="form-control w30p search" name="search_e_entry"
-                                        value="<?php echo $searchData['search_e_entry']; ?>" autocomplete="off">
+                                        value="<?php echo $searchData['search_e_entry']; ?>"
+                                        autocomplete="off">
                                 </div>
                                 <div class="col-md-12 showcase_text_area">
                                     <label for="inputType1">名前-></label>
@@ -210,18 +215,18 @@ for ($i = 1; $i <= $maxPage; ++$i) {
                                     <label for="inputType1">区分-></label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <label>
-                                        <input type="checkbox" class="form-check-input" name="stts1"
-                                            <?php echo $searchData['stts1']; ?>>懸賞応募（当たり）<i class="input-frame"></i>
+                                        <input type="checkbox" class="form-check-input" name="stts1" <?php echo $searchData['stts1']; ?>>懸賞応募（当たり）<i
+                                            class="input-frame"></i>
                                     </label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <label>
-                                        <input type="checkbox" class="form-check-input" name="stts0"
-                                            <?php echo $searchData['stts0']; ?>>懸賞応募（外れ）<i class="input-frame"></i>
+                                        <input type="checkbox" class="form-check-input" name="stts0" <?php echo $searchData['stts0']; ?>>懸賞応募（外れ）<i
+                                            class="input-frame"></i>
                                     </label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <label>
-                                        <input type="checkbox" class="form-check-input" name="stts99"
-                                            <?php echo $searchData['stts99']; ?>>ポイント付与<i class="input-frame"></i>
+                                        <input type="checkbox" class="form-check-input" name="stts99" <?php echo $searchData['stts99']; ?>>ポイント付与<i
+                                            class="input-frame"></i>
                                     </label>
                                 </div>
                                 <div class="col-md-12 showcase_text_area">
@@ -232,14 +237,14 @@ for ($i = 1; $i <= $maxPage; ++$i) {
                                 <div class="col-md-12 showcase_text_area">
                                     <label for="inputType1">表示件数-></label>
                                     <label class="radio-label mr-4">
-                                    <input name="search_rows" type="radio" value="10"
-                                            <?php echo $search_rows_10; ?>>１０件 <i class="input-frame"></i>
-                                        <input name="search_rows" type="radio" value="100"
-                                            <?php echo $search_rows_100; ?>>１００件 <i class="input-frame"></i>
-                                        <input name="search_rows" type="radio" value="300"
-                                            <?php echo $search_rows_300; ?>>３００件 <i class="input-frame"></i>
-                                        <input name="search_rows" type="radio" value="500"
-                                            <?php echo $search_rows_500; ?>>５００件 <i class="input-frame"></i>
+                                        <input name="search_rows" type="radio" value="10" <?php echo $search_rows_10; ?>>１０件
+                                        <i class="input-frame"></i>
+                                        <input name="search_rows" type="radio" value="100" <?php echo $search_rows_100; ?>>１００件
+                                        <i class="input-frame"></i>
+                                        <input name="search_rows" type="radio" value="300" <?php echo $search_rows_300; ?>>３００件
+                                        <i class="input-frame"></i>
+                                        <input name="search_rows" type="radio" value="500" <?php echo $search_rows_500; ?>>５００件
+                                        <i class="input-frame"></i>
                                     </label>
                                 </div>
 
