@@ -176,12 +176,55 @@ function getVUsepointRows($where)
                     array_push($results, $result);
                 }
                 
+                // $fp = fopen("./files/ships_".getSsn('SEQ').".csv", "w");
+    
+                // $title = "登録日時,キャンペーン名,商品名,商品コード,発送先名前,発送先郵便番号,発送先住所１,発送先住所２,発送先電話番号,備考,会員名前,会員メールアドレス,会員郵便番号,会員住所１,会員住所２,会員電話番号\r\n";
+                
+                // fwrite($fp, mb_convert_encoding($title,"sjis","utf8"));
+                // $stmt = $pdo->prepare("SELECT * FROM  `v_ships` ".$where." ORDER BY createdt desc");
+                // execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+                // while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                //     fwrite($fp, $row['createdt'].",");
+                //     fwrite($fp, mb_convert_encoding($row['p_title'],"sjis","utf8").",");
+                //     fwrite($fp, mb_convert_encoding($row['pz_title'],"sjis","utf8").",");
+                //     fwrite($fp, mb_convert_encoding($row['pz_code'],"sjis","utf8").",");
+                //     fwrite($fp, mb_convert_encoding($row['sp_name'],"sjis","utf8").",");
+                //     fwrite($fp, $row['sp_post'].",");
+                //     fwrite($fp, mb_convert_encoding($row['sp_address1'],"sjis","utf8").",");
+                //     fwrite($fp, mb_convert_encoding($row['sp_address2'],"sjis","utf8").",");
+                //     fwrite($fp, $row['sp_tel'].",");
+                //     fwrite($fp, '"'.mb_convert_encoding($row['sp_text'],"sjis","utf8").'",');
+                //     fwrite($fp, mb_convert_encoding($row['m_name'],"sjis","utf8").",");
+                //     fwrite($fp, mb_convert_encoding($row['m_mail'],"sjis","utf8").",");
+                //     fwrite($fp, $row['m_post'].",");
+                //     fwrite($fp, mb_convert_encoding($row['m_address1'],"sjis","utf8").",");
+                //     fwrite($fp,mb_convert_encoding($row['m_address2'],"sjis","utf8").",");
+                //     fwrite($fp, $row['m_tel']);
+                //     fwrite($fp, "\r\n");
+                // }
+                // fclose($fp);
+
+            } catch (PDOException $e) {
+                $errorMessage = 'データベースエラー';
+                logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                logging("DATABASE ERROR : ".$e->getMessage());
+                logging("ARGS : ". json_encode(func_get_args()));
+            }
+            return $results;
+        }
+
+
+        function getVShipsDL($where)
+        {
+            try {
+
+                require './db/dns.php';
                 $fp = fopen("./files/ships_".getSsn('SEQ').".csv", "w");
     
                 $title = "登録日時,キャンペーン名,商品名,商品コード,発送先名前,発送先郵便番号,発送先住所１,発送先住所２,発送先電話番号,備考,会員名前,会員メールアドレス,会員郵便番号,会員住所１,会員住所２,会員電話番号\r\n";
                 
                 fwrite($fp, mb_convert_encoding($title,"sjis","utf8"));
-                $stmt = $pdo->prepare("SELECT * FROM  `v_ships` ".$where." ORDER BY createdt desc");
+                $stmt = $pdo->prepare("SELECT * FROM  `v_ships` WHERE ".$where." ORDER BY createdt desc");
                 execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     fwrite($fp, $row['createdt'].",");
@@ -193,7 +236,7 @@ function getVUsepointRows($where)
                     fwrite($fp, mb_convert_encoding($row['sp_address1'],"sjis","utf8").",");
                     fwrite($fp, mb_convert_encoding($row['sp_address2'],"sjis","utf8").",");
                     fwrite($fp, $row['sp_tel'].",");
-                    fwrite($fp, mb_convert_encoding($row['sp_text'],"sjis","utf8").",");
+                    fwrite($fp, '"'.mb_convert_encoding($row['sp_text'],"sjis","utf8").'",');
                     fwrite($fp, mb_convert_encoding($row['m_name'],"sjis","utf8").",");
                     fwrite($fp, mb_convert_encoding($row['m_mail'],"sjis","utf8").",");
                     fwrite($fp, $row['m_post'].",");
@@ -210,7 +253,7 @@ function getVUsepointRows($where)
                 logging("DATABASE ERROR : ".$e->getMessage());
                 logging("ARGS : ". json_encode(func_get_args()));
             }
-            return $results;
+            //return $results;
         }
 
         function getVShip($sSeq)

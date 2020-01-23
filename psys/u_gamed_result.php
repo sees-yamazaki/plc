@@ -6,6 +6,7 @@ require('logging.php');
 // セッション開始
 session_start();
 setMyName('psys_m');
+setSsnCrntPage(__FILE__);
 
 // エラーメッセージの初期化
 $errorMessage = '';
@@ -21,6 +22,8 @@ $point = getPoint(getSsn("SEQ"));
 $pSeq = $_POST['pSeq'];
 $pzSeq = $_POST['pzSeq'];
 $result = $_POST['result'];
+$spSeq = $_POST['spSeq'];
+$sendPzSeq = "";
 
 require_once './db/promos.php';
 $promo = getPromo($pSeq);
@@ -38,6 +41,7 @@ if ($result=="hit") {
     if (!empty($prize->pz_img)) {
         $html2 .= "<img class='w80p' border=0 src='./". getSsn('PATH_PROMO')."/".$pSeq.'/'.$prize->pz_img."'><br>";
     }
+    $sendPzSeq = $prize->pz_seq;
 } else {
     $imageUrl = './asset/image/result_miss.png';
     $missPrize = getMissPrize($pSeq);
@@ -47,6 +51,7 @@ if ($result=="hit") {
     if (!empty($missPrize->pz_img)) {
         $html2 .= "<img class='w80p' border=0 src='./". getSsn('PATH_PROMO')."/".$pSeq.'/'.$missPrize->pz_img."'><br>";
     }
+    $sendPzSeq = $missPrize->pz_seq;
 }
 $html2 .= '商品は来月末のご発送になります。<br>商品発送まで今しばらくお待ちくださいませ。';
 $html2 .= '</div>';
@@ -93,6 +98,12 @@ $html2 .= '</div>';
         <?php echo $html2; ?>
         <div class="waku">
         <input type='button' class='rButton w80p f1rem btn-red' onclick="location.href='u_home.php'" value='MY PAGEに戻る' />
+        <br>
+        <form action="u_shipform.php" method="POST" name="frm">
+        <input type="submit" class="rButton w80p btn-red-rev" value="発送先を指定する場合はこちら" />
+        <input type="hidden" name="pzSeq" value="<?php echo $sendPzSeq; ?>">
+        <input type="hidden" name="spSeq" value="<?php echo $spSeq; ?>">
+        </form>
         </div>
         </div>
 </body>

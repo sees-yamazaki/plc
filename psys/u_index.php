@@ -3,13 +3,21 @@
 require('session.php');
 require('logging.php');
 
-// セッション開始
+// セッションのクリア
+session_start();
+setMyName('psys_m');
+$sysname = getSsnMyname();
+unsetSsn();
+
+// セッション再開
 session_start();
 setMyName('psys_m');
 
 setSsnIni(parse_ini_file('./common.ini', false));
 setSsnTran(parse_ini_file('./transition.ini', false));
 setSsnCrntPage(basename(__FILE__));
+
+
 
 //メニュー内容
 $menu_m_url="./asset/image/title_login.png";

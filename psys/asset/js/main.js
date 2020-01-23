@@ -14,6 +14,14 @@ function addcheck() {
     }
 }
 
+function shipcheck() {
+    if (window.confirm('処理を実行してもよろしいですか？')) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function selectcheck() {
     if (window.confirm('選択したデータを読み込んでよろしいですか？')) {
         return true;

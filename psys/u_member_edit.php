@@ -16,8 +16,11 @@ setSsnCrntPage(__FILE__);
 // }
 
 //メニュー内容
-$menu_m_url="./asset/image/title_login.png";
-$menu_m_click="location.href='u_login.php'";
+$menu_m_url="./asset/image/title_mypage.png";
+$menu_m_click="location.href='u_home.php'";
+
+require_once './db/views.php';
+$point = getPoint(getSsn("SEQ"));
 
 // エラーメッセージの初期化
 $errorMessage = '';
@@ -30,8 +33,7 @@ if(empty($eSeq)){
 }
 
 if (isset($_POST['doEdit'])) {
-//if (getSsnPrevPage()==basename(__FILE__)) {
-    $member->m_seq = $_POST['mSeq'];
+    $member->m_seq = getSsn('SEQ');
     $member->m_name = $_POST['m_name'];
     $member->m_mail = $_POST['m_mail'];
     $member->m_post = $_POST['m_post'];
@@ -40,12 +42,12 @@ if (isset($_POST['doEdit'])) {
     $member->m_tel = $_POST['m_tel'];
 
     setSsnKV('prm_member', $member);
-    header('Location: ./u_membershipe.php');
+    header('Location: ./u_member_edite.php');
 
-}elseif(getSsnPrevPage()=="u_membershipe.php"){
+}elseif(getSsnPrevPage()=="u_member_edite.php"){
     $member = getSsn('prm_member');
 } else {
-    //
+    $member = getMember(getSsn('SEQ'));
 }
 
 ?>
@@ -62,12 +64,12 @@ if (isset($_POST['doEdit'])) {
 
 <body>
 
-    <div id="premenu">
+    <div id="menu">
         <?php include('./u_top_menu.php'); ?>
     </div>
 
 
-    <div id="precontents">
+    <div id="contents">
         <h3><br>会員情報登録</h3>
         <span class="red">お名前、お電話番号は現在商品をお届け<br>している情報と同様にしてください。<br><br></span>
         <?php if (!empty($errorMessage)) { ?>

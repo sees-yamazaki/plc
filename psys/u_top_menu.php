@@ -6,7 +6,7 @@
             <img src="<?php echo $menu_m_url; ?>" alt="logo" onclick="<?php echo $menu_m_click; ?>" />
             <?php include('./u_xmenu.php'); ?>
         </div>
-        <?php if(!empty($point)){ ?>
+        <?php if(!empty($point) || $point=="0"){ ?>
         <div id="point">
             <img id="img_pt1" src="./asset/image/u_home_pt_1.png" />
             <?php echo $point; ?>

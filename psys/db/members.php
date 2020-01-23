@@ -332,6 +332,17 @@ class cls_members
                 logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
                 logging("UPDATE ERROR : ". $sql);
                 logging("ARGS : ". json_encode(func_get_args()));
+            }else{
+                $sql = " UPDATE `ships` SET `sp_name`=:sp_name,`sp_post`=:sp_post,`sp_address1`=:sp_address1,`sp_address2`=:sp_address2,`sp_tel`=:sp_tel, editdt=NOW()  WHERE m_seq=:m_seq AND edit_flg=0 AND sp_flg=0 " ;
+                $stmt = $pdo -> prepare($sql);
+                $stmt->bindParam(':sp_name', $members->m_name, PDO::PARAM_STR);
+                $stmt->bindParam(':sp_post', $members->m_post, PDO::PARAM_STR);
+                $stmt->bindParam(':sp_address1', $members->m_address1, PDO::PARAM_STR);
+                $stmt->bindParam(':sp_address2', $members->m_address2, PDO::PARAM_STR);
+                $stmt->bindParam(':sp_tel', $members->m_tel, PDO::PARAM_STR);
+                $stmt->bindParam(':m_seq', $members->m_seq, PDO::PARAM_INT);
+                execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';

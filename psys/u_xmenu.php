@@ -35,6 +35,7 @@
                             </p>
                         </div>
                     </li>
+                    <?php if(empty(getSsn('SEQ'))){ ?>
                     <li>
                         <a href="javascript:void(0)">
                             新規登録
@@ -51,6 +52,24 @@
                             <p><a href="u_login.php">移動する</a></p>
                         </div>
                     </li>
+                    <?php }else{ ?>
+                    <li>
+                        <a href="javascript:void(0)">
+                            登録情報修正
+                        </a>
+                        <div class="st-content">
+                            <p><a href="u_member_edit.php">移動する</a></p>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">
+                            ログオフ
+                        </a>
+                        <div class="st-content">
+                            <p><a href="u_logoff.php">移動する</a></p>
+                        </div>
+                    </li>
+                    <?php } ?>
                 </ul>
             </div>
         </div>

@@ -1,10 +1,11 @@
 <?php
+require('session.php');
+require('logging.php');
 
 // セッション開始
 session_start();
-require('session.php');
 setMyName('psys_m');
-require('logging.php');
+setSsnCrntPage(__FILE__);
 
 // エラーメッセージの初期化
 $errorMessage = '';
@@ -68,7 +69,7 @@ $ship->sp_address2 = $member->m_address2;
 $ship->sp_tel = $member->m_tel;
 $ship->sp_text = "";
 $ship->pz_seq = $sendPzSeq;
-insertShip($ship);
+$spSeq  = insertShip($ship);
 
 require_once './db/views.php';
 $point = getPoint(getSsn("SEQ"));
@@ -99,6 +100,8 @@ $point = getPoint(getSsn("SEQ"));
             value='<?php echo $pzSeq; ?>'>
         <input type='hidden' name='result'
             value='<?php echo $result; ?>'>
+        <input type='hidden' name='spSeq'
+            value='<?php echo $spSeq; ?>'>
     </form>
 
     <div id="menu">
