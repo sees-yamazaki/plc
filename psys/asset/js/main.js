@@ -14,6 +14,14 @@ function addcheck() {
     }
 }
 
+function copycheck() {
+    if (window.confirm('キャンペーンのコピーを作成してもよろしいですか？')) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function shipcheck() {
     if (window.confirm('処理を実行してもよろしいですか？')) {
         return true;

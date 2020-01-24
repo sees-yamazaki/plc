@@ -268,7 +268,7 @@ if ($prize->pz_kind=="1") {
                                                     <?php if (empty($prize->pz_img)) {    ?>
                                                     画像登録無し
                                                     <?php } else { ?>
-                                                    <img src="./mydata/promo/<?php echo $pzSeq; ?>/<?php echo $prize->pz_img; ?>"
+                                                    <img src="./mydata/promo/<?php echo $pSeq; ?>/<?php echo $prize->pz_img; ?>"
                                                         height=200>
                                                     <?php } ?>
                                                 </label>

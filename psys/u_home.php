@@ -2,6 +2,8 @@
 
 require('session.php');
 require('logging.php');
+require('./db/promos.php');
+require('./db/prizes.php');
 
 // セッション開始
 session_start();
@@ -40,10 +42,12 @@ foreach ($infos as $info) {
 $html1 = substr($html1, 0, -4);
 
 
+
+
 require './db/usepoints.php';
 $ups = getUnShip(getSsn('SEQ'));
 
-require './db/prizes.php';
+
 $html2 = '';
 $shiplimit = getSsn('SHIP_LIMIT');
 $today = date("Y-m-d");
@@ -61,8 +65,8 @@ foreach ($ups as $up) {
     }
 }
 
-require_once './db/promos.php';
-$promo = getOpenPromo();
+$promos = getOpenPromo();
+
 $htmlImg = '<p id="slideshow">';
 
 require_once './db/prizes.php';
@@ -115,14 +119,26 @@ $htmlImg .= '</p>';
             <div class="rDivTitle">ポイントを登録する</div>
             <img src="./asset/image/pointcard.png" class="w60p" />
             <input type="image" class="rButton w80p f1rem btn-red" onclick="javascript:frm.submit()"
-            src="./asset/image/pointentry.png" />
+                src="./asset/image/pointentry.png" />
         </div>
+
+
+
+        <?php foreach($promos as $promo){ ?>
+        <?php $prizes = getPrizeImg($promo->p_seq); ?>
 
         <div id="scrl" class="rDiv w80p">
             <div class="rDivTitle">商品に応募する</div>
             <div class="swiper-container" name="scrl">
                 <div class="swiper-wrapper">
-                    <?php echo $htmlImg; ?>
+                    <p id="slideshow">
+                        <?php foreach ($prizes as $prize) { ?>
+                        <div class='swiper-slide'>
+                            <img class='w90p' border=0
+                                src='./<?php echo getSsn('PATH_PROMO')."/".$prize->p_seq.'/'.$prize->pz_img; ?>'>
+                        </div>
+                        <?php } ?>
+                    </p>
                 </div>
                 <div class="swiper-pagination"></div>
             </div>
@@ -133,6 +149,8 @@ $htmlImg .= '</p>';
             <h3 class="red">頑張って<?php echo $gamePt; ?>ポイント貯めると、<br>ゲームにチャレンジできます！！</h3>
             <?php } ?>
         </div>
+
+        <?php } ?>
 
 
         <script src="./asset/js/swiper.js"></script>

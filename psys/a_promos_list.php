@@ -4,6 +4,7 @@
 session_start();
 require('session.php');
 require('logging.php');
+require('db/promos.php');
 
 // ログイン状態チェック
 if (getSsnIsLogin()==false) {
@@ -15,8 +16,12 @@ if (getSsnIsLogin()==false) {
 $errorMessage = "";
 
 
+$pSeq = $_POST['pSeq'];
 
-require_once './db/promos.php';
+if (isset($_POST['doCopy'])) {
+copyPromo($pSeq);
+}
+
 $promos = new cls_promos();
 $promos = getPromos();
 
@@ -28,7 +33,8 @@ foreach ($promos as $promo) {
     $html .= "<td>";
     $html .= "<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='prmEdit(".$promo->p_seq.")'>編集</button>";
     $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='prmPrize(".$promo->p_seq.")'>賞品</button>";
-    $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='prmView(".$promo->p_seq.")'>プレビュー</button>";
+//    $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='prmView(".$promo->p_seq.")'>プレビュー</button>";
+    $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='copyPromo(".$promo->p_seq.")'>コピー</button>";
     $html .= "</td>";
     $html .= "</tr>";
 }
@@ -63,6 +69,12 @@ foreach ($promos as $promo) {
         //document.frm3.submit();
         win = window.open('a_promos_preview.php?pSeq=' + vlu, 'newwindow', 'width=400,height=600'); 
     }
+    function copyPromo(vlu) {
+        if(copycheck()){
+            document.frm4.pSeq.value = vlu;
+            document.frm4.submit();
+        }
+    }
     </script>
 </head>
 
@@ -75,6 +87,10 @@ foreach ($promos as $promo) {
     </form>
     <form action='a_promos_preview.php' method='POST' name="frm3" target="_blank">
         <input type='hidden' name='pSeq' value=''>
+    </form>
+    <form action='' method='POST' name="frm4">
+        <input type='hidden' name='pSeq' value=''>
+        <input type='hidden' name='doCopy' value='1'>
     </form>
 
     <?php include('./a_menu.php'); ?>
@@ -102,6 +118,7 @@ foreach ($promos as $promo) {
 
     </div>
     </div>
+    <script src="./asset/js/main.js"></script>
     <script src="./assets/vendors/js/core.js"></script>
     <script src="./assets/vendors/apexcharts/apexcharts.min.js"></script>
     <script src="./assets/vendors/chartjs/Chart.min.js"></script>

@@ -55,6 +55,38 @@ class cls_hitcounts
         return $results;
     }
 
+    function getPrizeImg($pSeq)
+    {
+        try {
+            $results = array();
+            require './db/dns.php';
+            $stmt = $pdo->prepare('SELECT * FROM  `v_prizes` WHERE p_seq = :p_seq AND pz_kind=0 AND pz_img != "" ORDER BY pz_order');
+            $stmt->bindParam(':p_seq', $pSeq, PDO::PARAM_INT);
+            execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $result = new cls_prizes();
+                $result->pz_seq = $row['pz_seq'];
+                $result->p_seq = $row['p_seq'];
+                $result->pz_order = $row['pz_order'];
+                $result->pz_title = $row['pz_title'];
+                $result->pz_code = $row['pz_code'];
+                $result->pz_img = $row['pz_img'];
+                $result->pz_text = $row['pz_text'];
+                $result->pz_kind = $row['pz_kind'];
+                $result->pz_nowcnt = $row['pz_nowcnt'];
+                $result->pz_hitcnt = $row['hc_no'];
+                array_push($results, $result);
+            }
+        } catch (PDOException $e) {
+            $errorMessage = 'データベースエラー';
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("DATABASE ERROR : ".$e->getMessage());
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
+
+        return $results;
+    }
+
     function getPrize($pzSeq)
     {
         try {
