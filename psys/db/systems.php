@@ -2,8 +2,6 @@
 
 class cls_systems
 {
-    public $url_parent;
-    public $url_child;
     public $path_root;
     public $path_promo;
     public $path_game;
@@ -19,16 +17,10 @@ function getSystems()
 {
     try {
         $result = new cls_systems();
-        echo "0";
         require './db/dns.php';
-        echo "1";
         $stmt = $pdo->prepare('SELECT * FROM `systems`');
-        echo "2";
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
-        echo "3";
         if ($row = $stmt->fetch()) {
-            $result->url_parent = $row['url_parent'];
-            $result->url_child = $row['url_child'];
             $result->path_root = $row['path_root'];
             $result->path_promo = $row['path_promo'];
             $result->path_game = $row['path_game'];
@@ -53,10 +45,8 @@ function updateSystem($systems)
 {
     try {
         require './db/dns.php';
-        $sql = " UPDATE `systems`  SET  `url_child`=:url_child,  `path_root`=:path_root,  `path_promo`=:path_promo,  `path_game`=:path_game,  `path_info`=:path_info,  `path_scode`=:path_scode,  `system_name`=:system_name ,  `point_game`=:point_game ,  `point_entry`=:point_entry, url_parent=:url_parent, ship_limit=:ship_limit,editdt=NOW() ";
+        $sql = " UPDATE `systems`  SET   `path_root`=:path_root,  `path_promo`=:path_promo,  `path_game`=:path_game,  `path_info`=:path_info,  `path_scode`=:path_scode,  `system_name`=:system_name ,  `point_game`=:point_game ,  `point_entry`=:point_entry, ship_limit=:ship_limit,editdt=NOW() ";
         $stmt = $pdo -> prepare($sql);
-        $stmt->bindParam(':url_parent', $systems->url_parent, PDO::PARAM_STR);
-        $stmt->bindParam(':url_child', $systems->url_child, PDO::PARAM_STR);
         $stmt->bindParam(':path_root', $systems->path_root, PDO::PARAM_STR);
         $stmt->bindParam(':path_promo', $systems->path_promo, PDO::PARAM_STR);
         $stmt->bindParam(':path_game', $systems->path_game, PDO::PARAM_STR);

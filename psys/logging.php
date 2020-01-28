@@ -2,7 +2,7 @@
 
 function logging($msg)
 {
-    $logRoot = "../psys/log/";
+    $logRoot = "log/";
     $fn = $logRoot.date('Ymd', strtotime('now')).".log";
 
     $now = date('Y-m-d H:i:s', strtotime('now'));
@@ -12,7 +12,7 @@ function logging($msg)
 
 function devLog($msg)
 {
-    $logRoot = "../psys/log/";
+    $logRoot = "log/";
     $fn = $logRoot.date('Ymd', strtotime('now')).".log";
 
     $now = date('Y-m-d H:i:s', strtotime('now'));
@@ -42,13 +42,18 @@ function execSql($stmt, $location)
         devLog('');
         devLog($location);
     }
-    if (ob_start('callback')) {
-        try {
-            $stmt->debugDumpParams();
-        } finally {
-            ob_end_flush();
-        }
+    if(ob_start('callback')){
+        devLog('XXXXXXXXXXXX');
+        $stmt->debugDumpParams();
+        ob_end_flush();
     }
+    //  if (ob_start('callback')) {
+    //      try {
+    //           $stmt->debugDumpParams();
+    //      } finally {
+    //          ob_end_flush();
+    //      }
+    //  }
 }
 
 ?>

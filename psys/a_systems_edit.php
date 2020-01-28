@@ -23,8 +23,6 @@ require './db/systems.php';
 $system = new cls_systems();
 
 
-$system->url_parent = $_POST['url_parent'];
-$system->url_child = $_POST['url_child'];
 $system->path_root = $_POST['path_root'];
 $system->path_promo = $_POST['path_promo'];
 $system->path_game = $_POST['path_game'];
@@ -37,8 +35,6 @@ $system->ship_limit = $_POST['ship_limit'];
 
 if (isset($_POST['sysEdit'])) {
     updateSystem($system);
-    setSsnKV('URL_PARENT', $system->url_parent);
-    setSsnKV('URL_CHILD', $system->url_child);
     setSsnKV('PATH_PROMO', $system->path_root."/".$system->path_promo);
     setSsnKV('PATH_GAME', $system->path_root."/".$system->path_game);
     setSsnKV('PATH_INFO', $system->path_root."/".$system->path_info);
@@ -91,26 +87,6 @@ if (isset($_POST['sysEdit'])) {
 
                                         <form action="" method="POST" onsubmit="return addcheck()">
 
-                                            <div class="form-group row showcase_row_area">
-                                                <div class="col-md-3 showcase_text_area">
-                                                    <label for="inputType1">url_parent</label>
-                                                </div>
-                                                <div class="col-md-9 showcase_content_area">
-                                                    <input type="text" class="form-control" name="url_parent"
-                                                        value="<?php echo $system->url_parent; ?>" maxLength=100
-                                                        autocomplete="off" required>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row showcase_row_area">
-                                                <div class="col-md-3 showcase_text_area">
-                                                    <label for="inputType1">url_child</label>
-                                                </div>
-                                                <div class="col-md-9 showcase_content_area">
-                                                    <input type="text" class="form-control" name="url_child"
-                                                        value="<?php echo $system->url_child; ?>" maxLength=100
-                                                        autocomplete="off" required>
-                                                </div>
-                                            </div>
                                             <div class="form-group row showcase_row_area">
                                                 <div class="col-md-3 showcase_text_area">
                                                     <label for="inputType1">path_root</label>

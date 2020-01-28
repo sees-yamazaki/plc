@@ -12,5 +12,9 @@
             <?php echo $point; ?>
             <img id="img_pt2" src="./asset/image/u_home_pt_2.png" />
         </div>
+        <?php }elseif(!empty($menutitle)){ ?>
+            <div class="menuTitle">
+            <?php echo $menutitle; ?>
+            </div>
         <?php } ?>
     </div>

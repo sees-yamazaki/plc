@@ -44,13 +44,12 @@ if (isset($_POST['login'])) {
 
         if ($member->m_seq == 0) {
             $errorMessage = 'ログインできませんでした。';
+            $errorMessage = $member->note;
         } else {
             require_once './db/systems.php';
             $system = new cls_systems();
             $system = getSystems();
 
-            setSsnKV('URL_PARENT', $system->url_parent);
-            setSsnKV('URL_CHILD', $system->url_child);
             setSsnKV('PATH_PROMO', $system->path_root."/".$system->path_promo);
             setSsnKV('PATH_GAME', $system->path_root."/".$system->path_game);
             setSsnKV('PATH_INFO', $system->path_root."/".$system->path_info);

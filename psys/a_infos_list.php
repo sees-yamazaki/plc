@@ -27,7 +27,7 @@ foreach ($infos as $info) {
     $html .= "<td>".$info->inf_startdt." 〜 ".$info->inf_enddt."</td>";
     $html .= "<td>";
     $html .= "<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='infoEdit(".$info->inf_seq.")'>編集</button>";
-    $html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='infoView(".$info->inf_seq.")'>プレビュー</button>";
+    //$html .= "&nbsp;<button type='button' name='edit' class='btn btn-inverse-secondary' onclick='infoView(".$info->inf_seq.")'>プレビュー</button>";
     $html .= "</td>";
     $html .= "</tr>";
 }
@@ -87,6 +87,7 @@ foreach ($infos as $info) {
                     </tbody>
                 </table>
                 <br>
+                <!--
                 <table class="table table-dark">
                     <tbody>
                         <tr>
@@ -98,6 +99,7 @@ foreach ($infos as $info) {
                         </tr>
                     </tbody>
                 </table>
+-->
             </div>
         </div>
     </div>

@@ -145,6 +145,10 @@ div.entryBtn input {
     background-color: #16176C;
 }
 
+.txt-left {
+    text-align: left;
+}
+
 .input-text {
     border: 0;
     padding: 10px;
@@ -178,6 +182,18 @@ div.entryBtn input {
 
 #point img {
     height: 3rem;
+}
+
+.menuTitle {
+    width: 100%;
+    padding: 0.5em 0em;
+    border-top: solid 1px #ffc9ce;
+    border-bottom: solid 1px #ffc9ce;
+    font-size: 1.3rem;
+    text-align: left;
+    background: #fff;
+    margin: 0 auto;
+    padding-left: 10px;
 }
 
 div.msg {

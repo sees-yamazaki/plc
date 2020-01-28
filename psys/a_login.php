@@ -44,8 +44,6 @@ $errorMessage = 'ユーザーIDが未入力です。';
             mkdir($system->path_root."/".$system->path_scode, 0777);
         }
 
-        setSsnKV('URL_PARENT', $system->url_parent);
-        setSsnKV('URL_CHILD', $system->url_child);
         setSsnKV('PATH_PROMO', $system->path_root."/".$system->path_promo);
         setSsnKV('PATH_GAME', $system->path_root."/".$system->path_game);
         setSsnKV('PATH_INFO', $system->path_root."/".$system->path_info);
@@ -61,9 +59,9 @@ $errorMessage = 'ユーザーIDが未入力です。';
             mkdir("log", 0777);
         }
 
-        $errorMessage = 'ログインできました。';
-
-        header("Location: ./a_home.php");
+        $errorMessage = 'ログインできました。'.$users->users_seq;
+        header('Location: ./a_home.php');
+        exit();
     }
 }
 }

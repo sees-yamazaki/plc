@@ -23,6 +23,7 @@ class cls_members
     public $up_point_1;
     public $cnt_99;
     public $up_point_99;
+    public $note;
 }
 
     function getMembers()
@@ -191,8 +192,8 @@ class cls_members
 
     function loginMember($m_mail, $m_pw)
     {
-        try {
             $result = new cls_members();
+        try {
             require './db/dns.php';
             $stmt = $pdo->prepare("SELECT * FROM `members` WHERE m_mail=:m_mail and m_pw=:m_pw");
             $stmt->bindParam(':m_mail', $m_mail, PDO::PARAM_STR);

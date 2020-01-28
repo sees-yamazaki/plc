@@ -91,14 +91,20 @@ $htmlImg .= '</p>';
     </title>
     <link rel="stylesheet" href="./asset/css/swiper.css">
     <link rel="stylesheet" href="./asset/css/u_main.css">
+    <script>
+
+    function prize(vlu) {  
+        document.frm2.pSeq.value = vlu;
+        document.frm2.submit();
+    }
+    </script>
 </head>
 
 <body>
     <form action='u_pointentry.php' method='POST' name="frm">
-        <input type='hidden' name='pSeq' value='<?php echo $promo->p_seq; ?>'>
     </form>
     <form action='u_select_prize.php' method='POST' name="frm2">
-        <input type='hidden' name='pSeq' value='<?php echo $promo->p_seq; ?>'>
+        <input type='hidden' name='pSeq' value=''>
     </form>
 
 
@@ -143,7 +149,7 @@ $htmlImg .= '</p>';
                 <div class="swiper-pagination"></div>
             </div>
             <?php if($point>=$gamePt){ ?>
-            <input type="button" class="rButton w80p f1rem btn-red" onclick="javascript:frm2.submit()"
+            <input type="button" class="rButton w80p f1rem btn-red" onclick="prize(<?php echo $promo->p_seq; ?>)"
                 value="商品に応募はこちらから" />
             <?php }else{ ?>
             <h3 class="red">頑張って<?php echo $gamePt; ?>ポイント貯めると、<br>ゲームにチャレンジできます！！</h3>
