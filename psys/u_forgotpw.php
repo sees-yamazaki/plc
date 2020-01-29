@@ -55,7 +55,7 @@ if (isset($_POST['doMail'])) {
             $message = "新しいパスワードは以下となります。\n\n\n\n";
             $message .= $newPw;
             $message .= "\n\n\n\nログイン後にパスワードの再設定を行ってください。";
-            $headers = "From: テスト";
+            $headers = "From: noreply";
             
             mb_send_mail($to, $subject, $message, $headers);
         }
