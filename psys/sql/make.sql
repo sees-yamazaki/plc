@@ -470,6 +470,62 @@ CREATE TABLE `v_usepoints` (
 
 -- --------------------------------------------------------
 
+-- phpMyAdmin SQL Dump
+-- version 4.8.5
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Generation Time: 2020 年 1 月 29 日 18:14
+-- サーバのバージョン： 5.7.25
+-- PHP Version: 7.3.1
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Database: `psys`
+--
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `premembers`
+--
+
+CREATE TABLE `premembers` (
+  `m_seq` int(11) NOT NULL,
+  `m_id` varchar(10) NOT NULL,
+  `m_pw` varchar(10) NOT NULL,
+  `m_name` varchar(20) NOT NULL,
+  `m_mail` varchar(40) NOT NULL,
+  `m_post` int(7) NOT NULL,
+  `m_address1` varchar(50) NOT NULL,
+  `m_address2` varchar(50) NOT NULL,
+  `m_tel` varchar(13) NOT NULL,
+  `createdt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `premembers`
+--
+ALTER TABLE `premembers`
+  ADD PRIMARY KEY (`m_seq`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `premembers`
+--
+ALTER TABLE `premembers`
+  MODIFY `m_seq` int(11) NOT NULL AUTO_INCREMENT;
+
+
 --
 -- Indexes for dumped tables
 --

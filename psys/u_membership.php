@@ -25,14 +25,15 @@ $errorMessage = '';
 // 変数の初期化
 $member = new cls_members();
 $mSeq = $_POST['mSeq'];
-if(empty($eSeq)){
+if (empty($eSeq)) {
     $mSeq =0;
 }
 
 if (isset($_POST['doEdit'])) {
-//if (getSsnPrevPage()==basename(__FILE__)) {
+    //if (getSsnPrevPage()==basename(__FILE__)) {
     $member->m_seq = $_POST['mSeq'];
     $member->m_name = $_POST['m_name'];
+    $member->m_pw = $_POST['m_pw'];
     $member->m_mail = $_POST['m_mail'];
     $member->m_post = $_POST['m_post'];
     $member->m_address1 = $_POST['m_address1'];
@@ -41,8 +42,7 @@ if (isset($_POST['doEdit'])) {
 
     setSsnKV('prm_member', $member);
     header('Location: ./u_membershipe.php');
-
-}elseif(getSsnPrevPage()=="u_membershipe.php"){
+} elseif (getSsnPrevPage()=="u_membershipe.php") {
     $member = getSsn('prm_member');
 } else {
     //
@@ -79,6 +79,9 @@ if (isset($_POST['doEdit'])) {
                 お名前<br>
                 <input type="text" name="m_name" id="m_name" class="input-text w90p"
                     value="<?php echo $member->m_name ?>" placeholder="富士　花子" maxlength='20' required /><br><br>
+                パスワード<br>
+                <input type="password" name="m_pw" id="m_pw" class="input-text w90p"
+                    value="" maxlength='10' required /><br><br>
                 メールアドレス<br>
                 <input type="text" name="m_mail" id="m_mail" class="input-text w90p"
                     value="<?php echo $member->m_mail ?>" placeholder="メールアドレス"

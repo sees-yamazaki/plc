@@ -2,18 +2,17 @@
 
 require('session.php');
 require('logging.php');
-require('db//members.php');
 
 // セッション開始
 session_start();
 setMyName('psys_m');
 setSsnCrntPage(__FILE__);
 
-//遷移元の確認
-if(!checkPrev(__FILE__)){
-    setSsnMsg('Invalid transition');
-    header('Location: ./u_error.php');
-}
+// //遷移元の確認
+// if(!checkPrev(__FILE__)){
+//     setSsnMsg('Invalid transition');
+//     header('Location: ./u_error.php');
+// }
 
 //メニュー内容
 $menu_m_url="./asset/image/title_login.png";
@@ -47,10 +46,10 @@ $errorMessage = '';
 
     <div id="precontents">
         <div class="waku w80p">
-            <h3><br>会員登録完了</h3>
+            <h3><br>会員認証完了</h3>
             <span class="info">
-                <h2><br>メールアドレスに認証用URLを送信しました。<br>
-                    メールを確認してユーザ認証を行なってください。</h2><br>
+                <h2><br>会員認証が完了しました。<br>
+                    ログインしてアプリをご利用ください。</h2><br>
             </span>
             <input type="button" class="rButton w80p btn-red" onclick="location.href='u_login.php'" value="ログインする" />
 
