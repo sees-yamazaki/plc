@@ -158,7 +158,7 @@ function insertUser($user)
         $sql = "INSERT INTO `users`( `users_id`, `users_pw`, `users_name`) VALUES (?,?,?)";
 
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(array( $user->users_id , $user->users_id  , $user->users_name   ));
+        $stmt->execute(array( $user->users_id , $user->users_pw  , $user->users_name   ));
 
         if ($stmt->rowCount()==0) {
             logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
