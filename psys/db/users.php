@@ -178,10 +178,10 @@ function updateUser($user)
     try {
         require './db/dns.php';
 
-        $sql = "UPDATE `users` SET `users_id`=?,`users_name`=?,editdt=NOW() WHERE `users_seq`=?";
+        $sql = "UPDATE `users` SET `users_id`=?, `users_pw`=?,`users_name`=?,editdt=NOW() WHERE `users_seq`=?";
 
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(array($user->users_id, $user->users_name, $user->users_seq));
+        $stmt->execute(array($user->users_id, $user->users_pw,  $user->users_name,$user->users_seq));
 
         if ($stmt->rowCount()==0) {
             logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
