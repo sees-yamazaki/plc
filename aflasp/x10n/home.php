@@ -27,6 +27,7 @@ $errorMessage = '';
     <span class="err"><?php echo $errorMessage; ?></span>
     <?php } ?>
 
+<a href='nUser_add.php'>add_nUser</a>
 
 </body>
 

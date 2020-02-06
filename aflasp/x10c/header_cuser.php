@@ -59,6 +59,7 @@
                         <li><a href="../edit.php?type=cUser&amp;id=C0000001">ユーザー情報の編集</a></li>
                         <li><a href="../other.php?key=pay_report">成果レポート出力</a></li>
                         <li class="title2">拡張</li>
+                        <li><a href="adwares_edit.php">NewPage</a></li>
                         <li><a href="offerad_search.php?mode=co">オファー広告への切り替え</a></li>
                         <li><a href="offerad_search.php?mode=op">付加情報編集</a></li>
                     </ul>

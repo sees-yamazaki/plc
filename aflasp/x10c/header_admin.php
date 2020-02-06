@@ -63,6 +63,7 @@
                         <li><a href="../search.php?type=secretAdwares&amp;run=true">登録されている広告</a></li>
 
                         <li class="title2">拡張</li>
+                        <li><a href="adwares_edit.php">NewPage</a></li>
                         <li><a href="offerad_search.php?mode=co">オファー広告への切り替え</a></li>
                         <li><a href="offerad_search.php?mode=op">付加情報編集</a></li>
                         
