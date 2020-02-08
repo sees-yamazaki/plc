@@ -8,11 +8,11 @@ session_start();
 setMyName('psys_m');
 setSsnCrntPage(__FILE__);
 
-//遷移元の確認
-if(!checkPrev(__FILE__)){
-    setSsnMsg('Invalid transition');
-    header('Location: ./u_error.php');
-}
+// //遷移元の確認
+// if (!checkPrev(__FILE__)) {
+//     setSsnMsg('Invalid transition');
+//     header('Location: ./u_error.php');
+// }
 
 //メニュー内容
 $menu_m_url="./asset/image/title_login.png";
@@ -39,7 +39,7 @@ if (getSsnPrevPage()=="u_forgotpw.php") {
 
 <body>
 
-<div id="premenu">
+    <div id="premenu">
         <?php include('./u_top_menu.php'); ?>
     </div>
 
@@ -53,8 +53,8 @@ if (getSsnPrevPage()=="u_forgotpw.php") {
 
                 登録メールアドレス<br>
                 <input type="text" name="m_mail" id="m_mail" class="input-text w80p"
-                    value="<?php echo $m_mail ?>" placeholder="メールアドレス"
-                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required /><br><br>
+                    value="<?php echo $m_mail ?>"
+                    placeholder="メールアドレス" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required /><br><br>
 
                 <input type="submit" class="rButton w80p btn-red" value="登録を確認する">
                 <input type="hidden" name="doEdit">

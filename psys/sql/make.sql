@@ -505,6 +505,21 @@ CREATE TABLE `premembers` (
   `createdt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mails`
+--
+
+CREATE TABLE `mails` (
+  `add_member_title` varchar(50) NOT NULL,
+  `add_member_text` text NOT NULL,
+  `change_pw_title` varchar(50) NOT NULL,
+  `change_pw_text` text NOT NULL,
+  `editdt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- Indexes for dumped tables
 --

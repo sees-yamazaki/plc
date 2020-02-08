@@ -24,7 +24,7 @@
     background-image: url(../../image/u_menu_next.png);
     background-repeat: no-repeat;
     background-position: right;
-    background-size: contain;
+    background-size: 10%;
 }
 
 #st-title {
@@ -58,7 +58,7 @@
     border-top: solid 1px #ffcace;
     border-bottom: solid 1px #ffcace;
     color: black;
-    font-size: 1.3rem;
+    font-size: 14px;
     display: block;
     position: relative;
     line-height: 50px;

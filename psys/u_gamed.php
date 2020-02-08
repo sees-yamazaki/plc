@@ -51,6 +51,7 @@ if (in_array($prize->pz_nowcnt, $hitcnts)) {
 }else{
     $missPrize = getMissPrize($pSeq);
     $sendPzSeq = $missPrize->pz_seq;
+    $usepoint->pz_seq = $sendPzSeq;
 }
  
 $upSeq = insertUsepoints($usepoint);

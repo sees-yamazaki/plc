@@ -4,6 +4,7 @@ require('session.php');
 require('logging.php');
 require('db/members.php');
 require('db/premembers.php');
+require('db/mails.php');
 
 // セッション開始
 session_start();
@@ -42,18 +43,18 @@ if (isset($_POST['doEdit'])) {
     $insertid = insertPreMember($member);
 
 //MAIL 
+$mails = getMails(); 
 
     mb_language("Japanese");
     mb_internal_encoding("UTF-8");
     $url = getSsnIni('url');
     $url = $url.'u_registration.php?acd='.$insertid.'x'.$member->m_id.$limitdt;
+    $text2 = str_replace('__URL__', $url , $mails->add_member_text);
+    $text = str_replace('__NAME__', $member->m_name, $text2);
 
     $to      = $member->m_mail;
-    $subject = getSsnMyname()."仮登録のご案内";
-    $message = "有効期限までに下記のURLよりユーザ認証を行なってください。\n\n\n\n";
-    $message .= $url."\n\n\n\n";
-    $message .= "有効期限　：　".date('Y-m-d H:i:s',$limitdt)."　まで\n\n\n\n";
-    $message .= "有効期限を過ぎてしまった場合は再度新規登録をお願いいたします。\n\n\n\n";
+    $subject = $mails->add_member_title;
+    $message = $text;
     $headers = "From: noreply";
     
     mb_send_mail($to, $subject, $message, $headers);

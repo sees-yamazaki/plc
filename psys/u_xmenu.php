@@ -4,8 +4,8 @@
     <label class="hamburger" for="hamburger" onclick="prizeHide()">
         <i></i>
         <text>
-            <close>close</close>
-            <open>menu</open>
+            <close>閉じる</close>
+            <open>メニュー</open>
         </text>
     </label>
 
@@ -17,7 +17,7 @@
             <div id="st-accordion" class="st-accordion">
                 <ul>
                     <?php $dd = getSsn('SEQ'); ?>
-                    <?php if(!empty($dd)){ ?>
+                    <?php if (!empty($dd)) { ?>
                     <li>
                         <a href="u_info.php?menu=0">お知らせ</a>
                     </li>
@@ -28,22 +28,30 @@
                     <li>
                         <a href="u_info.php?menu=2">お問い合わせ</a>
                     </li>
+                    <?php if (!empty($dd)) { ?>
+                    <li>
+                        <a href="u_point_history.php">ポイント交換履歴</a>
+                    </li>
+                    <?php } ?>
                     <li>
                         <a href="u_info.php?menu=3">利用規約</a>
                     </li>
                     <li>
                         <a href="u_info.php?menu=4">プライバシーポリシー</a>
                     </li>
-                    <?php if(empty($dd)){ ?>
+                    <?php if (empty($dd)) { ?>
                     <li>
                         <a href="u_membership.php">新規登録</a>
                     </li>
                     <li>
                         <a href="u_login.php">ログイン</a>
                     </li>
-                    <?php }else{ ?>
+                    <?php } else { ?>
                     <li>
                         <a href="u_member_edit.php">登録情報修正</a>
+                    </li>
+                    <li>
+                        <a href="u_changepw.php">パスワード変更</a>
                     </li>
                     <li>
                         <a href="u_logoff.php">ログオフ</a>

@@ -124,8 +124,8 @@ $htmlImg .= '</p>';
         <div class="rDiv w80p">
             <div class="rDivTitle">ポイントを登録する</div>
             <img src="./asset/image/pointcard.png" class="w60p" />
-            <input type="image" class="rButton w80p f1rem btn-red" onclick="javascript:frm.submit()"
-                src="./asset/image/pointentry.png" />
+            <input type="button" class="rButton w80p f1rem btn-red" onclick="javascript:frm.submit()"
+                value="ポイント登録はこちらから" />
         </div>
 
 

@@ -47,10 +47,12 @@ $errorMessage = '';
 
     <div id="precontents">
         <div class="waku w80p">
-            <h3><br>会員登録完了</h3>
+        <span class="red"><h2><br>ご登録ありがとうございます。</h2></span>
             <span class="info">
-                <h2><br>メールアドレスに認証用URLを送信しました。<br>
-                    メールを確認してユーザ認証を行なってください。</h2><br>
+                <br>本人確認用のメールを配信させていただきました。<br>
+                <span class="red">メール内のリンクをクリック</span>してください。<br>
+                よろしくお願いいたします。<br><br>
+                メールが見当たらない場合は、迷惑フィルターに入っている可能性がありますので、ご確認ください。<br><br><br>
             </span>
             <input type="button" class="rButton w80p btn-red" onclick="location.href='u_login.php'" value="ログインする" />
 

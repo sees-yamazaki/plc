@@ -116,6 +116,9 @@
                         <a href="a_users_edit.php">新規登録</a>
                     </li>
                     <li>
+                        <a href="a_mails_edit.php">メール設定</a>
+                    </li>
+                    <li>
                         <a href="a_systems_edit.php">システム設定</a>
                     </li>
                 </ul>

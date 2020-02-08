@@ -325,9 +325,13 @@ label.hamburger {
     position: relative;
     display: block;
     height: 30px;
-    width: 50px;
+    width: 35px;
 }
 
+label.hamburger text{
+	font-size:10px;
+	font-weight:800;
+}
 label.hamburger:hover {
     cursor: pointer;
 }
@@ -388,6 +392,6 @@ label.hamburger>i:after {
 }
 
 label.hamburger {
-    top: 1px;
-    right: 1px;
+    top: 4px;
+    right: 0px;
 }
