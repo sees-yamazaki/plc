@@ -1,6 +1,8 @@
 <?php
-require('db/x10.php');
-require('../custom/conf.php');
+require('custom/conf.php');
+require('x10c/db/x10.php');
+include 'x10c_logging.php';
+include 'x10c_helper.php';
 
 // セッション開始
 session_start();
@@ -13,13 +15,15 @@ $mode = empty($_GET['mode']) ? $_POST['mode'] : $_GET['mode'];
 $id = $_POST['id'];
 $name = $_POST['name'];
 $category = $_POST['category'];
-$kind = $_POST['kind'];
+$adware_type = $_POST['adware_type'];
+$approvable = $_POST['approvable'];
 
 $offsetPage = 0;
 $limitPage = 5;
 $crntPage = empty($_POST['page']) ? 1: $_POST['page'];
 
-$kinded = array('','','');
+$adtyped = array('','','');
+$aprved = array('','','');
 
 $ads = array();
 
@@ -39,22 +43,31 @@ if (isset($_POST['run'])) {
         $tmp[] = "(".implode(" OR ", $tmp2).")";
     }
 
-    foreach ((array)$kind as $kd) {
-        if ($kd==0) {
-            $tmp3[] = "(kind=0)";
-            $kinded[0]= " checked";
-        }elseif($kd==1){
-            $tmp3[] = "((kind=1 AND offer_flg IS NULL) OR (kind=1 AND offer_flg =0))";
-            $kinded[1]= " checked";
-        }elseif($kd==2){
-            $tmp3[] = "(kind=1 AND offer_flg =1)";
-            $kinded[2]= " checked";
+    foreach ((array)$adware_type as $at) {
+        if ($at=="0") {
+            $tmp3[] = "(adware_type=0)";
+            $adtyped[0]= " checked";
+        } elseif ($at=="1") {
+            $tmp3[] = "(adware_type=1)";
+            $adtyped[1]= " checked";
         }
     }
     if (!empty($tmp3)) {
         $tmp[] = "(".implode(" OR ", $tmp3).")";
     }
 
+    foreach ((array)$approvable as $apv) {
+        if ($apv=="0") {
+            $tmp4[] = "(approvable=0)";
+            $aprved[0]= " checked";
+        } elseif ($apv=="1") {
+            $tmp4[] = "(approvable=1)";
+            $aprved[1]= " checked";
+        }
+    }
+    if (!empty($tmp4)) {
+        $tmp[] = "(".implode(" OR ", $tmp4).")";
+    }
     if (count($tmp)>0) {
         $where .= " AND ".implode(" AND ", $tmp);
     }
@@ -65,10 +78,6 @@ if ($LOGIN_TYPE=='cUser') {
     $where .= " AND (cuser='".$LOGIN_ID."') ";
 }
 
-//オファー切り替えモードの場合はクローズドに制限する
-if ($mode=="co") {
-    $where .= ' AND kind=1';
-}
 
 //検索結果件数を取得
 $cnt = countAdwares($where);
@@ -114,19 +123,19 @@ foreach ($categories as $cat) {
 ?>
 
 <?php
-if($LOGIN_TYPE=='admin'){
-    include 'header_admin.php'; 
-}else{
-    include 'header_cuser.php'; 
+if ($LOGIN_TYPE=='admin') {
+    include 'x10c_header_admin.php';
+} else {
+    include 'x10c_header_cuser.php';
 }
 ?>
 
 <script>
-function paging(vlu) {
-    document.frm.page.value = vlu;
-    document.frm.reset();
-    document.frm.submit();
-}
+    function paging(vlu) {
+        document.frm.page.value = vlu;
+        document.frm.reset();
+        document.frm.submit();
+    }
 </script>
 <div id="inc_side_body">
 
@@ -142,37 +151,43 @@ function paging(vlu) {
                     <input type="hidden" name="type" value="adwares">
                     <input type="hidden" name="run" value="true">
                     <input type="hidden" name="page" value="">
-                    <input type="hidden" name="mode" value="<?php echo $mode; ?>">
+                    <input type="hidden" name="mode"
+                        value="<?php echo $mode; ?>">
                     <table class="search_table" summary="検索用テーブル">
                         <tbody>
                             <tr>
                                 <th>広告タイプ</th>
                                 <td>
-                                    <?php if($mode=="op"){ ?>
-                                    <label><input type="checkbox" name="kind[]" value="0"
-                                            <?php echo $kinded[0]; ?>>オープン広告</label>
-                                    <?php } ?>
-                                    <label><input type="checkbox" name="kind[]" value="1"
-                                            <?php echo $kinded[1]; ?>>クローズド広告</label>
-                                    <label><input type="checkbox" name="kind[]" value="2"
-                                            <?php echo $kinded[2]; ?>>オファー広告</label>
+                                    <label><input type="checkbox" name="adware_type[]" value="0" <?php echo $adtyped[0]; ?>>目標達成タイプ</label>
+                                    <label><input type="checkbox" name="adware_type[]" value="1" <?php echo $adtyped[1]; ?>>クリック報酬タイプ</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>承認タイプ</th>
+                                <td>
+                                    <label><input type="checkbox" name="approvable[]" value="0" <?php echo $aprved[0]; ?>>オープン</label>
+                                    <label><input type="checkbox" name="approvable[]" value="1" <?php echo $aprved[1]; ?>>承認（クローズド）</label>
                                 </td>
                             </tr>
                             <tr>
                                 <th>ＩＤ</th>
-                                <td><input type="text" name="id" value="<?php  echo $id; ?>" size="10" maxlength="8">
+                                <td><input type="text" name="id"
+                                        value="<?php  echo $id; ?>"
+                                        size="10" maxlength="8">
                                 </td>
                             </tr>
                             <tr>
                                 <th>広告名</th>
                                 <td>
-                                    <input type="text" name="name" value="<?php  echo $name; ?>" size="25"
-                                        maxlength="25">
+                                    <input type="text" name="name"
+                                        value="<?php  echo $name; ?>"
+                                        size="25" maxlength="25">
                                 </td>
                             </tr>
                             <tr>
                                 <th>カテゴリ</th>
-                                <td><?php  echo $html; ?></td>
+                                <td><?php  echo $html; ?>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -226,62 +241,56 @@ function paging(vlu) {
             <table class="adwares_list_table">
                 <tbody>
                     <tr>
-                        <th colspan="2" class="list_head">広告ID：<?php echo $ad->id; ?></th>
+                        <th colspan="2" class="list_head">広告ID：<?php echo $ad->id; ?>
+                        </th>
                     </tr>
                     <tr>
                         <th>広告タイプ</th>
-                        <?php  if ($ad->kind==0) { ?>
-                            <td>オープン広告</td>
+                        <?php  if ($ad->adware_type=="0") { ?>
+                        <td>目標達成タイプ</td>
                         <?php  } else { ?>
-                            <?php  if (empty($ad->offer_flg) || $ad->offer_flg==0) { ?>
-                            <td>クローズド広告</td>
-                            <?php  } else { ?>
-                            <td><span style="color:red">オファー広告</span></td>
-                            <?php  } ?>
+                        <td>クリック報酬タイプ</td>
+                        <?php  } ?>
+                    </tr>
+                    <tr>
+                        <th>承認タイプ</th>
+                        <?php  if ($ad->approvable=="0") { ?>
+                        <td>オープン</td>
+                        <?php  } else { ?>
+                        <td>承認（クローズド）</td>
                         <?php  } ?>
                     </tr>
                     <tr>
                         <th>広告名</th>
-                        <td><a
-                                href="offerad_edit.php?type=adwares&amp;id=<?php echo $ad->id; ?>&amp;mode=<?php echo $mode; ?>"><?php echo $ad->name; ?></a>
+                        <td>
+                            <!-- <a href="offerad_edit.php?type=adwares&amp;id=<?php echo $ad->id; ?>&amp;mode=<?php echo $mode; ?>"><?php echo $ad->name; ?></a>
+                            -->
+                            <a
+                                href="x10c_adwares_edit.php?type=adwares&amp;id=<?php echo $ad->id; ?>&amp;mode=<?php echo $mode; ?>"><?php echo $ad->name; ?></a>
                         </td>
                     </tr>
                     <tr>
-                        <th width="20%">広告カテゴリー</th>
-                        <td><?php echo $ad->category_name; ?></td>
+                        <th>広告カテゴリー</th>
+                        <td><?php echo $ad->category_name; ?>
+                        </td>
                     </tr>
+                    <?php  if ($ad->adware_type=="0") { ?>
                     <tr>
                         <th>成果報酬</th>
-                        <?php  if ($ad->ad_type=='yen') { ?>
                         <td><?php echo $ad->money; ?>円</td>
-                        <?php  } elseif ($ad->ad_type=='per') { ?>
-                        <td><?php echo $ad->money; ?>％</td>
-                        <?php  } elseif ($ad->ad_type=='rank') { ?>
-                        <td>会員ランク適用</td>
-                        <?php  } elseif ($ad->ad_type=='personal') { ?>
-                        <td>パーソナルレート適用</td>
-                        <?php  } else { ?>
-                        <td>--</td>
-                        <?php  } ?>
                     </tr>
+                    <?php  } ?>
+                    <?php  if ($ad->adware_type=="1") { ?>
                     <tr>
                         <th>クリック報酬</th>
                         <td><?php echo $ad->click_money; ?>円</td>
                     </tr>
-                    <tr>
-                        <th>継続課金</th>
-                        <?php  if ($ad->continue_type=='yen') { ?>
-                        <td><?php echo $ad->continue_money; ?>円</td>
-                        <?php  } elseif ($ad->ad_type=='per') { ?>
-                        <td><?php echo $ad->continue_money; ?>％</td>
-                        <?php  } else { ?>
-                        <td>--</td>
-                        <?php  } ?>
-                    </tr>
+                    <?php  } ?>
 
                     <tr>
-                        <th>URL(PC用)</th>
-                        <td><?php echo $ad->url; ?></td>
+                        <th>URL</th>
+                        <td><?php echo $ad->url; ?>
+                        </td>
                     </tr>
 
 
@@ -289,7 +298,9 @@ function paging(vlu) {
                         <th>広告バナー画像</th>
                         <td>
                             <?php  if (!empty($ad->banner)) { ?>
-                            <div class="ad_image"><img src="../<?php echo $ad->banner; ?>"></div>
+                            <div class="ad_image"><img
+                                    src="../<?php echo $ad->banner; ?>">
+                            </div>
                             <?php  } else { ?>
                             <div class="ad_image"><span>No Image</span></div>
                             <?php  } ?>
@@ -297,7 +308,8 @@ function paging(vlu) {
                     </tr>
                     <tr>
                         <th>広告の説明</th>
-                        <td class="adwares_info"><?php echo $ad->comment; ?></td>
+                        <td class="adwares_info"><?php echo nl2br($ad->comment); ?>
+                        </td>
                     </tr>
 
 
@@ -324,4 +336,4 @@ function paging(vlu) {
 
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include 'x10c_footer.php';

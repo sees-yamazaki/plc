@@ -44,10 +44,29 @@ class cls_secretadwares
     public $open_user ;
     public $regist ;
     public $category_name ;
-    public $offer_flg ;
-    public $text1 ;
+    public $adware_type ;
+    public $approvable ;
+    public $keyword ;
+    public $results ;
+    public $hashtag ;
+    public $denials ;
+    public $ngword ;
+    public $note ;
 }
 
+class cls_x10adwares
+{
+    public $shadow_id ;
+    public $id ;
+    public $adware_type ;
+    public $approvable ;
+    public $keyword ;
+    public $results ;
+    public $hashtag ;
+    public $denials ;
+    public $ngword ;
+    public $note ;
+}
 
 function countAdwares($where)
 {
@@ -67,7 +86,7 @@ function countAdwares($where)
 
 
 
-function getAdwaresLimit($where,$limit,$offset)
+function getAdwaresLimit($where, $limit, $offset)
 {
     try {
         $results = array();
@@ -121,8 +140,14 @@ function getAdwaresLimit($where,$limit,$offset)
             $result->open_user = $row['open_user'];
             $result->regist = $row['regist'];
             $result->category_name = $row['category_name'];
-            $result->offer_flg = $row['offer_flg'];
-            $result->text1 = $row['text1'];
+            $result->adware_type = $row['adware_type'];
+            $result->approvable = $row['approvable'];
+            $result->keyword = $row['keyword'];
+            $result->results = $row['results'];
+            $result->hashtag = $row['hashtag'];
+            $result->denials = $row['denials'];
+            $result->ngword = $row['ngword'];
+            $result->note = $row['note'];
             array_push($results, $result);
         }
     } catch (PDOException $e) {
@@ -185,8 +210,14 @@ function getAdware($id)
             $result->open_user = $row['open_user'];
             $result->regist = $row['regist'];
             $result->category_name = $row['category_name'];
-            $result->offer_flg = $row['offer_flg'];
-            $result->text1 = $row['text1'];
+            $result->adware_type = $row['adware_type'];
+            $result->approvable = $row['approvable'];
+            $result->keyword = $row['keyword'];
+            $result->results = $row['results'];
+            $result->hashtag = $row['hashtag'];
+            $result->denials = $row['denials'];
+            $result->ngword = $row['ngword'];
+            $result->note = $row['note'];
         }
     } catch (PDOException $e) {
         //
@@ -198,12 +229,18 @@ function insertX10Adware($secretadwares)
 {
     try {
         require 'dns.php';
-        $sql = "INSERT  INTO `x10_adwares`(`shadow_id`, `id`, `offer_flg`, `text1`) VALUES (:shadow_id, :id, :offer_flg, :text1)";
+        $sql = "INSERT  INTO `x10_adwares`(`shadow_id`, `id`, `adware_type`, `approvable`, `keyword`, `results`, `hashtag`, `denials`, `ngword`, `note`) VALUES (:shadow_id, :id, :adware_type, :approvable, :keyword, :results, :hashtag, :denials, :ngword, :note)";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':shadow_id', $secretadwares->shadow_id, PDO::PARAM_INT);
         $stmt->bindParam(':id', $secretadwares->id, PDO::PARAM_STR);
-        $stmt->bindParam(':offer_flg', $secretadwares->offer_flg, PDO::PARAM_INT);
-        $stmt->bindParam(':text1', $secretadwares->text1, PDO::PARAM_STR);
+        $stmt->bindParam(':adware_type', $secretadwares->adware_type, PDO::PARAM_INT);
+        $stmt->bindParam(':approvable', $secretadwares->approvable, PDO::PARAM_INT);
+        $stmt->bindParam(':keyword', $secretadwares->keyword, PDO::PARAM_STR);
+        $stmt->bindParam(':results', $secretadwares->results, PDO::PARAM_STR);
+        $stmt->bindParam(':hashtag', $secretadwares->hashtag, PDO::PARAM_STR);
+        $stmt->bindParam(':denials', $secretadwares->denials, PDO::PARAM_STR);
+        $stmt->bindParam(':ngword', $secretadwares->ngword, PDO::PARAM_STR);
+        $stmt->bindParam(':note', $secretadwares->note, PDO::PARAM_STR);
         $stmt->execute();
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
@@ -218,11 +255,17 @@ function updateX10Adware($secretadwares)
 {
     try {
         require 'dns.php';
-        $sql = "UPDATE  `x10_adwares` SET `offer_flg`=:offer_flg, `text1`=:text1 WHERE `id`=:id";
+        $sql = "UPDATE  `x10_adwares` SET `adware_type`=:adware_type,`approvable`=:approvable, `keyword`=:keyword, `results`=:results, `hashtag`=:hashtag, `denials`=:denials, `ngword`=:ngword, `note`=:note WHERE `id`=:id";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':id', $secretadwares->id, PDO::PARAM_STR);
-        $stmt->bindParam(':offer_flg', $secretadwares->offer_flg, PDO::PARAM_INT);
-        $stmt->bindParam(':text1', $secretadwares->text1, PDO::PARAM_STR);
+        $stmt->bindParam(':adware_type', $secretadwares->adware_type, PDO::PARAM_INT);
+        $stmt->bindParam(':approvable', $secretadwares->approvable, PDO::PARAM_INT);
+        $stmt->bindParam(':keyword', $secretadwares->keyword, PDO::PARAM_STR);
+        $stmt->bindParam(':results', $secretadwares->results, PDO::PARAM_STR);
+        $stmt->bindParam(':hashtag', $secretadwares->hashtag, PDO::PARAM_STR);
+        $stmt->bindParam(':denials', $secretadwares->denials, PDO::PARAM_STR);
+        $stmt->bindParam(':ngword', $secretadwares->ngword, PDO::PARAM_STR);
+        $stmt->bindParam(':note', $secretadwares->note, PDO::PARAM_STR);
         $stmt->execute();
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
@@ -239,31 +282,50 @@ class cls_categories
     public $id ;
     public $name ;
 }
-function getCategories()
+ function getCategories()
+ {
+     try {
+         $results = array();
+         require 'dns.php';
+         $stmt = $pdo->prepare("SELECT * FROM `category` WHERE delete_key=0 ORDER BY shadow_id");
+         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+             $result = new cls_secretadwares();
+             $result->shadow_id = $row['shadow_id'];
+             $result->id = $row['id'];
+             $result->name = $row['name'];
+             array_push($results, $result);
+         }
+     } catch (PDOException $e) {
+         //
+     }
+     return $results;
+ }
+
+function getCategory($id)
 {
+    $result = new cls_secretadwares();
     try {
-        $results = array();
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT * FROM `category` WHERE delete_key=0 ORDER BY shadow_id");
+        $stmt = $pdo->prepare("SELECT * FROM `category` WHERE id=:id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
         $stmt->execute();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $result = new cls_secretadwares();
             $result->shadow_id = $row['shadow_id'];
             $result->id = $row['id'];
             $result->name = $row['name'];
-            array_push($results, $result);
         }
     } catch (PDOException $e) {
         //
     }
-    return $results;
+    return $result;
 }
 
 function doLogin($m_mail, $m_pw)
 {
     $result =false;
     try {
-
         $pw1 = preg_replace('/^\w+:/', '', $m_pw);
         $pw2 = 'AES_OK:'.openssl_encrypt($pw1, 'aes-256-ecb', base64_encode('AES'));
 
