@@ -1,5 +1,8 @@
 <?php
-require('../x10c/db/x10.php');
+include 'custom/conf.php';
+include 'x10c_logging.php';
+include 'x10c_helper.php';
+include 'x10c/db/x10.php';
 
 // セッション再開
 session_start();
@@ -20,8 +23,10 @@ if (isset($_POST['login'])) {
         // 入力したユーザIDを格納
         $m_mail = $_POST['m_mail'];
         $m_pw = $_POST['m_pw'];
-        if (doLogin($m_mail, $m_pw)) {
-            header('Location: ./home.php');
+        $nId = doLogin($m_mail, $m_pw);
+        if (!empty($nId)) {
+            $_SESSION[ $SESSION_NAME ] = $nId;
+            header('Location: x10n_home.php');
         }else{
             $errorMessage = 'ログインできませんでした。';
         }

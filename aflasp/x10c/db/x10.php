@@ -52,6 +52,8 @@ class cls_secretadwares
     public $denials ;
     public $ngword ;
     public $note ;
+    public $startdt ;
+    public $enddt ;
 }
 
 class cls_x10adwares
@@ -66,6 +68,8 @@ class cls_x10adwares
     public $denials ;
     public $ngword ;
     public $note ;
+    public $startdt ;
+    public $enddt ;
 }
 
 function countAdwares($where)
@@ -148,6 +152,82 @@ function getAdwaresLimit($where, $limit, $offset)
             $result->denials = $row['denials'];
             $result->ngword = $row['ngword'];
             $result->note = $row['note'];
+            $result->startdt = $row['startdt'];
+            $result->enddt = $row['enddt'];
+            array_push($results, $result);
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $results;
+}
+
+
+
+function getAdwaresRecentry($days)
+{
+    try {
+        $minusDt = strtotime('-'.$days.'day');
+        $results = array();
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT * FROM `v_adwares_x10` WHERE delete_key=0 AND regist>:regist ORDER BY regist desc");
+        $stmt->bindParam(':regist', $minusDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_secretadwares();
+            $result->kind = $row['kind'];
+            $result->shadow_id = $row['shadow_id'];
+            $result->delete_key = $row['delete_key'];
+            $result->id = $row['id'];
+            $result->cuser = $row['cuser'];
+            $result->comment = $row['comment'];
+            $result->ad_text = $row['ad_text'];
+            $result->category = $row['category'];
+            $result->banner = $row['banner'];
+            $result->banner2 = $row['banner2'];
+            $result->banner3 = $row['banner3'];
+            $result->banner_m = $row['banner_m'];
+            $result->banner_m2 = $row['banner_m2'];
+            $result->banner_m3 = $row['banner_m3'];
+            $result->url = $row['url'];
+            $result->url_m = $row['url_m'];
+            $result->url_over = $row['url_over'];
+            $result->url_users = $row['url_users'];
+            $result->name = $row['name'];
+            $result->money = $row['money'];
+            $result->ad_type = $row['ad_type'];
+            $result->click_money = $row['click_money'];
+            $result->continue_money = $row['continue_money'];
+            $result->continue_type = $row['continue_type'];
+            $result->limits = $row['limits'];
+            $result->limit_type = $row['limit_type'];
+            $result->money_count = $row['money_count'];
+            $result->pay_count = $row['pay_count'];
+            $result->click_money_count = $row['click_money_count'];
+            $result->continue_money_count = $row['continue_money_count'];
+            $result->span = $row['span'];
+            $result->span_type = $row['span_type'];
+            $result->use_cookie_interval = $row['use_cookie_interval'];
+            $result->pay_span = $row['pay_span'];
+            $result->pay_span_type = $row['pay_span_type'];
+            $result->auto = $row['auto'];
+            $result->click_auto = $row['click_auto'];
+            $result->continue_auto = $row['continue_auto'];
+            $result->check_type = $row['check_type'];
+            $result->open = $row['open'];
+            $result->open_user = $row['open_user'];
+            $result->regist = $row['regist'];
+            $result->category_name = $row['category_name'];
+            $result->adware_type = $row['adware_type'];
+            $result->approvable = $row['approvable'];
+            $result->keyword = $row['keyword'];
+            $result->results = $row['results'];
+            $result->hashtag = $row['hashtag'];
+            $result->denials = $row['denials'];
+            $result->ngword = $row['ngword'];
+            $result->note = $row['note'];
+            $result->startdt = $row['startdt'];
+            $result->enddt = $row['enddt'];
             array_push($results, $result);
         }
     } catch (PDOException $e) {
@@ -218,6 +298,8 @@ function getAdware($id)
             $result->denials = $row['denials'];
             $result->ngword = $row['ngword'];
             $result->note = $row['note'];
+            $result->startdt = $row['startdt'];
+            $result->enddt = $row['enddt'];
         }
     } catch (PDOException $e) {
         //
@@ -229,7 +311,7 @@ function insertX10Adware($secretadwares)
 {
     try {
         require 'dns.php';
-        $sql = "INSERT  INTO `x10_adwares`(`shadow_id`, `id`, `adware_type`, `approvable`, `keyword`, `results`, `hashtag`, `denials`, `ngword`, `note`) VALUES (:shadow_id, :id, :adware_type, :approvable, :keyword, :results, :hashtag, :denials, :ngword, :note)";
+        $sql = "INSERT  INTO `x10_adwares`(`shadow_id`, `id`, `adware_type`, `approvable`, `keyword`, `results`, `hashtag`, `denials`, `ngword`, `note`, `startdt`, `enddt`) VALUES (:shadow_id, :id, :adware_type, :approvable, :keyword, :results, :hashtag, :denials, :ngword, :note, :startdt, :enddt)";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':shadow_id', $secretadwares->shadow_id, PDO::PARAM_INT);
         $stmt->bindParam(':id', $secretadwares->id, PDO::PARAM_STR);
@@ -241,6 +323,8 @@ function insertX10Adware($secretadwares)
         $stmt->bindParam(':denials', $secretadwares->denials, PDO::PARAM_STR);
         $stmt->bindParam(':ngword', $secretadwares->ngword, PDO::PARAM_STR);
         $stmt->bindParam(':note', $secretadwares->note, PDO::PARAM_STR);
+        $stmt->bindParam(':startdt', $secretadwares->startdt, PDO::PARAM_STR);
+        $stmt->bindParam(':enddt', $secretadwares->enddt, PDO::PARAM_STR);
         $stmt->execute();
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
@@ -255,7 +339,7 @@ function updateX10Adware($secretadwares)
 {
     try {
         require 'dns.php';
-        $sql = "UPDATE  `x10_adwares` SET `adware_type`=:adware_type,`approvable`=:approvable, `keyword`=:keyword, `results`=:results, `hashtag`=:hashtag, `denials`=:denials, `ngword`=:ngword, `note`=:note WHERE `id`=:id";
+        $sql = "UPDATE  `x10_adwares` SET `adware_type`=:adware_type,`approvable`=:approvable, `keyword`=:keyword, `results`=:results, `hashtag`=:hashtag, `denials`=:denials, `ngword`=:ngword, `note`=:note, `startdt`=:startdt, `enddt`=:enddt WHERE `id`=:id";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':id', $secretadwares->id, PDO::PARAM_STR);
         $stmt->bindParam(':adware_type', $secretadwares->adware_type, PDO::PARAM_INT);
@@ -266,6 +350,8 @@ function updateX10Adware($secretadwares)
         $stmt->bindParam(':denials', $secretadwares->denials, PDO::PARAM_STR);
         $stmt->bindParam(':ngword', $secretadwares->ngword, PDO::PARAM_STR);
         $stmt->bindParam(':note', $secretadwares->note, PDO::PARAM_STR);
+        $stmt->bindParam(':startdt', $secretadwares->startdt, PDO::PARAM_STR);
+        $stmt->bindParam(':enddt', $secretadwares->enddt, PDO::PARAM_STR);
         $stmt->execute();
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
@@ -324,21 +410,154 @@ function getCategory($id)
 
 function doLogin($m_mail, $m_pw)
 {
-    $result =false;
+    $result = '';
     try {
         $pw1 = preg_replace('/^\w+:/', '', $m_pw);
         $pw2 = 'AES_OK:'.openssl_encrypt($pw1, 'aes-256-ecb', base64_encode('AES'));
 
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT * FROM `nuser` WHERE mail=:m_mail and pass=:m_pw");
+        $stmt = $pdo->prepare("SELECT * FROM `nuser` WHERE mail=:m_mail and pass=:m_pw and delete_key=0");
         $stmt->bindParam(':m_mail', $m_mail, PDO::PARAM_STR);
         $stmt->bindParam(':m_pw', $pw2, PDO::PARAM_STR);
         $stmt->execute();
         if ($row = $stmt->fetch()) {
-            $result =true;
+            $result = $row['id'];
         }
     } catch (PDOException $e) {
         //
     }
     return $result;
+}
+
+
+
+class cls_offer
+{
+    public $adware ;
+    public $nuser ;
+    public $status ;
+    public $regist ;
+}
+ function getOfferStatus($adware,$nuser)
+ {
+    $result = new cls_offer();
+    try {
+         require 'dns.php';
+         $stmt = $pdo->prepare("SELECT * FROM `x10_offer` WHERE adware=:adware AND nuser=:nuser");
+         $stmt->bindParam(':adware', $adware, PDO::PARAM_STR);
+         $stmt->bindParam(':nuser', $nuser, PDO::PARAM_STR);
+         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+             $result->adware = $row['adware'];
+             $result->nuser = $row['nuser'];
+             $result->status = $row['status'];
+             $result->regist = $row['regist'];
+         }
+     } catch (PDOException $e) {
+         //
+     }
+     return $result;
+ }
+
+
+function insertX10Offer($ofr)
+{
+    try {
+        require 'dns.php';
+        $sql = "INSERT  INTO `x10_offer`(`adware`, `nuser`, `status`, `regist`) VALUES (:adware, :nuser, :status, :regist)";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':adware', $ofr->adware, PDO::PARAM_STR);
+        $stmt->bindParam(':nuser', $ofr->nuser, PDO::PARAM_STR);
+        $stmt->bindParam(':status', $ofr->status, PDO::PARAM_INT);
+        $stmt->bindParam(':regist', strtotime("NOW"), PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+    } catch (PDOException $e) {
+        $errorMessage = 'データベースエラー';
+        if (strcmp("1", $ini['debug'])==0) {
+            echo $e->getMessage();
+        }
+    }
+}
+
+function deleteX10Offer($ofr)
+{
+    try {
+        require 'dns.php';
+        $sql = "DELETE FROM `x10_offer` WHERE `adware`=:adware AND `nuser`=:nuser";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':adware', $ofr->adware, PDO::PARAM_STR);
+        $stmt->bindParam(':nuser', $ofr->nuser, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+    } catch (PDOException $e) {
+        $errorMessage = 'データベースエラー';
+        if (strcmp("1", $ini['debug'])==0) {
+            echo $e->getMessage();
+        }
+    }
+}
+
+
+class cls_access
+{
+    public $adware ;
+    public $owner ;
+    public $name ;
+    public $regist ;
+}
+
+function countAccess($startdt,$enddt,$nuser)
+{
+    try {
+        $cnt=0;
+        $start = empty($startdt) ? strtotime('2000-01-01') : strtotime($startdt);
+        $end = empty($enddt) ? strtotime('2100-01-01') : strtotime($enddt);
+
+
+        $results = array();
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `v_access_x10` WHERE delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc");
+        $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
+        $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+        $stmt->bindParam(':end', $end, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $cnt = $row['cnt'];
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $cnt;
+}
+
+function getAccessLimit($startdt,$enddt,$nuser,$limit,$offset)
+{
+    try {
+
+        $start = empty($startdt) ? strtotime('2000-01-01') : strtotime($startdt);
+        $end = empty($enddt) ? strtotime('2100-01-01') : strtotime($enddt);
+
+
+        $results = array();
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT * FROM `v_access_x10` WHERE delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc LIMIT :limit OFFSET :offset");
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
+        $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+        $stmt->bindParam(':end', $end, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_access();
+            $result->adware = $row['adware'];
+            $result->owner = $row['owner'];
+            $result->name = $row['name'];
+            $result->regist = $row['regist'];
+            array_push($results, $result);
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $results;
 }

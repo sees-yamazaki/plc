@@ -74,6 +74,182 @@ function getAdwaresNextId($approvable)
     return $id;
 }
 
+function countMonthlyClicks($y, $m, $nUserId,$adType)
+{
+    $cnt=0;
+    try {
+        $startDt = strtotime($y.'-'.$m.'-01 00:00:00');
+        $endDt   = strtotime(date('Y-m-d 23:59:59',strtotime($y.'-'.$m.' last day of this month')));
+
+        require 'dns.php';
+        $sql = "select count(*) as cnt from `v_access_x10` WHERE owner=:owner AND regist BETWEEN :startDt AND :endDt AND adware_type=:adware_type";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
+        $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
+        $stmt->bindParam(':endDt', $endDt, PDO::PARAM_INT);
+        $stmt->bindParam(':adware_type', $adType, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $cnt = $row['cnt'];
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $cnt;
+}
+
+function countPastClicks($y, $m, $nUserId)
+{
+    $cnt=0;
+    try {
+        $startDt = strtotime($y.'-'.$m.'-01 00:00:00');
+
+        require 'dns.php';
+        $sql = "select count(*) as cnt from `v_access_x10` WHERE owner=:owner AND regist < :startDt";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
+        $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $cnt = $row['cnt'];
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $cnt;
+}
+
+
+class cls_pays
+{
+    public $id ;
+    public $name ;
+    public $cnt ;
+    public $cnt0 ;
+    public $cnt1 ;
+    public $cnt2 ;
+    public $cst ;
+    public $cst0 ;
+    public $cst1 ;
+    public $cst2 ;
+}
+
+function countMonthlyPaysGroups($y, $m, $nUserId,$adType)
+{
+    $result = new cls_pays();
+    try {
+        $startDt = strtotime($y.'-'.$m.'-01 00:00:00');
+        $endDt   = strtotime(date('Y-m-d 23:59:59',strtotime($y.'-'.$m.' last day of this month')));
+
+        require 'dns.php';
+        if ($adType=="0") {
+            $sql = "select adwares,max(name) as name, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10` WHERE owner=:owner AND regist BETWEEN :startDt AND :endDt group by adwares";
+        }else{
+            $sql = "select adwares,max(name) as name, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_click_pay_x10` WHERE owner=:owner AND regist BETWEEN :startDt AND :endDt group by adwares";
+        }
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
+        $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
+        $stmt->bindParam(':endDt', $endDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result->id = $row['adwares'];
+            $result->name = $row['name'];
+            $result->cnt = $row['cnt'];
+            $result->cnt0 = $row['cnt0'];
+            $result->cnt1 = $row['cnt1'];
+            $result->cnt2 = $row['cnt2'];
+            $result->cst = $row['cst'];
+            $result->cst0 = $row['cst0'];
+            $result->cst1 = $row['cst1'];
+            $result->cst2 = $row['cst2'];
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $result;
+}
+
+function countMonthlyPays($y, $m, $nUserId,$adType)
+{
+    $result = new cls_pays();
+    try {
+        $startDt = strtotime($y.'-'.$m.'-01 00:00:00');
+        $endDt   = strtotime(date('Y-m-d 23:59:59',strtotime($y.'-'.$m.' last day of this month')));
+
+        require 'dns.php';
+        if ($adType=="0") {
+            $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10` WHERE owner=:owner AND regist BETWEEN :startDt AND :endDt";
+        }else{
+            $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_click_pay_x10` WHERE owner=:owner AND regist BETWEEN :startDt AND :endDt";
+        }
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
+        $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
+        $stmt->bindParam(':endDt', $endDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result->cnt = $row['cnt'];
+            $result->cnt0 = $row['cnt0'];
+            $result->cnt1 = $row['cnt1'];
+            $result->cnt2 = $row['cnt2'];
+            $result->cst = $row['cst'];
+            $result->cst0 = $row['cst0'];
+            $result->cst1 = $row['cst1'];
+            $result->cst2 = $row['cst2'];
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $result;
+}
+
+function countPastPays($y, $m, $nUserId,$adType)
+{
+    $result = new cls_pays();
+    try {
+        $startDt = strtotime($y.'-'.$m.'-01 00:00:00');
+
+        require 'dns.php';
+        if ($adType=="0") {
+            $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10` WHERE owner=:owner AND regist < :startDt";
+        }else{
+            $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_click_pay_x10` WHERE owner=:owner AND regist < :startDt";
+        }
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
+        $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result->cnt = $row['cnt'];
+            $result->cnt0 = $row['cnt0'];
+            $result->cnt1 = $row['cnt1'];
+            $result->cnt2 = $row['cnt2'];
+            $result->cst = $row['cst'];
+            $result->cst0 = $row['cst0'];
+            $result->cst1 = $row['cst1'];
+            $result->cst2 = $row['cst2'];
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $result;
+}
 
 function insertAdwares($adwares)
 {
@@ -149,6 +325,8 @@ function insertAdwares($adwares)
         $x10->denials = $adwares->denials;
         $x10->ngword = $adwares->ngword;
         $x10->note = $adwares->note;
+        $x10->startdt = $adwares->startdt;
+        $x10->enddt = $adwares->enddt;
         insertX10Adware($x10);
 
 
@@ -229,8 +407,37 @@ function updateAdwares($adwares)
         $x10->denials = $adwares->denials;
         $x10->ngword = $adwares->ngword;
         $x10->note = $adwares->note;
+        $x10->startdt = $adwares->startdt;
+        $x10->enddt = $adwares->enddt;
         updateX10Adware($x10);
 
+
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("UPDATE ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+}
+
+function deleteAdwares($adwares)
+{
+    try {
+        require 'dns.php';
+        if (substr($adwares->id, 0, 1)=='A') {
+            $sql = " UPDATE `adwares` SET `delete_key`=1 WHERE shadow_id=:shadow_id";
+        } else {
+            $sql = " UPDATE `secretadwares` SET `delete_key`=1 WHERE shadow_id=:shadow_id";
+        }
+
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':shadow_id', $adwares->shadow_id, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
         if ($stmt->rowCount()==0) {
             logging(__FILE__." : ".__METHOD__."() : ".__LINE__);

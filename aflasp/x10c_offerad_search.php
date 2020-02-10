@@ -299,7 +299,7 @@ if ($LOGIN_TYPE=='admin') {
                         <td>
                             <?php  if (!empty($ad->banner)) { ?>
                             <div class="ad_image"><img
-                                    src="../<?php echo $ad->banner; ?>">
+                                    src="<?php echo $ad->banner; ?>">
                             </div>
                             <?php  } else { ?>
                             <div class="ad_image"><span>No Image</span></div>

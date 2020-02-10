@@ -62,6 +62,8 @@ $adware->hashtag = $_POST['hashtag'];
 $adware->denials = $_POST['denials'];
 $adware->ngword = $_POST['ngword'];
 $adware->note = $_POST['note'];
+$adware->startdt = $_POST['startdt'];
+$adware->enddt = $_POST['enddt'];
 
 if (isset($_POST['doCheck'])) {
 
@@ -588,11 +590,28 @@ if ($adware->adware_type=="1") {
                                         class="textarea"><?php echo $adware->note; ?></textarea>
                                 </td>
                             </tr>
+                            <tr>
+                                <th>開始日</th>
+                                <td><input type="date" name="startdt"
+                                        value="<?php echo $adware->startdt; ?>">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>終了日</th>
+                                <td><input type="date" name="enddt"
+                                        value="<?php echo $adware->enddt; ?>">
+                                </td>
+                            </tr>
+
                         </tbody>
                     </table>
                 </dd>
             </dl>
         </div>
+
+        <?php if (!empty($adware->id)) { ?>
+        <label><input type="checkbox" name="deleteAd" value="1">広告情報を削除する</label>
+        <?php } ?>
 
         <div class="input_box">
             <input type="submit" value="入力内容の確認" class="input_base">

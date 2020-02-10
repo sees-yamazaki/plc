@@ -56,6 +56,8 @@ $adware->hashtag = $_POST['hashtag'];
 $adware->denials = $_POST['denials'];
 $adware->ngword = $_POST['ngword'];
 $adware->note = $_POST['note'];
+$adware->startdt = $_POST['startdt'];
+$adware->enddt = $_POST['enddt'];
 
 if ($adware->adware_type=="0") {
     $adware->click_money = 0;
@@ -64,6 +66,7 @@ if ($adware->adware_type=="0") {
 }
 
 $st = $_POST['st'];
+$deleteAd = $_POST['deleteAd'];
 
 
 $adware->banner = $_POST['banner'];
@@ -122,6 +125,9 @@ if ($_POST['banner3_DELETE']=="1") {
 
 if (isset($_POST['back'])) {
     header('Location: x10c_adwares_edit.php', true, 307);
+} elseif (isset($_POST['doEdit']) && !empty($deleteAd)) {
+    deleteAdwares($adware);
+    header('Location: x10c_adwares_edited.php?deleteAd=1');
 } elseif (isset($_POST['doEdit'])) {
     if (empty($id)) {
         insertAdwares($adware);
@@ -185,16 +191,26 @@ if ($LOGIN_TYPE=='admin') {
 
 $category = getCategory($adware->category);
 
+if (empty($deleteAd)) {
+    $pankuzu = 'HOME &gt; 広告の編集 &gt; <span>入力フォーム</span> &gt; 入力内容の確認 &gt; 登録完了';
+    $comment = '入力内容を確認してください。';
+    $btn = '登録を完了する';
+} else {
+    $pankuzu = 'HOME &gt; 広告情報削除 &gt; <span>削除内容の確認</span> &gt; 削除完了';
+    $comment = '削除内容を確認してください。';
+    $btn = '削除を完了する';
+}
+
 ?>
 
 <div id="inc_side_body">
 
-    <div class="topics">HOME &gt; 広告の編集 &gt; <span>入力フォーム</span> &gt; 入力内容の確認 &gt; 登録完了</div>
+    <div class="topics"><?php echo $pankuzu; ?></div>
 
     <form action="" method="POST">
         <div class="search_list">
             <dl>
-                <dt>入力内容を確認してください。</dt>
+                <dt><?php echo $comment; ?></dt>
                 <dd>
                     <table class="search_list_table" summary="詳細テーブル">
                         <tbody>
@@ -334,6 +350,16 @@ $category = getCategory($adware->category);
                                 <td><?php echo nl2br($adware->note); ?>
                                 </td>
                             </tr>
+                            <tr>
+                                <th>開始日</th>
+                                <td><?php echo $adware->startdt; ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>終了日</th>
+                                <td><?php echo $adware->enddt; ?>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </dd>
@@ -341,7 +367,7 @@ $category = getCategory($adware->category);
         </div>
 
         <div class="input_box">
-            <input type="submit" value="登録を完了する" class="input_base" name="doEdit">
+            <input type="submit" value="<?php echo $btn; ?>" class="input_base" name="doEdit">
             <input type="submit" value="入力画面に戻る" class="input_base" name="back">
             <input type="hidden" name="shadow_id"
                 value="<?php echo $adware->shadow_id; ?>">
@@ -437,6 +463,12 @@ $category = getCategory($adware->category);
                 value="<?php echo $adware->ngword; ?>">
             <input type="hidden" name="note"
                 value="<?php echo $adware->note; ?>">
+            <input type="hidden" name="startdt"
+                value="<?php echo $adware->startdt; ?>">
+            <input type="hidden" name="enddt"
+                value="<?php echo $adware->enddt; ?>">
+            <input type="hidden" name="deleteAd"
+                value="<?php echo $deleteAd; ?>">
         </div>
     </form>
 

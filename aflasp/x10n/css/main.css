@@ -1,0 +1,13 @@
+table {
+    border-collapse: collapse;
+}
+
+td {
+    border: solid 1px;
+    border-color: lightgray;
+}
+
+a {
+    color: rgb(9, 134, 172);
+    text-decoration: none;
+}
