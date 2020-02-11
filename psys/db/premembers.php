@@ -6,6 +6,7 @@ class cls_premembers
     public $m_id;
     public $m_pw;
     public $m_name;
+    public $m_kana;
     public $m_mail;
     public $m_post;
     public $m_address1;
@@ -48,6 +49,7 @@ function getPreMember($mSeq)
             $result->m_id = $row['m_id'];
             $result->m_pw = $row['m_pw'];
             $result->m_name = $row['m_name'];
+            $result->m_kana = $row['m_kana'];
             $result->m_mail = $row['m_mail'];
             $result->m_post = $row['m_post'];
             $result->m_address1 = $row['m_address1'];
@@ -70,11 +72,12 @@ function getPreMember($mSeq)
         $insertid = 0;
         try {
             require './db/dns.php';
-            $sql = "INSERT  INTO `premembers` (  `m_id`,  `m_pw`,  `m_name`,  `m_mail`,  `m_post`,  `m_address1`,  `m_address2`,  `m_tel`) VALUES (:m_id, :m_pw, :m_name, :m_mail, :m_post, :m_address1, :m_address2, :m_tel)";
+            $sql = "INSERT  INTO `premembers` (  `m_id`,  `m_pw`,  `m_name`, `m_kana`,  `m_mail`,  `m_post`,  `m_address1`,  `m_address2`,  `m_tel`) VALUES (:m_id, :m_pw, :m_name, :m_kana, :m_mail, :m_post, :m_address1, :m_address2, :m_tel)";
             $stmt = $pdo -> prepare($sql);
             $stmt->bindParam(':m_id', $members->m_id, PDO::PARAM_STR);
             $stmt->bindParam(':m_pw', $members->m_pw, PDO::PARAM_STR);
             $stmt->bindParam(':m_name', $members->m_name, PDO::PARAM_STR);
+            $stmt->bindParam(':m_kana', $members->m_kana, PDO::PARAM_STR);
             $stmt->bindParam(':m_mail', $members->m_mail, PDO::PARAM_STR);
             $stmt->bindParam(':m_post', $members->m_post, PDO::PARAM_INT);
             $stmt->bindParam(':m_address1', $members->m_address1, PDO::PARAM_STR);
@@ -102,7 +105,7 @@ function getPreMember($mSeq)
     {
         try {
             require './db/dns.php';
-            $sql = "INSERT INTO `members`( `m_id`, `m_pw`, `m_name`, `m_mail`, `m_post`, `m_address1`, `m_address2`, `m_tel`) SELECT `m_id`, `m_pw`, `m_name`, `m_mail`, `m_post`, `m_address1`, `m_address2`, `m_tel` FROM `premembers` WHERE `m_seq`=:m_seq;";
+            $sql = "INSERT INTO `members`( `m_id`, `m_pw`, `m_name`, `m_kana`, `m_mail`, `m_post`, `m_address1`, `m_address2`, `m_tel`) SELECT `m_id`, `m_pw`, `m_name`, `m_kana`, `m_mail`, `m_post`, `m_address1`, `m_address2`, `m_tel` FROM `premembers` WHERE `m_seq`=:m_seq;";
             $stmt = $pdo -> prepare($sql);
             $stmt->bindParam(':m_seq', $mSeq, PDO::PARAM_INT);
             execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);

@@ -33,12 +33,12 @@ $enddt = $_POST['enddt'];
 
 
 $offsetPage = 0;
-$limitPage = 2;
+$limitPage = 5;
 $crntPage = empty($_POST['page']) ? 1: $_POST['page'];
 
 
 //検索結果件数を取得
-$cnt = countAccess($startdt,$enddt,$LOGIN_ID);
+$cnt = countAccess($startdt, $enddt, $LOGIN_ID);
 
 //ページ数を計算
 $pages = ceil($cnt / $limitPage);
@@ -69,7 +69,7 @@ if ($crntPage==$pages || $pages==0) {
 }
 
 
-$accss = getAccessLimit($startdt,$enddt,$LOGIN_ID,$limitPage,$offsetPage);
+$accss = getAccessLimit($startdt, $enddt, $LOGIN_ID, $limitPage, $offsetPage);
 
 
 
@@ -80,18 +80,19 @@ $accss = getAccessLimit($startdt,$enddt,$LOGIN_ID,$limitPage,$offsetPage);
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo ""; ?></title>
+    <title><?php echo ""; ?>
+    </title>
     <link rel="stylesheet" href="x10n/css/main.css">
 </head>
 
 <body>
 
-<script>
-    function paging(vlu) {
-        document.frm.page.value = vlu;
-        document.frm.submit();
-    }
-</script>
+    <script>
+        function paging(vlu) {
+            document.frm.page.value = vlu;
+            document.frm.submit();
+        }
+    </script>
 
     <?php if (!empty($errorMessage)) { ?>
     <span class="err"><?php echo $errorMessage; ?></span>
@@ -110,12 +111,14 @@ $accss = getAccessLimit($startdt,$enddt,$LOGIN_ID,$limitPage,$offsetPage);
             <td>非認証</td>
         </tr>
         <tr>
-            <td><?php echo ($cnt_click_0 + $cnt_click_1); ?>件</td>
-            <td><?php echo ($pays_0->cnt + $pays_1->cnt); ?>件</td>
-            <td><?php echo ($pays_0->cnt2 + $pays_1->cnt2); ?>件</td>
-            <td><?php echo ($pays_0->cst0 + $pays_0->cst1 + $pays_1->cst0 + $pays_1->cst1); ?>円</td>
-            <td><?php echo ($pays_0->cst2 + $pays_1->cst2); ?>円</td>
-            <td><?php echo ($pays_0->cnt0 + $pays_0->cnt1 + $pays_1->cnt0 + $pays_1->cnt1); ?>件</td>
+            <td><?php echo($cnt_click_0 + $cnt_click_1); ?>件</td>
+            <td><?php echo($pays_0->cnt + $pays_1->cnt); ?>件</td>
+            <td><?php echo($pays_0->cnt2 + $pays_1->cnt2); ?>件</td>
+            <td><?php echo($pays_0->cst0 + $pays_0->cst1 + $pays_1->cst0 + $pays_1->cst1); ?>円
+            </td>
+            <td><?php echo($pays_0->cst2 + $pays_1->cst2); ?>円</td>
+            <td><?php echo($pays_0->cnt0 + $pays_0->cnt1 + $pays_1->cnt0 + $pays_1->cnt1); ?>件
+            </td>
         </tr>
     </table>
 
@@ -132,12 +135,16 @@ $accss = getAccessLimit($startdt,$enddt,$LOGIN_ID,$limitPage,$offsetPage);
             <td>非認証</td>
         </tr>
         <tr>
-            <td><?php echo ($past_cnt_click); ?>件</td>
-            <td><?php echo ($past_pays_0->cnt + $past_pays_1->cnt); ?>件</td>
-            <td><?php echo ($past_pays_0->cnt2 + $past_pays_1->cnt2); ?>件</td>
-            <td><?php echo ($past_pays_0->cst0 + $past_pays_0->cst1 + $past_pays_1->cst0 + $past_pays_1->cst1); ?>円</td>
-            <td><?php echo ($past_pays_0->cst2 + $past_pays_1->cst2); ?>円</td>
-            <td><?php echo ($past_pays_0->cnt0 + $past_pays_0->cnt1 + $past_pays_1->cnt0 + $past_pays_1->cnt1); ?>件</td>
+            <td><?php echo($past_cnt_click); ?>件</td>
+            <td><?php echo($past_pays_0->cnt + $past_pays_1->cnt); ?>件</td>
+            <td><?php echo($past_pays_0->cnt2 + $past_pays_1->cnt2); ?>件
+            </td>
+            <td><?php echo($past_pays_0->cst0 + $past_pays_0->cst1 + $past_pays_1->cst0 + $past_pays_1->cst1); ?>円
+            </td>
+            <td><?php echo($past_pays_0->cst2 + $past_pays_1->cst2); ?>円
+            </td>
+            <td><?php echo($past_pays_0->cnt0 + $past_pays_0->cnt1 + $past_pays_1->cnt0 + $past_pays_1->cnt1); ?>件
+            </td>
         </tr>
     </table>
 
@@ -147,13 +154,13 @@ $accss = getAccessLimit($startdt,$enddt,$LOGIN_ID,$limitPage,$offsetPage);
     <table>
         <tr>
             <td>目的達成報酬</td>
-            <td>月別</td>
-            <td>発生別</td>
+            <td><a href='x10n_result_monthly.php?adtype=0'>月別</a></td>
+            <td><a href='x10n_result_action.php?adtype=0'>発生別</a></td>
         </tr>
         <tr>
             <td>クリック達成報酬</td>
-            <td>月別</td>
-            <td>発生別</td>
+            <td><a href='x10n_result_monthly.php?adtype=1'>月別</a></td>
+            <td><a href='x10n_result_action.php?adtype=1'>発生別</a></td>
         </tr>
     </table>
 
@@ -162,8 +169,10 @@ $accss = getAccessLimit($startdt,$enddt,$LOGIN_ID,$limitPage,$offsetPage);
     アクセスリスト<br>
     期間<br>
     <form action="" method="POST" name="frm">
-        <input type="date" name="startdt" value="<?php echo $startdt; ?>">〜
-        <input type="date" name="enddt" value="<?php echo $enddt; ?>">
+        <input type="date" name="startdt"
+            value="<?php echo $startdt; ?>">〜
+        <input type="date" name="enddt"
+            value="<?php echo $enddt; ?>">
         <input type="hidden" name="page" value=""><br>
         <input type="submit" value="表示">
     </form>
@@ -176,13 +185,18 @@ $accss = getAccessLimit($startdt,$enddt,$LOGIN_ID,$limitPage,$offsetPage);
 
 
     <table>
-        <tr><td>日付</td><td>案件名</td></tr>
-    <?php foreach ((array)$accss as $acs) { ?>
         <tr>
-            <td><?php echo date('Y-m-d H:i:s', $acs->regist); ?></td>
-            <td><?php echo $acs->name; ?></td>
+            <td>日付</td>
+            <td>案件名</td>
         </tr>
-    <?php } ?>
+        <?php foreach ((array)$accss as $acs) { ?>
+        <tr>
+            <td><?php echo date('Y-m-d H:i:s', $acs->regist); ?>
+            </td>
+            <td><?php echo $acs->name; ?>
+            </td>
+        </tr>
+        <?php } ?>
     </table>
 
     <!--ページャー-->

@@ -78,7 +78,7 @@ function countAdwares($where)
         $result = 0;
         require 'dns.php';
         $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `v_adwares_x10` WHERE delete_key=0 ".$where);
-        $stmt->execute();
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result = $row['cnt'];
         }
@@ -98,7 +98,7 @@ function getAdwaresLimit($where, $limit, $offset)
         $stmt = $pdo->prepare("SELECT * FROM `v_adwares_x10` WHERE delete_key=0 ".$where." ORDER BY regist desc LIMIT :limit OFFSET :offset");
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-        $stmt->execute();
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result = new cls_secretadwares();
             $result->kind = $row['kind'];
@@ -245,7 +245,7 @@ function getAdware($id)
         require 'dns.php';
         $stmt = $pdo->prepare("SELECT * FROM `v_adwares_x10` WHERE id=:id");
         $stmt->bindParam(':id', $id, PDO::PARAM_STR);
-        $stmt->execute();
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result->kind = $row['kind'];
             $result->shadow_id = $row['shadow_id'];
@@ -323,14 +323,22 @@ function insertX10Adware($secretadwares)
         $stmt->bindParam(':denials', $secretadwares->denials, PDO::PARAM_STR);
         $stmt->bindParam(':ngword', $secretadwares->ngword, PDO::PARAM_STR);
         $stmt->bindParam(':note', $secretadwares->note, PDO::PARAM_STR);
-        $stmt->bindParam(':startdt', $secretadwares->startdt, PDO::PARAM_STR);
-        $stmt->bindParam(':enddt', $secretadwares->enddt, PDO::PARAM_STR);
-        $stmt->execute();
-    } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
-            echo $e->getMessage();
+        if ($secretadwares->startdt=='') {
+            $stmt->bindValue(':startdt', null, PDO::PARAM_NULL);
+        } else {
+            $stmt->bindParam(':startdt', $secretadwares->startdt, PDO::PARAM_STR);
         }
+        if ($secretadwares->enddt=='') {
+            $stmt->bindValue(':enddt', null, PDO::PARAM_NULL);
+        } else {
+            $stmt->bindParam(':enddt', $secretadwares->enddt, PDO::PARAM_STR);
+        }
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
 }
 
@@ -352,12 +360,12 @@ function updateX10Adware($secretadwares)
         $stmt->bindParam(':note', $secretadwares->note, PDO::PARAM_STR);
         $stmt->bindParam(':startdt', $secretadwares->startdt, PDO::PARAM_STR);
         $stmt->bindParam(':enddt', $secretadwares->enddt, PDO::PARAM_STR);
-        $stmt->execute();
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
     } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
-        if (strcmp("1", $ini['debug'])==0) {
-            echo $e->getMessage();
-        }
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
     }
 }
 
@@ -438,10 +446,10 @@ class cls_offer
     public $status ;
     public $regist ;
 }
- function getOfferStatus($adware,$nuser)
+ function getOfferStatus($adware, $nuser)
  {
-    $result = new cls_offer();
-    try {
+     $result = new cls_offer();
+     try {
          require 'dns.php';
          $stmt = $pdo->prepare("SELECT * FROM `x10_offer` WHERE adware=:adware AND nuser=:nuser");
          $stmt->bindParam(':adware', $adware, PDO::PARAM_STR);
@@ -506,12 +514,12 @@ class cls_access
     public $regist ;
 }
 
-function countAccess($startdt,$enddt,$nuser)
+function countAccess($startdt, $enddt, $nuser)
 {
     try {
         $cnt=0;
         $start = empty($startdt) ? strtotime('2000-01-01') : strtotime($startdt);
-        $end = empty($enddt) ? strtotime('2100-01-01') : strtotime($enddt);
+        $end = empty($enddt) ? strtotime('2038-01-01') : strtotime($enddt);
 
 
         $results = array();
@@ -530,12 +538,11 @@ function countAccess($startdt,$enddt,$nuser)
     return $cnt;
 }
 
-function getAccessLimit($startdt,$enddt,$nuser,$limit,$offset)
+function getAccessLimit($startdt, $enddt, $nuser, $limit, $offset)
 {
     try {
-
         $start = empty($startdt) ? strtotime('2000-01-01') : strtotime($startdt);
-        $end = empty($enddt) ? strtotime('2100-01-01') : strtotime($enddt);
+        $end = empty($enddt) ? strtotime('2038-01-01') : strtotime($enddt);
 
 
         $results = array();
@@ -553,6 +560,80 @@ function getAccessLimit($startdt,$enddt,$nuser,$limit,$offset)
             $result->adware = $row['adware'];
             $result->owner = $row['owner'];
             $result->name = $row['name'];
+            $result->regist = $row['regist'];
+            array_push($results, $result);
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $results;
+}
+
+
+class cls_pay
+{
+    public $id ;
+    public $name ;
+    public $state ;
+    public $cost ;
+    public $regist ;
+}
+
+function countPay($startdt, $enddt, $nuser,$adtype)
+{
+    try {
+        $cnt=0;
+        $start = empty($startdt) ? strtotime('2000-01-01') : strtotime($startdt);
+        $end = empty($enddt) ? strtotime('2038-01-01') : strtotime($enddt);
+
+        $results = array();
+        require 'dns.php';
+        if($adtype=="0"){
+            $sql = "SELECT count(*) as cnt FROM `v_pay_x10` WHERE delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc";
+        }else{
+            $sql = "SELECT count(*) as cnt FROM `v_click_pay_x10` WHERE delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc";
+        }
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
+        $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+        $stmt->bindParam(':end', $end, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $cnt = $row['cnt'];
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $cnt;
+}
+
+function getPayLimit($startdt, $enddt, $nuser,$adtype, $limit, $offset)
+{
+    try {
+        $results = array();
+        $start = empty($startdt) ? strtotime('2000-01-01') : strtotime($startdt);
+        $end = empty($enddt) ? strtotime('2038-01-01') : strtotime($enddt);
+
+        $results = array();
+        require 'dns.php';
+        if($adtype=="0"){
+            $sql = "SELECT * FROM `v_pay_x10` WHERE delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc LIMIT :limit OFFSET :offset";
+        }else{
+            $sql = "SELECT * FROM `v_click_pay_x10` WHERE delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc LIMIT :limit OFFSET :offset";
+        }
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
+        $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+        $stmt->bindParam(':end', $end, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_pay();
+            $result->id = $row['id'];
+            $result->name = $row['name'];
+            $result->state = $row['state'];
+            $result->cost = $row['cost'];
             $result->regist = $row['regist'];
             array_push($results, $result);
         }

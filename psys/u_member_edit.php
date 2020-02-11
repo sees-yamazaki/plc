@@ -28,13 +28,14 @@ $errorMessage = '';
 // 変数の初期化
 $member = new cls_members();
 $mSeq = $_POST['mSeq'];
-if(empty($eSeq)){
+if (empty($eSeq)) {
     $mSeq =0;
 }
 
 if (isset($_POST['doEdit'])) {
     $member->m_seq = getSsn('SEQ');
     $member->m_name = $_POST['m_name'];
+    $member->m_kana = $_POST['m_kana'];
     $member->m_mail = $_POST['m_mail'];
     $member->m_post = $_POST['m_post'];
     $member->m_address1 = $_POST['m_address1'];
@@ -43,8 +44,7 @@ if (isset($_POST['doEdit'])) {
 
     setSsnKV('prm_member', $member);
     header('Location: ./u_member_edite.php');
-
-}elseif(getSsnPrevPage()=="u_member_edite.php"){
+} elseif (getSsnPrevPage()=="u_member_edite.php") {
     $member = getSsn('prm_member');
 } else {
     $member = getMember(getSsn('SEQ'));
@@ -80,27 +80,37 @@ if (isset($_POST['doEdit'])) {
 
                 お名前<br>
                 <input type="text" name="m_name" id="m_name" class="input-text w90p"
-                    value="<?php echo $member->m_name ?>" placeholder="富士　花子" maxlength='20' required /><br><br>
+                    value="<?php echo $member->m_name ?>"
+                    placeholder="富士　花子" maxlength='20' required /><br><br>
+                フリガナ<br>
+                <input type="text" name="m_kana" id="m_kana" class="input-text w90p"
+                    value="<?php echo $member->m_kana ?>"
+                    pattern="[ァ-ヴー\s　]+" title="カタカナ" placeholder="全角カナ" maxlength='20' required /><br><br>
                 メールアドレス<br>
                 <input type="text" name="m_mail" id="m_mail" class="input-text w90p"
-                    value="<?php echo $member->m_mail ?>" placeholder="メールアドレス"
-                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required /><br><br>
+                    value="<?php echo $member->m_mail ?>"
+                    placeholder="メールアドレス" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required /><br><br>
                 郵便番号(ハイフンなし)<br>
                 <input type="text" name="m_post" id="m_post" class="input-text w90p"
-                    value="<?php echo $member->m_post ?>" placeholder="1234567" maxlength='7'
+                    value="<?php echo $member->m_post ?>"
+                    placeholder="1234567" maxlength='7'
                     onKeyUp="AjaxZip3.zip2addr('m_post', '', 'm_address1', 'm_address1');" required /><br><br>
                 住所<br>
                 <input type="text" name="m_address1" id="m_address1" class="input-text w90p"
-                    value="<?php echo $member->m_address1 ?>" placeholder="" maxlength='50' required /><br><br>
+                    value="<?php echo $member->m_address1 ?>"
+                    placeholder="" maxlength='50' required /><br><br>
                 マンション名・部屋番号<br>
                 <input type="text" name="m_address2" id="m_address2" class="input-text w90p"
-                    value="<?php echo $member->m_address2 ?>" placeholder="" maxlength='50' /><br><br>
+                    value="<?php echo $member->m_address2 ?>"
+                    placeholder="" maxlength='50' /><br><br>
                 電話番号<br>
-                <input type="text" name="m_tel" id="m_tel" class="input-text w90p" value="<?php echo $member->m_tel ?>"
+                <input type="text" name="m_tel" id="m_tel" class="input-text w90p"
+                    value="<?php echo $member->m_tel ?>"
                     placeholder="000-0000-0000" maxlength='13' pattern="^[-0-9]+$" required /><br><br>
 
                 <input type="submit" class="rButton w90p btn-red" value="登録する">
-                <input type="hidden" name="mSeq" value="<?php echo $mSeq ?>">
+                <input type="hidden" name="mSeq"
+                    value="<?php echo $mSeq ?>">
                 <input type="hidden" name="doEdit">
 
             </form>

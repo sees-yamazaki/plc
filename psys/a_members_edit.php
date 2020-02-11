@@ -27,6 +27,7 @@ $member = new cls_members();
 if (isset($_POST['mmbrEdit'])) {
     $member->m_seq = $_POST['mSeq'];
     $member->m_name = $_POST['m_name'];
+    $member->m_kana = $_POST['m_kana'];
     $member->m_mail = $_POST['m_mail'];
     $member->m_post = $_POST['m_post'];
     $member->m_address1 = $_POST['m_address1'];
@@ -36,7 +37,7 @@ if (isset($_POST['mmbrEdit'])) {
     $tmp =getMemberByMail($member->m_mail);
     if ($tmp->m_seq<>0 && $tmp->m_seq<>$mSeq) {
         $errorMessage = 'このMAILはすでに登録されています';
-    }else{
+    } else {
         updateMember($member);
     }
 
@@ -105,6 +106,16 @@ if (isset($_POST['mmbrEdit'])) {
                                                 <div class="col-md-9 showcase_content_area">
                                                     <input type="text" class="form-control" name="m_name"
                                                         value="<?php echo $member->m_name; ?>"
+                                                        placeholder="20文字まで" maxLength=20 autocomplete="off" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row showcase_row_area">
+                                                <div class="col-md-3 showcase_text_area">
+                                                    <label for="inputType1">フリガナ</label>
+                                                </div>
+                                                <div class="col-md-9 showcase_content_area">
+                                                    <input type="text" class="form-control" name="m_kana"
+                                                        value="<?php echo $member->m_kana; ?>"
                                                         placeholder="20文字まで" maxLength=20 autocomplete="off" required>
                                                 </div>
                                             </div>

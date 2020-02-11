@@ -26,18 +26,16 @@ $errorMessage = '';
 $member = getSsn('prm_member');
 
 //登録するMAILを確認する
-$cnt = checkMemberByMail( $member->m_seq, $member->m_mail );
+$cnt = checkMemberByMail($member->m_seq, $member->m_mail);
 
 if ($cnt<>0) {
     $errorMessage = 'このメールアドレスはすでに登録されています。<br>';
 }
 
 if (isset($_POST['doEdit'])) {
-
     updateMember($member);
 
     header("Location: ./u_member_edited.php");
-
 }
 
 ?>
@@ -65,14 +63,15 @@ if (isset($_POST['doEdit'])) {
     <div id="contents">
         <h3><br>会員情報確認</h3>
         <?php if (empty($errorMessage)) { ?>
-            <span class="err">下記内容で登録します。<br>登録内容を確認してください。<br><br></span>
-        <?php }else{ ?>
-            <span class="err"><?php echo $errorMessage; ?></span>
+        <span class="err">下記内容で登録します。<br>登録内容を確認してください。<br><br></span>
+        <?php } else { ?>
+        <span class="err"><?php echo $errorMessage; ?></span>
         <?php } ?>
         <div name="editFrm">
             <form action="" method="POST" name="frm">
 
                 <span class="lightgrey">お名前</span><br><?php echo $member->m_name ?><br><br>
+                <span class="lightgrey">フリガナ</span><br><?php echo $member->m_kana ?><br><br>
                 <span class="lightgrey">メールアドレス</span><br><?php echo $member->m_mail ?><br><br>
                 <span class="lightgrey">郵便番号(ハイフンなし)</span><br><?php echo $member->m_post ?><br><br>
                 <span class="lightgrey">住所</span><br><?php echo $member->m_address1 ?><br><br>

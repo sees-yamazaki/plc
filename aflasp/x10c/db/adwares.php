@@ -101,6 +101,34 @@ function countMonthlyClicks($y, $m, $nUserId,$adType)
     return $cnt;
 }
 
+
+function countMonthlyClicksAdwares($y, $m, $nUserId,$adwares)
+{
+    $cnt=0;
+    try {
+        $startDt = strtotime($y.'-'.$m.'-01 00:00:00');
+        $endDt   = strtotime(date('Y-m-d 23:59:59',strtotime($y.'-'.$m.' last day of this month')));
+
+        require 'dns.php';
+        $sql = "select count(*) as cnt from `v_access_x10` WHERE owner=:owner AND regist BETWEEN :startDt AND :endDt AND adwares=:adwares";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
+        $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
+        $stmt->bindParam(':endDt', $endDt, PDO::PARAM_INT);
+        $stmt->bindParam(':adwares', $adwares, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $cnt = $row['cnt'];
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $cnt;
+}
+
 function countPastClicks($y, $m, $nUserId)
 {
     $cnt=0;
@@ -142,8 +170,8 @@ class cls_pays
 
 function countMonthlyPaysGroups($y, $m, $nUserId,$adType)
 {
-    $result = new cls_pays();
     try {
+        $results = array();
         $startDt = strtotime($y.'-'.$m.'-01 00:00:00');
         $endDt   = strtotime(date('Y-m-d 23:59:59',strtotime($y.'-'.$m.' last day of this month')));
 
@@ -159,6 +187,7 @@ function countMonthlyPaysGroups($y, $m, $nUserId,$adType)
         $stmt->bindParam(':endDt', $endDt, PDO::PARAM_INT);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_pays();
             $result->id = $row['adwares'];
             $result->name = $row['name'];
             $result->cnt = $row['cnt'];
@@ -169,6 +198,7 @@ function countMonthlyPaysGroups($y, $m, $nUserId,$adType)
             $result->cst0 = $row['cst0'];
             $result->cst1 = $row['cst1'];
             $result->cst2 = $row['cst2'];
+            array_push($results, $result);
         }
     } catch (PDOException $e) {
         $errorMessage = 'DATABASE ERROR';
@@ -176,7 +206,7 @@ function countMonthlyPaysGroups($y, $m, $nUserId,$adType)
         logging("DATABASE ERROR : ".$e->getMessage());
         logging("ARGS : ". json_encode(func_get_args()));
     }
-    return $result;
+    return $results;
 }
 
 function countMonthlyPays($y, $m, $nUserId,$adType)

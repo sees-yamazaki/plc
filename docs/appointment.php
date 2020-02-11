@@ -25,7 +25,6 @@ $time="";
 $grpHtml = array('ENG1G'=>'','ENG2G'=>'','ITS1G'=>'','ITS2G'=>'','ITS3G'=>'','ITS4G'=>'','ITS5G'=>'','ITS6G'=>'','ITS7G'=>'','ITS8G'=>'','ITS9G'=>'','ITS10G'=>'');
 
 foreach ($members as $member) {
-
     if (!empty($date) && $date<>$member->m_date) {
         foreach ($grps as $grp) {
             $html .=  "<td>".$grpHtml[$grp]."</a></td>";
@@ -36,14 +35,19 @@ foreach ($members as $member) {
 
     if (empty($date) || $date<>$member->m_date) {
         $date = $member->m_date;
-        $w = $youbi[date('w',strtotime($date))];
+        $w = $youbi[date('w', strtotime($date))];
         $html .= '<tr>';
         $html .= "<td>".$date." ".$w."</td>";
     }
 
-    $tmp = ($member->m_flg1==0) ? '*' : '';
-    $grpHtml[$member->m_group].= '<a href="Javascript:scDL('.$member->m_seq.')" class="app">'.$tmp." ".substr($member->m_time, 0, 5)." ".$member->m_name."</a><br>";
+    // $tmp = ($member->m_flg1==0) ? '*' : '';
+    // $grpHtml[$member->m_group].= '<a href="Javascript:scDL('.$member->m_seq.')" class="app">'.$tmp." ".substr($member->m_time, 0, 5)." ".$member->m_name."</a><br>";
 
+    if ($member->m_flg1==0) {
+        $grpHtml[$member->m_group].= '<a href="Javascript:scDL('.$member->m_seq.')" class="app2">* '.substr($member->m_time, 0, 5)." ".$member->m_name."</a><br>";
+    } else {
+        $grpHtml[$member->m_group].= '<a href="Javascript:scDL('.$member->m_seq.')" class="app">'.substr($member->m_time, 0, 5)." ".$member->m_name."</a><br>";
+    }
 }
 $ttlHtml='';
 foreach ($grps as $grp) {
@@ -62,18 +66,19 @@ $html .= '</tr>';
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo getSsnMyname(); ?></title>
+    <title><?php echo getSsnMyname(); ?>
+    </title>
     <link rel="stylesheet" href="./assets/vendors/iconfonts/mdi/css/materialdesignicons.css">
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">
     <link rel="shortcut icon" href="../asssets/images/favicon.ico" />
     <link rel="stylesheet" href="./asset/css/main.css">
     <script>
-    function scDL(vlu) {
-        document.frm2.mSeq.value = vlu;
-        //document.frm2.bPw.value = document.getElementById('pw'+vlu).value;
-        document.frm2.submit();
-    }
+        function scDL(vlu) {
+            document.frm2.mSeq.value = vlu;
+            //document.frm2.bPw.value = document.getElementById('pw'+vlu).value;
+            document.frm2.submit();
+        }
     </script>
 </head>
 
@@ -105,7 +110,6 @@ $html .= '</tr>';
         </div>
     </div>
 
-    <?php include('./a_footer.php'); ?>
 
     </div>
     </div>

@@ -42,14 +42,14 @@ if (isset($_POST['doEdit'])) {
 
     $insertid = insertPreMember($member);
 
-//MAIL 
-$mails = getMails(); 
+    //MAIL
+    $mails = getMails();
 
     mb_language("Japanese");
     mb_internal_encoding("UTF-8");
     $url = getSsnIni('url');
     $url = $url.'u_registration.php?acd='.$insertid.'x'.$member->m_id.$limitdt;
-    $text2 = str_replace('__URL__', $url , $mails->add_member_text);
+    $text2 = str_replace('__URL__', $url, $mails->add_member_text);
     $text = str_replace('__NAME__', $member->m_name, $text2);
 
     $to      = $member->m_mail;
@@ -88,14 +88,15 @@ $mails = getMails();
     <div id="precontents">
         <h3><br>会員情報確認</h3>
         <?php if (empty($errorMessage)) { ?>
-            <span class="err">下記内容で登録します。<br>登録内容を確認してください。<br><br></span>
+        <span class="err">下記内容で登録します。<br>登録内容を確認してください。<br><br></span>
         <?php } else { ?>
-            <span class="err"><?php echo $errorMessage; ?></span>
+        <span class="err"><?php echo $errorMessage; ?></span>
         <?php } ?>
         <div name="editFrm">
             <form action="" method="POST" name="frm">
 
                 <span class="lightgrey">お名前</span><br><?php echo $member->m_name ?><br><br>
+                <span class="lightgrey">フリガナ</span><br><?php echo $member->m_kana ?><br><br>
                 <span class="lightgrey">メールアドレス</span><br><?php echo $member->m_mail ?><br><br>
                 <span class="lightgrey">郵便番号(ハイフンなし)</span><br><?php echo $member->m_post ?><br><br>
                 <span class="lightgrey">住所</span><br><?php echo $member->m_address1 ?><br><br>

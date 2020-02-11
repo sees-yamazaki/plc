@@ -6,6 +6,7 @@ class cls_members
     public $m_id;
     public $m_pw;
     public $m_name;
+    public $m_kana;
     public $m_mail;
     public $m_post;
     public $m_address1;
@@ -39,6 +40,7 @@ class cls_members
                 $result->m_id = $row['m_id'];
                 $result->m_pw = $row['m_pw'];
                 $result->m_name = $row['m_name'];
+                $result->m_kana = $row['m_kana'];
                 $result->m_mail = $row['m_mail'];
                 $result->m_post = $row['m_post'];
                 $result->m_address1 = $row['m_address1'];
@@ -71,6 +73,7 @@ class cls_members
                 $result->m_id = $row['m_id'];
                 $result->m_pw = $row['m_pw'];
                 $result->m_name = $row['m_name'];
+                $result->m_kana = $row['m_kana'];
                 $result->m_mail = $row['m_mail'];
                 $result->m_post = $row['m_post'];
                 $result->m_address1 = $row['m_address1'];
@@ -103,6 +106,7 @@ class cls_members
                 $result->m_id = $row['m_id'];
                 $result->m_pw = $row['m_pw'];
                 $result->m_name = $row['m_name'];
+                $result->m_kana = $row['m_kana'];
                 $result->m_mail = $row['m_mail'];
                 $result->m_post = $row['m_post'];
                 $result->m_address1 = $row['m_address1'];
@@ -160,6 +164,7 @@ class cls_members
                 $result->m_id = $row['m_id'];
                 $result->m_pw = $row['m_pw'];
                 $result->m_name = $row['m_name'];
+                $result->m_kana = $row['m_kana'];
                 $result->m_mail = $row['m_mail'];
                 $result->m_post = $row['m_post'];
                 $result->m_address1 = $row['m_address1'];
@@ -192,7 +197,7 @@ class cls_members
 
     function loginMember($m_mail, $m_pw)
     {
-            $result = new cls_members();
+        $result = new cls_members();
         try {
             require './db/dns.php';
             $stmt = $pdo->prepare("SELECT * FROM `members` WHERE m_mail=:m_mail and m_pw=:m_pw");
@@ -204,6 +209,7 @@ class cls_members
                 $result->m_id = $row['m_id'];
                 $result->m_pw = $row['m_pw'];
                 $result->m_name = $row['m_name'];
+                $result->m_kana = $row['m_kana'];
                 $result->m_mail = $row['m_mail'];
                 $result->m_post = $row['m_post'];
                 $result->m_address1 = $row['m_address1'];
@@ -256,6 +262,7 @@ class cls_members
                 $result->m_id = $row['m_id'];
                 $result->m_pw = $row['m_pw'];
                 $result->m_name = $row['m_name'];
+                $result->m_kana = $row['m_kana'];
                 $result->m_mail = $row['m_mail'];
                 $result->m_post = $row['m_post'];
                 $result->m_address1 = $row['m_address1'];
@@ -289,11 +296,12 @@ class cls_members
     {
         try {
             require './db/dns.php';
-            $sql = "INSERT  INTO `members` (  `m_id`,  `m_pw`,  `m_name`,  `m_mail`,  `m_post`,  `m_address1`,  `m_address2`,  `m_tel`) VALUES (:m_id, :m_pw, :m_name, :m_mail, :m_post, :m_address1, :m_address2, :m_tel)";
+            $sql = "INSERT  INTO `members` (  `m_id`,  `m_pw`,  `m_name`, `m_kana`,  `m_mail`,  `m_post`,  `m_address1`,  `m_address2`,  `m_tel`) VALUES (:m_id, :m_pw, :m_name, :m_kana, :m_mail, :m_post, :m_address1, :m_address2, :m_tel)";
             $stmt = $pdo -> prepare($sql);
             $stmt->bindParam(':m_id', $members->m_id, PDO::PARAM_STR);
             $stmt->bindParam(':m_pw', $members->m_pw, PDO::PARAM_STR);
             $stmt->bindParam(':m_name', $members->m_name, PDO::PARAM_STR);
+            $stmt->bindParam(':m_kana', $members->m_kana, PDO::PARAM_STR);
             $stmt->bindParam(':m_mail', $members->m_mail, PDO::PARAM_STR);
             $stmt->bindParam(':m_post', $members->m_post, PDO::PARAM_INT);
             $stmt->bindParam(':m_address1', $members->m_address1, PDO::PARAM_STR);
@@ -318,10 +326,11 @@ class cls_members
     {
         try {
             require './db/dns.php';
-            $sql = " UPDATE `members`  SET  `m_name`=:m_name,  `m_mail`=:m_mail,  `m_post`=:m_post,  `m_address1`=:m_address1,  `m_address2`=:m_address2,  `m_tel`=:m_tel,editdt=NOW() WHERE m_seq=:m_seq";
+            $sql = " UPDATE `members`  SET  `m_name`=:m_name, `m_kana`=:m_kana , `m_mail`=:m_mail,  `m_post`=:m_post,  `m_address1`=:m_address1,  `m_address2`=:m_address2,  `m_tel`=:m_tel,editdt=NOW() WHERE m_seq=:m_seq";
             $stmt = $pdo -> prepare($sql);
             $stmt->bindParam(':m_seq', $members->m_seq, PDO::PARAM_INT);
             $stmt->bindParam(':m_name', $members->m_name, PDO::PARAM_STR);
+            $stmt->bindParam(':m_kana', $members->m_kana, PDO::PARAM_STR);
             $stmt->bindParam(':m_mail', $members->m_mail, PDO::PARAM_STR);
             $stmt->bindParam(':m_post', $members->m_post, PDO::PARAM_INT);
             $stmt->bindParam(':m_address1', $members->m_address1, PDO::PARAM_STR);
@@ -333,7 +342,7 @@ class cls_members
                 logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
                 logging("UPDATE ERROR : ". $sql);
                 logging("ARGS : ". json_encode(func_get_args()));
-            }else{
+            } else {
                 $sql = " UPDATE `ships` SET `sp_name`=:sp_name,`sp_post`=:sp_post,`sp_address1`=:sp_address1,`sp_address2`=:sp_address2,`sp_tel`=:sp_tel, editdt=NOW()  WHERE m_seq=:m_seq AND edit_flg=0 AND sp_flg=0 " ;
                 $stmt = $pdo -> prepare($sql);
                 $stmt->bindParam(':sp_name', $members->m_name, PDO::PARAM_STR);
@@ -343,7 +352,6 @@ class cls_members
                 $stmt->bindParam(':sp_tel', $members->m_tel, PDO::PARAM_STR);
                 $stmt->bindParam(':m_seq', $members->m_seq, PDO::PARAM_INT);
                 execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
-
             }
         } catch (PDOException $e) {
             $errorMessage = 'データベースエラー';

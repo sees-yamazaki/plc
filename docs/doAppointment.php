@@ -83,9 +83,9 @@ if ($member->m_flg1==0) {
     <link rel="stylesheet" href="./asset/css/main.css">
     <script src="./asset/js/main.js"></script>
     <script>
-    function back() {
-        document.frm.submit();
-    }
+        function back() {
+            document.frm.submit();
+        }
     </script>
 </head>
 
@@ -105,7 +105,7 @@ if ($member->m_flg1==0) {
 
 
                 <div class="col-lg-12">
-                <button type="button" class="btn btn-outline-dark" onclick="back()">戻る</button>
+                    <button type="button" class="btn btn-outline-dark" onclick="back()">戻る</button>
                     <div class="grid">
                         <div class="grid-body">
                             <div class="item-wrapper">
@@ -141,7 +141,8 @@ if ($member->m_flg1==0) {
                                         </div>
                                         <div class="col-md-9 showcase_content_area">
                                             <input type="date" class="form-control" name="m_date"
-                                                value="<?php echo $member->m_date; ?>" required>
+                                                value="<?php echo $member->m_date; ?>"
+                                                required>
                                         </div>
                                     </div>
 
@@ -151,7 +152,8 @@ if ($member->m_flg1==0) {
                                         </div>
                                         <div class="col-md-9 showcase_content_area">
                                             <input type="time" class="form-control" name="m_time"
-                                                value="<?php echo $member->m_time; ?>" required>
+                                                value="<?php echo $member->m_time; ?>"
+                                                required>
                                         </div>
                                     </div>
 
@@ -176,15 +178,18 @@ if ($member->m_flg1==0) {
                                     <button type="submit" class="btn btn-primary btn-block mt-0"
                                         name="prizeEdit">登　録</button>
                                     <input type="hidden" name="doEdit" value="0">
-                                    <input type="hidden" name="mSeq" value="<?php echo $mSeq; ?>">
+                                    <input type="hidden" name="mSeq"
+                                        value="<?php echo $mSeq; ?>">
                                 </form>
                                 <br><br>
                                 <form action='' method="POST" onsubmit="return addcheck()">
-                                <button type="submit" class="btn btn-danger btn-block mt-0"
+                                    <button type="submit" class="btn btn-danger btn-block mt-0"
                                         name="prizeEdit">日付をクリアする</button>
                                     <input type="hidden" name="doClear" value="0">
-                                    <input type="hidden" name="mSeq" value="<?php echo $mSeq; ?>">
-                                    <input type="hidden" name="grp" value="<?php echo $grp; ?>">
+                                    <input type="hidden" name="mSeq"
+                                        value="<?php echo $mSeq; ?>">
+                                    <input type="hidden" name="grp"
+                                        value="<?php echo $grp; ?>">
                                 </form>
 
                             </div>
@@ -198,7 +203,6 @@ if ($member->m_flg1==0) {
         </div>
     </div>
 
-    <?php include('./a_footer.php'); ?>
 
     </div>
     </div>

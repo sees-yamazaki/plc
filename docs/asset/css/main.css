@@ -7,6 +7,10 @@
     font-weight: bold;
 }
 
+.lightGray {
+    color: rgba(207, 207, 207, 0.856);
+}
+
 .blueBold {
     color: blue;
     font-weight: bold;
@@ -84,5 +88,13 @@ a.app {
 }
 
 a.app:hover {
+    color: red;
+}
+
+a.app2 {
+    color: rgba(224, 217, 217, 0.836);
+}
+
+a.app2:hover {
     color: red;
 }

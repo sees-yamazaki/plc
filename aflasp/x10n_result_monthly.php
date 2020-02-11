@@ -14,32 +14,41 @@ date_default_timezone_set('Asia/Tokyo');
 // エラーメッセージの初期化
 $errorMessage = '';
 
-$LOGIN_ID = $_SESSION[ $SESSION_NAME ];
-$thisY = date('Y');
-$thisM = date('m');
-$cnt_click_0 = countMonthlyClicks($thisY, $thisM, $LOGIN_ID, 0);
-$pays_0 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 0);
-$cnt_click_1 = countMonthlyClicks($thisY, $thisM, $LOGIN_ID, 1);
-$pays_1 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 1);
+$adtype =  isset($_GET['adtype']) ? $_GET['adtype'] : $_POST['adtype'] ;
 
+$LOGIN_ID = $_SESSION[ $SESSION_NAME ];
+$thisY = empty($_POST['thisY']) ? date('Y') : $_POST['thisY'];
+$thisM = empty($_POST['thisM']) ? date('m') : $_POST['thisM'];
+//$cnt_click = countMonthlyClicks($thisY, $thisM, $LOGIN_ID, $adtype);
+$pays = countMonthlyPaysGroups($thisY, $thisM, $LOGIN_ID, $adtype);
+$nextYM = date('Ym', strtotime(date($thisY.'-'.$thisM.'-1') . '+1 month'));
+$lastYM = date('Ym', strtotime(date($thisY.'-'.$thisM.'-1') . '-1 month'));
 
 $ads = getAdwaresRecentry(7);
 
-$rcntyHtml='';
-foreach($ads as $ad){
-    $rcntyHtml .= '<tr><td>';
-    if ($ad->adware_type=="0") {
-        $rcntyHtml .= '[目標]';
-    }else{
-        $rcntyHtml .= '[クリック]';
-    }
-    if ($ad->approvable=="1") {
-        $rcntyHtml .= '</td><td><a href="x10n_adwares_info.php?id='.$ad->id.'">'.$ad->name.'</a></td><td>';
-    }else{
-        $rcntyHtml .= '</td><td><a href="x10n_adwares_info.php?id='.$ad->id.'">'.$ad->name.'</a> [承認制]</td><td>';
-    }
-    $rcntyHtml .= '</td></tr>';
+$titleHtml='';
+$backHtml='';
+if ($adtype=="0") {
+    $titleHtml .= '目標達成報酬（月別）';
+    $backHtml='<a href="x10n_result_action.php?adtype=0">目的達成報酬（発生別）へ</a>';
+} else {
+    $titleHtml .= 'クリック報酬（月別）';
+    $backHtml='<a href="x10n_result_action.php?adtype=1">クリック報酬（発生別）へ</a>';
 }
+
+$yHtml='<select name="thisY">';
+for ($i = 2020; $i <= date('Y'); $i++) {
+    $sd = $i==$thisY ? ' selected' : '';
+    $yHtml.="<option value='".$i."' ".$sd.">".$i."</option>";
+}
+$yHtml.='</select>';
+$mHtml='<select name="thisM">';
+for ($i = 1; $i <= 12; $i++) {
+    $sd = $i==($thisM*1) ? ' selected' : '';
+    $mHtml.="<option value='".$i."' ".$sd.">".$i."</option>";
+}
+$mHtml.='</select>';
+
 
 
 
@@ -50,7 +59,8 @@ foreach($ads as $ad){
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo ""; ?></title>
+    <title><?php echo ""; ?>
+    </title>
     <link rel="stylesheet" href="x10n/css/main.css">
 </head>
 
@@ -60,38 +70,21 @@ foreach($ads as $ad){
     <?php if (!empty($errorMessage)) { ?>
     <span class="err"><?php echo $errorMessage; ?></span>
     <?php } ?>
-    今月の成果<br>
 
-    <table>
-        <tr>
-            <td colspan=6>すべて</td>
-        </tr>
-        <tr>
-            <td>クリック</td>
-            <td>発生成果</td>
-            <td>確定成果</td>
-            <td>未確定成果</td>
-            <td>確定報酬</td>
-            <td>非認証</td>
-        </tr>
-        <tr>
-            <td><?php echo ($cnt_click_0 + $cnt_click_1); ?>件</td>
-            <td><?php echo ($pays_0->cnt + $pays_1->cnt); ?>件</td>
-            <td><?php echo ($pays_0->cnt2 + $pays_1->cnt2); ?>件</td>
-            <td><?php echo ($pays_0->cst0 + $pays_0->cst1 + $pays_1->cst0 + $pays_1->cst1); ?>円</td>
-            <td><?php echo ($pays_0->cst2 + $pays_1->cst2); ?>円</td>
-            <td><?php echo ($pays_0->cnt0 + $pays_0->cnt1 + $pays_1->cnt0 + $pays_1->cnt1); ?>件</td>
-        </tr>
-        <tr>
-            <td colspan=6>もっと見る</td>
-        </tr>
-    </table>
+    <?php echo $titleHtml; ?><br>
+    月選択<br>
+    <form action="" method="POST" name="frm">
+    <?php echo $yHtml; ?><?php echo $mHtml; ?><br>
+    <input type="submit" value="表示">
+    <input type="hidden" name="adtype" value="<?php echo $adtype; ?>">
+    </form>
     <br>
+
+    <?php echo $thisY; ?>年<?php echo $thisM; ?>月の成果一覧<br>
+
     <table>
         <tr>
-            <td colspan=6>目標報酬</td>
-        </tr>
-        <tr>
+            <td>案件名</td>
             <td>クリック</td>
             <td>発生成果</td>
             <td>確定成果</td>
@@ -99,62 +92,43 @@ foreach($ads as $ad){
             <td>確定報酬</td>
             <td>非認証</td>
         </tr>
+        <?php foreach($pays as $p){ ?>
         <tr>
-            <td><?php echo $cnt_click_0; ?>件</td>
-            <td><?php echo $pays_0->cnt; ?>件</td>
-            <td><?php echo $pays_0->cnt2; ?>件</td>
-            <td><?php echo ($pays_0->cst0 + $pays_0->cst1); ?>円</td>
-            <td><?php echo $pays_0->cst2; ?>円</td>
-            <td><?php echo ($pays_0->cnt0 + $pays_0->cnt1); ?>件</td>
+            <td><a href='x10n_adwares_info.php?id=<?php echo $p->id; ?>'><?php echo $p->name; ?></a></td>
+            <?php $cnt = countMonthlyClicksAdwares($thisY, $thisM, $LOGIN_ID, $p->id); ?>
+            <td><?php echo $cnt; ?>件</td>
+            <td><?php echo $p->cnt; ?>件</td>
+            <td><?php echo $p->cnt2; ?>件</td>
+            <td><?php echo($p->cst0 + $p->cst1); ?>円</td>
+            <td><?php echo $p->cst2; ?>円</td>
+            <td><?php echo($p->cnt0 + $p->cnt1); ?>件</td>
         </tr>
-        <tr>
-            <td colspan=6>もっと見る</td>
-        </tr>
-    </table>
-    <br>
-    <table>
-        <tr>
-            <td colspan=6>クリック報酬</td>
-        </tr>
-        <tr>
-            <td>クリック</td>
-            <td>発生成果</td>
-            <td>確定成果</td>
-            <td>未確定成果</td>
-            <td>確定報酬</td>
-            <td>非認証</td>
-        </tr>
-        <tr>
-            <td><?php echo $cnt_click_1; ?>件</td>
-            <td><?php echo $pays_1->cnt; ?>件</td>
-            <td><?php echo $pays_1->cnt2; ?>件</td>
-            <td><?php echo ($pays_1->cst0 + $pays_1->cst1); ?>円</td>
-            <td><?php echo $pays_1->cst2; ?>円</td>
-            <td><?php echo ($pays_1->cnt0 + $pays_1->cnt1); ?>件</td>
-        </tr>
-        <tr>
-            <td colspan=6>もっと見る</td>
-        </tr>
+        <?php } ?>
     </table>
 
-    <br><br>
-    新着オファー<br>
     <table>
-        <?php echo  $rcntyHtml; ?>
         <tr>
-            <td colspan=2>オファー一覧へ</td>
+        <form action="" method="POST" name="frm">
+            <td><input type="submit" value="＜前月へ"></td>
+            <input type="hidden" name="thisY" value="<?php echo substr($lastYM,0,4); ?>">
+            <input type="hidden" name="thisM" value="<?php echo substr($lastYM,4); ?>">
+            <input type="hidden" name="adtype" value="<?php echo $adtype; ?>">
+        </form>
+        <form action="" method="POST" name="frm">
+            <td><input type="submit" value="翌月へ＞"></td>
+            <input type="hidden" name="thisY" value="<?php echo substr($nextYM,0,4); ?>">
+            <input type="hidden" name="thisM" value="<?php echo substr($nextYM,4); ?>">
+            <input type="hidden" name="adtype" value="<?php echo $adtype; ?>">
+        </form>
         </tr>
-    </table>
+        </table>
+
+
 
     <br><br>
-    承認制オファー概要<br>
-    <table>
-    </table>
-
-<br><br>
-    <input type="button" onclick="location.href='x10n_result_list.php'" value="成果情報">
-    <br><br>
-    <input type="button" onclick="location.href='x10n_adwares_search.php'" value="オファー一覧へ">
+    <?php echo $backHtml; ?><br>
+    <a href='x10n_result_list.php?adtype=0'>成果報酬トップへ</a><br><br>
+    <input type="button" onclick="location.href='x10n_home.php'" value="トップへ">
 </body>
 
 </html>

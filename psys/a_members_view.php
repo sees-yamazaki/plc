@@ -139,6 +139,16 @@ $errorMessage = '';
                                             </div>
                                         </div>
 
+
+                                        <div class="form-group row showcase_row_area">
+                                            <div class="col-md-3 showcase_text_area">
+                                                <label for="inputType1">フリガナ</label>
+                                            </div>
+                                            <div class="col-md-9 showcase_content_area">
+                                                <label for="inputType1"><?php echo $member->m_kana; ?></label>
+                                            </div>
+                                        </div>
+
                                         <div class="form-group row showcase_row_area">
                                             <div class="col-md-3 showcase_text_area">
                                                 <label for="inputType1">メール</label>

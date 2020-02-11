@@ -32,6 +32,7 @@ if (isset($_POST['back']) || isset($_POST['paging'])) {
     $searchData['search_s_login'] = $_POST['search_s_login'];
     $searchData['search_e_login'] = $_POST['search_e_login'];
     $searchData['search_name'] = $_POST['search_name'];
+    $searchData['search_kana'] = $_POST['search_kana'];
     $searchData['search_rows'] = $_POST['search_rows'];
     $searchData['search_min_cnt_entry'] = $_POST['search_min_cnt_entry'];
     $searchData['search_max_cnt_entry'] = $_POST['search_max_cnt_entry'];
@@ -68,6 +69,9 @@ $tmp = array();
 
 if (!empty($searchData['search_name'])) {
     $tmp[] = "(m_name LIKE '%".$searchData['search_name']."%')";
+}
+if (!empty($searchData['search_kana'])) {
+    $tmp[] = "(m_kana LIKE '%".$searchData['search_kana']."%')";
 }
 if (strlen($searchData['search_min_point'])>0) {
     $tmp[] = "(crnt_point>=".$searchData['search_min_point'].")";
@@ -128,6 +132,7 @@ $html = '';
 foreach ($members as $member) {
     $html .= '<tr>';
     $html .= '<td>'.$member->m_name.'</td>';
+    $html .= '<td>'.$member->m_kana.'</td>';
     $html .= '<td>'.$member->crnt_point.'</td>';
     if (empty($member->logindt)) {
         $html .= '<td>--</td>';
@@ -154,22 +159,23 @@ for ($i = 1; $i <= $maxPage; ++$i) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo getSsnMyname(); ?></title>
+    <title><?php echo getSsnMyname(); ?>
+    </title>
     <link rel="stylesheet" href="./assets/vendors/iconfonts/mdi/css/materialdesignicons.css">
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">
     <link rel="shortcut icon" href="../asssets/images/favicon.ico" />
     <link rel="stylesheet" href="./asset/css/main.css">
     <script>
-    function mmbrView(vlu) {
-        document.frm.mSeq.value = vlu;
-        document.frm.submit();
-    }
+        function mmbrView(vlu) {
+            document.frm.mSeq.value = vlu;
+            document.frm.submit();
+        }
 
-    function paging(vlu) {  
-        document.pFrm.page.value = vlu;
-        document.pFrm.submit();
-    }
+        function paging(vlu) {
+            document.pFrm.page.value = vlu;
+            document.pFrm.submit();
+        }
     </script>
 </head>
 
@@ -189,11 +195,13 @@ for ($i = 1; $i <= $maxPage; ++$i) {
             <div class="content-viewport">
 
 
-                <div id="searchfrom" class="grid <?php echo $formbg; ?>">
+                <div id="searchfrom"
+                    class="grid <?php echo $formbg; ?>">
                     <div class="btn btn-rounded social-icon-btn btn-facebook">
                         <i class="mdi mdi-magnify" onclick="openclose()"></i>
                     </div>
-                    <div class="grid-body <?php echo $openclose; ?>" id="open">
+                    <div class="grid-body <?php echo $openclose; ?>"
+                        id="open">
                         <form action="" method="POST">
 
                             <div class="form-group row">
@@ -202,55 +210,74 @@ for ($i = 1; $i <= $maxPage; ++$i) {
                                     <input type="text" class="form-control w50p search" name="search_name"
                                         value="<?php echo $searchData['search_name']; ?>">
                                 </div>
-                            <div class="col-md-12 showcase_text_area">
-                                <label for="inputType1">保有ポイント-></label>
-                                <input type="number" class="form-control w20p search" name="search_min_point"
-                                    value="<?php echo $searchData['search_min_point']; ?>" autocomplete="off">　〜　
-                                <input type="number" class="form-control w20p search" name="search_max_point"
-                                    value="<?php echo $searchData['search_max_point']; ?>" autocomplete="off">
-                            </div>
-                            <div class="col-md-12 showcase_text_area">
-                                <label for="inputType1">最終ログイン-></label>
-                                <input type="date" class="form-control w30p search" name="search_s_login"
-                                    value="<?php echo $searchData['search_s_login']; ?>" autocomplete="off">　〜　
-                                <input type="date" class="form-control w30p search" name="search_e_login"
-                                    value="<?php echo $searchData['search_e_login']; ?>" autocomplete="off">
-                            </div>
-                            <div class="col-md-12 showcase_text_area">
-                                <label for="inputType1">登録回数-></label>
-                                <input type="number" class="form-control w20p search" name="search_min_cnt_entry"
-                                    value="<?php echo $searchData['search_min_cnt_entry']; ?>" autocomplete="off">　〜　
-                                <input type="number" class="form-control w20p search" name="search_max_cnt_entry"
-                                    value="<?php echo $searchData['search_max_cnt_entry']; ?>" autocomplete="off">
-                            </div>
-                            <div class="col-md-12 showcase_text_area">
-                                <label for="inputType1">当り回数-></label>
-                                <input type="number" class="form-control w20p search" name="search_min_cnt_hit"
-                                    value="<?php echo $searchData['search_min_cnt_hit']; ?>" autocomplete="off">　〜　
-                                <input type="number" class="form-control w20p search" name="search_max_cnt_hit"
-                                    value="<?php echo $searchData['search_max_cnt_hit']; ?>" autocomplete="off">
-                            </div>
-                            <div class="col-md-12 showcase_text_area">
-                                <label for="inputType1">外れ回数-></label>
-                                <input type="number" class="form-control w20p search" name="search_min_cnt_miss"
-                                    value="<?php echo $searchData['search_min_cnt_miss']; ?>" autocomplete="off">　〜　
-                                <input type="number" class="form-control w20p search" name="search_max_cnt_miss"
-                                    value="<?php echo $searchData['search_max_cnt_miss']; ?>" autocomplete="off">
-                            </div>
-                                <div class="col-md-12 showcase_text_area">
-                                    <label for="inputType1">表示件数-></label>
-                                    <label class="radio-label mr-4">
-                                        <input name="search_rows" type="radio" value="50"
-                                            <?php echo $search_rows_50; ?>>１０件 <i class="input-frame"></i>
-                                        <input name="search_rows" type="radio" value="100"
-                                            <?php echo $search_rows_100; ?>>１００件 <i class="input-frame"></i>
-                                        <input name="search_rows" type="radio" value="300"
-                                            <?php echo $search_rows_300; ?>>３００件 *ページングのテストのため最小人数は少なくしてあります。<i class="input-frame"></i>
-                                    </label>
+                                <div class="form-group row">
+                                    <div class="col-md-12 showcase_text_area">
+                                        <label for="inputType1">フリガナ-></label>
+                                        <input type="text" class="form-control w50p search" name="search_kana"
+                                            value="<?php echo $searchData['search_kana']; ?>">
+                                    </div>
+                                    <div class="col-md-12 showcase_text_area">
+                                        <label for="inputType1">保有ポイント-></label>
+                                        <input type="number" class="form-control w20p search" name="search_min_point"
+                                            value="<?php echo $searchData['search_min_point']; ?>"
+                                            autocomplete="off">　〜　
+                                        <input type="number" class="form-control w20p search" name="search_max_point"
+                                            value="<?php echo $searchData['search_max_point']; ?>"
+                                            autocomplete="off">
+                                    </div>
+                                    <div class="col-md-12 showcase_text_area">
+                                        <label for="inputType1">最終ログイン-></label>
+                                        <input type="date" class="form-control w30p search" name="search_s_login"
+                                            value="<?php echo $searchData['search_s_login']; ?>"
+                                            autocomplete="off">　〜　
+                                        <input type="date" class="form-control w30p search" name="search_e_login"
+                                            value="<?php echo $searchData['search_e_login']; ?>"
+                                            autocomplete="off">
+                                    </div>
+                                    <div class="col-md-12 showcase_text_area">
+                                        <label for="inputType1">登録回数-></label>
+                                        <input type="number" class="form-control w20p search"
+                                            name="search_min_cnt_entry"
+                                            value="<?php echo $searchData['search_min_cnt_entry']; ?>"
+                                            autocomplete="off">　〜　
+                                        <input type="number" class="form-control w20p search"
+                                            name="search_max_cnt_entry"
+                                            value="<?php echo $searchData['search_max_cnt_entry']; ?>"
+                                            autocomplete="off">
+                                    </div>
+                                    <div class="col-md-12 showcase_text_area">
+                                        <label for="inputType1">当り回数-></label>
+                                        <input type="number" class="form-control w20p search" name="search_min_cnt_hit"
+                                            value="<?php echo $searchData['search_min_cnt_hit']; ?>"
+                                            autocomplete="off">　〜　
+                                        <input type="number" class="form-control w20p search" name="search_max_cnt_hit"
+                                            value="<?php echo $searchData['search_max_cnt_hit']; ?>"
+                                            autocomplete="off">
+                                    </div>
+                                    <div class="col-md-12 showcase_text_area">
+                                        <label for="inputType1">外れ回数-></label>
+                                        <input type="number" class="form-control w20p search" name="search_min_cnt_miss"
+                                            value="<?php echo $searchData['search_min_cnt_miss']; ?>"
+                                            autocomplete="off">　〜　
+                                        <input type="number" class="form-control w20p search" name="search_max_cnt_miss"
+                                            value="<?php echo $searchData['search_max_cnt_miss']; ?>"
+                                            autocomplete="off">
+                                    </div>
+                                    <div class="col-md-12 showcase_text_area">
+                                        <label for="inputType1">表示件数-></label>
+                                        <label class="radio-label mr-4">
+                                            <input name="search_rows" type="radio" value="50" <?php echo $search_rows_50; ?>>１０件
+                                            <i class="input-frame"></i>
+                                            <input name="search_rows" type="radio" value="100" <?php echo $search_rows_100; ?>>１００件
+                                            <i class="input-frame"></i>
+                                            <input name="search_rows" type="radio" value="300" <?php echo $search_rows_300; ?>>３００件
+                                            *ページングのテストのため最小人数は少なくしてあります。<i class="input-frame"></i>
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                            <br>
-                            <button type="submit" class="btn btn-primary btn-block mt-0" name="search" value="1">検索</button>
+                                <br>
+                                <button type="submit" class="btn btn-primary btn-block mt-0" name="search"
+                                    value="1">検索</button>
                         </form>
 
                         <span class="clrRed"><?php echo $errorMessage ?></span>
@@ -266,6 +293,7 @@ for ($i = 1; $i <= $maxPage; ++$i) {
                     <thead>
                         <tr>
                             <th>名前</th>
+                            <th>フリガナ</th>
                             <th>保有ポイント</th>
                             <th>最終ログイン</th>
                             <th>登録回数</th>

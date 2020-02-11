@@ -22,25 +22,25 @@ $grp = isset($_GET['grp']) ? $_GET['grp'] : $_POST['grp'];
 
 
  try {
-    //  if ($stts=="dl") {
-    //      $readbook = getBook($bSeq);
+     //  if ($stts=="dl") {
+     //      $readbook = getBook($bSeq);
 
-    //      // if($readbook->bks_pw==$bPw){
-    //      $fileNm = "./files/".$readbook->bks_seq."_".$readbook->bks_file;
-    //      header('Content-Type: application/octet-stream');
-    //      header('Content-Length: '.filesize($fileNm));
-    //      header('Content-Disposition: attachment; filename='.$readbook->bks_file);
-    //      readfile($fileNm);
-    //      // }else{
-    //     //     $errorMessage = "<h3>ダウンロードパスワードが一致しません。</h3>";
-    //     // }
-    //  }
+     //      // if($readbook->bks_pw==$bPw){
+     //      $fileNm = "./files/".$readbook->bks_seq."_".$readbook->bks_file;
+     //      header('Content-Type: application/octet-stream');
+     //      header('Content-Length: '.filesize($fileNm));
+     //      header('Content-Disposition: attachment; filename='.$readbook->bks_file);
+     //      readfile($fileNm);
+     //      // }else{
+     //     //     $errorMessage = "<h3>ダウンロードパスワードが一致しません。</h3>";
+     //     // }
+     //  }
 
 
 
-    $members = getGroupMembers($grp);
+     $members = getGroupMembers($grp);
 
-    $html="";
+     $html="";
      foreach ($members as $member) {
          $html .= '<tr>';
          $html .= "<td>";
@@ -49,12 +49,12 @@ $grp = isset($_GET['grp']) ? $_GET['grp'] : $_POST['grp'];
          $html .= "<td>".$member->m_group."</td>";
          $html .= "<td>".$member->m_position."</td>";
          $html .= "<td>".$member->m_name."</td>";
-         $html .= "<td>".$member->m_date." ".substr($member->m_time,0,5)."</td>";
+         $html .= "<td>".$member->m_date." ".substr($member->m_time, 0, 5)."</td>";
          if (!empty($member->m_date) && $member->m_flg1==0) {
-            $html .= "<td>仮</td>";
-        }else{
-            $html .= "<td></td>";
-        }
+             $html .= "<td>仮</td>";
+         } else {
+             $html .= "<td></td>";
+         }
          //$html .= "<td><input type='text' class='form-control w50p' id='pw".$book->bks_seq."' autocomplete='off'></td>";
          $html .= "</tr>";
      }
@@ -70,18 +70,19 @@ $grp = isset($_GET['grp']) ? $_GET['grp'] : $_POST['grp'];
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo getSsnMyname(); ?></title>
+    <title><?php echo getSsnMyname(); ?>
+    </title>
     <link rel="stylesheet" href="./assets/vendors/iconfonts/mdi/css/materialdesignicons.css">
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">
     <link rel="shortcut icon" href="../asssets/images/favicon.ico" />
     <link rel="stylesheet" href="./asset/css/main.css">
     <script>
-    function scDL(vlu) {
-        document.frm2.mSeq.value = vlu;
-        //document.frm2.bPw.value = document.getElementById('pw'+vlu).value;
-        document.frm2.submit();
-    }
+        function scDL(vlu) {
+            document.frm2.mSeq.value = vlu;
+            //document.frm2.bPw.value = document.getElementById('pw'+vlu).value;
+            document.frm2.submit();
+        }
     </script>
 </head>
 
@@ -117,7 +118,6 @@ $grp = isset($_GET['grp']) ? $_GET['grp'] : $_POST['grp'];
         </div>
     </div>
 
-    <?php include('./a_footer.php'); ?>
 
     </div>
     </div>
