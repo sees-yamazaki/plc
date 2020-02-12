@@ -32,6 +32,7 @@ require_once './db/prizes.php';
 $html2 = '';
 $html2 .= '<div class="rDiv w80p">';
 
+
 if ($result=="hit") {
     $imageUrl = './asset/image/result_hit.png';
     $prize = getPrize($pzSeq);
@@ -55,6 +56,7 @@ if ($result=="hit") {
 }
 $html2 .= '商品は来月末のご発送になります。<br>商品発送まで今しばらくお待ちくださいませ。';
 $html2 .= '</div>';
+
 
 
 ?>
@@ -93,19 +95,23 @@ $html2 .= '</div>';
     <div id="contents">
 
         <div class="waku">
-        <img class='w100p' border=0 src="<?php echo $imageUrl; ?>">
+            <img class='w100p' border=0
+                src="<?php echo $imageUrl; ?>">
         </div>
         <?php echo $html2; ?>
         <div class="waku">
-        <input type='button' class='rButton w80p f1rem btn-red' onclick="location.href='u_home.php'" value='MY PAGEに戻る' />
-        <br>
-        <form action="u_shipform.php" method="POST" name="frm">
-        <input type="submit" class="rButton w80p btn-red-rev" value="発送先を指定する場合はこちら" />
-        <input type="hidden" name="pzSeq" value="<?php echo $sendPzSeq; ?>">
-        <input type="hidden" name="spSeq" value="<?php echo $spSeq; ?>">
-        </form>
+            <input type='button' class='rButton w80p f1rem btn-red' onclick="location.href='u_home.php'"
+                value='MY PAGEに戻る' />
+            <br>
+            <form action="u_shipform.php" method="POST" name="frm">
+                <input type="submit" class="rButton w80p btn-red-rev" value="発送先を指定する場合はこちら" />
+                <input type="hidden" name="pzSeq"
+                    value="<?php echo $sendPzSeq; ?>">
+                <input type="hidden" name="spSeq"
+                    value="<?php echo $spSeq; ?>">
+            </form>
         </div>
-        </div>
+    </div>
 </body>
 
 </html>

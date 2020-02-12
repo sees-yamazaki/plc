@@ -1,6 +1,8 @@
 <?php
 require('session.php');
 require('logging.php');
+require('db/mails.php');
+
 
 // セッション開始
 session_start();
@@ -20,6 +22,9 @@ $gSeq = $_POST['gSeq'];
 $pzSeq = $_POST['pzSeq'];
 $sendPzSeq = $pzSeq;
 
+
+//MAIL
+$mails = getMails();
 
 require_once './db/games.php';
 $game = getGame($gSeq);
@@ -41,17 +46,29 @@ $result = "miss";
 
 require_once './db/prizes.php';
 $prize = countupPrize($pzSeq);
-$hitcnts = explode(",",$prize->pz_hitcnt);
+$hitcnts = explode(",", $prize->pz_hitcnt);
+
+$sendItem = '';
+$base_title = '';
+$base_text = '';
 if (in_array($prize->pz_nowcnt, $hitcnts)) {
     $gameResult = "WINNER！！";
     $resultImg = "./".getSsn('PATH_GAME')."/".$game->g_seq."/".$game->g_image_hit;
 
     $usepoint->up_status = 1;
     $result = "hit";
-}else{
+
+    $sendItem = $prize->pz_title;
+    $base_title = $mails->game_hit_title;
+    $base_text = $mails->game_hit_text;
+} else {
     $missPrize = getMissPrize($pSeq);
     $sendPzSeq = $missPrize->pz_seq;
     $usepoint->pz_seq = $sendPzSeq;
+
+    $sendItem = $missPrize->pz_title;
+    $base_title = $mails->game_miss_title;
+    $base_text = $mails->game_miss_text;
 }
  
 $upSeq = insertUsepoints($usepoint);
@@ -74,6 +91,27 @@ $spSeq  = insertShip($ship);
 
 require_once './db/views.php';
 $point = getPoint(getSsn("SEQ"));
+
+
+
+mb_language("Japanese");
+mb_internal_encoding("UTF-8");
+$text = str_replace('__ITEM__', $sendItem, $base_text);
+$text = str_replace('__NAME__', $member->m_name, $text);
+$text = str_replace('__POST__', $member->m_post, $text);
+$text = str_replace('__ADD1__', $member->m_address1, $text);
+$text = str_replace('__ADD2__', $member->m_address2, $text);
+$text = str_replace('__TEL__', $member->m_tel, $text);
+
+
+$to      = $member->m_mail;
+$subject = $base_title;
+$message = $text;
+$headers = "From: noreply";
+
+mb_send_mail($to, $subject, $message, $headers);
+
+
 
 ?>
 <!DOCTYPE html>
@@ -111,8 +149,9 @@ $point = getPoint(getSsn("SEQ"));
 
 
     <div id="contents">
-            <a href="javascript:doResult()">
-        <img border=0 class="w100p" src="<?php echo $resultImg; ?>"></a>
+        <a href="javascript:doResult()">
+            <img border=0 class="w100p"
+                src="<?php echo $resultImg; ?>"></a>
     </div>
 </body>
 

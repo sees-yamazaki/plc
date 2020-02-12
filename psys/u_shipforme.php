@@ -3,6 +3,8 @@
 require('session.php');
 require('logging.php');
 require('db//ships.php');
+require('db/mails.php');
+require('db/views.php');
 
 // セッション開始
 session_start();
@@ -19,6 +21,9 @@ setSsnCrntPage(__FILE__);
 $menu_m_url="./asset/image/title_mypage.png";
 $menu_m_click="location.href='u_home.php'";
 
+//MAIL
+$mails = getMails();
+
 require_once './db/views.php';
 $point = getPoint(getSsn("SEQ"));
 
@@ -29,12 +34,32 @@ $errorMessage = '';
 $ship = getSsn('prm_ship');
 
 if (isset($_POST['doEdit'])) {
-
-
     updateShip($ship);
 
-    header("Location: ./u_shipformed.php");
+    $sp = getVShip($ship->sp_seq);
 
+
+    mb_language("Japanese");
+    mb_internal_encoding("UTF-8");
+    $base_text = $mails->ship_change_text;
+    $text = str_replace('__ITEM__', $sp->pz_title, $base_text);
+    $text = str_replace('__NAME__', $sp->sp_name, $text);
+    $text = str_replace('__POST__', $sp->sp_post, $text);
+    $text = str_replace('__ADD1__', $sp->sp_address1, $text);
+    $text = str_replace('__ADD2__', $sp->sp_address2, $text);
+    $text = str_replace('__TEL__', $sp->sp_tel, $text);
+    $text = str_replace('__BIKOU__', nl2br($sp->sp_text), $text);
+    
+    
+    $to      = $sp->m_mail;
+    $subject = $mails->ship_change_title;
+    $message = $text;
+    $headers = "From: noreply";
+    
+    mb_send_mail($to, $subject, $message, $headers);
+
+
+    header("Location: ./u_shipformed.php");
 }
 
 ?>

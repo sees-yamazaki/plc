@@ -1,5 +1,8 @@
 <?php
 
+// タイムゾーンを設定
+date_default_timezone_set('Asia/Tokyo');
+
 function logging($msg)
 {
     $logRoot = "log/";
@@ -42,7 +45,7 @@ function execSql($stmt, $location)
         devLog('');
         devLog($location);
     }
-    if(ob_start('callback')){
+    if (ob_start('callback')) {
         devLog('XXXXXXXXXXXX');
         $stmt->debugDumpParams();
         ob_end_flush();
@@ -55,6 +58,3 @@ function execSql($stmt, $location)
     //      }
     //  }
 }
-
-?>
-
