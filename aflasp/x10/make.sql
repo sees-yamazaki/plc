@@ -1,22 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 11, 2020 at 08:36 AM
--- Server version: 5.7.24-log
--- PHP Version: 7.2.10
+-- Generation Time: 2020 年 2 月 13 日 18:29
+-- サーバのバージョン： 5.7.25
+-- PHP Version: 7.3.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `asp`
@@ -25,7 +17,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `access`
+-- テーブルの構造 `access`
 --
 
 CREATE TABLE `access` (
@@ -46,24 +38,22 @@ CREATE TABLE `access` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `access`
+-- テーブルのデータのダンプ `access`
 --
 
 INSERT INTO `access` (`shadow_id`, `delete_key`, `id`, `ipaddress`, `cookie`, `adwares_type`, `adwares`, `cuser`, `owner`, `useragent`, `referer`, `state`, `utn`, `regist`) VALUES
-(1, 0, '61cfd3742f2ca06e8499c94c271b1054', '127.0.0.1', '61cfd3742f2ca06e8499c94c271b1054', 'adwares', 'A0000001', 'C0000001', 'N0000001', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', 'http://localhost:81/aflasp/x10/', 1, 'FALSE', 1581393488),
-(2, 0, 'b1811c44aff767b49eefdf3b1c85905b', '127.0.0.1', '61cfd3742f2ca06e8499c94c271b1054', 'adwares', 'A0000002', 'C0000001', 'N0000001', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', 'http://localhost:81/aflasp/x10/', 1, 'FALSE', 1581393493),
-(3, 0, '12c691378f1fc3ef889b9a678e2c7875', '127.0.0.1', '61cfd3742f2ca06e8499c94c271b1054', 'secretAdwares', 'SA000002', 'C0000001', 'N0000001', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', 'http://localhost:81/aflasp/x10/', 1, 'FALSE', 1581393497),
-(4, 0, '4ca2d5201b2479a379e1943ae0ec5007', '127.0.0.1', '61cfd3742f2ca06e8499c94c271b1054', 'adwares', 'A0000001', 'C0000001', 'N0000001', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', 'http://localhost:81/aflasp/x10/', 1, 'FALSE', 1581393514),
-(5, 0, 'b39abfdd207e3cce2805ffbfd2d095a2', '127.0.0.1', '61cfd3742f2ca06e8499c94c271b1054', 'adwares', 'A0000001', 'C0000001', 'N0000001', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', 'http://localhost:81/aflasp/x10/', 1, 'FALSE', 1581393527),
-(6, 0, '5bdcdd441fd2aae08183e4b5bbc4a0e4', '127.0.0.1', '61cfd3742f2ca06e8499c94c271b1054', 'secretAdwares', 'SA000001', 'C0000001', 'N0000001', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', 'http://localhost:81/aflasp/x10/', 1, 'FALSE', 1581400552),
-(7, 0, '408a30cfa55c77dc0eb911fcccf073a7', '127.0.0.1', '61cfd3742f2ca06e8499c94c271b1054', 'secretAdwares', 'SA000002', 'C0000001', 'N0000001', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', 'http://localhost:81/aflasp/x10/', 1, 'FALSE', 1581400557),
-(8, 0, '515bee80b9f24952aae2ca52103a50f1', '127.0.0.1', '61cfd3742f2ca06e8499c94c271b1054', 'secretAdwares', 'SA000002', 'C0000001', 'N0000001', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', 'http://localhost:81/aflasp/x10/', 1, 'FALSE', 1581400820),
-(9, 0, '264a73ee3b7a78a78faab2e9cf6b07d2', '127.0.0.1', '61cfd3742f2ca06e8499c94c271b1054', 'secretAdwares', 'SA000002', 'C0000001', 'N0000001', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', 'http://localhost:81/aflasp/x10/', 1, 'FALSE', 1581400970);
+(1, 0, '1ef1ff9358ce1cb3e9cba7cd59cf8a3e', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'adwares', 'A0000001', 'C0000001', 'N0000001', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', 'http://localhost:81/aflasp/x10/', 1, 'FALSE', 1581486063),
+(2, 0, '2268ca07906b8f315e80363a921be488', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'adwares', 'A0000002', 'C0000001', 'N0000001', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', 'http://localhost:81/aflasp/x10/', 1, 'FALSE', 1581486143),
+(3, 0, 'da43be2d44efbeb5118072b2dda94a1a', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'secretAdwares', 'SA000001', 'C0000001', 'N0000001', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', 'http://localhost:81/aflasp/x10/', 1, 'FALSE', 1581486149),
+(4, 0, 'f5d5ce8ce93c3631831fe5714bb1ccd2', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'secretAdwares', 'SA000002', 'C0000001', 'N0000001', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', 'http://localhost:81/aflasp/x10/', 1, 'FALSE', 1581486153),
+(5, 0, 'ee5f9bce1452c59170141345ae672a74', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'adwares', 'A0000001', 'C0000001', 'N0000001', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', 'http://localhost:81/aflasp/x10/', 1, 'FALSE', 1581487470),
+(6, 0, '76c4ea785b9bb6f09190a5c56cc6572a', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'secretAdwares', 'SA000001', 'C0000001', 'N0000001', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', '', 1, 'FALSE', 1581573091),
+(7, 0, '19cd417c0be9031ff149c9ef54adad3a', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'adwares', 'A0000002', 'C0000001', 'N0000001', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', '', 1, 'FALSE', 1581573126);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `accountlock`
+-- テーブルの構造 `accountlock`
 --
 
 CREATE TABLE `accountlock` (
@@ -79,17 +69,21 @@ CREATE TABLE `accountlock` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `accountlock`
+-- テーブルのデータのダンプ `accountlock`
 --
 
 INSERT INTO `accountlock` (`shadow_id`, `delete_key`, `id`, `login_id`, `try_time`, `unlock_token`, `onetime_password`, `regist`, `update_time`) VALUES
-(1, 0, 'ACL0000000000001', 'yamazaki.utg+1@gmail.com', '', '86ec170178dd789a7f16d80940147344', 'b7c0dd92', 0, 0),
-(2, 0, 'ACL0000000000002', 'yamazaki+1@gmail.com', '1581394112', '596e280b47a8193e6524f291f8686519', '73e18df3', 0, 0);
+(2, 0, 'ACL0000000000002', 'yamazaki.utg@gmail.com', '', '077dcc35525990c98126a4237abb13b2', '60874788', 0, 0),
+(3, 0, 'ACL0000000000003', 'admin@example.com', '', '742fce30c72fc2c998db51792fec2cdd', '0cfd8670', 0, 0),
+(4, 0, 'ACL0000000000004', 'a1234', '', 'c8af1ef66440306bde39ec528890d829', 'a50e479e', 0, 0),
+(5, 0, 'ACL0000000000005', 'yamazaki.utg+s@gmail.com', '1580862724', 'fb0b6cec4b1dce5bf4b1a5dd7ce86c63', '26195392', 0, 0),
+(6, 0, 'ACL0000000000006', 'a123', '', '0634adc5ffa5b930da47c59230edd217', 'bd7224a9', 0, 0),
+(7, 0, 'ACL0000000000007', '123', '', '4b70df61fdff37db51d0aa25cdba9411', '308bdf54', 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `accountlockconfig`
+-- テーブルの構造 `accountlockconfig`
 --
 
 CREATE TABLE `accountlockconfig` (
@@ -105,7 +99,7 @@ CREATE TABLE `accountlockconfig` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `accountlockconfig`
+-- テーブルのデータのダンプ `accountlockconfig`
 --
 
 INSERT INTO `accountlockconfig` (`shadow_id`, `delete_key`, `id`, `user_type`, `max_try_time`, `max_try_count`, `is_use`, `regist`, `update_time`) VALUES
@@ -116,7 +110,7 @@ INSERT INTO `accountlockconfig` (`shadow_id`, `delete_key`, `id`, `user_type`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+-- テーブルの構造 `admin`
 --
 
 CREATE TABLE `admin` (
@@ -134,16 +128,16 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `admin`
+-- テーブルのデータのダンプ `admin`
 --
 
 INSERT INTO `admin` (`shadow_id`, `delete_key`, `id`, `name`, `mail`, `pass`, `activate`, `logout`, `login`, `old_login`, `mail_time`) VALUES
-(0, 0, 'ADMIN', '管理者', 'admin@example.com', 'admin', 2, 1580561284, 1580561247, 1580559363, 1580559362);
+(0, 0, 'ADMIN', '管理者', 'admin', 'admin', 2, 1581492003, 1581490115, 1580947949, 1581490116);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `adwares`
+-- テーブルの構造 `adwares`
 --
 
 CREATE TABLE `adwares` (
@@ -190,17 +184,17 @@ CREATE TABLE `adwares` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `adwares`
+-- テーブルのデータのダンプ `adwares`
 --
 
 INSERT INTO `adwares` (`shadow_id`, `delete_key`, `id`, `cuser`, `comment`, `ad_text`, `category`, `banner`, `banner2`, `banner3`, `banner_m`, `banner_m2`, `banner_m3`, `url`, `url_m`, `url_over`, `url_users`, `name`, `money`, `ad_type`, `click_money`, `continue_money`, `continue_type`, `limits`, `limit_type`, `money_count`, `pay_count`, `click_money_count`, `continue_money_count`, `span`, `span_type`, `use_cookie_interval`, `pay_span`, `pay_span_type`, `auto`, `click_auto`, `continue_auto`, `check_type`, `open`, `regist`) VALUES
-(1, 0, 'A0000001', 'C0000001', '広告説明文１\n広告説明文２\n広告説明文３', 'テキスト広告文', 'CT000001', 'file/image/202002/da7df94c6923af5d253d756a71b507ca.png', '', '', '', '', '', 'http://localhost:81/aflasp/x10/return.html', '', '', 0, '目標ーオープンーかて１', '1500', 'yen', '0', '0', 'yen', 0, '0', 0, 1, 0, 0, 10, 's', 0, 10, 's', '1', '1', '1', 'ip', 1, 1581388019),
-(2, 0, 'A0000002', 'C0000001', '広告説明文あ\n広告説明文い\n広告説明文う', 'こうこくテキストあああ', 'CT000002', 'file/image/202002/9e71ffc260738efed63909bd98b0b18e.png', '', '', '', '', '', 'http://localhost:81/aflasp/x10/return.html', '', '', 0, 'クリックーオープンーかて２', '0', 'yen', '13', '0', 'yen', 0, '0', 13, 0, 1, 0, 10, 's', 0, 10, 's', '1', '1', '1', 'ip', 1, 1581388247);
+(1, 0, 'A0000001', 'C0000001', '説明１\r\n説明２\r\n説明３', 'テキストこうこく', 'CT000001', 'file/image/202002/a4578ba1473c32f1f5bb3f640ac24461.png', '', '', '', '', '', 'http://localhost:81/aflasp/x10/return.html', '', '', 0, '目標、オープン、かて１の広告', '1240', 'yen', '0', '0', 'yen', 0, '0', NULL, NULL, NULL, NULL, 10, 's', 0, 10, 's', '1', '1', '1', 'ip', 1, 1581467718),
+(2, 0, 'A0000002', 'C0000001', '説明あ\n説明い', 'テキスト', 'CT000001', '', '', '', '', '', '', 'http://localhost:81/aflasp/x10/return.html', '', '', 0, 'クリック、オープン、かて１の広告', '0', 'yen', '8', '0', 'yen', 0, '0', 16, 0, 2, 0, 8, 's', 0, 8, 's', '1', '1', '1', 'ip', 1, 1581467853);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `area`
+-- テーブルの構造 `area`
 --
 
 CREATE TABLE `area` (
@@ -211,7 +205,7 @@ CREATE TABLE `area` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `area`
+-- テーブルのデータのダンプ `area`
 --
 
 INSERT INTO `area` (`shadow_id`, `delete_key`, `id`, `name`) VALUES
@@ -230,7 +224,7 @@ INSERT INTO `area` (`shadow_id`, `delete_key`, `id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `category`
+-- テーブルの構造 `category`
 --
 
 CREATE TABLE `category` (
@@ -242,17 +236,18 @@ CREATE TABLE `category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `category`
+-- テーブルのデータのダンプ `category`
 --
 
 INSERT INTO `category` (`shadow_id`, `delete_key`, `id`, `name`, `regist`) VALUES
-(1, 0, 'CT000001', 'かて１', 1580561264),
-(2, 0, 'CT000002', 'かて２', 1580561282);
+(1, 0, 'CT000001', 'かてごり１', 1580266639),
+(2, 0, 'CT000002', 'カテゴリ２', 1580363043),
+(3, 0, 'CT000003', 'かてごり３', 1580363059);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `click_pay`
+-- テーブルの構造 `click_pay`
 --
 
 CREATE TABLE `click_pay` (
@@ -272,17 +267,17 @@ CREATE TABLE `click_pay` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `click_pay`
+-- テーブルのデータのダンプ `click_pay`
 --
 
 INSERT INTO `click_pay` (`shadow_id`, `delete_key`, `id`, `access_id`, `owner`, `adwares_type`, `adwares`, `cuser`, `cost`, `state`, `is_notice`, `report_id`, `regist`) VALUES
-(1, 0, 'b1811c44aff767b49eefdf3b1c85905b', 'b1811c44aff767b49eefdf3b1c85905b', 'N0000001', 'adwares', 'A0000002', 'C0000001', 13, '2', 1, '', 1581393493),
-(2, 0, '264a73ee3b7a78a78faab2e9cf6b07d2', '264a73ee3b7a78a78faab2e9cf6b07d2', 'N0000001', 'secretAdwares', 'SA000002', 'C0000001', 8, '2', 1, '', 1581400970);
+(1, 0, '2268ca07906b8f315e80363a921be488', '2268ca07906b8f315e80363a921be488', 'N0000001', 'adwares', 'A0000002', 'C0000001', 8, '2', 1, '', 1581486143),
+(2, 0, '19cd417c0be9031ff149c9ef54adad3a', '19cd417c0be9031ff149c9ef54adad3a', 'N0000001', 'adwares', 'A0000002', 'C0000001', 8, '2', 1, '', 1581573126);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `continue_pay`
+-- テーブルの構造 `continue_pay`
 --
 
 CREATE TABLE `continue_pay` (
@@ -305,7 +300,7 @@ CREATE TABLE `continue_pay` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cuser`
+-- テーブルの構造 `cuser`
 --
 
 CREATE TABLE `cuser` (
@@ -330,16 +325,17 @@ CREATE TABLE `cuser` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `cuser`
+-- テーブルのデータのダンプ `cuser`
 --
 
 INSERT INTO `cuser` (`shadow_id`, `delete_key`, `id`, `name`, `zip1`, `zip2`, `adds`, `add_sub`, `tel`, `fax`, `mail`, `pass`, `activate`, `mail_reception`, `is_mobile`, `limits`, `regist`, `logout`) VALUES
-(1, 0, 'C0000001', 'こうこくぬし１', '111', '222', 'PF02', '333', '444', '555', 'yamazaki.utg+1@gmail.com', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', 4, '', 0, 0, 1580561080, 1580561354);
+(1, 0, 'C0000001', 'ヤマザキ', '123', '4567', 'PF02', 'aoao\n', '090-0000-0000', '', '123', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', 4, '', 0, 0, 1580200708, 1581572257),
+(2, 0, 'C0000002', 'こうこくぬし２', '123', '4567', 'PF05', 'akita', '09090909091', '', '456', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', 4, '', 0, 0, 1580460211, 1580949667);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `invitation`
+-- テーブルの構造 `invitation`
 --
 
 CREATE TABLE `invitation` (
@@ -355,7 +351,7 @@ CREATE TABLE `invitation` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log_pay`
+-- テーブルの構造 `log_pay`
 --
 
 CREATE TABLE `log_pay` (
@@ -375,7 +371,7 @@ CREATE TABLE `log_pay` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `multimail`
+-- テーブルの構造 `multimail`
 --
 
 CREATE TABLE `multimail` (
@@ -390,7 +386,7 @@ CREATE TABLE `multimail` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nuser`
+-- テーブルの構造 `nuser`
 --
 
 CREATE TABLE `nuser` (
@@ -432,16 +428,21 @@ CREATE TABLE `nuser` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `nuser`
+-- テーブルのデータのダンプ `nuser`
 --
 
 INSERT INTO `nuser` (`shadow_id`, `delete_key`, `id`, `name`, `zip1`, `zip2`, `adds`, `add_sub`, `tel`, `fax`, `url`, `mail`, `bank_code`, `bank`, `branch_code`, `branch`, `bank_type`, `number`, `bank_name`, `parent`, `grandparent`, `greatgrandparent`, `pass`, `terminal`, `activate`, `pay`, `tier`, `rank`, `personal_rate`, `magni`, `mail_reception`, `is_mobile`, `limits`, `regist`, `logout`) VALUES
-(1, 0, 'N0000001', 'あふぃ１', '11', '22', 'PF02', '33', '44', '55', 'http://test.com', 'yamazaki.utg+a@gmail.com', '77', '66', '99', '88', '1', '1234', 'カナ', '', '', '', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', '', 4, 1521, 0, 'SA01', 5, 100, '', 0, 0, 1580561140, 1580561140);
+(1, 0, 'N0000001', 'ゆーざ山崎あ', '123', '3210', 'PF05', 'akita', '080-0808-0808', '', 'http://yes.com', 'a123', '999', 'ABCD', '888', 'DEF', '1', '1234567', 'コウザコウザ', '', '', '', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', '', 4, 9685, 0, 'SA01', 5, 100, '', 0, 0, 1580267237, 1581475314),
+(2, 0, 'N0000002', 'B-USER', '123', '4567', 'PF06', 'yama', '11', '', 'http://test.com', 'b123', '11', 'aa', '22', 'cc', '1', '11', 'ヤマ', '', '', '', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', '', 4, 0, 0, 'SA01', 5, 100, '', 0, 0, 1580346840, 1580346840),
+(4, 0, 'N0000004', '11', '11', '11', 'PF01', '11', '11', '', 'http://11.com', 'yamazaki.utg+d@gmail.com', '11', '11', '11', '11', '1', '11', 'カナ', '', '', '', 'AES_OK:xof+GA/IbryKYxWisWYwVg==', '', 1, 0, 0, 'SA01', 5, 100, '', 0, 0, 1580456775, 1580456775),
+(5, 0, 'N0000005', '22', '22', '22', 'PF01', '22', '22', '22', '22', 'a1234', '22', '22', '22', '22', '1', '22', '22', '', '', '', 'AES_OK:r2qV5Yx1RK9I30s5ia/2bg==', '', 4, 0, 0, 'SA01', 5, 100, '', 0, 0, 1580862427, 1580862904),
+(6, 0, 'N0000006', '22', '22', '22', 'PF01', '22', '22', '22', 'http://222.com', 'yamazaki.utg+s@gmail.com', '22', '22', '22', '22', '1', '22', 'カナ', '', '', '', 'AES_OK:r2qV5Yx1RK9I30s5ia/2bg==', '', 1, 0, 0, 'SA01', 5, 100, '', 0, 0, 1580862692, 1580862692),
+(7, 0, 'N0000007', 'ヤマザキ', '11', '11', 'PF01', '1111111', '222', '333', '444', 'yamazaki.utg+12@gmail.com', '66', '555', '88', '77', '1', '999', 'カナ', '', '', '', 'AES_OK:r2qV5Yx1RK9I30s5ia/2bg==', '', 1, 0, 0, 'SA01', 5, 100, '', 0, 0, 1581577696, 1581577696);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `page`
+-- テーブルの構造 `page`
 --
 
 CREATE TABLE `page` (
@@ -457,7 +458,7 @@ CREATE TABLE `page` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pay`
+-- テーブルの構造 `pay`
 --
 
 CREATE TABLE `pay` (
@@ -485,16 +486,17 @@ CREATE TABLE `pay` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `pay`
+-- テーブルのデータのダンプ `pay`
 --
 
 INSERT INTO `pay` (`shadow_id`, `delete_key`, `id`, `access_id`, `ipaddress`, `cookie`, `owner`, `adwares_type`, `adwares`, `cuser`, `cost`, `sales`, `froms`, `froms_sub`, `state`, `is_notice`, `utn`, `useragent`, `continue_uid`, `report_id`, `regist`) VALUES
-(1, 0, '1', '4ca2d5201b2479a379e1943ae0ec5007', '127.0.0.1', '61cfd3742f2ca06e8499c94c271b1054', 'N0000001', 'adwares', 'A0000001', 'C0000001', 1500, 0, '', '', 2, 1, '', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36', '', '', 1581393517);
+(1, 0, '1', '1ef1ff9358ce1cb3e9cba7cd59cf8a3e', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'N0000001', 'adwares', 'A0000001', 'C0000001', 1240, 0, '', '', 2, 1, '', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', '', '', 1581486154),
+(2, 0, '2', 'ee5f9bce1452c59170141345ae672a74', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'N0000001', 'adwares', 'A0000001', 'C0000001', 1240, 0, '', '', 2, 1, '', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', '', '', 1581487471);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `prefectures`
+-- テーブルの構造 `prefectures`
 --
 
 CREATE TABLE `prefectures` (
@@ -507,7 +509,7 @@ CREATE TABLE `prefectures` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `prefectures`
+-- テーブルのデータのダンプ `prefectures`
 --
 
 INSERT INTO `prefectures` (`shadow_id`, `delete_key`, `id`, `area_id`, `name`, `name_kana`) VALUES
@@ -562,7 +564,7 @@ INSERT INTO `prefectures` (`shadow_id`, `delete_key`, `id`, `area_id`, `name`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `report`
+-- テーブルの構造 `report`
 --
 
 CREATE TABLE `report` (
@@ -576,7 +578,7 @@ CREATE TABLE `report` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `returnss`
+-- テーブルの構造 `returnss`
 --
 
 CREATE TABLE `returnss` (
@@ -592,7 +594,7 @@ CREATE TABLE `returnss` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sales`
+-- テーブルの構造 `sales`
 --
 
 CREATE TABLE `sales` (
@@ -606,7 +608,7 @@ CREATE TABLE `sales` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `sales`
+-- テーブルのデータのダンプ `sales`
 --
 
 INSERT INTO `sales` (`shadow_id`, `delete_key`, `id`, `name`, `rate`, `lot`, `sales`) VALUES
@@ -618,7 +620,7 @@ INSERT INTO `sales` (`shadow_id`, `delete_key`, `id`, `name`, `rate`, `lot`, `sa
 -- --------------------------------------------------------
 
 --
--- Table structure for table `secretadwares`
+-- テーブルの構造 `secretadwares`
 --
 
 CREATE TABLE `secretadwares` (
@@ -666,18 +668,17 @@ CREATE TABLE `secretadwares` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `secretadwares`
+-- テーブルのデータのダンプ `secretadwares`
 --
 
 INSERT INTO `secretadwares` (`shadow_id`, `delete_key`, `id`, `cuser`, `comment`, `ad_text`, `category`, `banner`, `banner2`, `banner3`, `banner_m`, `banner_m2`, `banner_m3`, `url`, `url_m`, `url_over`, `url_users`, `name`, `money`, `ad_type`, `click_money`, `continue_money`, `continue_type`, `limits`, `limit_type`, `money_count`, `pay_count`, `click_money_count`, `continue_money_count`, `span`, `span_type`, `use_cookie_interval`, `pay_span`, `pay_span_type`, `auto`, `click_auto`, `continue_auto`, `check_type`, `open`, `open_user`, `regist`) VALUES
-(1, 0, 'SA000001', 'C0000001', '広告説明文A\r\n広告説明文B\r\n広告説明文C', 'こうこくテキスト', 'CT000001', 'file/image/202002/8d05db91a75cac922d18a923169ffbda.png', '', '', '', '', '', 'http://localhost:81/aflasp/x10/return.html', '', '', 0, '目標ー承認ーかて１', '800', 'yen', '0', '0', 'yen', 0, '0', 0, 0, 0, 0, 10, 's', 0, 10, 's', '1', '1', '1', 'ip', 1, '', 1581388128),
-(2, 0, 'SA000002', 'C0000001', '広告説明文や\n広告説明文ま\n広告説明文ざ', 'こうこくテキスト１２３', 'CT000001', 'file/image/202002/370ff0dc70834b3f01314958ff9f0b45.png', '', '', '', '', '', 'http://localhost:81/aflasp/x10/return.html', '', '', 0, 'クリックー承認ーかて１', '0', 'yen', '8', '0', 'yen', 0, '0', 8, 0, 1, 0, 10, 's', 0, 10, 's', '1', '1', '1', 'ip', 1, 'N0000001', 1581388330),
-(5, 0, 'SA000005', 'C0000001', 'ああ', 'ああああ', 'CT000002', '', '', '', '', '', '', 'ああ', '', '', 0, '目標承認３', '99', 'yen', '0', '0', 'yen', 0, '0', 0, 0, 0, 0, 10, 's', 0, 10, 's', '1', '1', '1', 'ip', 1, '', 1581392979);
+(1, 0, 'SA000001', 'C0000001', '説明A\r\n説明B', 'てきすとこーこく', 'CT000002', 'file/image/202002/d956714bb06fd931a621574f9d0ed9f1.png', '', '', '', '', '', 'http://localhost:81/aflasp/x10/return.html', '', '', 0, '目標、承認、かて２の広告', '2340', 'yen', '0', '0', 'yen', 0, '0', 0, 0, 0, 0, 10, 's', 0, 10, 's', '1', '1', '1', 'ip', 1, '', 1581467798),
+(2, 0, 'SA000002', 'C0000001', '説明い\r\n説明ろ\r\n説明は', 'こー', 'CT000003', '', '', '', '', '', '', 'http://localhost:81/aflasp/x10/return.html', '', '', 0, 'クリック、承認、かて３', '0', 'yen', '12', '0', 'yen', 0, '0', 0, 0, 0, 0, 12, 's', 0, 12, 's', '1', '1', '1', 'ip', 1, '', 1581467921);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `system`
+-- テーブルの構造 `system`
 --
 
 CREATE TABLE `system` (
@@ -714,16 +715,16 @@ CREATE TABLE `system` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `system`
+-- テーブルのデータのダンプ `system`
 --
 
 INSERT INTO `system` (`shadow_id`, `delete_key`, `id`, `uuid`, `home`, `mail_address`, `mail_name`, `login_id_manage`, `site_title`, `keywords`, `description`, `main_css`, `child_per`, `grandchild_per`, `greatgrandchild_per`, `users_returnss`, `exchange_limit`, `nuser_default_activate`, `nuser_accept_admin`, `cuser_default_activate`, `adwares_pass`, `sales_auto`, `send_mail_admin`, `send_mail_nuser`, `send_mail_cuser`, `send_mail_status`, `access_limit`, `parent_limit`, `parent_limit_url`, `regist`) VALUES
-(0, 0, 'ADMIN', 'AEA71C2E-DA99-4588-1449-6B667C12E887', './', 'admin@example.com', 'アフィリエイトシステム管理者', 'SESSION', 'アフィリエイトシステム', 'アフィリエイト', 'アフィリエイトシステム', 'standard', 0, 0, 0, 1, 5000, 1, 2, 1, '8Z43e9Hq', '1', '', '', '', '', 86400, 999, 'http://example.com/', 0);
+(0, 0, 'ADMIN', 'AEA71C2E-DA99-4588-1449-6B667C12E887', 'http://localhost:81/aflasp/', 'admin@example.com', 'アフィリエイトシステム管理者', 'SESSION', 'アフィリエイトシステム', 'アフィリエイト', 'アフィリエイトシステム', 'standard', 0, 0, 0, 1, 5000, 1, 2, 1, '8Z43e9Hq', '1', '', '', '', '', 86400, 999, 'http://example.com/', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `template`
+-- テーブルの構造 `template`
 --
 
 CREATE TABLE `template` (
@@ -740,7 +741,7 @@ CREATE TABLE `template` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `template`
+-- テーブルのデータのダンプ `template`
 --
 
 INSERT INTO `template` (`shadow_id`, `delete_key`, `id`, `user_type`, `target_type`, `activate`, `owner`, `label`, `file`, `regist`) VALUES
@@ -1017,73 +1018,73 @@ INSERT INTO `template` (`shadow_id`, `delete_key`, `id`, `user_type`, `target_ty
 (270, 0, 'T0270', '/reminder/', 'cUser', 15, 3, 'PASSWORD_RESET_COMP_DESIGN', 'module/reminder/cUser/ResetComp.html', 0),
 (271, 0, 'T0271', '/reminder/', 'cUser', 15, 3, 'PASSWORD_RESET_FALED_DESIGN', 'module/reminder/cUser/ResetFaled.html', 0),
 (272, 0, 'T0272', '/resetter/', 'cUser', 15, 3, 'SEND_MAIL', 'module/reminder/cUser/mail_contents/resetter.txt', 0),
-(273, 0, 'T0273', '//', 'cUser', 15, 3, 'ACTIVATE_MAIL', 'mail_contents/activateCUser.txt', 0),
-(274, 0, 'T0274', '//', 'cUser', 15, 3, 'ACTIVATE_COMP_MAIL', 'mail_contents/activatecompCUser.txt', 0),
-(275, 0, 'T0275', '//', 'cUser', 15, 3, 'REGIST_COMP_MAIL', 'mail_contents/registcompCUser.txt', 0),
-(276, 0, 'T0276', '/cUser/', '', 15, 3, 'LOGIN_FALED_DESIGN', 'base/LoginFaled.html', 0),
-(277, 0, 'T0277', '/cUser/', '', 15, 3, 'FOOT_DESIGN', 'base/Foot.html', 0),
-(278, 0, 'T0278', '/cUser/', '', 15, 3, 'HEAD_DESIGN', 'base/Head.html', 0),
-(279, 0, 'T0279', '/cUser/', '', 15, 3, 'ACTIVATE_DESIGN_HTML', 'base/Activate.html', 0),
-(280, 0, 'T0280', '/cUser/', '', 15, 3, 'SEARCH_PAGE_CHANGE_DESIGN', 'base/SearchPageChange.html', 0),
-(281, 0, 'T0281', '/admin/', 'cUser', 6, 3, 'EDIT_FORM_PAGE_DESIGN', 'cUser/Edit.html', 0),
-(282, 0, 'T0282', '/admin/', 'cUser', 6, 3, 'EDIT_CHECK_PAGE_DESIGN', 'cUser/EditCheck.html', 0),
-(283, 0, 'T0283', '/admin/', 'cUser', 6, 3, 'EDIT_COMP_PAGE_DESIGN', 'base/EditComp.html', 0),
-(284, 0, 'T0284', '/admin/', 'cUser', 6, 3, 'REGIST_ERROR_DESIGN', 'cUser/RegistFaled.html', 0),
-(285, 0, 'T0285', '/admin/', 'cUser', 6, 3, 'DELETE_CHECK_PAGE_DESIGN', 'cUser/DeleteCheck.html', 0),
-(286, 0, 'T0286', '/admin/', 'cUser', 6, 3, 'DELETE_COMP_PAGE_DESIGN', 'base/UserDeleteComp.html', 0),
-(287, 0, 'T0287', '/admin/', 'cUser', 6, 3, 'SEARCH_FORM_PAGE_DESIGN', 'cUser/SearchAdmin.html', 0),
-(288, 0, 'T0288', '/admin/', 'cUser', 6, 3, 'SEARCH_RESULT_DESIGN', 'cUser/SearchResultFormatAdmin.html', 0),
-(289, 0, 'T0289', '/admin/', 'cUser', 6, 3, 'SEARCH_LIST_PAGE_DESIGN', 'cUser/List.html', 0),
-(290, 0, 'T0290', '/admin/', 'cUser', 6, 3, 'SEARCH_NOT_FOUND_DESIGN', 'cUser/SearchFaled.html', 0),
-(291, 0, 'T0291', '/admin/', 'cUser', 6, 3, 'INFO_PAGE_DESIGN', 'cUser/InfoAdmin.html', 0),
-(292, 0, 'T0292', '/nobody/', 'cUser', 6, 3, 'REGIST_FORM_PAGE_DESIGN', 'cUser/Regist.html', 0),
-(293, 0, 'T0293', '/nobody/', 'cUser', 6, 3, 'REGIST_CHECK_PAGE_DESIGN', 'cUser/RegistCheck.html', 0),
-(294, 0, 'T0294', '/nobody/', 'cUser', 6, 3, 'REGIST_COMP_PAGE_DESIGN', 'cUser/RegistComp.html', 0),
-(295, 0, 'T0295', '/nobody/', 'cUser', 6, 3, 'REGIST_ERROR_DESIGN', 'cUser/RegistFaled.html', 0),
-(296, 0, 'T0296', '/cUser/', 'cUser', 6, 1, 'EDIT_FORM_PAGE_DESIGN', 'cUser/Edit.html', 0),
-(297, 0, 'T0297', '/cUser/', 'cUser', 6, 1, 'EDIT_CHECK_PAGE_DESIGN', 'cUser/EditCheck.html', 0),
-(298, 0, 'T0298', '/cUser/', 'cUser', 6, 1, 'EDIT_COMP_PAGE_DESIGN', 'base/EditComp.html', 0),
-(299, 0, 'T0299', '/cUser/', 'cUser', 6, 1, 'REGIST_ERROR_DESIGN', 'cUser/RegistFaled.html', 0),
-(300, 0, 'T0300', '/cUser/', 'cUser', 6, 1, 'DELETE_CHECK_PAGE_DESIGN', 'cUser/DeleteCheck.html', 0),
-(301, 0, 'T0301', '/cUser/', 'cUser', 6, 1, 'DELETE_COMP_PAGE_DESIGN', 'base/UserDeleteComp.html', 0),
-(302, 0, 'T0302', '/cUser/', '', 2, 3, 'TOP_PAGE_DESIGN', 'cUser/LoginNotActive.html', 0),
-(303, 0, 'T0303', '/cUser/', '', 4, 3, 'TOP_PAGE_DESIGN', 'cUser/Index.html', 0),
-(304, 0, 'T0304', '/cUser/', '', 8, 3, 'TOP_PAGE_DESIGN', 'cUser/LoginDeny.html', 0),
-(305, 0, 'T0305', '/cUser/', 'adwares', 4, 3, 'REGIST_FORM_PAGE_DESIGN', 'adwares/Regist.html', 0),
-(306, 0, 'T0306', '/cUser/', 'adwares', 4, 3, 'REGIST_CHECK_PAGE_DESIGN', 'adwares/RegistCheck.html', 0),
-(307, 0, 'T0307', '/cUser/', 'adwares', 4, 3, 'REGIST_COMP_PAGE_DESIGN', 'adwares/RegistComp.html', 0),
-(308, 0, 'T0308', '/cUser/', 'adwares', 4, 3, 'REGIST_ERROR_DESIGN', 'adwares/RegistFaled.html', 0),
-(309, 0, 'T0309', '/cUser/', 'adwares', 4, 3, 'SEARCH_RESULT_DESIGN', 'adwares/SearchResultFormat.html', 0),
-(310, 0, 'T0310', '/cUser/', 'adwares', 4, 3, 'SEARCH_LIST_PAGE_DESIGN', 'adwares/ListCUser.html', 0),
-(311, 0, 'T0311', '/cUser/', 'adwares', 4, 3, 'SEARCH_NOT_FOUND_DESIGN', 'adwares/SearchFaled.html', 0),
-(312, 0, 'T0312', '/cUser/', 'access', 4, 3, 'SEARCH_RESULT_DESIGN', 'access/SearchResultFormatCUser.html', 0),
-(313, 0, 'T0313', '/cUser/', 'access', 4, 3, 'SEARCH_LIST_PAGE_DESIGN', 'access/ListCUser.html', 0),
-(314, 0, 'T0314', '/cUser/', 'access', 4, 3, 'SEARCH_NOT_FOUND_DESIGN', 'access/SearchFaled.html', 0),
-(315, 0, 'T0315', '/cUser/', 'pay', 4, 3, 'SEARCH_RESULT_DESIGN', 'pay/SearchResultFormat.html', 0),
-(316, 0, 'T0316', '/cUser/', 'pay', 4, 3, 'SEARCH_LIST_PAGE_DESIGN', 'pay/ListCUser.html', 0),
-(317, 0, 'T0317', '/cUser/', 'pay', 4, 3, 'SEARCH_NOT_FOUND_DESIGN', 'pay/SearchFaled.html', 0),
-(318, 0, 'T0318', '/cUser/', 'click_pay', 4, 3, 'SEARCH_RESULT_DESIGN', 'click_pay/SearchResultFormat.html', 0),
-(319, 0, 'T0319', '/cUser/', 'click_pay', 4, 3, 'SEARCH_LIST_PAGE_DESIGN', 'click_pay/ListCUser.html', 0),
-(320, 0, 'T0320', '/cUser/', 'click_pay', 4, 3, 'SEARCH_NOT_FOUND_DESIGN', 'click_pay/SearchFaled.html', 0),
-(321, 0, 'T0321', '/cUser/', 'head', 4, 3, 'INCLUDE_DESIGN', 'include/HeadCLogin.html', 0),
-(322, 0, 'T0322', '/cUser/', 'head', 10, 3, 'INCLUDE_DESIGN', 'include/HeadLoginDeny.html', 0),
-(323, 0, 'T0323', '/cUser/', 'side_bar', 6, 3, 'INCLUDE_DESIGN', 'include/Side_barCUser.html', 0),
-(324, 0, 'T0324', '/cUser/', '', 15, 3, 'HEAD_DESIGN_ADMIN_MODE', 'base/HeadAdminMode.html', 0),
-(325, 0, 'T0325', '/cUser/', 'access4month', 6, 3, 'OTHER_PAGE_DESIGN', 'other/Access4Month.html', 0),
-(326, 0, 'T0326', '/cUser/', 'access4day', 6, 3, 'OTHER_PAGE_DESIGN', 'other/Access4Day.html', 0),
-(327, 0, 'T0327', '/cUser/', 'continue_pay', 4, 3, 'SEARCH_RESULT_DESIGN', 'continue_pay/SearchResultAdminFormat.html', 0),
-(328, 0, 'T0328', '/cUser/', 'continue_pay', 4, 3, 'SEARCH_LIST_PAGE_DESIGN', 'continue_pay/ListCUser.html', 0),
-(329, 0, 'T0329', '/cUser/', 'continue_pay', 4, 3, 'SEARCH_NOT_FOUND_DESIGN', 'continue_pay/SearchFaled.html', 0),
-(330, 0, 'T0330', '/cUser/', 'pay_report', 6, 3, 'OTHER_PAGE_DESIGN', 'other/PayReportCUser.html', 0),
-(331, 0, 'T0331', '/cUser/', '', 15, 3, 'PAY_MAIL', 'mail_contents/payMailCUser.txt', 0),
-(332, 0, 'T0332', '/owner/', 'adwares', 4, 3, 'EDIT_FORM_PAGE_DESIGN', 'adwares/Edit.html', 0),
-(333, 0, 'T0333', '/owner/', 'adwares', 4, 3, 'EDIT_CHECK_PAGE_DESIGN', 'adwares/EditCheck.html', 0),
-(334, 0, 'T0334', '/owner/', 'adwares', 4, 3, 'EDIT_COMP_PAGE_DESIGN', 'base/EditComp.html', 0),
-(335, 0, 'T0335', '/owner/', 'adwares', 4, 3, 'REGIST_ERROR_DESIGN', 'adwares/RegistFaled.html', 0),
-(336, 0, 'T0336', '/owner/', 'adwares', 4, 3, 'DELETE_CHECK_PAGE_DESIGN', 'adwares/DeleteCheck.html', 0),
-(337, 0, 'T0337', '/owner/', 'adwares', 4, 3, 'DELETE_COMP_PAGE_DESIGN', 'base/DeleteComp.html', 0),
-(338, 0, 'T0338', '/admin/', 'page', 6, 3, 'REGIST_ERROR_DESIGN', 'page/RegistFaled.html', 0),
-(339, 0, 'T0339', '/admin/', 'page', 6, 3, 'SEARCH_NOT_FOUND_DESIGN', 'page/SearchFaled.html', 0),
+(273, 0, 'T0273', '/admin/', 'page', 6, 3, 'REGIST_ERROR_DESIGN', 'page/RegistFaled.html', 0),
+(274, 0, 'T0274', '/admin/', 'page', 6, 3, 'SEARCH_NOT_FOUND_DESIGN', 'page/SearchFaled.html', 0),
+(275, 0, 'T0275', '//', 'cUser', 15, 3, 'ACTIVATE_MAIL', 'mail_contents/activateCUser.txt', 0),
+(276, 0, 'T0276', '//', 'cUser', 15, 3, 'ACTIVATE_COMP_MAIL', 'mail_contents/activatecompCUser.txt', 0),
+(277, 0, 'T0277', '//', 'cUser', 15, 3, 'REGIST_COMP_MAIL', 'mail_contents/registcompCUser.txt', 0),
+(278, 0, 'T0278', '/cUser/', '', 15, 3, 'LOGIN_FALED_DESIGN', 'base/LoginFaled.html', 0),
+(279, 0, 'T0279', '/cUser/', '', 15, 3, 'FOOT_DESIGN', 'base/Foot.html', 0),
+(280, 0, 'T0280', '/cUser/', '', 15, 3, 'HEAD_DESIGN', 'base/Head.html', 0),
+(281, 0, 'T0281', '/cUser/', '', 15, 3, 'ACTIVATE_DESIGN_HTML', 'base/Activate.html', 0),
+(282, 0, 'T0282', '/cUser/', '', 15, 3, 'SEARCH_PAGE_CHANGE_DESIGN', 'base/SearchPageChange.html', 0),
+(283, 0, 'T0283', '/admin/', 'cUser', 6, 3, 'EDIT_FORM_PAGE_DESIGN', 'cUser/Edit.html', 0),
+(284, 0, 'T0284', '/admin/', 'cUser', 6, 3, 'EDIT_CHECK_PAGE_DESIGN', 'cUser/EditCheck.html', 0),
+(285, 0, 'T0285', '/admin/', 'cUser', 6, 3, 'EDIT_COMP_PAGE_DESIGN', 'base/EditComp.html', 0),
+(286, 0, 'T0286', '/admin/', 'cUser', 6, 3, 'REGIST_ERROR_DESIGN', 'cUser/RegistFaled.html', 0),
+(287, 0, 'T0287', '/admin/', 'cUser', 6, 3, 'DELETE_CHECK_PAGE_DESIGN', 'cUser/DeleteCheck.html', 0),
+(288, 0, 'T0288', '/admin/', 'cUser', 6, 3, 'DELETE_COMP_PAGE_DESIGN', 'base/UserDeleteComp.html', 0),
+(289, 0, 'T0289', '/admin/', 'cUser', 6, 3, 'SEARCH_FORM_PAGE_DESIGN', 'cUser/SearchAdmin.html', 0),
+(290, 0, 'T0290', '/admin/', 'cUser', 6, 3, 'SEARCH_RESULT_DESIGN', 'cUser/SearchResultFormatAdmin.html', 0),
+(291, 0, 'T0291', '/admin/', 'cUser', 6, 3, 'SEARCH_LIST_PAGE_DESIGN', 'cUser/List.html', 0),
+(292, 0, 'T0292', '/admin/', 'cUser', 6, 3, 'SEARCH_NOT_FOUND_DESIGN', 'cUser/SearchFaled.html', 0),
+(293, 0, 'T0293', '/admin/', 'cUser', 6, 3, 'INFO_PAGE_DESIGN', 'cUser/InfoAdmin.html', 0),
+(294, 0, 'T0294', '/nobody/', 'cUser', 6, 3, 'REGIST_FORM_PAGE_DESIGN', 'cUser/Regist.html', 0),
+(295, 0, 'T0295', '/nobody/', 'cUser', 6, 3, 'REGIST_CHECK_PAGE_DESIGN', 'cUser/RegistCheck.html', 0),
+(296, 0, 'T0296', '/nobody/', 'cUser', 6, 3, 'REGIST_COMP_PAGE_DESIGN', 'cUser/RegistComp.html', 0),
+(297, 0, 'T0297', '/nobody/', 'cUser', 6, 3, 'REGIST_ERROR_DESIGN', 'cUser/RegistFaled.html', 0),
+(298, 0, 'T0298', '/cUser/', 'cUser', 6, 1, 'EDIT_FORM_PAGE_DESIGN', 'cUser/Edit.html', 0),
+(299, 0, 'T0299', '/cUser/', 'cUser', 6, 1, 'EDIT_CHECK_PAGE_DESIGN', 'cUser/EditCheck.html', 0),
+(300, 0, 'T0300', '/cUser/', 'cUser', 6, 1, 'EDIT_COMP_PAGE_DESIGN', 'base/EditComp.html', 0),
+(301, 0, 'T0301', '/cUser/', 'cUser', 6, 1, 'REGIST_ERROR_DESIGN', 'cUser/RegistFaled.html', 0),
+(302, 0, 'T0302', '/cUser/', 'cUser', 6, 1, 'DELETE_CHECK_PAGE_DESIGN', 'cUser/DeleteCheck.html', 0),
+(303, 0, 'T0303', '/cUser/', 'cUser', 6, 1, 'DELETE_COMP_PAGE_DESIGN', 'base/UserDeleteComp.html', 0),
+(304, 0, 'T0304', '/cUser/', '', 2, 3, 'TOP_PAGE_DESIGN', 'cUser/LoginNotActive.html', 0),
+(305, 0, 'T0305', '/cUser/', '', 4, 3, 'TOP_PAGE_DESIGN', 'cUser/Index.html', 0),
+(306, 0, 'T0306', '/cUser/', '', 8, 3, 'TOP_PAGE_DESIGN', 'cUser/LoginDeny.html', 0),
+(307, 0, 'T0307', '/cUser/', 'adwares', 4, 3, 'REGIST_FORM_PAGE_DESIGN', 'adwares/Regist.html', 0),
+(308, 0, 'T0308', '/cUser/', 'adwares', 4, 3, 'REGIST_CHECK_PAGE_DESIGN', 'adwares/RegistCheck.html', 0),
+(309, 0, 'T0309', '/cUser/', 'adwares', 4, 3, 'REGIST_COMP_PAGE_DESIGN', 'adwares/RegistComp.html', 0),
+(310, 0, 'T0310', '/cUser/', 'adwares', 4, 3, 'REGIST_ERROR_DESIGN', 'adwares/RegistFaled.html', 0),
+(311, 0, 'T0311', '/cUser/', 'adwares', 4, 3, 'SEARCH_RESULT_DESIGN', 'adwares/SearchResultFormat.html', 0),
+(312, 0, 'T0312', '/cUser/', 'adwares', 4, 3, 'SEARCH_LIST_PAGE_DESIGN', 'adwares/ListCUser.html', 0),
+(313, 0, 'T0313', '/cUser/', 'adwares', 4, 3, 'SEARCH_NOT_FOUND_DESIGN', 'adwares/SearchFaled.html', 0),
+(314, 0, 'T0314', '/cUser/', 'access', 4, 3, 'SEARCH_RESULT_DESIGN', 'access/SearchResultFormatCUser.html', 0),
+(315, 0, 'T0315', '/cUser/', 'access', 4, 3, 'SEARCH_LIST_PAGE_DESIGN', 'access/ListCUser.html', 0),
+(316, 0, 'T0316', '/cUser/', 'access', 4, 3, 'SEARCH_NOT_FOUND_DESIGN', 'access/SearchFaled.html', 0),
+(317, 0, 'T0317', '/cUser/', 'pay', 4, 3, 'SEARCH_RESULT_DESIGN', 'pay/SearchResultFormat.html', 0),
+(318, 0, 'T0318', '/cUser/', 'pay', 4, 3, 'SEARCH_LIST_PAGE_DESIGN', 'pay/ListCUser.html', 0),
+(319, 0, 'T0319', '/cUser/', 'pay', 4, 3, 'SEARCH_NOT_FOUND_DESIGN', 'pay/SearchFaled.html', 0),
+(320, 0, 'T0320', '/cUser/', 'click_pay', 4, 3, 'SEARCH_RESULT_DESIGN', 'click_pay/SearchResultFormat.html', 0),
+(321, 0, 'T0321', '/cUser/', 'click_pay', 4, 3, 'SEARCH_LIST_PAGE_DESIGN', 'click_pay/ListCUser.html', 0),
+(322, 0, 'T0322', '/cUser/', 'click_pay', 4, 3, 'SEARCH_NOT_FOUND_DESIGN', 'click_pay/SearchFaled.html', 0),
+(323, 0, 'T0323', '/cUser/', 'head', 4, 3, 'INCLUDE_DESIGN', 'include/HeadCLogin.html', 0),
+(324, 0, 'T0324', '/cUser/', 'head', 10, 3, 'INCLUDE_DESIGN', 'include/HeadLoginDeny.html', 0),
+(325, 0, 'T0325', '/cUser/', 'side_bar', 6, 3, 'INCLUDE_DESIGN', 'include/Side_barCUser.html', 0),
+(326, 0, 'T0326', '/cUser/', '', 15, 3, 'HEAD_DESIGN_ADMIN_MODE', 'base/HeadAdminMode.html', 0),
+(327, 0, 'T0327', '/cUser/', 'access4month', 6, 3, 'OTHER_PAGE_DESIGN', 'other/Access4Month.html', 0),
+(328, 0, 'T0328', '/cUser/', 'access4day', 6, 3, 'OTHER_PAGE_DESIGN', 'other/Access4Day.html', 0),
+(329, 0, 'T0329', '/cUser/', 'continue_pay', 4, 3, 'SEARCH_RESULT_DESIGN', 'continue_pay/SearchResultAdminFormat.html', 0),
+(330, 0, 'T0330', '/cUser/', 'continue_pay', 4, 3, 'SEARCH_LIST_PAGE_DESIGN', 'continue_pay/ListCUser.html', 0),
+(331, 0, 'T0331', '/cUser/', 'continue_pay', 4, 3, 'SEARCH_NOT_FOUND_DESIGN', 'continue_pay/SearchFaled.html', 0),
+(332, 0, 'T0332', '/cUser/', 'pay_report', 6, 3, 'OTHER_PAGE_DESIGN', 'other/PayReportCUser.html', 0),
+(333, 0, 'T0333', '/cUser/', '', 15, 3, 'PAY_MAIL', 'mail_contents/payMailCUser.txt', 0),
+(334, 0, 'T0334', '/owner/', 'adwares', 4, 3, 'EDIT_FORM_PAGE_DESIGN', 'adwares/Edit.html', 0),
+(335, 0, 'T0335', '/owner/', 'adwares', 4, 3, 'EDIT_CHECK_PAGE_DESIGN', 'adwares/EditCheck.html', 0),
+(336, 0, 'T0336', '/owner/', 'adwares', 4, 3, 'EDIT_COMP_PAGE_DESIGN', 'base/EditComp.html', 0),
+(337, 0, 'T0337', '/owner/', 'adwares', 4, 3, 'REGIST_ERROR_DESIGN', 'adwares/RegistFaled.html', 0),
+(338, 0, 'T0338', '/owner/', 'adwares', 4, 3, 'DELETE_CHECK_PAGE_DESIGN', 'adwares/DeleteCheck.html', 0),
+(339, 0, 'T0339', '/owner/', 'adwares', 4, 3, 'DELETE_COMP_PAGE_DESIGN', 'base/DeleteComp.html', 0),
 (340, 0, 'T0340', '/reminder/', 'nUser', 15, 3, 'SEND_FALED_DESIGN', 'module/reminder/nUser/EmailSendFaled.html', 0),
 (341, 0, 'T0341', '/reminder/', 'cUser', 15, 3, 'SEND_FORM_DESIGN', 'module/reminder/cUser/EmailSend.html', 0),
 (342, 0, 'T0342', '/reminder/', 'cUser', 15, 3, 'SEND_COMP_DESIGN', 'module/reminder/cUser/EmailSendComp.html', 0),
@@ -1111,7 +1112,7 @@ INSERT INTO `template` (`shadow_id`, `delete_key`, `id`, `user_type`, `target_ty
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tier`
+-- テーブルの構造 `tier`
 --
 
 CREATE TABLE `tier` (
@@ -1133,7 +1134,7 @@ CREATE TABLE `tier` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tool_admin_password`
+-- テーブルの構造 `tool_admin_password`
 --
 
 CREATE TABLE `tool_admin_password` (
@@ -1141,7 +1142,7 @@ CREATE TABLE `tool_admin_password` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `tool_admin_password`
+-- テーブルのデータのダンプ `tool_admin_password`
 --
 
 INSERT INTO `tool_admin_password` (`password`) VALUES
@@ -1150,8 +1151,8 @@ INSERT INTO `tool_admin_password` (`password`) VALUES
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `v_access_x10`
--- (See below for the actual view)
+-- ビュー用の代替構造 `v_access_x10`
+-- (実際のビューを参照するには下にあります)
 --
 CREATE TABLE `v_access_x10` (
 `shadow_id` int(11)
@@ -1176,8 +1177,22 @@ CREATE TABLE `v_access_x10` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `v_adwares_x10`
--- (See below for the actual view)
+-- ビュー用の代替構造 `v_access_x10_summary`
+-- (実際のビューを参照するには下にあります)
+--
+CREATE TABLE `v_access_x10_summary` (
+`adwares` char(8)
+,`owner` char(8)
+,`cnt` bigint(21)
+,`adware_type` int(11)
+,`approvable` int(11)
+);
+
+-- --------------------------------------------------------
+
+--
+-- ビュー用の代替構造 `v_adwares_x10`
+-- (実際のビューを参照するには下にあります)
 --
 CREATE TABLE `v_adwares_x10` (
 `kind` varchar(1)
@@ -1233,13 +1248,14 @@ CREATE TABLE `v_adwares_x10` (
 ,`note` mediumtext
 ,`startdt` date
 ,`enddt` date
+,`cnt_offer` bigint(21)
 );
 
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `v_click_pay_x10`
--- (See below for the actual view)
+-- ビュー用の代替構造 `v_click_pay_x10`
+-- (実際のビューを参照するには下にあります)
 --
 CREATE TABLE `v_click_pay_x10` (
 `shadow_id` int(11)
@@ -1256,6 +1272,8 @@ CREATE TABLE `v_click_pay_x10` (
 ,`report_id` char(8)
 ,`regist` int(11)
 ,`name` varchar(128)
+,`startdt` date
+,`enddt` date
 ,`adware_type` int(11)
 ,`approvable` int(11)
 );
@@ -1263,8 +1281,20 @@ CREATE TABLE `v_click_pay_x10` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `v_pay_x10`
--- (See below for the actual view)
+-- ビュー用の代替構造 `v_offer_x10`
+-- (実際のビューを参照するには下にあります)
+--
+CREATE TABLE `v_offer_x10` (
+`adware` varchar(8)
+,`cnt` bigint(21)
+,`status` int(11)
+);
+
+-- --------------------------------------------------------
+
+--
+-- ビュー用の代替構造 `v_pay_x10`
+-- (実際のビューを参照するには下にあります)
 --
 CREATE TABLE `v_pay_x10` (
 `shadow_id` int(11)
@@ -1289,6 +1319,8 @@ CREATE TABLE `v_pay_x10` (
 ,`report_id` char(8)
 ,`regist` int(11)
 ,`name` varchar(128)
+,`startdt` date
+,`enddt` date
 ,`adware_type` int(11)
 ,`approvable` int(11)
 );
@@ -1296,7 +1328,34 @@ CREATE TABLE `v_pay_x10` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `x10_adwares`
+-- ビュー用の代替構造 `v_pay_x10_2in1`
+-- (実際のビューを参照するには下にあります)
+--
+CREATE TABLE `v_pay_x10_2in1` (
+`shadow_id` int(11)
+,`delete_key` tinyint(4)
+,`id` char(32)
+,`access_id` char(32)
+,`owner` char(8)
+,`adwares_type` varchar(32)
+,`adwares` char(8)
+,`cuser` char(8)
+,`cost` int(11)
+,`state` varchar(11)
+,`is_notice` tinyint(4)
+,`report_id` char(8)
+,`regist` int(11)
+,`name` varchar(128)
+,`startdt` date
+,`enddt` date
+,`adware_type` int(11)
+,`approvable` int(11)
+);
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `x10_adwares`
 --
 
 CREATE TABLE `x10_adwares` (
@@ -1315,20 +1374,19 @@ CREATE TABLE `x10_adwares` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `x10_adwares`
+-- テーブルのデータのダンプ `x10_adwares`
 --
 
 INSERT INTO `x10_adwares` (`shadow_id`, `id`, `adware_type`, `approvable`, `keyword`, `results`, `hashtag`, `denials`, `ngword`, `note`, `startdt`, `enddt`) VALUES
-(1, 'A0000001', 0, 0, 'キーワード、タグ\r\nキーワード、タグ', '', '', '', '', '', '2020-02-01', '2020-02-29'),
-(2, 'A0000002', 1, 0, 'キーワード、タグああ', 'あああ成果条件', '指定ハッシュタグああ', '否認条件ああ', 'NGキーワードあああ', '備考あああ', '2020-02-11', '2020-03-25'),
-(5, 'SA000005', 0, 1, '', '', '', '', '', '', NULL, NULL),
-(1, 'SA000001', 0, 1, '', '', '', '', '', '', NULL, NULL),
-(2, 'SA000002', 1, 1, '', '', '', '', '', '', NULL, NULL);
+(1, 'A0000001', 0, 0, 'キーワ', 'せいか', 'はっし', 'ひにん', 'NGきー', 'びこー', '2020-01-01', '2020-03-01'),
+(1, 'SA000001', 0, 1, 'aaaa', 'bbbb', 'cccc', 'dddd', 'eeee', 'ffff', '2020-02-01', '2020-03-01'),
+(2, 'A0000002', 1, 0, '1111', '23233', '3333', '4444', '555', '666', NULL, NULL),
+(2, 'SA000002', 1, 1, 'a1', 'a2', 'a3', 'a4', 'a5', 'a5', '2020-01-01', '2020-03-03');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `x10_offer`
+-- テーブルの構造 `x10_offer`
 --
 
 CREATE TABLE `x10_offer` (
@@ -1338,10 +1396,30 @@ CREATE TABLE `x10_offer` (
   `regist` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
+--
+-- テーブルのデータのダンプ `x10_offer`
+--
+
+INSERT INTO `x10_offer` (`adware`, `nuser`, `status`, `regist`) VALUES
+('SA000001', 'N0000001', 2, 1581468229),
+('SA000002', 'N0000001', 0, 1581485525);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `zenginkyo`
+-- ビュー用の代替構造 `x_all_adwares`
+-- (実際のビューを参照するには下にあります)
+--
+CREATE TABLE `x_all_adwares` (
+`id` char(8)
+,`nuser` varchar(8)
+,`status` bigint(11)
+);
+
+-- --------------------------------------------------------
+
+--
+-- テーブルの構造 `zenginkyo`
 --
 
 CREATE TABLE `zenginkyo` (
@@ -1359,7 +1437,7 @@ CREATE TABLE `zenginkyo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
 
 --
--- Dumping data for table `zenginkyo`
+-- テーブルのデータのダンプ `zenginkyo`
 --
 
 INSERT INTO `zenginkyo` (`shadow_id`, `delete_key`, `id`, `name_kana`, `commission_code`, `bank_code`, `bank_name_kana`, `branch_code`, `branch_name_kana`, `bank_type`, `number`) VALUES
@@ -1368,7 +1446,7 @@ INSERT INTO `zenginkyo` (`shadow_id`, `delete_key`, `id`, `name_kana`, `commissi
 -- --------------------------------------------------------
 
 --
--- Structure for view `v_access_x10`
+-- ビュー用の構造 `v_access_x10`
 --
 DROP TABLE IF EXISTS `v_access_x10`;
 
@@ -1377,29 +1455,65 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `v_adwares_x10`
+-- ビュー用の構造 `v_access_x10_summary`
+--
+DROP TABLE IF EXISTS `v_access_x10_summary`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_access_x10_summary`  AS  select `v_access_x10`.`adwares` AS `adwares`,`v_access_x10`.`owner` AS `owner`,count(0) AS `cnt`,`v_access_x10`.`adware_type` AS `adware_type`,`v_access_x10`.`approvable` AS `approvable` from `v_access_x10` group by `v_access_x10`.`adwares`,`v_access_x10`.`owner`,`v_access_x10`.`adware_type`,`v_access_x10`.`approvable` ;
+
+-- --------------------------------------------------------
+
+--
+-- ビュー用の構造 `v_adwares_x10`
 --
 DROP TABLE IF EXISTS `v_adwares_x10`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_adwares_x10`  AS  (select '0' AS `kind`,`s`.`shadow_id` AS `shadow_id`,`s`.`delete_key` AS `delete_key`,`s`.`id` AS `id`,`s`.`cuser` AS `cuser`,`s`.`comment` AS `comment`,`s`.`ad_text` AS `ad_text`,`s`.`category` AS `category`,`s`.`banner` AS `banner`,`s`.`banner2` AS `banner2`,`s`.`banner3` AS `banner3`,`s`.`banner_m` AS `banner_m`,`s`.`banner_m2` AS `banner_m2`,`s`.`banner_m3` AS `banner_m3`,`s`.`url` AS `url`,`s`.`url_m` AS `url_m`,`s`.`url_over` AS `url_over`,`s`.`url_users` AS `url_users`,`s`.`name` AS `name`,`s`.`money` AS `money`,`s`.`ad_type` AS `ad_type`,`s`.`click_money` AS `click_money`,`s`.`continue_money` AS `continue_money`,`s`.`continue_type` AS `continue_type`,`s`.`limits` AS `limits`,`s`.`limit_type` AS `limit_type`,`s`.`money_count` AS `money_count`,`s`.`pay_count` AS `pay_count`,`s`.`click_money_count` AS `click_money_count`,`s`.`continue_money_count` AS `continue_money_count`,`s`.`span` AS `span`,`s`.`span_type` AS `span_type`,`s`.`use_cookie_interval` AS `use_cookie_interval`,`s`.`pay_span` AS `pay_span`,`s`.`pay_span_type` AS `pay_span_type`,`s`.`auto` AS `auto`,`s`.`click_auto` AS `click_auto`,`s`.`continue_auto` AS `continue_auto`,`s`.`check_type` AS `check_type`,`s`.`open` AS `open`,'' AS `open_user`,`s`.`regist` AS `regist`,`c`.`name` AS `category_name`,`x`.`adware_type` AS `adware_type`,`x`.`approvable` AS `approvable`,`x`.`keyword` AS `keyword`,`x`.`results` AS `results`,`x`.`hashtag` AS `hashtag`,`x`.`denials` AS `denials`,`x`.`ngword` AS `ngword`,`x`.`note` AS `note`,`x`.`startdt` AS `startdt`,`x`.`enddt` AS `enddt` from ((`adwares` `s` left join `x10_adwares` `x` on((`s`.`id` = `x`.`id`))) left join `category` `c` on((`s`.`category` = `c`.`id`)))) union (select '1' AS `kind`,`s`.`shadow_id` AS `shadow_id`,`s`.`delete_key` AS `delete_key`,`s`.`id` AS `id`,`s`.`cuser` AS `cuser`,`s`.`comment` AS `comment`,`s`.`ad_text` AS `ad_text`,`s`.`category` AS `category`,`s`.`banner` AS `banner`,`s`.`banner2` AS `banner2`,`s`.`banner3` AS `banner3`,`s`.`banner_m` AS `banner_m`,`s`.`banner_m2` AS `banner_m2`,`s`.`banner_m3` AS `banner_m3`,`s`.`url` AS `url`,`s`.`url_m` AS `url_m`,`s`.`url_over` AS `url_over`,`s`.`url_users` AS `url_users`,`s`.`name` AS `name`,`s`.`money` AS `money`,`s`.`ad_type` AS `ad_type`,`s`.`click_money` AS `click_money`,`s`.`continue_money` AS `continue_money`,`s`.`continue_type` AS `continue_type`,`s`.`limits` AS `limits`,`s`.`limit_type` AS `limit_type`,`s`.`money_count` AS `money_count`,`s`.`pay_count` AS `pay_count`,`s`.`click_money_count` AS `click_money_count`,`s`.`continue_money_count` AS `continue_money_count`,`s`.`span` AS `span`,`s`.`span_type` AS `span_type`,`s`.`use_cookie_interval` AS `use_cookie_interval`,`s`.`pay_span` AS `pay_span`,`s`.`pay_span_type` AS `pay_span_type`,`s`.`auto` AS `auto`,`s`.`click_auto` AS `click_auto`,`s`.`continue_auto` AS `continue_auto`,`s`.`check_type` AS `check_type`,`s`.`open` AS `open`,`s`.`open_user` AS `open_user`,`s`.`regist` AS `regist`,`c`.`name` AS `category_name`,`x`.`adware_type` AS `adware_type`,`x`.`approvable` AS `approvable`,`x`.`keyword` AS `keyword`,`x`.`results` AS `results`,`x`.`hashtag` AS `hashtag`,`x`.`denials` AS `denials`,`x`.`ngword` AS `ngword`,`x`.`note` AS `note`,`x`.`startdt` AS `startdt`,`x`.`enddt` AS `enddt` from ((`secretadwares` `s` left join `x10_adwares` `x` on((`s`.`id` = `x`.`id`))) left join `category` `c` on((`s`.`category` = `c`.`id`)))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_adwares_x10`  AS  (select '0' AS `kind`,`s`.`shadow_id` AS `shadow_id`,`s`.`delete_key` AS `delete_key`,`s`.`id` AS `id`,`s`.`cuser` AS `cuser`,`s`.`comment` AS `comment`,`s`.`ad_text` AS `ad_text`,`s`.`category` AS `category`,`s`.`banner` AS `banner`,`s`.`banner2` AS `banner2`,`s`.`banner3` AS `banner3`,`s`.`banner_m` AS `banner_m`,`s`.`banner_m2` AS `banner_m2`,`s`.`banner_m3` AS `banner_m3`,`s`.`url` AS `url`,`s`.`url_m` AS `url_m`,`s`.`url_over` AS `url_over`,`s`.`url_users` AS `url_users`,`s`.`name` AS `name`,`s`.`money` AS `money`,`s`.`ad_type` AS `ad_type`,`s`.`click_money` AS `click_money`,`s`.`continue_money` AS `continue_money`,`s`.`continue_type` AS `continue_type`,`s`.`limits` AS `limits`,`s`.`limit_type` AS `limit_type`,`s`.`money_count` AS `money_count`,`s`.`pay_count` AS `pay_count`,`s`.`click_money_count` AS `click_money_count`,`s`.`continue_money_count` AS `continue_money_count`,`s`.`span` AS `span`,`s`.`span_type` AS `span_type`,`s`.`use_cookie_interval` AS `use_cookie_interval`,`s`.`pay_span` AS `pay_span`,`s`.`pay_span_type` AS `pay_span_type`,`s`.`auto` AS `auto`,`s`.`click_auto` AS `click_auto`,`s`.`continue_auto` AS `continue_auto`,`s`.`check_type` AS `check_type`,`s`.`open` AS `open`,'' AS `open_user`,`s`.`regist` AS `regist`,`c`.`name` AS `category_name`,`x`.`adware_type` AS `adware_type`,`x`.`approvable` AS `approvable`,`x`.`keyword` AS `keyword`,`x`.`results` AS `results`,`x`.`hashtag` AS `hashtag`,`x`.`denials` AS `denials`,`x`.`ngword` AS `ngword`,`x`.`note` AS `note`,`x`.`startdt` AS `startdt`,`x`.`enddt` AS `enddt`,(case when isnull(`v`.`cnt`) then 0 else `v`.`cnt` end) AS `cnt_offer` from (((`adwares` `s` left join `x10_adwares` `x` on((`s`.`id` = `x`.`id`))) left join `category` `c` on((`s`.`category` = `c`.`id`))) left join `v_offer_x10` `v` on(((`s`.`id` = `v`.`adware`) and (`v`.`status` = 0))))) union (select '1' AS `kind`,`s`.`shadow_id` AS `shadow_id`,`s`.`delete_key` AS `delete_key`,`s`.`id` AS `id`,`s`.`cuser` AS `cuser`,`s`.`comment` AS `comment`,`s`.`ad_text` AS `ad_text`,`s`.`category` AS `category`,`s`.`banner` AS `banner`,`s`.`banner2` AS `banner2`,`s`.`banner3` AS `banner3`,`s`.`banner_m` AS `banner_m`,`s`.`banner_m2` AS `banner_m2`,`s`.`banner_m3` AS `banner_m3`,`s`.`url` AS `url`,`s`.`url_m` AS `url_m`,`s`.`url_over` AS `url_over`,`s`.`url_users` AS `url_users`,`s`.`name` AS `name`,`s`.`money` AS `money`,`s`.`ad_type` AS `ad_type`,`s`.`click_money` AS `click_money`,`s`.`continue_money` AS `continue_money`,`s`.`continue_type` AS `continue_type`,`s`.`limits` AS `limits`,`s`.`limit_type` AS `limit_type`,`s`.`money_count` AS `money_count`,`s`.`pay_count` AS `pay_count`,`s`.`click_money_count` AS `click_money_count`,`s`.`continue_money_count` AS `continue_money_count`,`s`.`span` AS `span`,`s`.`span_type` AS `span_type`,`s`.`use_cookie_interval` AS `use_cookie_interval`,`s`.`pay_span` AS `pay_span`,`s`.`pay_span_type` AS `pay_span_type`,`s`.`auto` AS `auto`,`s`.`click_auto` AS `click_auto`,`s`.`continue_auto` AS `continue_auto`,`s`.`check_type` AS `check_type`,`s`.`open` AS `open`,`s`.`open_user` AS `open_user`,`s`.`regist` AS `regist`,`c`.`name` AS `category_name`,`x`.`adware_type` AS `adware_type`,`x`.`approvable` AS `approvable`,`x`.`keyword` AS `keyword`,`x`.`results` AS `results`,`x`.`hashtag` AS `hashtag`,`x`.`denials` AS `denials`,`x`.`ngword` AS `ngword`,`x`.`note` AS `note`,`x`.`startdt` AS `startdt`,`x`.`enddt` AS `enddt`,(case when isnull(`v`.`cnt`) then 0 else `v`.`cnt` end) AS `cnt_offer` from (((`secretadwares` `s` left join `x10_adwares` `x` on((`s`.`id` = `x`.`id`))) left join `category` `c` on((`s`.`category` = `c`.`id`))) left join `v_offer_x10` `v` on(((`s`.`id` = `v`.`adware`) and (`v`.`status` = 0))))) ;
 
 -- --------------------------------------------------------
 
 --
--- Structure for view `v_click_pay_x10`
+-- ビュー用の構造 `v_click_pay_x10`
 --
 DROP TABLE IF EXISTS `v_click_pay_x10`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_click_pay_x10`  AS  select `p`.`shadow_id` AS `shadow_id`,`p`.`delete_key` AS `delete_key`,`p`.`id` AS `id`,`p`.`access_id` AS `access_id`,`p`.`owner` AS `owner`,`p`.`adwares_type` AS `adwares_type`,`p`.`adwares` AS `adwares`,`p`.`cuser` AS `cuser`,`p`.`cost` AS `cost`,`p`.`state` AS `state`,`p`.`is_notice` AS `is_notice`,`p`.`report_id` AS `report_id`,`p`.`regist` AS `regist`,`x`.`name` AS `name`,`x`.`adware_type` AS `adware_type`,`x`.`approvable` AS `approvable` from (`click_pay` `p` left join `v_adwares_x10` `x` on((`p`.`adwares` = `x`.`id`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_click_pay_x10`  AS  select `p`.`shadow_id` AS `shadow_id`,`p`.`delete_key` AS `delete_key`,`p`.`id` AS `id`,`p`.`access_id` AS `access_id`,`p`.`owner` AS `owner`,`p`.`adwares_type` AS `adwares_type`,`p`.`adwares` AS `adwares`,`p`.`cuser` AS `cuser`,`p`.`cost` AS `cost`,`p`.`state` AS `state`,`p`.`is_notice` AS `is_notice`,`p`.`report_id` AS `report_id`,`p`.`regist` AS `regist`,`x`.`name` AS `name`,`x`.`startdt` AS `startdt`,`x`.`enddt` AS `enddt`,`x`.`adware_type` AS `adware_type`,`x`.`approvable` AS `approvable` from (`click_pay` `p` left join `v_adwares_x10` `x` on((`p`.`adwares` = `x`.`id`))) ;
 
 -- --------------------------------------------------------
 
 --
--- Structure for view `v_pay_x10`
+-- ビュー用の構造 `v_offer_x10`
+--
+DROP TABLE IF EXISTS `v_offer_x10`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_offer_x10`  AS  select `x10_offer`.`adware` AS `adware`,count(0) AS `cnt`,`x10_offer`.`status` AS `status` from `x10_offer` group by `x10_offer`.`adware`,`x10_offer`.`status` ;
+
+-- --------------------------------------------------------
+
+--
+-- ビュー用の構造 `v_pay_x10`
 --
 DROP TABLE IF EXISTS `v_pay_x10`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pay_x10`  AS  select `p`.`shadow_id` AS `shadow_id`,`p`.`delete_key` AS `delete_key`,`p`.`id` AS `id`,`p`.`access_id` AS `access_id`,`p`.`ipaddress` AS `ipaddress`,`p`.`cookie` AS `cookie`,`p`.`owner` AS `owner`,`p`.`adwares_type` AS `adwares_type`,`p`.`adwares` AS `adwares`,`p`.`cuser` AS `cuser`,`p`.`cost` AS `cost`,`p`.`sales` AS `sales`,`p`.`froms` AS `froms`,`p`.`froms_sub` AS `froms_sub`,`p`.`state` AS `state`,`p`.`is_notice` AS `is_notice`,`p`.`utn` AS `utn`,`p`.`useragent` AS `useragent`,`p`.`continue_uid` AS `continue_uid`,`p`.`report_id` AS `report_id`,`p`.`regist` AS `regist`,`x`.`name` AS `name`,`x`.`adware_type` AS `adware_type`,`x`.`approvable` AS `approvable` from (`pay` `p` left join `v_adwares_x10` `x` on((`p`.`adwares` = `x`.`id`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pay_x10`  AS  select `p`.`shadow_id` AS `shadow_id`,`p`.`delete_key` AS `delete_key`,`p`.`id` AS `id`,`p`.`access_id` AS `access_id`,`p`.`ipaddress` AS `ipaddress`,`p`.`cookie` AS `cookie`,`p`.`owner` AS `owner`,`p`.`adwares_type` AS `adwares_type`,`p`.`adwares` AS `adwares`,`p`.`cuser` AS `cuser`,`p`.`cost` AS `cost`,`p`.`sales` AS `sales`,`p`.`froms` AS `froms`,`p`.`froms_sub` AS `froms_sub`,`p`.`state` AS `state`,`p`.`is_notice` AS `is_notice`,`p`.`utn` AS `utn`,`p`.`useragent` AS `useragent`,`p`.`continue_uid` AS `continue_uid`,`p`.`report_id` AS `report_id`,`p`.`regist` AS `regist`,`x`.`name` AS `name`,`x`.`startdt` AS `startdt`,`x`.`enddt` AS `enddt`,`x`.`adware_type` AS `adware_type`,`x`.`approvable` AS `approvable` from (`pay` `p` left join `v_adwares_x10` `x` on((`p`.`adwares` = `x`.`id`))) ;
+
+-- --------------------------------------------------------
+
+--
+-- ビュー用の構造 `v_pay_x10_2in1`
+--
+DROP TABLE IF EXISTS `v_pay_x10_2in1`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pay_x10_2in1`  AS  select `p`.`shadow_id` AS `shadow_id`,`p`.`delete_key` AS `delete_key`,`p`.`id` AS `id`,`p`.`access_id` AS `access_id`,`p`.`owner` AS `owner`,`p`.`adwares_type` AS `adwares_type`,`p`.`adwares` AS `adwares`,`p`.`cuser` AS `cuser`,`p`.`cost` AS `cost`,`p`.`state` AS `state`,`p`.`is_notice` AS `is_notice`,`p`.`report_id` AS `report_id`,`p`.`regist` AS `regist`,`x`.`name` AS `name`,`x`.`startdt` AS `startdt`,`x`.`enddt` AS `enddt`,`x`.`adware_type` AS `adware_type`,`x`.`approvable` AS `approvable` from (`pay` `p` left join `v_adwares_x10` `x` on((`p`.`adwares` = `x`.`id`))) union select `p`.`shadow_id` AS `shadow_id`,`p`.`delete_key` AS `delete_key`,`p`.`id` AS `id`,`p`.`access_id` AS `access_id`,`p`.`owner` AS `owner`,`p`.`adwares_type` AS `adwares_type`,`p`.`adwares` AS `adwares`,`p`.`cuser` AS `cuser`,`p`.`cost` AS `cost`,`p`.`state` AS `state`,`p`.`is_notice` AS `is_notice`,`p`.`report_id` AS `report_id`,`p`.`regist` AS `regist`,`x`.`name` AS `name`,`x`.`startdt` AS `startdt`,`x`.`enddt` AS `enddt`,`x`.`adware_type` AS `adware_type`,`x`.`approvable` AS `approvable` from (`click_pay` `p` left join `v_adwares_x10` `x` on((`p`.`adwares` = `x`.`id`))) ;
+
+-- --------------------------------------------------------
+
+--
+-- ビュー用の構造 `x_all_adwares`
+--
+DROP TABLE IF EXISTS `x_all_adwares`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `x_all_adwares`  AS  select `a`.`id` AS `id`,'OPN' AS `nuser`,2 AS `status` from `adwares` `a` union select `s`.`id` AS `id`,`x`.`nuser` AS `nuser`,`x`.`status` AS `status` from (`secretadwares` `s` left join `x10_offer` `x` on((`s`.`id` = `x`.`adware`))) ;
 
 --
 -- Indexes for dumped tables
@@ -1578,8 +1692,3 @@ ALTER TABLE `tier`
 ALTER TABLE `zenginkyo`
   ADD PRIMARY KEY (`shadow_id`),
   ADD UNIQUE KEY `system_id` (`id`);
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
