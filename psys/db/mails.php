@@ -4,6 +4,8 @@ class cls_mails
 {
     public $add_member_title;
     public $add_member_text;
+    public $insert_member_title;
+    public $insert_member_text;
     public $change_pw_title;
     public $change_pw_text;
     public $game_hit_title;
@@ -24,6 +26,8 @@ function getMails()
         if ($row = $stmt->fetch()) {
             $result->add_member_title = $row['add_member_title'];
             $result->add_member_text = $row['add_member_text'];
+            $result->insert_member_title = $row['insert_member_title'];
+            $result->insert_member_text = $row['insert_member_text'];
             $result->change_pw_title = $row['change_pw_title'];
             $result->change_pw_text = $row['change_pw_text'];
             $result->game_hit_title = $row['game_hit_title'];
@@ -47,10 +51,12 @@ function updateMail($mails)
 {
     try {
         require './db/dns.php';
-        $sql = " UPDATE `mails` SET `add_member_title`=:add_member_title, `add_member_text`=:add_member_text,  `change_pw_title`=:change_pw_title,  `change_pw_text`=:change_pw_text,  `game_hit_title`=:game_hit_title,  `game_hit_text`=:game_hit_text,  `game_miss_title`=:game_miss_title,  `game_miss_text`=:game_miss_text,  `ship_change_title`=:ship_change_title,  `ship_change_text`=:ship_change_text, editdt=NOW() ";
+        $sql = " UPDATE `mails` SET `add_member_title`=:add_member_title, `add_member_text`=:add_member_text,`insert_member_title`=:insert_member_title, `insert_member_text`=:insert_member_text,  `change_pw_title`=:change_pw_title,  `change_pw_text`=:change_pw_text,  `game_hit_title`=:game_hit_title,  `game_hit_text`=:game_hit_text,  `game_miss_title`=:game_miss_title,  `game_miss_text`=:game_miss_text,  `ship_change_title`=:ship_change_title,  `ship_change_text`=:ship_change_text, editdt=NOW() ";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':add_member_title', $mails->add_member_title, PDO::PARAM_STR);
         $stmt->bindParam(':add_member_text', $mails->add_member_text, PDO::PARAM_STR);
+        $stmt->bindParam(':insert_member_title', $mails->insert_member_title, PDO::PARAM_STR);
+        $stmt->bindParam(':insert_member_text', $mails->insert_member_text, PDO::PARAM_STR);
         $stmt->bindParam(':change_pw_title', $mails->change_pw_title, PDO::PARAM_STR);
         $stmt->bindParam(':change_pw_text', $mails->change_pw_text, PDO::PARAM_STR);
         $stmt->bindParam(':game_hit_title', $mails->game_hit_title, PDO::PARAM_STR);

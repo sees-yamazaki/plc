@@ -29,11 +29,17 @@ if (empty($eSeq)) {
     $mSeq =0;
 }
 
+$m_name_ary = ['',''];
+$m_kana_ary = ['',''];
 if (isset($_POST['doEdit'])) {
     //if (getSsnPrevPage()==basename(__FILE__)) {
     $member->m_seq = $_POST['mSeq'];
-    $member->m_name = $_POST['m_name'];
-    $member->m_kana = $_POST['m_kana'];
+    $m_name_ary[0] = $_POST['m_name_1'];
+    $m_name_ary[1] = $_POST['m_name_2'];
+    $m_kana_ary[0] = $_POST['m_kana_1'];
+    $m_kana_ary[1] = $_POST['m_kana_2'];
+    $member->m_name = $m_name_ary[0]." ".$m_name_ary[1];
+    $member->m_kana = $m_kana_ary[0]." ".$m_kana_ary[1];
     $member->m_pw = $_POST['m_pw'];
     $member->m_mail = $_POST['m_mail'];
     $member->m_post = $_POST['m_post'];
@@ -45,6 +51,8 @@ if (isset($_POST['doEdit'])) {
     header('Location: ./u_membershipe.php');
 } elseif (getSsnPrevPage()=="u_membershipe.php") {
     $member = getSsn('prm_member');
+    $m_name_ary =  explode(' ', $member->m_name);
+    $m_kana_ary =  explode(' ', $member->m_kana);
 } else {
     //
 }
@@ -70,7 +78,7 @@ if (isset($_POST['doEdit'])) {
 
     <div id="precontents">
         <h3><br>会員情報登録</h3>
-        <span class="red">お名前、お電話番号は現在商品をお届け<br>している情報と同様にしてください。<br><br></span>
+        <span>お名前、お電話番号は現在商品をお届け<br>している情報と同様にしてください。<br><br></span>
         <?php if (!empty($errorMessage)) { ?>
         <span class="err"><?php echo $errorMessage; ?></span>
         <?php } ?>
@@ -78,13 +86,19 @@ if (isset($_POST['doEdit'])) {
             <form action="" method="POST" name="frm">
 
                 お名前<br>
-                <input type="text" name="m_name" id="m_name" class="input-text w90p"
-                    value="<?php echo $member->m_name ?>"
-                    placeholder="富士　花子" maxlength='20' required /><br><br>
-                フリガナ<br>
-                <input type="text" name="m_kana" id="m_kana" class="input-text w90p"
-                    value="<?php echo $member->m_kana ?>"
-                    pattern="[ァ-ヴー\s　]+" title="カタカナ" placeholder="全角カナ" maxlength='20' required /><br><br>
+                <input type="text" name="m_name_1" id="m_name_1" class="input-text " style="width: 40%;" 
+                    value="<?php echo $m_name_ary[0] ?>"
+                    pattern="\S+" title="空白は使用できません" placeholder="富士" maxlength='10' required />
+                    <input type="text" name="m_name_2" id="m_name_2" class="input-text" style="width: 40%;" 
+                    value="<?php echo $m_name_ary[1] ?>"
+                    pattern="\S+" title="空白は使用できません" placeholder="花子" maxlength='10' required /><br><br>
+                フリガナ(全角カナ)<br>
+                <input type="text" name="m_kana_1" id="m_kana_1" class="input-text" style="width: 40%;" 
+                value="<?php echo $m_kana_ary[0] ?>"
+                    pattern="[ァ-ヴー\s]+" title="カタカナ" placeholder="フジ" maxlength='10' required />
+                <input type="text" name="m_kana_2" id="m_kana_2" class="input-text" style="width: 40%;" 
+                value="<?php echo $m_kana_ary[1] ?>"
+                    pattern="[ァ-ヴー\s]+" title="カタカナ" placeholder="ハナコ" maxlength='10' required /><br><br>
                 パスワード<br>
                 <input type="password" name="m_pw" id="m_pw" class="input-text w90p" value="" maxlength='10'
                     required /><br><br>

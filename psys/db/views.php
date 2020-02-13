@@ -106,6 +106,7 @@ function getVUsepointRows($where)
         public $m_seq ;
         public $up_seq ;
         public $sp_name ;
+        public $sp_kana ;
         public $sp_post ;
         public $sp_address1 ;
         public $sp_address2 ;
@@ -116,6 +117,7 @@ function getVUsepointRows($where)
         public $p_title ;
         public $pz_title ;
         public $m_name ;
+        public $m_kana ;
         public $m_mail ;
         public $m_post ;
         public $m_address1 ;
@@ -269,6 +271,7 @@ function getVUsepointRows($where)
                     $result->m_seq = $row['m_seq'];
                     $result->up_seq = $row['up_seq'];
                     $result->sp_name = $row['sp_name'];
+                    $result->sp_kana = $row['sp_kana'];
                     $result->sp_post = $row['sp_post'];
                     $result->sp_address1 = $row['sp_address1'];
                     $result->sp_address2 = $row['sp_address2'];
@@ -279,6 +282,7 @@ function getVUsepointRows($where)
                     $result->p_title = $row['p_title'];
                     $result->pz_title = $row['pz_title'];
                     $result->m_name = $row['m_name'];
+                    $result->m_kana = $row['m_kana'];
                     $result->m_mail = $row['m_mail'];
                     $result->m_post = $row['m_post'];
                     $result->m_address1 = $row['m_address1'];
@@ -316,6 +320,71 @@ function getVUsepointRows($where)
             return $point;
         }
         
+class cls_v_usepoints_ship
+{
+    public $up_seq ;
+    public $m_seq ;
+    public $up_point ;
+    public $createdt ;
+    public $up_status ;
+    public $g_seq ;
+    public $p_seq ;
+    public $pz_seq ;
+    public $m_name ;
+    public $m_kana ;
+    public $p_title ;
+    public $pz_title ;
+    public $sp_seq ;
+    public $sp_name ;
+    public $sp_kana ;
+    public $sp_post ;
+    public $sp_address1 ;
+    public $sp_address2 ;
+    public $sp_tel ;
+    public $sp_text ;
+    public $sp_flg ;
+}
 
 
+        function getVUsepointsAndShips($mSeq)
+        {
+            try {
+                $results = array();
+                require './db/dns.php';
+                $stmt = $pdo->prepare("SELECT up.*,sp.sp_seq,sp.sp_name,sp.sp_kana,sp.sp_post,sp.sp_address1,sp.sp_address2,sp.sp_tel,sp.sp_text,sp.sp_flg FROM  `v_usepoints` up INNER JOIN `v_ships` sp ON up.up_seq=sp.up_seq WHERE up.m_seq=:m_seq ORDER BY up.createdt desc");
+                $stmt->bindParam(':m_seq', $mSeq, PDO::PARAM_INT);
+                execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $result = new cls_v_usepoints_ship();
+                    $result->up_seq = $row['up_seq'];
+                    $result->m_seq = $row['m_seq'];
+                    $result->up_point = $row['up_point'];
+                    $result->createdt = $row['createdt'];
+                    $result->up_status = $row['up_status'];
+                    $result->g_seq = $row['g_seq'];
+                    $result->p_seq = $row['p_seq'];
+                    $result->pz_seq = $row['pz_seq'];
+                    $result->m_name = $row['m_name'];
+                    $result->p_title = $row['p_title'];
+                    $result->pz_title = $row['pz_title'];
+                    $result->sp_seq = $row['sp_seq'];
+                    $result->sp_name = $row['sp_name'];
+                    $result->sp_name = $row['sp_kana'];
+                    $result->sp_post = $row['sp_post'];
+                    $result->sp_address1 = $row['sp_address1'];
+                    $result->sp_address2 = $row['sp_address2'];
+                    $result->sp_tel = $row['sp_tel'];
+                    $result->sp_text = $row['sp_text'];
+                    $result->sp_flg = $row['sp_flg'];
+                    array_push($results, $result);
+                }
+            } catch (PDOException $e) {
+                $errorMessage = 'データベースエラー';
+                logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+                logging("DATABASE ERROR : ".$e->getMessage());
+                logging("ARGS : ". json_encode(func_get_args()));
+            }
+            return $results;
+        }
+    
 

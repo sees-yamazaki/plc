@@ -41,7 +41,20 @@ foreach($ads as $ad){
     $rcntyHtml .= '</td></tr>';
 }
 
+$offering = getOfferingAdware($LOGIN_ID);
+$html1 = '';
+foreach($offering as $ofr ){
+    $wk = $ofr->adware_type=="0" ? "[目標]" : "[クリック]";
+    $html1 .= '<tr><td>'.$wk.'</td><td>'.$ofr->name.'</td></tr>';
+}
 
+
+$approved = getApprovedAdwareLimit($LOGIN_ID,3);
+$html2 = '';
+foreach($approved as $app ){
+    $wk = $app->adware_type=="0" ? "[目標]" : "[クリック]";
+    $html2 .= '<tr><td>'.$wk.'</td><td>'.$app->name.'</td></tr>';
+}
 
 ?>
 <!DOCTYPE html>
@@ -83,7 +96,7 @@ foreach($ads as $ad){
             <td><?php echo ($pays_0->cnt0 + $pays_0->cnt1 + $pays_1->cnt0 + $pays_1->cnt1); ?>件</td>
         </tr>
         <tr>
-            <td colspan=6>もっと見る</td>
+            <td colspan=6><a href='x10n_result_list.php'>もっと見る</a></td>
         </tr>
     </table>
     <br>
@@ -108,7 +121,7 @@ foreach($ads as $ad){
             <td><?php echo ($pays_0->cnt0 + $pays_0->cnt1); ?>件</td>
         </tr>
         <tr>
-            <td colspan=6>もっと見る</td>
+            <td colspan=6><a href='x10n_result_monthly.php?adtype=0'>もっと見る</a></td>
         </tr>
     </table>
     <br>
@@ -133,7 +146,7 @@ foreach($ads as $ad){
             <td><?php echo ($pays_1->cnt0 + $pays_1->cnt1); ?>件</td>
         </tr>
         <tr>
-            <td colspan=6>もっと見る</td>
+            <td colspan=6><a href='x10n_result_monthly.php?adtype=1'>もっと見る</a></td>
         </tr>
     </table>
 
@@ -148,13 +161,35 @@ foreach($ads as $ad){
 
     <br><br>
     承認制オファー概要<br>
-    <table>
-    </table>
+<br>
+リクエスト結果待機中<br>
+<table>
+    <?php echo $html1; ?>
+</table>
+<br>
+承認済オファー<br>
+<table>
+    <?php echo $html2; ?>
+</table>
 
+<br><a href='x10n_offer_list.php'>もっと見る</a><br>
+
+
+    <br><br>
+    <input type="button" onclick="location.href='x10n_offer_list.php'" value="承認制オファー概要">
 <br><br>
     <input type="button" onclick="location.href='x10n_result_list.php'" value="成果情報">
     <br><br>
     <input type="button" onclick="location.href='x10n_adwares_search.php'" value="オファー一覧へ">
+
+<br><br><hr>
+<input type="button" onclick="location.href='x10n_nuser_edit.php'" value="ユーザ新規登録">
+<br>
+<input type="button" onclick="location.href='x10n_nuser_b_edit.php'" value="ユーザ編集B">
+<br>
+<input type="button" onclick="location.href='x10n_nuser_c_edit.php'" value="ユーザ編集C">
+
+
 </body>
 
 </html>

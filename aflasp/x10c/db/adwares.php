@@ -129,6 +129,29 @@ function countMonthlyClicksAdwares($y, $m, $nUserId,$adwares)
     return $cnt;
 }
 
+function countClicksAdwares($nUserId,$adwares)
+{
+    $cnt=0;
+    try {
+
+        require 'dns.php';
+        $sql = "select count(*) as cnt from `v_access_x10` WHERE owner=:owner AND adwares=:adwares";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
+        $stmt->bindParam(':adwares', $adwares, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $cnt = $row['cnt'];
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $cnt;
+}
+
 function countPastClicks($y, $m, $nUserId)
 {
     $cnt=0;
@@ -166,6 +189,10 @@ class cls_pays
     public $cst0 ;
     public $cst1 ;
     public $cst2 ;
+    public $startdt ;
+    public $enddt ;
+    public $adware_type ;
+    public $approvable ;
 }
 
 function countMonthlyPaysGroups($y, $m, $nUserId,$adType)
@@ -208,6 +235,49 @@ function countMonthlyPaysGroups($y, $m, $nUserId,$adType)
     }
     return $results;
 }
+
+
+function countMonthlyPaysGroupsAll($nUserId,$adType)
+{
+    try {
+        $results = array();
+
+        require 'dns.php';
+        if ($adType=="0") {
+            $sql = "select adwares,max(name) as name, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10` WHERE owner=:owner group by adwares";
+        }else{
+            $sql = "select adwares,max(name) as name, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_click_pay_x10` WHERE owner=:owner group by adwares";
+        }
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_pays();
+            $result->id = $row['adwares'];
+            $result->name = $row['name'];
+            $result->startdt = $row['startdt'];
+            $result->enddt = $row['enddt'];
+            $result->adware_type = $row['adware_type'];
+            $result->approvable = $row['approvable'];
+            $result->cnt = $row['cnt'];
+            $result->cnt0 = $row['cnt0'];
+            $result->cnt1 = $row['cnt1'];
+            $result->cnt2 = $row['cnt2'];
+            $result->cst = $row['cst'];
+            $result->cst0 = $row['cst0'];
+            $result->cst1 = $row['cst1'];
+            $result->cst2 = $row['cst2'];
+            array_push($results, $result);
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $results;
+}
+
 
 function countMonthlyPays($y, $m, $nUserId,$adType)
 {

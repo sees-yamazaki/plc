@@ -102,7 +102,7 @@ if (isset($_POST['doEdit'])) {
                 新しいパスワード<br>
                 <input type="password" name="new_pw1"  class="input-text w90p"
                     value=""
-                    placeholder="半角英数混合8～12文字" minlength=8 maxlength='12' required /><br>
+                    placeholder="新しいパスワード" minlength=8 maxlength='12' required /><br>
                     <input type="password" name="new_pw2" class="input-text w90p"
                     value=""
                     placeholder="確認のため再度入力してください" minlength=8 maxlength='12' required /><br><br>

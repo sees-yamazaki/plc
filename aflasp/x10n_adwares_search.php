@@ -65,6 +65,8 @@ if (isset($_POST['run'])) {
     if (!empty($tmp4)) {
         $tmp[] = "(".implode(" OR ", $tmp4).")";
     }
+
+
     if (count($tmp)>0) {
         $where .= " AND ".implode(" AND ", $tmp);
     }

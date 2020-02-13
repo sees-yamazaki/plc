@@ -4,11 +4,15 @@ require('session.php');
 require('logging.php');
 require('db/premembers.php');
 require('db/members.php');
+require('db/mails.php');
 
 // セッション開始
 session_start();
 setMyName('psys_m');
 setSsnCrntPage(__FILE__);
+
+setSsnIni(parse_ini_file('./common.ini', false));
+setSsnTran(parse_ini_file('./transition.ini', false));
 
 //遷移元の確認
 // if(!checkPrev(__FILE__)){
@@ -59,17 +63,30 @@ if (isset($_POST['doRegst'])) {
     $m_pw = $_POST['m_pw'];
 
     if ($m_pw==$premember->m_pw) {
-
-        $cnt = checkMemberByMail(0,$premember->m_mail);
+        $cnt = checkMemberByMail(0, $premember->m_mail);
         if ($cnt==0) {
             registMember($pm_seq);
 
+            //MAIL
+            $mails = getMails();
+
+            mb_language("Japanese");
+            mb_internal_encoding("UTF-8");
+            $text = str_replace('__NAME__', $premember->m_name, $mails->insert_member_text);
+
+            $to      = $premember->m_mail;
+            $subject = $mails->insert_member_title;
+            $message = $text;
+            $headers = "From: noreply";
+    
+            mb_send_mail($to, $subject, $message, $headers);
+
+
+
             header('Location: ./u_registrated.php');
-        }else{
+        } else {
             $errorMessage="このメールアドレスはすでに登録されています。<br>".$premember->m_mail;
-
         }
-
     } else {
         $errorMessage="入力したパスワードが間違っています。";
     }

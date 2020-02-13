@@ -38,6 +38,19 @@ foreach ($prizes as $prize) {
     }
 }
 
+foreach ($prizes as $prize) {
+    if ($prize->pz_kind=="1") {
+        $html2 .= '<div class="rDiv w80p">';
+        if (!empty($prize->pz_title)) {
+            $html2 .= '<div class="rDivTitleGrey">今月の'.$prize->pz_title.'はこれ</div>';
+        }
+        if (!empty($prize->pz_img)) {
+            $html2 .= "<img class='w90p' border=0 src='./". getSsn('PATH_PROMO')."/".$pSeq.'/'.$prize->pz_img."'><br>";
+        }
+        $html2 .= '</div>';
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -69,10 +82,9 @@ foreach ($prizes as $prize) {
     </div>
 
 
-    <div id="contents">
-
-        <h3><br>商品を選択</h3>
-        <?php if (!empty($errorMessage)) { ?>
+    <div id="contents"><br>
+<img class="w80p" src="asset/image/select_prize_list.png">
+<?php if (!empty($errorMessage)) { ?>
         <div class="info w80p"><?php echo $errorMessage; ?>
         </div>
         <?php } ?>

@@ -17,6 +17,7 @@ $name = $_POST['name'];
 $category = $_POST['category'];
 $adware_type = $_POST['adware_type'];
 $approvable = $_POST['approvable'];
+$offer = $_POST['offer'];
 
 $offsetPage = 0;
 $limitPage = 5;
@@ -24,6 +25,7 @@ $crntPage = empty($_POST['page']) ? 1: $_POST['page'];
 
 $adtyped = array('','','');
 $aprved = array('','','');
+$offered = array('','');
 
 $ads = array();
 
@@ -68,6 +70,20 @@ if (isset($_POST['run'])) {
     if (!empty($tmp4)) {
         $tmp[] = "(".implode(" OR ", $tmp4).")";
     }
+
+    foreach ((array)$offer as $ofr) {
+        if ($ofr=="0") {
+            $tmp5[] = "((cnt_offer=0) OR cnt_offer IS NULL)";
+            $offered[0]= " checked";
+        } elseif ($ofr=="1") {
+            $tmp5[] = "(cnt_offer>0)";
+            $offered[1]= " checked";
+        }
+    }
+    if (!empty($tmp5)) {
+        $tmp[] = "(".implode(" OR ", $tmp5).")";
+    }
+
     if (count($tmp)>0) {
         $where .= " AND ".implode(" AND ", $tmp);
     }
@@ -131,11 +147,11 @@ if ($LOGIN_TYPE=='admin') {
 ?>
 
 <script>
-    function paging(vlu) {
-        document.frm.page.value = vlu;
-        document.frm.reset();
-        document.frm.submit();
-    }
+function paging(vlu) {
+    document.frm.page.value = vlu;
+    document.frm.reset();
+    document.frm.submit();
+}
 </script>
 <div id="inc_side_body">
 
@@ -151,42 +167,49 @@ if ($LOGIN_TYPE=='admin') {
                     <input type="hidden" name="type" value="adwares">
                     <input type="hidden" name="run" value="true">
                     <input type="hidden" name="page" value="">
-                    <input type="hidden" name="mode"
-                        value="<?php echo $mode; ?>">
+                    <input type="hidden" name="mode" value="<?php echo $mode; ?>">
                     <table class="search_table" summary="検索用テーブル">
                         <tbody>
                             <tr>
                                 <th>広告タイプ</th>
                                 <td>
-                                    <label><input type="checkbox" name="adware_type[]" value="0" <?php echo $adtyped[0]; ?>>目標達成タイプ</label>
-                                    <label><input type="checkbox" name="adware_type[]" value="1" <?php echo $adtyped[1]; ?>>クリック報酬タイプ</label>
+                                    <label><input type="checkbox" name="adware_type[]" value="0"
+                                            <?php echo $adtyped[0]; ?>>目標達成タイプ</label>
+                                    <label><input type="checkbox" name="adware_type[]" value="1"
+                                            <?php echo $adtyped[1]; ?>>クリック報酬タイプ</label>
                                 </td>
                             </tr>
                             <tr>
                                 <th>承認タイプ</th>
                                 <td>
-                                    <label><input type="checkbox" name="approvable[]" value="0" <?php echo $aprved[0]; ?>>オープン</label>
-                                    <label><input type="checkbox" name="approvable[]" value="1" <?php echo $aprved[1]; ?>>承認（クローズド）</label>
+                                    <label><input type="checkbox" name="approvable[]" value="0"
+                                            <?php echo $aprved[0]; ?>>オープン</label>
+                                    <label><input type="checkbox" name="approvable[]" value="1"
+                                            <?php echo $aprved[1]; ?>>承認（クローズド）</label>
                                 </td>
                             </tr>
                             <tr>
                                 <th>ＩＤ</th>
-                                <td><input type="text" name="id"
-                                        value="<?php  echo $id; ?>"
-                                        size="10" maxlength="8">
+                                <td><input type="text" name="id" value="<?php  echo $id; ?>" size="10" maxlength="8">
                                 </td>
                             </tr>
                             <tr>
                                 <th>広告名</th>
                                 <td>
-                                    <input type="text" name="name"
-                                        value="<?php  echo $name; ?>"
-                                        size="25" maxlength="25">
+                                    <input type="text" name="name" value="<?php  echo $name; ?>" size="25"
+                                        maxlength="25">
                                 </td>
                             </tr>
                             <tr>
                                 <th>カテゴリ</th>
                                 <td><?php  echo $html; ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>承認申請</th>
+                                <td>
+                                    <label><input type="checkbox" name="offer[]" value="0" <?php echo $offered[0]; ?>>なし</label>
+                                    <label><input type="checkbox" name="offer[]" value="1" <?php echo $offered[1]; ?>>あり</label>
                                 </td>
                             </tr>
                         </tbody>
@@ -298,8 +321,7 @@ if ($LOGIN_TYPE=='admin') {
                         <th>広告バナー画像</th>
                         <td>
                             <?php  if (!empty($ad->banner)) { ?>
-                            <div class="ad_image"><img
-                                    src="<?php echo $ad->banner; ?>">
+                            <div class="ad_image"><img src="<?php echo $ad->banner; ?>">
                             </div>
                             <?php  } else { ?>
                             <div class="ad_image"><span>No Image</span></div>
@@ -311,6 +333,16 @@ if ($LOGIN_TYPE=='admin') {
                         <td class="adwares_info"><?php echo nl2br($ad->comment); ?>
                         </td>
                     </tr>
+                    <?php  if ($ad->approvable=="1") { ?>
+                    <tr>
+                        <th>申請件数</th>
+                        <td class="adwares_info">
+                            <a href="x10c_offer_edit.php?pid=srch&amp;id=<?php echo $ad->id; ?>&amp;mode=<?php echo $mode; ?>">
+                            <?php echo $ad->cnt_offer; ?>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php  } ?>
 
 
 

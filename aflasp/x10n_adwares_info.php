@@ -4,6 +4,7 @@ include 'x10c_logging.php';
 include 'x10c_helper.php';
 include 'x10c/db/adwares.php';
 include 'x10c/db/x10.php';
+include 'x10c/db/system.php';
 
 // セッション再開
 session_start();
@@ -63,30 +64,39 @@ if ($ad->adware_type=="0") {
 
 $html .= '<br>';
 
-$ofr = getOfferStatus($id,$LOGIN_ID);
+$url = getSystemUrl();
 
-if (empty($ofr->status) && $ofr->status<>"0") {
-    $html .= '<form action="x10n_adwares_offer.php" method="POST">';
-    $html .= '<input type="submit" value="参加リクエスト"><br>';
-    $html .= '<input type="hidden" name="adware" value="'.$id.'">';
-    $html .= '<input type="hidden" name="status" value="0">';
-    $html .= '</form>';
-}elseif ($ofr->status=="0") {
-    $html .= 'リクエスト承認待ち<br>';
-    $html .= '<form action="x10n_adwares_offer.php" method="POST">';
-    $html .= '<input type="submit" value="参加リクエストを取り下げる"><br>';
-    $html .= '<input type="hidden" name="adware" value="'.$id.'">';
-    $html .= '<input type="hidden" name="status" value="1">';
-    $html .= '</form>';
-}elseif ($ofr->status=="1") {
-    $html .= 'TODO リクエスト拒否<br>';
-}elseif ($ofr->status=="2") {
+if ($ad->approvable=="1") {
+    $ofr = getOfferStatus($id, $LOGIN_ID);
+
+    if (is_null($ofr->status)) {
+        $html .= '<form action="x10n_adwares_offer.php" method="POST">';
+        $html .= '<input type="submit" value="参加リクエスト"><br>';
+        $html .= '<input type="hidden" name="adware" value="'.$id.'">';
+        $html .= '<input type="hidden" name="status" value="0">';
+        $html .= '</form>';
+    } elseif ($ofr->status=="0") {
+        $html .= 'リクエスト承認待ち<br>';
+        $html .= '<form action="x10n_adwares_offer.php" method="POST">';
+        $html .= '<input type="submit" value="参加リクエストを取り下げる"><br>';
+        $html .= '<input type="hidden" name="adware" value="'.$id.'">';
+        $html .= '<input type="hidden" name="status" value="1">';
+        $html .= '</form>';
+    } elseif ($ofr->status=="1") {
+        $html .= 'このオファーにはリクエスト申請できません<br>';
+    } elseif ($ofr->status=="2") {
+        $html .= '以下のURLを投稿しよう<br>';
+        $html .= '<input type="text" value="'.$url .'/link.php?id='.$LOGIN_ID.'&s_adwares='.$id.'" readonly><br>';
+        $html .= '<input type="button" onclick="document.getElementById(\'url\').select();document.execCommand(\'copy\');" value="URLをコピー"><br>';
+    } else {
+        $html .= 'what\'s status?'.$ofr->status.'<br>';
+    }
+    $html .= '<br>';
+}else{
     $html .= '以下のURLを投稿しよう<br>';
-    $html .= '<input type="text" readonly><br>';
-    $html .= '<input type="button" onclick="location.href=x10n_home.php" value="参加リクエスト"><br>';
+    $html .= '<input type="text" id="url" value="'.$url .'/link.php?id='.$LOGIN_ID.'&adwares='.$id.'" readonly><br>';
+    $html .= '<input type="button" onclick="document.getElementById(\'url\').select();document.execCommand(\'copy\');" value="URLをコピー"><br>';
 }
-$html .= '<br>';
-
 
 $html .= '成果条件<br>'.nl2br($ad->results).'<br>';
 $html .= '否認条件<br>'.nl2br($ad->denials).'<br>';

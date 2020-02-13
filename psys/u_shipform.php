@@ -26,12 +26,19 @@ $point = getPoint(getSsn("SEQ"));
 $errorMessage = '';
 
 // 変数の初期化
-$spSeq = $_POST['spSeq'];
+$spSeq = isset($_POST['spSeq']) ? $_POST['spSeq'] : $_GET['spSeq'];
 $ship = new cls_ships();
 
+$sp_name_ary = ['',''];
+$sp_kana_ary = ['',''];
 if (isset($_POST['doEdit'])) {
     $ship->sp_seq = $_POST['spSeq'];
-    $ship->sp_name = $_POST['sp_name'];
+    $sp_name_ary[0] = $_POST['sp_name_1'];
+    $sp_name_ary[1] = $_POST['sp_name_2'];
+    $sp_kana_ary[0] = $_POST['sp_kana_1'];
+    $sp_kana_ary[1] = $_POST['sp_kana_2'];
+    $ship->sp_name = $sp_name_ary[0]." ".$sp_name_ary[1];
+    $ship->sp_kana = $sp_kana_ary[0]." ".$sp_kana_ary[1];
     $ship->sp_post = $_POST['sp_post'];
     $ship->sp_address1 = $_POST['sp_address1'];
     $ship->sp_address2 = $_POST['sp_address2'];
@@ -43,9 +50,13 @@ if (isset($_POST['doEdit'])) {
 
 }elseif(getSsnPrevPage()=="u_shipforme.php"){
     $ship = getSsn('prm_ship');
+}elseif (isset($_POST['doChange'])) {
+    $ship = getVShip($spSeq);
 } else {
     //
 }
+$sp_name_ary =  explode(' ', $ship->sp_name);
+$sp_kana_ary =  explode(' ', $ship->sp_kana);
 
 ?>
 <!DOCTYPE html>
@@ -75,8 +86,17 @@ if (isset($_POST['doEdit'])) {
             <form action="" method="POST" name="frm">
 
                 お名前<br>
-                <input type="text" name="sp_name" id="sp_name" class="input-text w90p"
-                    value="<?php echo $ship->sp_name ?>" placeholder="富士　花子" maxlength='20' required /><br><br>
+                <input type="text" name="sp_name_1" id="sp_name_1" class="input-text " style="width: 40%;"
+                    value="<?php echo $sp_name_ary[0] ?>" placeholder="富士" maxlength='10' required />
+                    <input type="text" name="sp_name_2" id="sp_name_2" class="input-text " style="width: 40%;"
+                    value="<?php echo $sp_name_ary[1] ?>" placeholder="花子" maxlength='10' required /><br><br>
+                フリガナ(全角カナ)<br>
+                <input type="text" name="sp_kana_1" id="sp_kana_1" class="input-text" style="width: 40%;" 
+                value="<?php echo $sp_kana_ary[0] ?>"
+                    pattern="[ァ-ヴー\s]+" title="カタカナ" placeholder="フジ" maxlength='10' required />
+                <input type="text" name="sp_kana_2" id="sp_kana_2" class="input-text" style="width: 40%;" 
+                value="<?php echo $sp_kana_ary[1] ?>"
+                    pattern="[ァ-ヴー\s]+" title="カタカナ" placeholder="ハナコ" maxlength='10' required /><br><br>
                 郵便番号(ハイフンなし)<br>
                 <input type="text" name="sp_post" id="sp_post" class="input-text w90p"
                     value="<?php echo $ship->sp_post ?>" placeholder="1234567" maxlength='7'
@@ -97,6 +117,11 @@ if (isset($_POST['doEdit'])) {
                 <input type="submit" class="rButton w90p btn-red" value="登録する">
                 <input type="hidden" name="spSeq" value="<?php echo $spSeq; ?>">
                 <input type="hidden" name="doEdit">
+
+                <?php if(isset($_POST['doChange'])){ ?>
+                    <br><input type="button" class="rButton w80p btn-red-rev" onclick="location.href='u_point_history2.php?spid=<?php echo $spSeq; ?>'" value="戻る" />
+                <?php } ?>
+
 
             </form>
         </div>

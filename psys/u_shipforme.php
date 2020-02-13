@@ -39,6 +39,9 @@ if (isset($_POST['doEdit'])) {
     $sp = getVShip($ship->sp_seq);
 
 
+    require_once './db/members.php';
+    $member = getMember(getSsn("SEQ"));
+
     mb_language("Japanese");
     mb_internal_encoding("UTF-8");
     $base_text = $mails->ship_change_text;
@@ -49,7 +52,10 @@ if (isset($_POST['doEdit'])) {
     $text = str_replace('__ADD2__', $sp->sp_address2, $text);
     $text = str_replace('__TEL__', $sp->sp_tel, $text);
     $text = str_replace('__BIKOU__', nl2br($sp->sp_text), $text);
-    
+    $url = getSsnIni('url');
+    $url = $url."u_auth.php?code=".$ship->sp_seq."z".md5($member->m_mail.$member->m_pw)."z".$sp->m_seq;
+    $text = str_replace('__URL__', $url, $text);
+    logging($url);
     
     $to      = $sp->m_mail;
     $subject = $mails->ship_change_title;
@@ -93,6 +99,7 @@ if (isset($_POST['doEdit'])) {
                 <span class="lightgrey">SP</span><br><?php echo $ship->sp_seq ?><br><br>
 
                 <span class="lightgrey">お名前</span><br><?php echo $ship->sp_name ?><br><br>
+                <span class="lightgrey">フリガナ</span><br><?php echo $ship->sp_kana ?><br><br>
                 <span class="lightgrey">郵便番号(ハイフンなし)</span><br><?php echo $ship->sp_post ?><br><br>
                 <span class="lightgrey">住所</span><br><?php echo $ship->sp_address1 ?><br><br>
                 <span class="lightgrey">マンション名・部屋番号</span><br><?php echo $ship->sp_address2 ?><br><br>

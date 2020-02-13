@@ -81,6 +81,7 @@ $ship = new cls_ships();
 $ship->m_seq = getSsn("SEQ");
 $ship->up_seq = $upSeq;
 $ship->sp_name = $member->m_name;
+$ship->sp_kana = $member->m_kana;
 $ship->sp_post = $member->m_post;
 $ship->sp_address1 = $member->m_address1;
 $ship->sp_address2 = $member->m_address2;
@@ -102,6 +103,9 @@ $text = str_replace('__POST__', $member->m_post, $text);
 $text = str_replace('__ADD1__', $member->m_address1, $text);
 $text = str_replace('__ADD2__', $member->m_address2, $text);
 $text = str_replace('__TEL__', $member->m_tel, $text);
+$url = getSsnIni('url');
+$url = $url."u_auth.php?code=".$spSeq."z".md5($member->m_mail.$member->m_pw)."z".$ship->m_seq;
+$text = str_replace('__URL__', $url, $text);
 
 
 $to      = $member->m_mail;

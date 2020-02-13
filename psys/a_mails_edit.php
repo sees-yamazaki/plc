@@ -26,6 +26,8 @@ $mails = new cls_mails();
 
 $mails->add_member_title = $_POST['add_member_title'];
 $mails->add_member_text = $_POST['add_member_text'];
+$mails->insert_member_title = $_POST['insert_member_title'];
+$mails->insert_member_text = $_POST['insert_member_text'];
 $mails->change_pw_title = $_POST['change_pw_title'];
 $mails->change_pw_text = $_POST['change_pw_text'];
 $mails->game_hit_title = $_POST['game_hit_title'];
@@ -108,6 +110,31 @@ if (isset($_POST['sysEdit'])) {
                                             </div>
 
                                             <div class="form-group row showcase_row_area">
+                                                <label
+                                                    for="inputType1">【会員認証後メール】<br>変換用キーワード　__NAME__</label>
+                                            </div>
+                                            <div class="form-group row showcase_row_area">
+                                                <div class="col-md-3 showcase_text_area">
+                                                    <label for="inputType1">タイトル</label>
+                                                </div>
+                                                <div class="col-md-9 showcase_content_area">
+                                                    <input type="text" class="form-control" name="insert_member_title"
+                                                        value="<?php echo $mails->insert_member_title; ?>"
+                                                        maxLength=100 autocomplete="off" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row showcase_row_area">
+                                                <div class="col-md-3 showcase_text_area">
+                                                    <label for="inputType1">本文</label>
+                                                </div>
+                                                <div class="col-md-9 showcase_content_area">
+                                                    <textarea class="form-control" name="insert_member_text" cols="12"
+                                                        rows="10"
+                                                        required><?php echo $mails->insert_member_text; ?></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row showcase_row_area">
                                                 <label for="inputType1">【パスワード変更後メール】<br>変換用キーワード　__TIME__</label>
                                             </div>
                                             <div class="form-group row showcase_row_area">
@@ -133,7 +160,7 @@ if (isset($_POST['sysEdit'])) {
 
                                             <div class="form-group row showcase_row_area">
                                                 <label for="inputType1">【ゲーム（当たり）メール】<br>変換用キーワード　__ITEM__　__NAME__
-                                                    　__POST__　__ADD1__　__ADD2__　__TEL__</label>
+                                                    　__POST__　__ADD1__　__ADD2__　__TEL__　__URL__</label>
                                             </div>
                                             <div class="form-group row showcase_row_area">
                                                 <div class="col-md-3 showcase_text_area">
@@ -158,7 +185,7 @@ if (isset($_POST['sysEdit'])) {
 
                                             <div class="form-group row showcase_row_area">
                                                 <label for="inputType1">【ゲーム（外れ）メール】<br>変換用キーワード　__ITEM__　__NAME__
-                                                    　__POST__　__ADD1__　__ADD2__　__TEL__</label>
+                                                    　__POST__　__ADD1__　__ADD2__　__TEL__　__URL__</label>
                                             </div>
                                             <div class="form-group row showcase_row_area">
                                                 <div class="col-md-3 showcase_text_area">
@@ -184,7 +211,7 @@ if (isset($_POST['sysEdit'])) {
                                             <div class="form-group row showcase_row_area">
                                                 <label for="inputType1">【発送先変更メール】<br>変換用キーワード　__ITEM__　__NAME__
                                                     __POST__
-                                                    __ADD1__ __ADD2__ __TEL__ __BIKOU__ </label>
+                                                    __ADD1__ __ADD2__ __TEL__ __BIKOU__　__URL__</label>
                                             </div>
                                             <div class="form-group row showcase_row_area">
                                                 <div class="col-md-3 showcase_text_area">

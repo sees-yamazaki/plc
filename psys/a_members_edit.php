@@ -19,6 +19,10 @@ $errorMessage = "";
 
 
 
+
+$m_name_ary = ['',''];
+$m_kana_ary = ['',''];
+
 $mSeq = $_POST['mSeq'];
 
 require './db/members.php';
@@ -26,8 +30,12 @@ $member = new cls_members();
 
 if (isset($_POST['mmbrEdit'])) {
     $member->m_seq = $_POST['mSeq'];
-    $member->m_name = $_POST['m_name'];
-    $member->m_kana = $_POST['m_kana'];
+    $m_name_ary[0] = $_POST['m_name_1'];
+    $m_name_ary[1] = $_POST['m_name_2'];
+    $m_kana_ary[0] = $_POST['m_kana_1'];
+    $m_kana_ary[1] = $_POST['m_kana_2'];
+    $member->m_name = $m_name_ary[0]." ".$m_name_ary[1];
+    $member->m_kana = $m_kana_ary[0]." ".$m_kana_ary[1];
     $member->m_mail = $_POST['m_mail'];
     $member->m_post = $_POST['m_post'];
     $member->m_address1 = $_POST['m_address1'];
@@ -46,6 +54,8 @@ if (isset($_POST['mmbrEdit'])) {
     }
 } else {
     $member = getMember($mSeq);
+    $m_name_ary =  explode(' ', $member->m_name);
+    $m_kana_ary =  explode(' ', $member->m_kana);
 }
 
 
@@ -104,9 +114,12 @@ if (isset($_POST['mmbrEdit'])) {
                                                     <label for="inputType1">名前</label>
                                                 </div>
                                                 <div class="col-md-9 showcase_content_area">
-                                                    <input type="text" class="form-control" name="m_name"
-                                                        value="<?php echo $member->m_name; ?>"
-                                                        placeholder="20文字まで" maxLength=20 autocomplete="off" required>
+                                                    <input type="text" class="form-control" style="width:40%; float:left;" name="m_name_1"
+                                                        value="<?php echo $m_name_ary[0]; ?>"
+                                                        pattern="\S+" title="空白は使用できません" placeholder="10文字まで" maxLength=10 autocomplete="off" required>
+                                                    <input type="text" class="form-control " style="width:40%; float:left;margin-left:10pt;"  name="m_name_2"
+                                                        value="<?php echo $m_name_ary[1]; ?>"
+                                                        pattern="\S+" title="空白は使用できません" placeholder="10文字まで" maxLength=10 autocomplete="off" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row showcase_row_area">
@@ -114,9 +127,12 @@ if (isset($_POST['mmbrEdit'])) {
                                                     <label for="inputType1">フリガナ</label>
                                                 </div>
                                                 <div class="col-md-9 showcase_content_area">
-                                                    <input type="text" class="form-control" name="m_kana"
-                                                        value="<?php echo $member->m_kana; ?>"
-                                                        placeholder="20文字まで" maxLength=20 autocomplete="off" required>
+                                                    <input type="text" class="form-control" style="width:40%; float:left;" name="m_kana_1"
+                                                        value="<?php echo $m_kana_ary[0]; ?>"
+                                                        pattern="\S+" title="空白は使用できません" placeholder="10文字まで" maxLength=10 autocomplete="off" required>
+                                                    <input type="text" class="form-control" style="width:40%; float:left;margin-left:10pt;" name="m_kana_2"
+                                                        value="<?php echo $m_kana_ary[1]; ?>"
+                                                        pattern="\S+" title="空白は使用できません" placeholder="10文字まで" maxLength=10 autocomplete="off" required>
                                                 </div>
                                             </div>
                                             <div class="form-group row showcase_row_area">

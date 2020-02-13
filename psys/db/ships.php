@@ -23,11 +23,12 @@ function insertShip($ships)
     $insertid =0;
     try {
         require './db/dns.php';
-        $sql = "INSERT  INTO `ships` (  `m_seq`,  `up_seq`,  `sp_name`,  `sp_post`, `sp_address1`,  `sp_address2`,  `sp_tel`,  `sp_text`,  `pz_seq`) VALUES (:m_seq, :up_seq, :sp_name, :sp_post, :sp_address1, :sp_address2, :sp_tel, :sp_text, :pz_seq)";
+        $sql = "INSERT  INTO `ships` (  `m_seq`,  `up_seq`,  `sp_name`, `sp_kana`,  `sp_post`, `sp_address1`,  `sp_address2`,  `sp_tel`,  `sp_text`,  `pz_seq`) VALUES (:m_seq, :up_seq,:sp_name,  :sp_kana, :sp_post, :sp_address1, :sp_address2, :sp_tel, :sp_text, :pz_seq)";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':m_seq', $ships->m_seq, PDO::PARAM_INT);
         $stmt->bindParam(':up_seq', $ships->up_seq, PDO::PARAM_INT);
         $stmt->bindParam(':sp_name', $ships->sp_name, PDO::PARAM_STR);
+        $stmt->bindParam(':sp_kana', $ships->sp_kana, PDO::PARAM_STR);
         $stmt->bindParam(':sp_post', $ships->sp_post, PDO::PARAM_INT);
         $stmt->bindParam(':sp_address1', $ships->sp_address1, PDO::PARAM_STR);
         $stmt->bindParam(':sp_address2', $ships->sp_address2, PDO::PARAM_STR);
@@ -56,9 +57,10 @@ function updateShip($ship)
 {
     try {
         require './db/dns.php';
-        $sql = " UPDATE `ships` SET `sp_name`=:sp_name,`sp_post`=:sp_post,`sp_address1`=:sp_address1,`sp_address2`=:sp_address2,`sp_tel`=:sp_tel,`sp_text`=:sp_text,`edit_flg`=1, editdt=NOW()  WHERE sp_seq=:sp_seq";
+        $sql = " UPDATE `ships` SET `sp_name`=:sp_name,`sp_kana`=:sp_kana,`sp_post`=:sp_post,`sp_address1`=:sp_address1,`sp_address2`=:sp_address2,`sp_tel`=:sp_tel,`sp_text`=:sp_text,`edit_flg`=1, editdt=NOW()  WHERE sp_seq=:sp_seq";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':sp_name', $ship->sp_name, PDO::PARAM_STR);
+        $stmt->bindParam(':sp_kana', $ship->sp_kana, PDO::PARAM_STR);
         $stmt->bindParam(':sp_post', $ship->sp_post, PDO::PARAM_STR);
         $stmt->bindParam(':sp_address1', $ship->sp_address1, PDO::PARAM_STR);
         $stmt->bindParam(':sp_address2', $ship->sp_address2, PDO::PARAM_STR);

@@ -28,7 +28,7 @@ $point = getPoint(getSsn("SEQ"));
 $errorMessage = '';
 
 
-$usepoints = getVUsepoints(getSsn('SEQ'));
+$usepoints = getVUsepointsAndShips(getSsn('SEQ'));
 
 $html = '';
 foreach($usepoints as $usepoint){
@@ -43,6 +43,14 @@ foreach($usepoints as $usepoint){
     $html .= '<table class="w100p">';
     $html .= '<tr><td class="hist_ttl txt-left">ポイント交換商品</td></tr>';
     $html .= '<tr><td class="hist_txt txt-left">'.$usepoint->pz_title.'</td></tr>';
+    $html .= '</table>';
+    $html .= '<table class="w100p">';
+    $html .= '<tr><td class="hist_ttl txt-left">発送状況</td></tr>';
+    if ($usepoint->sp_flg=="0") {
+        $html .= '<tr><td class="hist_txt txt-left"><a href="u_point_history2.php?spid='.$usepoint->sp_seq.'">未発送</td></tr>';
+    }else{
+        $html .= '<tr><td class="hist_txt txt-left"><a href="u_point_history2.php?spid='.$usepoint->sp_seq.'">発送済み</td></tr>';
+    }
     $html .= '</table>';
     $html .= '<hr>';
 

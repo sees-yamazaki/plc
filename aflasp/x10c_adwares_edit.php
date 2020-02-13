@@ -157,6 +157,7 @@ if (isset($_POST['doCheck'])) {
 }
 
 
+$offer = getOffer($id);
 
 
 
@@ -600,6 +601,14 @@ if ($adware->adware_type=="1") {
                                 <th>終了日</th>
                                 <td><input type="date" name="enddt"
                                         value="<?php echo $adware->enddt; ?>">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><a href='x10c_offer_edit.php?pid=ad&id=<?php echo $id; ?>'>対象ユーザー</a></th>
+                                <td>
+                                    <?php foreach($offer as $ofr){ ?>
+                                        <?php echo $ofr->nuser; ?><br>
+                                    <?php } ?>
                                 </td>
                             </tr>
 
