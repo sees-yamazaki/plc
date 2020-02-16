@@ -24,7 +24,8 @@ $errorMessage = "";
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo getSsnMyname(); ?></title>
+    <title><?php echo getSsnMyname(); ?>
+    </title>
     <link rel="stylesheet" href="./assets/vendors/iconfonts/mdi/css/materialdesignicons.css">
     <link rel="stylesheet" href="./assets/css/shared/style.css">
     <link rel="stylesheet" href="./assets/css/demo_1/style.css">
@@ -39,7 +40,7 @@ $errorMessage = "";
     <div class="page-content-wrapper">
         <div class="page-content-wrapper-inner">
             <div class="content-viewport">
-                
+
             </div>
         </div>
     </div>

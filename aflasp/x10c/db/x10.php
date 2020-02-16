@@ -748,4 +748,3 @@ function getPayLimit($startdt, $enddt, $nuser,$adtype, $limit, $offset)
     }
     return $results;
 }
-

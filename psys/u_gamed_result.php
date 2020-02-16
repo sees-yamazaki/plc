@@ -6,6 +6,11 @@ require('logging.php');
 // セッション開始
 session_start();
 setMyName('psys_m');
+//セッションの確認
+if (!getSsnIsLogin()) {
+    setSsnMsg('Invalid transition');
+    header('Location: ./u_error.php');
+}
 setSsnCrntPage(__FILE__);
 
 // エラーメッセージの初期化

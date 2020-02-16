@@ -9,8 +9,8 @@ setMyName('psys_m');
 
 // エラーメッセージの取得
 $errorMessage = '';
-if(getSsnMsg()=='Invalid transition'){
-    $errorMessage = "不正な遷移を検知しました。";
+if (getSsnMsg()=='Invalid transition') {
+    $errorMessage = "セッション情報が取得できませんでした。<br>再度、ログインを行ってください。";
 }
 
 $sysname = getSsnMyname();

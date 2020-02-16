@@ -37,7 +37,7 @@ class cls_nuser
     public $limits ;
     public $regist ;
     public $logout ;
-    //編集用項目
+    //??W?p????
     public $mail_confirm ;
     public $pass_confirm ;
 }
@@ -88,7 +88,7 @@ class cls_nuser
 //             array_push($results, $result);
 //         }
 //     } catch (PDOException $e) {
-//         $errorMessage = 'データベースエラー';
+//         $errorMessage = 'DATABASE ERROR';
 //         if (strcmp("1", $ini['debug'])==0) {
 //             echo $e->getMessage();
 //         }
@@ -141,7 +141,7 @@ function getNuser($nId)
             $result->logout = $row['logout'];
         }
     } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
+        $errorMessage = 'DATABASE ERROR';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
         logging("DATABASE ERROR : ".$e->getMessage());
         logging("ARGS : ". json_encode(func_get_args()));
@@ -226,7 +226,7 @@ function insertNuser($nuser)
             logging("ARGS : ". json_encode(func_get_args()));
         }
     } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
+        $errorMessage = 'DATABASE ERROR';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
         logging("DATABASE ERROR : ".$e->getMessage());
         logging("ARGS : ". json_encode(func_get_args()));
@@ -257,7 +257,7 @@ function updateNuserB($nuser)
             logging("ARGS : ". json_encode(func_get_args()));
         }
     } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
+        $errorMessage = 'DATABASE ERROR';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
         logging("DATABASE ERROR : ".$e->getMessage());
         logging("ARGS : ". json_encode(func_get_args()));
@@ -286,7 +286,7 @@ function updateNuserC($nuser)
             logging("ARGS : ". json_encode(func_get_args()));
         }
     } catch (PDOException $e) {
-        $errorMessage = 'データベースエラー';
+        $errorMessage = 'DATABASE ERROR';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
         logging("DATABASE ERROR : ".$e->getMessage());
         logging("ARGS : ". json_encode(func_get_args()));
@@ -336,9 +336,122 @@ function updateNuserC($nuser)
 //         $stmt->bindParam(':logout', $nuser->logout, PDO::PARAM_STR);
 //         $stmt->execute();
 //     } catch (PDOException $e) {
-//         $errorMessage = 'データベースエラー';
+//         $errorMessage = 'DATABASE ERROR';
 //         if (strcmp("1", $ini['debug'])==0) {
 //             echo $e->getMessage();
 //         }
 //     }
 // }
+
+
+
+class cls_nuser_x10
+{
+    public $id ;
+    public $nickname ;
+    public $instagram ;
+    public $facebook ;
+    public $twitter ;
+    public $youtube ;
+}
+
+function getNuserX10($nId)
+{
+    try {
+        $result = new cls_nuser();
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT * FROM `x10_nuser` WHERE id=:id");
+        $stmt->bindParam(':id', $nId, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        if ($row = $stmt->fetch()) {
+            $result->id = $row['id'];
+            $result->nickname = $row['nickname'];
+            $result->instagram = $row['instagram'];
+            $result->facebook = $row['facebook'];
+            $result->twitter = $row['twitter'];
+            $result->youtube = $row['youtube'];
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $result;
+}
+
+function countNuserX10($nId)
+{
+    try {
+        $result =0;
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `x10_nuser` WHERE id=:id");
+        $stmt->bindParam(':id', $nId, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        if ($row = $stmt->fetch()) {
+            $result= $row['cnt'];
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $result;
+}
+
+function insertNuserX10($nuser)
+{
+    try {
+        require 'dns.php';
+        $sql = "INSERT INTO `x10_nuser`(`id`, `nickname`, `instagram`, `facebook`, `twitter`, `youtube`) VALUES (:id, :nickname, :instagram, :facebook, :twitter, :youtube)";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':id', $nuser->id, PDO::PARAM_STR);
+        $stmt->bindParam(':nickname', $nuser->nickname, PDO::PARAM_STR);
+        $stmt->bindParam(':instagram', $nuser->instagram, PDO::PARAM_STR);
+        $stmt->bindParam(':facebook', $nuser->facebook, PDO::PARAM_STR);
+        $stmt->bindParam(':twitter', $nuser->twitter, PDO::PARAM_STR);
+        $stmt->bindParam(':youtube', $nuser->youtube, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("INSERT ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $insertid;
+}
+
+function updateNuserX10($nuser)
+{
+    try {
+        require 'dns.php';
+        $sql = "UPDATE `x10_nuser` SET `nickname`=:nickname, `instagram`=:instagram, `facebook`=:facebook, `twitter`=:twitter, `youtube`=:youtube  WHERE `id`=:id";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':id', $nuser->id, PDO::PARAM_STR);
+        $stmt->bindParam(':nickname', $nuser->nickname, PDO::PARAM_STR);
+        $stmt->bindParam(':instagram', $nuser->instagram, PDO::PARAM_STR);
+        $stmt->bindParam(':facebook', $nuser->facebook, PDO::PARAM_STR);
+        $stmt->bindParam(':twitter', $nuser->twitter, PDO::PARAM_STR);
+        $stmt->bindParam(':youtube', $nuser->youtube, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("UPDATE ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $insertid;
+}

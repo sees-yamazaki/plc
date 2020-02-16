@@ -8,6 +8,11 @@ require('db/mails.php');
 // セッション開始
 session_start();
 setMyName('psys_m');
+//セッションの確認
+if (!getSsnIsLogin()) {
+    setSsnMsg('Invalid transition');
+    header('Location: ./u_error.php');
+}
 setSsnCrntPage(__FILE__);
 
 //遷移元の確認
@@ -27,29 +32,27 @@ $point = getPoint(getSsn("SEQ"));
 $errorMessage = '';
 
 if (isset($_POST['doEdit'])) {
-
     $member = getMember(getSsn('SEQ'));
 
-    if($member->m_pw<>$_POST['old_pw']){
+    if ($member->m_pw<>$_POST['old_pw']) {
         $errorMessage .= '現在のパスワードが異なります。<br>';
     }
     
     if ($_POST['new_pw1']<>$_POST['new_pw2']) {
         //if(!empty($errorMessage)){$errorMessage .= '<br>';}
         $errorMessage .= '新しいパスワードが一致しません。<br>';
-    }else{
-        if(preg_match('/\A(?=.*?[a-zA-Z])(?=.*?\d)[a-zA-Z\d]{8,12}+\z/i', $_POST['new_pw1'])==0){
+    } else {
+        if (preg_match('/\A(?=.*?[a-zA-Z])(?=.*?\d)[a-zA-Z\d]{8,12}+\z/i', $_POST['new_pw1'])==0) {
             $errorMessage .= '新しいパスワードは<br>半角英数混合8～12文字で入力してください。<br>';
         }
     }
     
-    if(empty($errorMessage)){
-
-        updatePw($member->m_seq,$_POST['new_pw1']);
+    if (empty($errorMessage)) {
+        updatePw($member->m_seq, $_POST['new_pw1']);
 
         $mails = getMails();
-        $dt = date('Y年m月d日　H時i分s秒',strtotime("now") );
-        $text = str_replace('__TIME__', $dt , $mails->change_pw_text);
+        $dt = date('Y年m月d日　H時i分s秒', strtotime("now"));
+        $text = str_replace('__TIME__', $dt, $mails->change_pw_text);
 
         mb_language("Japanese");
         mb_internal_encoding("UTF-8");
@@ -58,14 +61,13 @@ if (isset($_POST['doEdit'])) {
         $subject = $mails->change_pw_title;
         $message = $text;
 //        $message .= "\n\n\n\nログイン後にパスワードの再設定を行ってください。";
-        $headers = "From: noreply";
+        $headers = "From:" .mb_encode_mimeheader("アスミールポイントプログラム")."<info@ichiban-boshi.com>";
         
         mb_send_mail($to, $subject, $message, $headers);
 
         
         header('Location: u_changedpw.php');
     }
-
 }
 
 ?>
@@ -96,16 +98,13 @@ if (isset($_POST['doEdit'])) {
             <form action="" method="POST" name="frm">
 
                 現在のパスワード<br>
-                <input type="password" name="old_pw" class="input-text w90p"
-                    value=""
-                    placeholder="現在のパスワード" maxlength='20' required /><br><br>
+                <input type="password" name="old_pw" class="input-text w90p" value="" placeholder="現在のパスワード"
+                    maxlength='20' required /><br><br>
                 新しいパスワード<br>
-                <input type="password" name="new_pw1"  class="input-text w90p"
-                    value=""
-                    placeholder="新しいパスワード" minlength=8 maxlength='12' required /><br>
-                    <input type="password" name="new_pw2" class="input-text w90p"
-                    value=""
-                    placeholder="確認のため再度入力してください" minlength=8 maxlength='12' required /><br><br>
+                <input type="password" name="new_pw1" class="input-text w90p" value="" placeholder="新しいパスワード"
+                    minlength=8 maxlength='12' required /><br>
+                <input type="password" name="new_pw2" class="input-text w90p" value="" placeholder="確認のため再度入力してください"
+                    minlength=8 maxlength='12' required /><br><br>
 
 
                 <input type="submit" class="rButton w90p btn-red" value="登録する">

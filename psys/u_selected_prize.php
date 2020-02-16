@@ -6,6 +6,11 @@ require('session.php');
 // セッション開始
 session_start();
 setMyName('psys_m');
+//セッションの確認
+if (!getSsnIsLogin()) {
+    setSsnMsg('Invalid transition');
+    header('Location: ./u_error.php');
+}
 
 // エラーメッセージの初期化
 $errorMessage = '';
@@ -90,7 +95,7 @@ $html3 .= '</div>';
 
     <div id="contents">
 
-    <br><br><img class="w70p" src="./asset/image/select_prize.png"><br><br>
+        <br><br><img class="w70p" src="./asset/image/select_prize.png"><br><br>
         <?php if (!empty($errorMessage)) { ?>
         <div class="info w80p"><?php echo $errorMessage; ?>
         </div>

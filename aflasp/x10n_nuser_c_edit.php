@@ -29,17 +29,15 @@ $nUser->number = $_POST['number'];
 $nUser->bank_name = $_POST['bank_name'];
 
 if (isset($_POST['doCheck'])) {
-
     header('Location: x10n_nuser_c_edite.php', true, 307);
-
 } elseif (isset($_POST['doBack'])) {
-} else{
+} else {
     $nUser = getNuser($LOGIN_ID);
 }
 
 $html = '<option value="">未選択</option>';
 $prefs = getPrefectures();
-foreach($prefs as $pref){
+foreach ($prefs as $pref) {
     $wk = $nUser->adds==$pref->id ? " selected" : "";
     $html .= '<option value="'.$pref->id.'" '.$wk.'>'.$pref->name.'</option>';
 }
@@ -52,7 +50,8 @@ foreach($prefs as $pref){
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo ""; ?></title>
+    <title><?php echo ""; ?>
+    </title>
     <link rel="stylesheet" href="x10n/css/main.css">
 </head>
 
@@ -68,24 +67,37 @@ foreach($prefs as $pref){
         <br>
 
         金融機関名<br>
-        <input type="text" name="bank" value="<?php echo $nUser->bank;?>" size="30" maxlength="30"><br>
+        <input type="text" name="bank"
+            value="<?php echo $nUser->bank;?>" size="30"
+            maxlength="30"><br>
         金融機関番号<br>
-        <input type="text" name="bank_code" value="<?php echo $nUser->bank_code;?>" size="6" maxlength="4"><br>
+        <input type="text" name="bank_code"
+            value="<?php echo $nUser->bank_code;?>" size="6"
+            maxlength="4"><br>
         支店名<br>
-        <input type="text" name="branch" value="<?php echo $nUser->branch;?>" size="30" maxlength="30"><br>
+        <input type="text" name="branch"
+            value="<?php echo $nUser->branch;?>" size="30"
+            maxlength="30"><br>
         支店番号<br>
-        <input type="text" name="branch_code" value="<?php echo $nUser->branch_code;?>" size="5" maxlength="3"><br>
+        <input type="text" name="branch_code"
+            value="<?php echo $nUser->branch_code;?>" size="5"
+            maxlength="3"><br>
         種別<br>
         <label><input type="radio" name="bank_type" value="1" checked="checked">普通</label>
         <label><input type="radio" name="bank_type" value="2">当座</label>
         <label><input type="radio" name="bank_type" value="4">貯蓄</label><br>
         口座番号<br>
-        <input type="text" name="number" value="<?php echo $nUser->number;?>" size="15" maxlength="7"><br>
+        <input type="text" name="number"
+            value="<?php echo $nUser->number;?>" size="15"
+            maxlength="7"><br>
         口座名義(カナ)<br>
-        <input type="text" name="bank_name" value="<?php echo $nUser->bank_name;?>" size="30" maxlength="30"><br>
+        <input type="text" name="bank_name"
+            value="<?php echo $nUser->bank_name;?>" size="30"
+            maxlength="30"><br>
 
 
-        <input name="doCheck" type="hidden" value="0">
+        <input name="doCheck" type="hidden" value="0"><br>
+        <br>
 
         <div class="input_box">
             <input type="submit" value="入力内容の確認" class="input_base">
@@ -96,8 +108,9 @@ foreach($prefs as $pref){
 
 
 
-    <br><br><hr>
-<input type="button" onclick="location.href='x10n_home.php'" value="戻る">
+    <br><br>
+    <hr>
+    <input type="button" onclick="location.href='x10n_home.php'" value="戻る">
 
 
 

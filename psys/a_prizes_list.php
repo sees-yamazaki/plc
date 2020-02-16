@@ -36,7 +36,18 @@ foreach ($prizes as $prize) {
         $html .= "<td>外れ用</td>";
     }
     $html .= "<td>".$prize->pz_nowcnt."</td>";
-    $html .= "<td>".$prize->pz_hitcnt."</td>";
+    $cnt_array = explode(',', $prize->pz_hitcnt);
+    $i=0;
+    $cnt2='';
+    foreach($cnt_array as $cnt){
+        $cnt2.=$cnt.",";
+        $i++;
+        if($i==10){
+            $cnt2.='<br>';
+            $i=0;
+        }
+    }
+    $html .= "<td>".$cnt2."</td>";
     $html .= "<td><button type='button' name='edit' class='btn btn-inverse-secondary' onclick='przEdit(".$prize->pz_seq.")'>編集</button></td>";
     $html .= "</tr>";
 }

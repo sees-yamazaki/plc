@@ -41,14 +41,24 @@ if (isset($_POST['doEdit'])) {
     $member->m_name = $m_name_ary[0]." ".$m_name_ary[1];
     $member->m_kana = $m_kana_ary[0]." ".$m_kana_ary[1];
     $member->m_pw = $_POST['m_pw'];
+    $member->m_pw2 = $_POST['m_pw2'];
     $member->m_mail = $_POST['m_mail'];
     $member->m_post = $_POST['m_post'];
     $member->m_address1 = $_POST['m_address1'];
     $member->m_address2 = $_POST['m_address2'];
     $member->m_tel = $_POST['m_tel'];
-
-    setSsnKV('prm_member', $member);
-    header('Location: ./u_membershipe.php');
+    
+    if ($_POST['m_pw']<>$_POST['m_pw2']) {
+        $errorMessage .= 'パスワードが一致しません。<br>';
+    } else {
+        if (preg_match('/\A(?=.*?[a-zA-Z])(?=.*?\d)[a-zA-Z\d]{8,12}+\z/i', $_POST['m_pw'])==0) {
+            $errorMessage .= 'パスワードは<br>半角英数混合8～12文字で入力してください。<br>';
+        }
+    }
+    if (empty($errorMessage)) {
+        setSsnKV('prm_member', $member);
+        header('Location: ./u_membershipe.php');
+    }
 } elseif (getSsnPrevPage()=="u_membershipe.php") {
     $member = getSsn('prm_member');
     $m_name_ary =  explode(' ', $member->m_name);
@@ -86,22 +96,24 @@ if (isset($_POST['doEdit'])) {
             <form action="" method="POST" name="frm">
 
                 お名前<br>
-                <input type="text" name="m_name_1" id="m_name_1" class="input-text " style="width: 40%;" 
+                <input type="text" name="m_name_1" id="m_name_1" class="input-text " style="width: 40%;"
                     value="<?php echo $m_name_ary[0] ?>"
                     pattern="\S+" title="空白は使用できません" placeholder="富士" maxlength='10' required />
-                    <input type="text" name="m_name_2" id="m_name_2" class="input-text" style="width: 40%;" 
+                <input type="text" name="m_name_2" id="m_name_2" class="input-text" style="width: 40%;"
                     value="<?php echo $m_name_ary[1] ?>"
                     pattern="\S+" title="空白は使用できません" placeholder="花子" maxlength='10' required /><br><br>
                 フリガナ(全角カナ)<br>
-                <input type="text" name="m_kana_1" id="m_kana_1" class="input-text" style="width: 40%;" 
-                value="<?php echo $m_kana_ary[0] ?>"
+                <input type="text" name="m_kana_1" id="m_kana_1" class="input-text" style="width: 40%;"
+                    value="<?php echo $m_kana_ary[0] ?>"
                     pattern="[ァ-ヴー\s]+" title="カタカナ" placeholder="フジ" maxlength='10' required />
-                <input type="text" name="m_kana_2" id="m_kana_2" class="input-text" style="width: 40%;" 
-                value="<?php echo $m_kana_ary[1] ?>"
+                <input type="text" name="m_kana_2" id="m_kana_2" class="input-text" style="width: 40%;"
+                    value="<?php echo $m_kana_ary[1] ?>"
                     pattern="[ァ-ヴー\s]+" title="カタカナ" placeholder="ハナコ" maxlength='10' required /><br><br>
                 パスワード<br>
                 <input type="password" name="m_pw" id="m_pw" class="input-text w90p" value="" maxlength='10'
                     required /><br><br>
+                <input type="password" name="m_pw2" id="m_pw2" class="input-text w90p" value="" maxlength='10'
+                    placeholder="確認のため再度入力してください" required /><br><br>
                 メールアドレス<br>
                 <input type="text" name="m_mail" id="m_mail" class="input-text w90p"
                     value="<?php echo $member->m_mail ?>"

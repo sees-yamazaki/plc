@@ -7,6 +7,11 @@ require('db//members.php');
 // セッション開始
 session_start();
 setMyName('psys_m');
+//セッションの確認
+if (!getSsnIsLogin()) {
+    setSsnMsg('Invalid transition');
+    header('Location: ./u_error.php');
+}
 setSsnCrntPage(__FILE__);
 
 //遷移元の確認
@@ -86,19 +91,19 @@ if (isset($_POST['doEdit'])) {
         <div name="editFrm" class="editFrm">
             <form action="" method="POST" name="frm">
 
-            お名前<br>
-                <input type="text" name="m_name_1" id="m_name_1" class="input-text " style="width: 40%;" 
+                お名前<br>
+                <input type="text" name="m_name_1" id="m_name_1" class="input-text " style="width: 40%;"
                     value="<?php echo $m_name_ary[0] ?>"
                     pattern="\S+" title="空白は使用できません" placeholder="富士" maxlength='10' required />
-                    <input type="text" name="m_name_2" id="m_name_2" class="input-text" style="width: 40%;" 
+                <input type="text" name="m_name_2" id="m_name_2" class="input-text" style="width: 40%;"
                     value="<?php echo $m_name_ary[1] ?>"
                     pattern="\S+" title="空白は使用できません" placeholder="花子" maxlength='10' required /><br><br>
                 フリガナ(全角カナ)<br>
-                <input type="text" name="m_kana_1" id="m_kana_1" class="input-text" style="width: 40%;" 
-                value="<?php echo $m_kana_ary[0] ?>"
+                <input type="text" name="m_kana_1" id="m_kana_1" class="input-text" style="width: 40%;"
+                    value="<?php echo $m_kana_ary[0] ?>"
                     pattern="[ァ-ヴー\s]+" title="カタカナ" placeholder="フジ" maxlength='10' required />
-                <input type="text" name="m_kana_2" id="m_kana_2" class="input-text" style="width: 40%;" 
-                value="<?php echo $m_kana_ary[1] ?>"
+                <input type="text" name="m_kana_2" id="m_kana_2" class="input-text" style="width: 40%;"
+                    value="<?php echo $m_kana_ary[1] ?>"
                     pattern="[ァ-ヴー\s]+" title="カタカナ" placeholder="ハナコ" maxlength='10' required /><br><br>
                 メールアドレス<br>
                 <input type="text" name="m_mail" id="m_mail" class="input-text w90p"

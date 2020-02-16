@@ -1,10 +1,15 @@
 <?php
+require('session.php');
+require('logging.php');
 
 // セッション開始
 session_start();
-require('session.php');
 setMyName('psys_m');
-require('logging.php');
+//セッションの確認
+if (!getSsnIsLogin()) {
+    setSsnMsg('Invalid transition');
+    header('Location: ./u_error.php');
+}
 
 // エラーメッセージの初期化
 $errorMessage = '';

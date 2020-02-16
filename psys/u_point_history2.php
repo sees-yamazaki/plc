@@ -9,6 +9,11 @@ require('db/views.php');
 // セッション開始
 session_start();
 setMyName('psys_m');
+//セッションの確認
+if (!getSsnIsLogin()) {
+    setSsnMsg('Invalid transition');
+    header('Location: ./u_error.php');
+}
 setSsnCrntPage(__FILE__);
 
 //遷移元の確認
@@ -33,7 +38,7 @@ $spid = $_GET['spid'];
 $ship = getVShip($spid);
 
 $html = '';
-foreach((array)$usepoints as $usepoint){
+foreach ((array)$usepoints as $usepoint) {
     $html .= '<table class="w100p">';
     $html .= '<tr><td class="hist_ttl txt-left">ポイント交換日</td></tr>';
     $html .= '<tr><td class="hist_txt txt-left">'.$usepoint->createdt.'</td></tr>';
@@ -50,12 +55,11 @@ foreach((array)$usepoints as $usepoint){
     $html .= '<tr><td class="hist_ttl txt-left">発送状況</td></tr>';
     if ($usepoint->sp_flg=="0") {
         $html .= '<tr><td class="hist_txt txt-left">未発送</td></tr>';
-    }else{
+    } else {
         $html .= '<tr><td class="hist_txt txt-left">発送済み</td></tr>';
     }
     $html .= '</table>';
     $html .= '<hr>';
-
 }
 
 ?>
@@ -69,17 +73,17 @@ foreach((array)$usepoints as $usepoint){
     </title>
     <link rel="stylesheet" href="./asset/css/u_main.css">
     <style>
-    .hist_ttl {
-        background-color: #aaa;
-        color: white;
-        font-size: 1rem;
+        .hist_ttl {
+            background-color: #aaa;
+            color: white;
+            font-size: 1rem;
 
-    }
+        }
 
-    .hist_txt {
-        background-color: #fff;
-        font-size: 1rem;
-    }
+        .hist_txt {
+            background-color: #fff;
+            font-size: 1rem;
+        }
     </style>
 </head>
 
@@ -102,7 +106,8 @@ foreach((array)$usepoints as $usepoint){
                     <td class="hist_ttl txt-left">お名前</td>
                 </tr>
                 <tr>
-                    <td class="hist_txt txt-left"><?php echo $ship->sp_name ?></td>
+                    <td class="hist_txt txt-left"><?php echo $ship->sp_name ?>
+                    </td>
                 </tr>
             </table>
             <table class="w100p">
@@ -110,7 +115,8 @@ foreach((array)$usepoints as $usepoint){
                     <td class="hist_ttl txt-left">フリガナ</td>
                 </tr>
                 <tr>
-                    <td class="hist_txt txt-left"><?php echo $ship->sp_kana ?></td>
+                    <td class="hist_txt txt-left"><?php echo $ship->sp_kana ?>
+                    </td>
                 </tr>
             </table>
             <table class="w100p">
@@ -118,7 +124,8 @@ foreach((array)$usepoints as $usepoint){
                     <td class="hist_ttl txt-left">郵便番号</td>
                 </tr>
                 <tr>
-                    <td class="hist_txt txt-left"><?php echo $ship->sp_post ?></td>
+                    <td class="hist_txt txt-left"><?php echo $ship->sp_post ?>
+                    </td>
                 </tr>
             </table>
             <table class="w100p">
@@ -135,7 +142,8 @@ foreach((array)$usepoints as $usepoint){
                     <td class="hist_ttl txt-left">電話</td>
                 </tr>
                 <tr>
-                    <td class="hist_txt txt-left"><?php echo $ship->sp_tel ?></td>
+                    <td class="hist_txt txt-left"><?php echo $ship->sp_tel ?>
+                    </td>
                 </tr>
             </table>
             <table class="w100p">
@@ -143,7 +151,8 @@ foreach((array)$usepoints as $usepoint){
                     <td class="hist_ttl txt-left">備考</td>
                 </tr>
                 <tr>
-                    <td class="hist_txt txt-left"><?php echo empty($ship->sp_text) ? "　" : $ship->sp_text ?></td>
+                    <td class="hist_txt txt-left"><?php echo empty($ship->sp_text) ? "　" : $ship->sp_text ?>
+                    </td>
                 </tr>
             </table>
 
@@ -152,7 +161,8 @@ foreach((array)$usepoints as $usepoint){
             <form action="u_shipform.php" method="POST" name="frm">
                 <input type="submit" class="rButton w80p btn-red" value="変更する">
                 <input type="hidden" name="doChange">
-                <input type="hidden" name="spSeq" value="<?php echo $spid; ?>">
+                <input type="hidden" name="spSeq"
+                    value="<?php echo $spid; ?>">
             </form>
             <?php } ?>
 

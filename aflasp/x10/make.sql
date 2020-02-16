@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 11, 2020 at 08:36 AM
+-- Generation Time: Feb 16, 2020 at 06:18 AM
 -- Server version: 5.7.24-log
 -- PHP Version: 7.2.10
 
@@ -84,7 +84,8 @@ CREATE TABLE `accountlock` (
 
 INSERT INTO `accountlock` (`shadow_id`, `delete_key`, `id`, `login_id`, `try_time`, `unlock_token`, `onetime_password`, `regist`, `update_time`) VALUES
 (1, 0, 'ACL0000000000001', 'yamazaki.utg+1@gmail.com', '', '86ec170178dd789a7f16d80940147344', 'b7c0dd92', 0, 0),
-(2, 0, 'ACL0000000000002', 'yamazaki+1@gmail.com', '1581394112', '596e280b47a8193e6524f291f8686519', '73e18df3', 0, 0);
+(2, 0, 'ACL0000000000002', 'yamazaki+1@gmail.com', '1581394112', '596e280b47a8193e6524f291f8686519', '73e18df3', 0, 0),
+(3, 0, 'ACL0000000000003', '123', '1581816799/1581830878', '1ef303ef1a42c288226cdd36389a6c88', '39c4245d', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -138,7 +139,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`shadow_id`, `delete_key`, `id`, `name`, `mail`, `pass`, `activate`, `logout`, `login`, `old_login`, `mail_time`) VALUES
-(0, 0, 'ADMIN', '管理者', 'admin@example.com', 'admin', 2, 1580561284, 1580561247, 1580559363, 1580559362);
+(0, 0, 'ADMIN', '管理者', 'admin@example.com', 'admin', 2, 1581830869, 1581832758, 1581827763, 1581816827);
 
 -- --------------------------------------------------------
 
@@ -334,7 +335,7 @@ CREATE TABLE `cuser` (
 --
 
 INSERT INTO `cuser` (`shadow_id`, `delete_key`, `id`, `name`, `zip1`, `zip2`, `adds`, `add_sub`, `tel`, `fax`, `mail`, `pass`, `activate`, `mail_reception`, `is_mobile`, `limits`, `regist`, `logout`) VALUES
-(1, 0, 'C0000001', 'こうこくぬし１', '111', '222', 'PF02', '333', '444', '555', 'yamazaki.utg+1@gmail.com', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', 4, '', 0, 0, 1580561080, 1580561354);
+(1, 0, 'C0000001', 'こうこくぬし１', '111', '222', 'PF02', '333', '444', '555', 'yamazaki.utg+1@gmail.com', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', 4, '', 0, 0, 1580561080, 1581831061);
 
 -- --------------------------------------------------------
 
@@ -436,7 +437,7 @@ CREATE TABLE `nuser` (
 --
 
 INSERT INTO `nuser` (`shadow_id`, `delete_key`, `id`, `name`, `zip1`, `zip2`, `adds`, `add_sub`, `tel`, `fax`, `url`, `mail`, `bank_code`, `bank`, `branch_code`, `branch`, `bank_type`, `number`, `bank_name`, `parent`, `grandparent`, `greatgrandparent`, `pass`, `terminal`, `activate`, `pay`, `tier`, `rank`, `personal_rate`, `magni`, `mail_reception`, `is_mobile`, `limits`, `regist`, `logout`) VALUES
-(1, 0, 'N0000001', 'あふぃ１', '11', '22', 'PF02', '33', '44', '55', 'http://test.com', 'yamazaki.utg+a@gmail.com', '77', '66', '99', '88', '1', '1234', 'カナ', '', '', '', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', '', 4, 1521, 0, 'SA01', 5, 100, '', 0, 0, 1580561140, 1580561140);
+(1, 0, 'N0000001', 'あふぃ１', '11', '22', 'PF02', '33', '44', '55', 'http://test.com', 'yamazaki.utg+a@gmail.com', '77', '6666', '99', '88', '1', '1234', 'カナ', '', '', '', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', '', 4, 1521, 0, 'SA01', 5, 100, '', 0, 0, 1580561140, 1580561140);
 
 -- --------------------------------------------------------
 
@@ -1324,6 +1325,28 @@ INSERT INTO `x10_adwares` (`shadow_id`, `id`, `adware_type`, `approvable`, `keyw
 (5, 'SA000005', 0, 1, '', '', '', '', '', '', NULL, NULL),
 (1, 'SA000001', 0, 1, '', '', '', '', '', '', NULL, NULL),
 (2, 'SA000002', 1, 1, '', '', '', '', '', '', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `x10_nuser`
+--
+
+CREATE TABLE `x10_nuser` (
+  `id` varchar(8) NOT NULL,
+  `nickname` varchar(20) NOT NULL,
+  `instagram` varchar(100) NOT NULL,
+  `facebook` varchar(100) NOT NULL,
+  `twitter` varchar(100) NOT NULL,
+  `youtube` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=sjis;
+
+--
+-- Dumping data for table `x10_nuser`
+--
+
+INSERT INTO `x10_nuser` (`id`, `nickname`, `instagram`, `facebook`, `twitter`, `youtube`) VALUES
+('N0000001', 'aaa', 'abcd', 'efgh', 'iiikkkkk', 'jjjkkkk');
 
 -- --------------------------------------------------------
 

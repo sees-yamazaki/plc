@@ -6,6 +6,11 @@ require('logging.php');
 // セッション開始
 session_start();
 setMyName('psys_m');
+//セッションの確認
+if (!getSsnIsLogin()) {
+    setSsnMsg('Invalid transition');
+    header('Location: ./u_error.php');
+}
 
 // エラーメッセージの初期化
 $errorMessage = '';
@@ -83,8 +88,8 @@ foreach ($prizes as $prize) {
 
 
     <div id="contents"><br>
-<img class="w80p" src="asset/image/select_prize_list.png">
-<?php if (!empty($errorMessage)) { ?>
+        <img class="w80p" src="asset/image/select_prize_list.png">
+        <?php if (!empty($errorMessage)) { ?>
         <div class="info w80p"><?php echo $errorMessage; ?>
         </div>
         <?php } ?>

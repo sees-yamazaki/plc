@@ -6,6 +6,11 @@ require('logging.php');
 // セッション開始
 session_start();
 setMyName('psys_m');
+//セッションの確認
+if (!getSsnIsLogin()) {
+    setSsnMsg('Invalid transition');
+    header('Location: ./u_error.php');
+}
 setSsnCrntPage(__FILE__);
 
 //遷移元の確認
@@ -52,7 +57,8 @@ $errorMessage = '';
             <span class="info">
                 <h2><br>会員情報を更新しました</h2><br>
             </span>
-        <input type='button' class='rButton w80p f1rem btn-red' onclick="location.href='u_home.php'" value='MY PAGEに戻る' />
+            <input type='button' class='rButton w80p f1rem btn-red' onclick="location.href='u_home.php'"
+                value='MY PAGEに戻る' />
 
         </div>
 

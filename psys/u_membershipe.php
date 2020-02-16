@@ -51,11 +51,12 @@ if (isset($_POST['doEdit'])) {
     $url = $url.'u_registration.php?acd='.$insertid.'x'.$member->m_id.$limitdt;
     $text2 = str_replace('__URL__', $url, $mails->add_member_text);
     $text = str_replace('__NAME__', $member->m_name, $text2);
+    $text = str_replace('__TIME__', date("Y-m-d H:i:s", $limitdt), $text);
 
     $to      = $member->m_mail;
     $subject = $mails->add_member_title;
     $message = $text;
-    $headers = "From: noreply";
+    $headers = "From:" .mb_encode_mimeheader("アスミールポイントプログラム");
     
     mb_send_mail($to, $subject, $message, $headers);
 

@@ -6,13 +6,15 @@ require('logging.php');
 // セッション開始
 session_start();
 setMyName('psys_m');
+//セッションの確認
+if (!getSsnIsLogin()) {
+    setSsnMsg('Invalid transition');
+    header('Location: ./u_error.php');
+}
 setSsnCrntPage(__FILE__);
 
-// //遷移元の確認
-// if(!checkPrev(__FILE__)){
-//     setSsnMsg('Invalid transition');
-//     header('Location: ./u_error.php');
-// }
+
+
 
 //メニュー内容
 $menu_m_url="./asset/image/title_mypage.png";

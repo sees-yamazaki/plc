@@ -77,13 +77,33 @@ if (isset($_POST['doRegst'])) {
             $to      = $premember->m_mail;
             $subject = $mails->insert_member_title;
             $message = $text;
-            $headers = "From: noreply";
+            $headers = "From:" .mb_encode_mimeheader("アスミールポイントプログラム");
     
             mb_send_mail($to, $subject, $message, $headers);
 
 
+            
+            require_once './db/systems.php';
+            $system = new cls_systems();
+            $system = getSystems();
 
-            header('Location: ./u_registrated.php');
+            setSsnKV('PATH_PROMO', $system->path_root."/".$system->path_promo);
+            setSsnKV('PATH_GAME', $system->path_root."/".$system->path_game);
+            setSsnKV('PATH_INFO', $system->path_root."/".$system->path_info);
+            setSsnKV('PATH_SCODE', $system->path_root."/".$system->path_scode);
+            setSsnKV('SYSTEM_NAME', $system->system_name);
+            setSsnKV('POINT_ENTRY', $system->point_entry);
+            setSsnKV('POINT_GAME', $system->point_game);
+            setSsnKV('SHIP_LIMIT', $system->ship_limit);
+            setSsnKV('SEQ', $premember->m_seq);
+            setSsnKV('ID', $premember->m_id);
+            setSsnKV('NAME', $premember->m_name);
+
+            require_once './db/log.php';
+            log_login($premember->m_seq);
+
+
+            header('Location: ./u_home.php');
         } else {
             $errorMessage="このメールアドレスはすでに登録されています。<br>".$premember->m_mail;
         }
@@ -130,7 +150,8 @@ if (isset($_POST['doRegst'])) {
                 <?php if ($cnt!=0) { ?>
                 <input type="submit" class="rButton w90p btn-red" value="認証する">
                 <?php } ?>
-                <input type="hidden" name="acd" value="<?php echo $prm_acd ?>">
+                <input type="hidden" name="acd"
+                    value="<?php echo $prm_acd ?>">
                 <input type="hidden" name="doRegst">
 
             </form>

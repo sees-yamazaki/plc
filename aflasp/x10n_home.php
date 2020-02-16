@@ -26,34 +26,43 @@ $pays_1 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 1);
 $ads = getAdwaresRecentry(7);
 
 $rcntyHtml='';
-foreach($ads as $ad){
+foreach ($ads as $ad) {
     $rcntyHtml .= '<tr><td>';
     if ($ad->adware_type=="0") {
         $rcntyHtml .= '[目標]';
-    }else{
+    } else {
         $rcntyHtml .= '[クリック]';
     }
     if ($ad->approvable=="1") {
         $rcntyHtml .= '</td><td><a href="x10n_adwares_info.php?id='.$ad->id.'">'.$ad->name.'</a></td><td>';
-    }else{
+    } else {
         $rcntyHtml .= '</td><td><a href="x10n_adwares_info.php?id='.$ad->id.'">'.$ad->name.'</a> [承認制]</td><td>';
     }
     $rcntyHtml .= '</td></tr>';
 }
+if (empty($rcntyHtml)) {
+    $rcntyHtml='＞新着オファーはありません。';
+}
 
 $offering = getOfferingAdware($LOGIN_ID);
 $html1 = '';
-foreach($offering as $ofr ){
+foreach ($offering as $ofr) {
     $wk = $ofr->adware_type=="0" ? "[目標]" : "[クリック]";
     $html1 .= '<tr><td>'.$wk.'</td><td>'.$ofr->name.'</td></tr>';
 }
+if (empty($html1)) {
+    $html1='＞リクエスト申請中のオファーはありません。';
+}
 
 
-$approved = getApprovedAdwareLimit($LOGIN_ID,3);
+$approved = getApprovedAdwareLimit($LOGIN_ID, 3);
 $html2 = '';
-foreach($approved as $app ){
+foreach ($approved as $app) {
     $wk = $app->adware_type=="0" ? "[目標]" : "[クリック]";
     $html2 .= '<tr><td>'.$wk.'</td><td>'.$app->name.'</td></tr>';
+}
+if (empty($html2)) {
+    $html2='＞承認済オファーはありません。';
 }
 
 ?>
@@ -63,7 +72,8 @@ foreach($approved as $app ){
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo ""; ?></title>
+    <title><?php echo ""; ?>
+    </title>
     <link rel="stylesheet" href="x10n/css/main.css">
 </head>
 
@@ -73,7 +83,7 @@ foreach($approved as $app ){
     <?php if (!empty($errorMessage)) { ?>
     <span class="err"><?php echo $errorMessage; ?></span>
     <?php } ?>
-    今月の成果<br>
+    ■今月の成果<br>
 
     <table>
         <tr>
@@ -88,12 +98,14 @@ foreach($approved as $app ){
             <td>非認証</td>
         </tr>
         <tr>
-            <td><?php echo ($cnt_click_0 + $cnt_click_1); ?>件</td>
-            <td><?php echo ($pays_0->cnt + $pays_1->cnt); ?>件</td>
-            <td><?php echo ($pays_0->cnt2 + $pays_1->cnt2); ?>件</td>
-            <td><?php echo ($pays_0->cst0 + $pays_0->cst1 + $pays_1->cst0 + $pays_1->cst1); ?>円</td>
-            <td><?php echo ($pays_0->cst2 + $pays_1->cst2); ?>円</td>
-            <td><?php echo ($pays_0->cnt0 + $pays_0->cnt1 + $pays_1->cnt0 + $pays_1->cnt1); ?>件</td>
+            <td><?php echo($cnt_click_0 + $cnt_click_1); ?>件</td>
+            <td><?php echo($pays_0->cnt + $pays_1->cnt); ?>件</td>
+            <td><?php echo($pays_0->cnt2 + $pays_1->cnt2); ?>件</td>
+            <td><?php echo($pays_0->cst0 + $pays_0->cst1 + $pays_1->cst0 + $pays_1->cst1); ?>円
+            </td>
+            <td><?php echo($pays_0->cst2 + $pays_1->cst2); ?>円</td>
+            <td><?php echo($pays_0->cnt0 + $pays_0->cnt1 + $pays_1->cnt0 + $pays_1->cnt1); ?>件
+            </td>
         </tr>
         <tr>
             <td colspan=6><a href='x10n_result_list.php'>もっと見る</a></td>
@@ -116,9 +128,9 @@ foreach($approved as $app ){
             <td><?php echo $cnt_click_0; ?>件</td>
             <td><?php echo $pays_0->cnt; ?>件</td>
             <td><?php echo $pays_0->cnt2; ?>件</td>
-            <td><?php echo ($pays_0->cst0 + $pays_0->cst1); ?>円</td>
+            <td><?php echo($pays_0->cst0 + $pays_0->cst1); ?>円</td>
             <td><?php echo $pays_0->cst2; ?>円</td>
-            <td><?php echo ($pays_0->cnt0 + $pays_0->cnt1); ?>件</td>
+            <td><?php echo($pays_0->cnt0 + $pays_0->cnt1); ?>件</td>
         </tr>
         <tr>
             <td colspan=6><a href='x10n_result_monthly.php?adtype=0'>もっと見る</a></td>
@@ -141,9 +153,9 @@ foreach($approved as $app ){
             <td><?php echo $cnt_click_1; ?>件</td>
             <td><?php echo $pays_1->cnt; ?>件</td>
             <td><?php echo $pays_1->cnt2; ?>件</td>
-            <td><?php echo ($pays_1->cst0 + $pays_1->cst1); ?>円</td>
+            <td><?php echo($pays_1->cst0 + $pays_1->cst1); ?>円</td>
             <td><?php echo $pays_1->cst2; ?>円</td>
-            <td><?php echo ($pays_1->cnt0 + $pays_1->cnt1); ?>件</td>
+            <td><?php echo($pays_1->cnt0 + $pays_1->cnt1); ?>件</td>
         </tr>
         <tr>
             <td colspan=6><a href='x10n_result_monthly.php?adtype=1'>もっと見る</a></td>
@@ -151,7 +163,7 @@ foreach($approved as $app ){
     </table>
 
     <br><br>
-    新着オファー<br>
+    ■新着オファー<br>
     <table>
         <?php echo  $rcntyHtml; ?>
         <tr>
@@ -160,34 +172,33 @@ foreach($approved as $app ){
     </table>
 
     <br><br>
-    承認制オファー概要<br>
-<br>
-リクエスト結果待機中<br>
-<table>
-    <?php echo $html1; ?>
-</table>
-<br>
-承認済オファー<br>
-<table>
-    <?php echo $html2; ?>
-</table>
+    ■承認制オファー概要<br>
+    <br>
+    リクエスト結果待機中<br>
+    <table>
+        <?php echo $html1; ?>
+    </table>
+    <br>
+    承認済オファー<br>
+    <table>
+        <?php echo $html2; ?>
+    </table>
 
-<br><a href='x10n_offer_list.php'>もっと見る</a><br>
+    <br><a href='x10n_offer_list.php'>もっと見る</a><br>
 
 
     <br><br>
     <input type="button" onclick="location.href='x10n_offer_list.php'" value="承認制オファー概要">
-<br><br>
+    <br><br>
     <input type="button" onclick="location.href='x10n_result_list.php'" value="成果情報">
     <br><br>
     <input type="button" onclick="location.href='x10n_adwares_search.php'" value="オファー一覧へ">
+    <br><br>
+    <input type="button" onclick="location.href='x10n_nuser_info.php'" value="ユーザー情報">
 
-<br><br><hr>
-<input type="button" onclick="location.href='x10n_nuser_edit.php'" value="ユーザ新規登録">
-<br>
-<input type="button" onclick="location.href='x10n_nuser_b_edit.php'" value="ユーザ編集B">
-<br>
-<input type="button" onclick="location.href='x10n_nuser_c_edit.php'" value="ユーザ編集C">
+    <br><br>
+    <hr>
+    <input type="button" onclick="location.href='x10n_logoff.php'" value="ログオフ">
 
 
 </body>

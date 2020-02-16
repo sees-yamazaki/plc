@@ -86,7 +86,7 @@ if (isset($_POST['sysEdit'])) {
 
                                             <div class="form-group row showcase_row_area">
                                                 <label
-                                                    for="inputType1">【新規会員登録後メール】<br>変換用キーワード　__NAME__　__URL__</label>
+                                                    for="inputType1">【新規会員登録後メール】<br>変換用キーワード　__NAME__　__URL__　__TIME__</label>
                                             </div>
                                             <div class="form-group row showcase_row_area">
                                                 <div class="col-md-3 showcase_text_area">
@@ -110,8 +110,7 @@ if (isset($_POST['sysEdit'])) {
                                             </div>
 
                                             <div class="form-group row showcase_row_area">
-                                                <label
-                                                    for="inputType1">【会員認証後メール】<br>変換用キーワード　__NAME__</label>
+                                                <label for="inputType1">【会員認証後メール】<br>変換用キーワード　__NAME__</label>
                                             </div>
                                             <div class="form-group row showcase_row_area">
                                                 <div class="col-md-3 showcase_text_area">

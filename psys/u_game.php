@@ -6,6 +6,11 @@ require('logging.php');
 // セッション開始
 session_start();
 setMyName('psys_m');
+//セッションの確認
+if (!getSsnIsLogin()) {
+    setSsnMsg('Invalid transition');
+    header('Location: ./u_error.php');
+}
 
 // エラーメッセージの初期化
 $errorMessage = '';
@@ -59,8 +64,9 @@ $game = getGame($gSeq);
 
 
     <div id="contents">
-            <a href="javascript:doGame()">
-        <img border=0 class="w100p" src="./<?php echo getSsn('PATH_GAME'); ?>/<?php echo $game->g_seq; ?>/<?php echo $game->g_image_start; ?>"></a>
+        <a href="javascript:doGame()">
+            <img border=0 class="w100p"
+                src="./<?php echo getSsn('PATH_GAME'); ?>/<?php echo $game->g_seq; ?>/<?php echo $game->g_image_start; ?>"></a>
     </div>
 </body>
 

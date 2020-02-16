@@ -7,6 +7,11 @@ require('db//ships.php');
 // セッション開始
 session_start();
 setMyName('psys_m');
+//セッションの確認
+if (!getSsnIsLogin()) {
+    setSsnMsg('Invalid transition');
+    header('Location: ./u_error.php');
+}
 setSsnCrntPage(__FILE__);
 
 //遷移元の確認
@@ -47,10 +52,9 @@ if (isset($_POST['doEdit'])) {
 
     setSsnKV('prm_ship', $ship);
     header('Location: ./u_shipforme.php');
-
-}elseif(getSsnPrevPage()=="u_shipforme.php"){
+} elseif (getSsnPrevPage()=="u_shipforme.php") {
     $ship = getSsn('prm_ship');
-}elseif (isset($_POST['doChange'])) {
+} elseif (isset($_POST['doChange'])) {
     $ship = getVShip($spSeq);
 } else {
     //
@@ -87,39 +91,48 @@ $sp_kana_ary =  explode(' ', $ship->sp_kana);
 
                 お名前<br>
                 <input type="text" name="sp_name_1" id="sp_name_1" class="input-text " style="width: 40%;"
-                    value="<?php echo $sp_name_ary[0] ?>" placeholder="富士" maxlength='10' required />
-                    <input type="text" name="sp_name_2" id="sp_name_2" class="input-text " style="width: 40%;"
-                    value="<?php echo $sp_name_ary[1] ?>" placeholder="花子" maxlength='10' required /><br><br>
+                    value="<?php echo $sp_name_ary[0] ?>"
+                    placeholder="富士" maxlength='10' required />
+                <input type="text" name="sp_name_2" id="sp_name_2" class="input-text " style="width: 40%;"
+                    value="<?php echo $sp_name_ary[1] ?>"
+                    placeholder="花子" maxlength='10' required /><br><br>
                 フリガナ(全角カナ)<br>
-                <input type="text" name="sp_kana_1" id="sp_kana_1" class="input-text" style="width: 40%;" 
-                value="<?php echo $sp_kana_ary[0] ?>"
+                <input type="text" name="sp_kana_1" id="sp_kana_1" class="input-text" style="width: 40%;"
+                    value="<?php echo $sp_kana_ary[0] ?>"
                     pattern="[ァ-ヴー\s]+" title="カタカナ" placeholder="フジ" maxlength='10' required />
-                <input type="text" name="sp_kana_2" id="sp_kana_2" class="input-text" style="width: 40%;" 
-                value="<?php echo $sp_kana_ary[1] ?>"
+                <input type="text" name="sp_kana_2" id="sp_kana_2" class="input-text" style="width: 40%;"
+                    value="<?php echo $sp_kana_ary[1] ?>"
                     pattern="[ァ-ヴー\s]+" title="カタカナ" placeholder="ハナコ" maxlength='10' required /><br><br>
                 郵便番号(ハイフンなし)<br>
                 <input type="text" name="sp_post" id="sp_post" class="input-text w90p"
-                    value="<?php echo $ship->sp_post ?>" placeholder="1234567" maxlength='7'
+                    value="<?php echo $ship->sp_post ?>"
+                    placeholder="1234567" maxlength='7'
                     onKeyUp="AjaxZip3.zip2addr('sp_post', '', 'sp_address1', 'sp_address1');" required /><br><br>
                 住所<br>
                 <input type="text" name="sp_address1" id="sp_address1" class="input-text w90p"
-                    value="<?php echo $ship->sp_address1 ?>" placeholder="" maxlength='50' required /><br><br>
+                    value="<?php echo $ship->sp_address1 ?>"
+                    placeholder="" maxlength='50' required /><br><br>
                 マンション名・部屋番号<br>
                 <input type="text" name="sp_address2" id="sp_address2" class="input-text w90p"
-                    value="<?php echo $ship->sp_address2 ?>" placeholder="" maxlength='50' /><br><br>
+                    value="<?php echo $ship->sp_address2 ?>"
+                    placeholder="" maxlength='50' /><br><br>
                 電話番号<br>
-                <input type="text" name="sp_tel" id="sp_tel" class="input-text w90p" value="<?php echo $ship->sp_tel ?>"
+                <input type="text" name="sp_tel" id="sp_tel" class="input-text w90p"
+                    value="<?php echo $ship->sp_tel ?>"
                     placeholder="000-0000-0000" maxlength='13' pattern="^[-0-9]+$" required /><br><br>
-                    備考<br>
-                    <textarea name="sp_text" id="sp_text" class="input-text w90p" placeholder=""
-                        rows="6"><?php echo $ship->sp_text ?></textarea>
+                備考<br>
+                <textarea name="sp_text" id="sp_text" class="input-text w90p" placeholder=""
+                    rows="6"><?php echo $ship->sp_text ?></textarea>
 
                 <input type="submit" class="rButton w90p btn-red" value="登録する">
-                <input type="hidden" name="spSeq" value="<?php echo $spSeq; ?>">
+                <input type="hidden" name="spSeq"
+                    value="<?php echo $spSeq; ?>">
                 <input type="hidden" name="doEdit">
 
-                <?php if(isset($_POST['doChange'])){ ?>
-                    <br><input type="button" class="rButton w80p btn-red-rev" onclick="location.href='u_point_history2.php?spid=<?php echo $spSeq; ?>'" value="戻る" />
+                <?php if (isset($_POST['doChange'])) { ?>
+                <br><input type="button" class="rButton w80p btn-red-rev"
+                    onclick="location.href='u_point_history2.php?spid=<?php echo $spSeq; ?>'"
+                    value="戻る" />
                 <?php } ?>
 
 

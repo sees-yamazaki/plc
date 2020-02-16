@@ -9,6 +9,11 @@ require('db/views.php');
 // セッション開始
 session_start();
 setMyName('psys_m');
+//セッションの確認
+if (!getSsnIsLogin()) {
+    setSsnMsg('Invalid transition');
+    header('Location: ./u_error.php');
+}
 setSsnCrntPage(__FILE__);
 
 //遷移元の確認
@@ -31,7 +36,7 @@ $errorMessage = '';
 $usepoints = getVUsepointsAndShips(getSsn('SEQ'));
 
 $html = '';
-foreach($usepoints as $usepoint){
+foreach ($usepoints as $usepoint) {
     $html .= '<table class="w100p">';
     $html .= '<tr><td class="hist_ttl txt-left">ポイント交換日</td></tr>';
     $html .= '<tr><td class="hist_txt txt-left">'.$usepoint->createdt.'</td></tr>';
@@ -48,12 +53,11 @@ foreach($usepoints as $usepoint){
     $html .= '<tr><td class="hist_ttl txt-left">発送状況</td></tr>';
     if ($usepoint->sp_flg=="0") {
         $html .= '<tr><td class="hist_txt txt-left"><a href="u_point_history2.php?spid='.$usepoint->sp_seq.'">未発送</td></tr>';
-    }else{
+    } else {
         $html .= '<tr><td class="hist_txt txt-left"><a href="u_point_history2.php?spid='.$usepoint->sp_seq.'">発送済み</td></tr>';
     }
     $html .= '</table>';
     $html .= '<hr>';
-
 }
 
 ?>
@@ -67,18 +71,18 @@ foreach($usepoints as $usepoint){
     </title>
     <link rel="stylesheet" href="./asset/css/u_main.css">
     <style>
-    .hist_ttl {
-        background-color: #aaa;
-        color: white;
-        font-size: 1rem;
-        
-    }
-    
-    .hist_txt {
-        background-color: #fff;
-        font-size: 1rem;
-    }
-</style>
+        .hist_ttl {
+            background-color: #aaa;
+            color: white;
+            font-size: 1rem;
+
+        }
+
+        .hist_txt {
+            background-color: #fff;
+            font-size: 1rem;
+        }
+    </style>
 </head>
 
 <body>
@@ -93,14 +97,14 @@ foreach($usepoints as $usepoint){
         <?php if (!empty($errorMessage)) { ?>
         <span class="err"><?php echo $errorMessage; ?></span>
         <?php } ?>
-        
+
         <?php if (empty($html)) { ?>
-            ポイント交換履歴はありません。
-            <?php }else{ ?>
+        ポイント交換履歴はありません。
+        <?php } else { ?>
         <div class="w80p waku">
-                <?php echo $html; ?>
+            <?php echo $html; ?>
         </div>
-            <?php } ?>
+        <?php } ?>
 
     </div>
 

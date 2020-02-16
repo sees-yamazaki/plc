@@ -1,0 +1,6 @@
+C:\work\github\plc\aflasp\template\pc\css\base.css
+C:\work\github\plc\aflasp\template\pc\include\HeadCLogin.html
+C:\work\github\plc\aflasp\template\pc\include\HeadAdmin.html
+C:\work\github\plc\aflasp\template\pc\include\Side_barAdmin.html
+C:\work\github\plc\aflasp\template\pc\include\Side_barCUser.html
+C:\work\github\plc\aflasp\template\pc\base\Head.html

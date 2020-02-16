@@ -8,6 +8,11 @@ require('./db/prizes.php');
 // セッション開始
 session_start();
 setMyName('psys_m');
+//セッションの確認
+if (!getSsnIsLogin()) {
+    setSsnMsg('Invalid transition');
+    header('Location: ./u_error.php');
+}
 
 // エラーメッセージの初期化
 $errorMessage = '';
@@ -92,11 +97,10 @@ $htmlImg .= '</p>';
     <link rel="stylesheet" href="./asset/css/swiper.css">
     <link rel="stylesheet" href="./asset/css/u_main.css">
     <script>
-
-    function prize(vlu) {  
-        document.frm2.pSeq.value = vlu;
-        document.frm2.submit();
-    }
+        function prize(vlu) {
+            document.frm2.pSeq.value = vlu;
+            document.frm2.submit();
+        }
     </script>
 </head>
 
@@ -130,7 +134,7 @@ $htmlImg .= '</p>';
 
 
 
-        <?php foreach($promos as $promo){ ?>
+        <?php foreach ($promos as $promo) { ?>
         <?php $prizes = getPrizeImg($promo->p_seq); ?>
 
         <div id="scrl" class="rDiv w80p">
@@ -148,10 +152,11 @@ $htmlImg .= '</p>';
                 </div>
                 <div class="swiper-pagination"></div>
             </div>
-            <?php if($point>=$gamePt){ ?>
-            <input type="button" class="rButton w80p f1rem btn-red" onclick="prize(<?php echo $promo->p_seq; ?>)"
+            <?php if ($point>=$gamePt) { ?>
+            <input type="button" class="rButton w80p f1rem btn-red"
+                onclick="prize(<?php echo $promo->p_seq; ?>)"
                 value="商品に応募はこちらから" />
-            <?php }else{ ?>
+            <?php } else { ?>
             <h3 class="red">頑張って<?php echo $gamePt; ?>ポイント貯めると、<br>ゲームにチャレンジできます！！</h3>
             <?php } ?>
         </div>
@@ -161,18 +166,18 @@ $htmlImg .= '</p>';
 
         <script src="./asset/js/swiper.js"></script>
         <script>
-        var swiper = new Swiper('.swiper-container', {
-            loop: true,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: true
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                type: 'bullets',
-                clickable: true,
-            },
-        });
+            var swiper = new Swiper('.swiper-container', {
+                loop: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: true
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    type: 'bullets',
+                    clickable: true,
+                },
+            });
         </script>
 </body>
 
