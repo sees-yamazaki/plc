@@ -65,7 +65,7 @@ if (isset($_POST['doEdit'])) {
     $to      = $sp->m_mail;
     $subject = $mails->ship_change_title;
     $message = $text;
-    $headers = "From:" .mb_encode_mimeheader("アスミールポイントプログラム");
+    $headers = "From:" .mb_encode_mimeheader("アスミールポイントプログラム")."<info@ichiban-boshi.com>";
     
     mb_send_mail($to, $subject, $message, $headers);
 

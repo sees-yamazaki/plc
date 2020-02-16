@@ -77,7 +77,7 @@ if (isset($_POST['doRegst'])) {
             $to      = $premember->m_mail;
             $subject = $mails->insert_member_title;
             $message = $text;
-            $headers = "From:" .mb_encode_mimeheader("アスミールポイントプログラム");
+            $headers = "From:" .mb_encode_mimeheader("アスミールポイントプログラム")."<info@ichiban-boshi.com>";
     
             mb_send_mail($to, $subject, $message, $headers);
 

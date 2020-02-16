@@ -10,7 +10,7 @@ setMyName('psys_m');
 setSsnCrntPage(__FILE__);
 
 //遷移元の確認
-if(!checkPrev(__FILE__)){
+if (!checkPrev(__FILE__)) {
     setSsnMsg('Invalid transition');
     header('Location: ./u_error.php');
 }
@@ -23,7 +23,7 @@ $menu_m_click="location.href='u_login.php'";
 $errorMessage = '';
 
 $m_mail = $_POST['m_mail'];
-setSsnKV('m_mail',$m_mail);
+setSsnKV('m_mail', $m_mail);
 
 if (empty($m_mail)) {
     $errorMessage = 'メールアドレスが入力されていません。';
@@ -35,17 +35,15 @@ if (empty($m_mail)) {
 }
 
 if (isset($_POST['doMail'])) {
-
     if (empty($m_mail)) {
         $errorMessage = 'メールアドレスが入力されていません。';
     } else {
         $member = getMemberByMail($m_mail);
         if ($member->m_seq==0) {
             $errorMessage = 'メールアドレスが登録されていません。';
-        }else{
-
+        } else {
             $newPw=strtotime("now");
-            updatePw($member->m_seq,$newPw);
+            updatePw($member->m_seq, $newPw);
 
             mb_language("Japanese");
             mb_internal_encoding("UTF-8");
@@ -55,7 +53,7 @@ if (isset($_POST['doMail'])) {
             $message = "新しいパスワードは以下となります。\n\n\n\n";
             $message .= $newPw;
             $message .= "\n\n\n\nログイン後にパスワードの再設定を行ってください。";
-            $headers = "From:" .mb_encode_mimeheader("アスミールポイントプログラム");
+            $headers = "From:" .mb_encode_mimeheader("アスミールポイントプログラム")."<info@ichiban-boshi.com>";
             
             mb_send_mail($to, $subject, $message, $headers);
         }
@@ -92,7 +90,7 @@ if (isset($_POST['doMail'])) {
 
         <?php if (empty($errorMessage)) { ?>
         <span class="err">下記のメールアドレスに<br>新しいパスワードを送信します。<br><br></span>
-        <?php }else{ ?>
+        <?php } else { ?>
         <span class="err"><?php echo $errorMessage; ?><br><br></span>
         <?php } ?>
 
@@ -102,7 +100,8 @@ if (isset($_POST['doMail'])) {
             <?php if (empty($errorMessage)) { ?>
             <form action='' method='POST' name="frm">
                 <input type="submit" class="rButton w80p btn-red" value="メールを送信する"><br>
-                <input type="hidden" name="m_mail" value="<?php echo $m_mail; ?>">
+                <input type="hidden" name="m_mail"
+                    value="<?php echo $m_mail; ?>">
                 <input type="hidden" name="doMail">
             </form>
             <?php } ?>

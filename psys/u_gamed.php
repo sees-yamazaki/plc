@@ -116,7 +116,7 @@ $text = str_replace('__URL__', $url, $text);
 $to      = $member->m_mail;
 $subject = $base_title;
 $message = $text;
-$headers = "From:" .mb_encode_mimeheader("アスミールポイントプログラム");
+$headers = "From:" .mb_encode_mimeheader("アスミールポイントプログラム")."<info@ichiban-boshi.com>";
 
 mb_send_mail($to, $subject, $message, $headers);
 
