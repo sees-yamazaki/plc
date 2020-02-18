@@ -19,16 +19,18 @@ $errorMessage='';
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo ""; ?></title>
+    <title><?php echo ""; ?>
+    </title>
 </head>
 
 <body>
 
-登録が完了しました。
+    登録が完了しました。
 
 
-<br><br><hr>
-<input type="button" onclick="location.href='x10n_home.php'" value="戻る">
+    <br><br>
+    <hr>
+    <input type="button" onclick="location.href='x10n_home.php'" value="戻る">
 
 </body>
 

@@ -27,10 +27,9 @@ if (isset($_POST['login'])) {
         if (!empty($nId)) {
             $_SESSION[ $SESSION_NAME ] = $nId;
             header('Location: x10n_home.php');
-        }else{
+        } else {
             $errorMessage = 'ログインできませんでした。';
         }
-
     }
 }
 
@@ -41,7 +40,8 @@ if (isset($_POST['login'])) {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo ""; ?></title>
+    <title><?php echo ""; ?>
+    </title>
 </head>
 
 <body>
@@ -53,12 +53,16 @@ if (isset($_POST['login'])) {
     <?php } ?>
     <div name="editFrm">
         <form action="" method="POST" name="frm">
-            <input type="text" name="m_mail" id="m_mail" value="<?php echo $m_mail; ?>" required /><br><br>
+            <input type="text" name="m_mail" id="m_mail"
+                value="<?php echo $m_mail; ?>" required /><br><br>
             <input type="password" name="m_pw" id="m_pw" required><br><br>
             <input type="button" class="rButton w80p btn-blue" onclick="javascript:frm.submit()" value="ログイン" />
             <input type="hidden" name="login" id="login" value="1" />
         </form>
     </div>
+    <br><br>
+    <hr>
+    <input type="button" onclick="location.href='x10n_nuser_edit.php'" value="ユーザ新規登録">
 
 </body>
 
