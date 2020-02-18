@@ -3,9 +3,15 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
+<<<<<<< HEAD
 -- Generation Time: 2020 年 2 月 13 日 18:29
 -- サーバのバージョン： 5.7.25
 -- PHP Version: 7.3.1
+=======
+-- Generation Time: Feb 16, 2020 at 06:18 AM
+-- Server version: 5.7.24-log
+-- PHP Version: 7.2.10
+>>>>>>> 7b86672fad37ae590d7775568614b47ebc7aed69
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -73,12 +79,18 @@ CREATE TABLE `accountlock` (
 --
 
 INSERT INTO `accountlock` (`shadow_id`, `delete_key`, `id`, `login_id`, `try_time`, `unlock_token`, `onetime_password`, `regist`, `update_time`) VALUES
+<<<<<<< HEAD
 (2, 0, 'ACL0000000000002', 'yamazaki.utg@gmail.com', '', '077dcc35525990c98126a4237abb13b2', '60874788', 0, 0),
 (3, 0, 'ACL0000000000003', 'admin@example.com', '', '742fce30c72fc2c998db51792fec2cdd', '0cfd8670', 0, 0),
 (4, 0, 'ACL0000000000004', 'a1234', '', 'c8af1ef66440306bde39ec528890d829', 'a50e479e', 0, 0),
 (5, 0, 'ACL0000000000005', 'yamazaki.utg+s@gmail.com', '1580862724', 'fb0b6cec4b1dce5bf4b1a5dd7ce86c63', '26195392', 0, 0),
 (6, 0, 'ACL0000000000006', 'a123', '', '0634adc5ffa5b930da47c59230edd217', 'bd7224a9', 0, 0),
 (7, 0, 'ACL0000000000007', '123', '', '4b70df61fdff37db51d0aa25cdba9411', '308bdf54', 0, 0);
+=======
+(1, 0, 'ACL0000000000001', 'yamazaki.utg+1@gmail.com', '', '86ec170178dd789a7f16d80940147344', 'b7c0dd92', 0, 0),
+(2, 0, 'ACL0000000000002', 'yamazaki+1@gmail.com', '1581394112', '596e280b47a8193e6524f291f8686519', '73e18df3', 0, 0),
+(3, 0, 'ACL0000000000003', '123', '1581816799/1581830878', '1ef303ef1a42c288226cdd36389a6c88', '39c4245d', 0, 0);
+>>>>>>> 7b86672fad37ae590d7775568614b47ebc7aed69
 
 -- --------------------------------------------------------
 
@@ -132,7 +144,11 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`shadow_id`, `delete_key`, `id`, `name`, `mail`, `pass`, `activate`, `logout`, `login`, `old_login`, `mail_time`) VALUES
+<<<<<<< HEAD
 (0, 0, 'ADMIN', '管理者', 'admin', 'admin', 2, 1581492003, 1581490115, 1580947949, 1581490116);
+=======
+(0, 0, 'ADMIN', '管理者', 'admin@example.com', 'admin', 2, 1581830869, 1581832758, 1581827763, 1581816827);
+>>>>>>> 7b86672fad37ae590d7775568614b47ebc7aed69
 
 -- --------------------------------------------------------
 
@@ -329,8 +345,12 @@ CREATE TABLE `cuser` (
 --
 
 INSERT INTO `cuser` (`shadow_id`, `delete_key`, `id`, `name`, `zip1`, `zip2`, `adds`, `add_sub`, `tel`, `fax`, `mail`, `pass`, `activate`, `mail_reception`, `is_mobile`, `limits`, `regist`, `logout`) VALUES
+<<<<<<< HEAD
 (1, 0, 'C0000001', 'ヤマザキ', '123', '4567', 'PF02', 'aoao\n', '090-0000-0000', '', '123', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', 4, '', 0, 0, 1580200708, 1581572257),
 (2, 0, 'C0000002', 'こうこくぬし２', '123', '4567', 'PF05', 'akita', '09090909091', '', '456', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', 4, '', 0, 0, 1580460211, 1580949667);
+=======
+(1, 0, 'C0000001', 'こうこくぬし１', '111', '222', 'PF02', '333', '444', '555', 'yamazaki.utg+1@gmail.com', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', 4, '', 0, 0, 1580561080, 1581831061);
+>>>>>>> 7b86672fad37ae590d7775568614b47ebc7aed69
 
 -- --------------------------------------------------------
 
@@ -432,12 +452,16 @@ CREATE TABLE `nuser` (
 --
 
 INSERT INTO `nuser` (`shadow_id`, `delete_key`, `id`, `name`, `zip1`, `zip2`, `adds`, `add_sub`, `tel`, `fax`, `url`, `mail`, `bank_code`, `bank`, `branch_code`, `branch`, `bank_type`, `number`, `bank_name`, `parent`, `grandparent`, `greatgrandparent`, `pass`, `terminal`, `activate`, `pay`, `tier`, `rank`, `personal_rate`, `magni`, `mail_reception`, `is_mobile`, `limits`, `regist`, `logout`) VALUES
+<<<<<<< HEAD
 (1, 0, 'N0000001', 'ゆーざ山崎あ', '123', '3210', 'PF05', 'akita', '080-0808-0808', '', 'http://yes.com', 'a123', '999', 'ABCD', '888', 'DEF', '1', '1234567', 'コウザコウザ', '', '', '', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', '', 4, 9685, 0, 'SA01', 5, 100, '', 0, 0, 1580267237, 1581475314),
 (2, 0, 'N0000002', 'B-USER', '123', '4567', 'PF06', 'yama', '11', '', 'http://test.com', 'b123', '11', 'aa', '22', 'cc', '1', '11', 'ヤマ', '', '', '', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', '', 4, 0, 0, 'SA01', 5, 100, '', 0, 0, 1580346840, 1580346840),
 (4, 0, 'N0000004', '11', '11', '11', 'PF01', '11', '11', '', 'http://11.com', 'yamazaki.utg+d@gmail.com', '11', '11', '11', '11', '1', '11', 'カナ', '', '', '', 'AES_OK:xof+GA/IbryKYxWisWYwVg==', '', 1, 0, 0, 'SA01', 5, 100, '', 0, 0, 1580456775, 1580456775),
 (5, 0, 'N0000005', '22', '22', '22', 'PF01', '22', '22', '22', '22', 'a1234', '22', '22', '22', '22', '1', '22', '22', '', '', '', 'AES_OK:r2qV5Yx1RK9I30s5ia/2bg==', '', 4, 0, 0, 'SA01', 5, 100, '', 0, 0, 1580862427, 1580862904),
 (6, 0, 'N0000006', '22', '22', '22', 'PF01', '22', '22', '22', 'http://222.com', 'yamazaki.utg+s@gmail.com', '22', '22', '22', '22', '1', '22', 'カナ', '', '', '', 'AES_OK:r2qV5Yx1RK9I30s5ia/2bg==', '', 1, 0, 0, 'SA01', 5, 100, '', 0, 0, 1580862692, 1580862692),
 (7, 0, 'N0000007', 'ヤマザキ', '11', '11', 'PF01', '1111111', '222', '333', '444', 'yamazaki.utg+12@gmail.com', '66', '555', '88', '77', '1', '999', 'カナ', '', '', '', 'AES_OK:r2qV5Yx1RK9I30s5ia/2bg==', '', 1, 0, 0, 'SA01', 5, 100, '', 0, 0, 1581577696, 1581577696);
+=======
+(1, 0, 'N0000001', 'あふぃ１', '11', '22', 'PF02', '33', '44', '55', 'http://test.com', 'yamazaki.utg+a@gmail.com', '77', '6666', '99', '88', '1', '1234', 'カナ', '', '', '', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', '', 4, 1521, 0, 'SA01', 5, 100, '', 0, 0, 1580561140, 1580561140);
+>>>>>>> 7b86672fad37ae590d7775568614b47ebc7aed69
 
 -- --------------------------------------------------------
 
@@ -1386,7 +1410,33 @@ INSERT INTO `x10_adwares` (`shadow_id`, `id`, `adware_type`, `approvable`, `keyw
 -- --------------------------------------------------------
 
 --
+<<<<<<< HEAD
 -- テーブルの構造 `x10_offer`
+=======
+-- Table structure for table `x10_nuser`
+--
+
+CREATE TABLE `x10_nuser` (
+  `id` varchar(8) NOT NULL,
+  `nickname` varchar(20) NOT NULL,
+  `instagram` varchar(100) NOT NULL,
+  `facebook` varchar(100) NOT NULL,
+  `twitter` varchar(100) NOT NULL,
+  `youtube` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=sjis;
+
+--
+-- Dumping data for table `x10_nuser`
+--
+
+INSERT INTO `x10_nuser` (`id`, `nickname`, `instagram`, `facebook`, `twitter`, `youtube`) VALUES
+('N0000001', 'aaa', 'abcd', 'efgh', 'iiikkkkk', 'jjjkkkk');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `x10_offer`
+>>>>>>> 7b86672fad37ae590d7775568614b47ebc7aed69
 --
 
 CREATE TABLE `x10_offer` (
