@@ -169,6 +169,9 @@ if ($member->m_flg1==0) {
 
                                                 <input name="m_flg1" type="radio" value="1" <?php echo $m_flg1_1; ?>>決定
                                                 <i class="input-frame"></i>
+
+<input name="m_flg1" type="radio" value="9" <?php echo $m_flg1_1; ?>>実施無し
+<i class="input-frame"></i>
                                             </label>
                                         </div>
                                     </div>

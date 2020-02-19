@@ -49,7 +49,11 @@ $grp = isset($_GET['grp']) ? $_GET['grp'] : $_POST['grp'];
          $html .= "<td>".$member->m_group."</td>";
          $html .= "<td>".$member->m_position."</td>";
          $html .= "<td>".$member->m_name."</td>";
-         $html .= "<td>".$member->m_date." ".substr($member->m_time, 0, 5)."</td>";
+         if ($member->m_flg1=="9") {
+             $html .= "<td>実施無し</td>";
+         } else {
+             $html .= "<td>".$member->m_date." ".substr($member->m_time, 0, 5)."</td>";
+         }
          if (!empty($member->m_date) && $member->m_flg1==0) {
              $html .= "<td>仮</td>";
          } else {

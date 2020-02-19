@@ -43,8 +43,10 @@ foreach ($members as $member) {
     // $tmp = ($member->m_flg1==0) ? '*' : '';
     // $grpHtml[$member->m_group].= '<a href="Javascript:scDL('.$member->m_seq.')" class="app">'.$tmp." ".substr($member->m_time, 0, 5)." ".$member->m_name."</a><br>";
 
-    if ($member->m_flg1==0) {
+    if ($member->m_flg1=="0") {
         $grpHtml[$member->m_group].= '<a href="Javascript:scDL('.$member->m_seq.')" class="app2">* '.substr($member->m_time, 0, 5)." ".$member->m_name."</a><br>";
+    } elseif ($member->m_flg1=="9") {
+        //
     } else {
         $grpHtml[$member->m_group].= '<a href="Javascript:scDL('.$member->m_seq.')" class="app">'.substr($member->m_time, 0, 5)." ".$member->m_name."</a><br>";
     }
