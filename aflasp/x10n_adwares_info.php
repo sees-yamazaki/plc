@@ -66,7 +66,11 @@ $html .= '<br>';
 
 $url = getSystemUrl();
 
-if ($ad->approvable=="1") {
+$tdy = date('Y-m-d');
+
+if ($ad->enddt<$tdy) {    
+    $html .= 'このオファーの掲載期間は終了しています。<br>';
+}elseif ($ad->approvable=="1") {
     $ofr = getOfferStatus($id, $LOGIN_ID);
 
     if (is_null($ofr->status)) {

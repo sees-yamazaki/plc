@@ -78,7 +78,7 @@ function countAdwares($where)
     try {
         $result = 0;
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `v_adwares_x10` WHERE delete_key=0 ".$where);
+        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `v_adwares_x10` WHERE delete_key=0 AND `open`=1 ".$where);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result = $row['cnt'];
@@ -96,7 +96,7 @@ function getAdwaresLimit($where, $limit, $offset)
     try {
         $results = array();
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT * FROM `v_adwares_x10` WHERE delete_key=0 ".$where." ORDER BY regist desc LIMIT :limit OFFSET :offset");
+        $stmt = $pdo->prepare("SELECT * FROM `v_adwares_x10` WHERE delete_key=0 AND `open`=1 ".$where." ORDER BY regist desc LIMIT :limit OFFSET :offset");
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -170,10 +170,12 @@ function getAdwaresRecentry($days)
 {
     try {
         $minusDt = strtotime('-'.$days.'day');
+        $tdy = date('Y-m-d');
         $results = array();
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT * FROM `v_adwares_x10` WHERE delete_key=0 AND regist>:regist ORDER BY regist desc");
+        $stmt = $pdo->prepare("SELECT * FROM `v_adwares_x10` WHERE delete_key=0 AND regist>:regist AND open=1 AND (enddt IS NULL OR enddt >= :enddt)  ORDER BY regist desc");
         $stmt->bindParam(':regist', $minusDt, PDO::PARAM_INT);
+        $stmt->bindParam(':enddt', $tdy, PDO::PARAM_STR);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result = new cls_secretadwares();
