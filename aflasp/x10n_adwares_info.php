@@ -90,6 +90,9 @@ if ($ad->enddt<$tdy) {
         $html .= 'このオファーにはリクエスト申請できません<br>';
     } elseif ($ofr->status=="2") {
         $html .= '以下のURLを投稿しよう<br>';
+        if (substr($url, -1)=='/') {
+            $url = substr($url, 0, -1);
+        }
         $html .= '<input type="text" value="'.$url .'/link.php?id='.$LOGIN_ID.'&s_adwares='.$id.'" readonly><br>';
         $html .= '<input type="button" onclick="document.getElementById(\'url\').select();document.execCommand(\'copy\');" value="URLをコピー"><br>';
     } else {
@@ -98,6 +101,9 @@ if ($ad->enddt<$tdy) {
     $html .= '<br>';
 }else{
     $html .= '以下のURLを投稿しよう<br>';
+    if (substr($url, -1)=='/') {
+        $url = substr($url, 0, -1);
+    }
     $html .= '<input type="text" id="url" value="'.$url .'/link.php?id='.$LOGIN_ID.'&adwares='.$id.'" readonly><br>';
     $html .= '<input type="button" onclick="document.getElementById(\'url\').select();document.execCommand(\'copy\');" value="URLをコピー"><br>';
 }

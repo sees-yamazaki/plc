@@ -603,6 +603,7 @@ if ($adware->adware_type=="1") {
                                         value="<?php echo $adware->enddt; ?>">
                                 </td>
                             </tr>
+                            <?php if(!empty($id) && $adware->approvable=="1"){ ?>
                             <tr>
                                 <th><a href='x10c_offer_edit.php?pid=ad&id=<?php echo $id; ?>'>対象ユーザー</a></th>
                                 <td>
@@ -611,6 +612,7 @@ if ($adware->adware_type=="1") {
                                     <?php } ?>
                                 </td>
                             </tr>
+                            <?php } ?>
 
                         </tbody>
                     </table>

@@ -59,9 +59,15 @@ if (isset($_POST['doEdit'])) {
 if ($member->m_flg1==0) {
     $m_flg1_0 = " checked";
     $m_flg1_1 = "";
+    $m_flg1_2 = "";
+} elseif ($member->m_flg1==9) {
+    $m_flg1_0 = "";
+    $m_flg1_1 = "";
+    $m_flg1_2 = " checked";
 } else {
     $m_flg1_0 = "";
     $m_flg1_1 = " checked";
+    $m_flg1_2 = "";
 }
 
 
@@ -170,8 +176,8 @@ if ($member->m_flg1==0) {
                                                 <input name="m_flg1" type="radio" value="1" <?php echo $m_flg1_1; ?>>決定
                                                 <i class="input-frame"></i>
 
-<input name="m_flg1" type="radio" value="9" <?php echo $m_flg1_1; ?>>実施無し
-<i class="input-frame"></i>
+                                                <input name="m_flg1" type="radio" value="9" <?php echo $m_flg1_2; ?>>実施無し
+                                                <i class="input-frame"></i>
                                             </label>
                                         </div>
                                     </div>

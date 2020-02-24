@@ -47,8 +47,6 @@ $errorMessage = "";
         </div>
     </div>
 
-    <?php include('./a_footer.php'); ?>
-
 
     </div>
     </div>

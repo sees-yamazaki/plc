@@ -129,6 +129,7 @@
                                     </a>
                                     <ul class="collapse navigation-submenu" id="pages2">
                                         <li><a href="x10c_adwares_edit.php" class="menu">新しい広告を登録</a></li>
+                                        <li><a href="x10c_offerad_search.php?ofr=1" class="menu">申請のある広告</a></li>
                                         <li><a href="x10c_offerad_search.php" class="menu">過去に登録した広告</a></li>
                                         <li><a href="regist.php?type=pay" class="menu">成果の登録</a></li>
                                         <li><a href="search.php?type=category&run=true" class="menu">広告カテゴリの管理</a></li>

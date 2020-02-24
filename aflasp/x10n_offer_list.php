@@ -27,7 +27,7 @@ foreach($offering as $ofr ){
 
 $pays = countMonthlyPaysGroupsAll($LOGIN_ID,0);
 $clickpays = countMonthlyPaysGroupsAll($LOGIN_ID,1);
-
+var_dump($clickpays);
 $today = date('Y-m-d');
 
 ?>
@@ -127,7 +127,7 @@ $today = date('Y-m-d');
             <td></td>
         </tr>
         <?php foreach($pays as $pay){ ?>
-        <?php if(isset($pay->enddt) && $pay->enddt < $today){ ?>
+        <?php if(!is_null($pay->enddt) && $pay->enddt < $today){ ?>
         <tr>
             <td><a href='x10n_adwares_info.php?id=<?php echo $pay->id; ?>'><?php echo $pay->name; ?></a></td>
             <?php $cnt = countClicksAdwares($LOGIN_ID, $pay->id); ?>
@@ -154,7 +154,7 @@ $today = date('Y-m-d');
             <td>確定報酬</td>
         </tr>
         <?php foreach($clickpays as $clkpay){ ?>
-        <?php if(isset($pay->enddt) && $clkpay->enddt < $today){ ?>
+        <?php if(!is_null($clkpay->enddt) && $clkpay->enddt < $today){ ?>
         <tr>
             <td><a href='x10n_adwares_info.php?id=<?php echo $clkpay->id; ?>'><?php echo $clkpay->name; ?></a></td>
             <?php $cnt = countClicksAdwares($LOGIN_ID, $clkpay->id); ?>

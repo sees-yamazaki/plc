@@ -43,7 +43,7 @@
                     <i class="mdi mdi-account-multiple link-icon"></i>
                 </a>
                 <ul class="collapse navigation-submenu" id="menuB">
-                    <li><a href="appointment.php">ALL</a></li>
+                    <li><a href="appointment2.php">ALL</a></li>
                     <li><a href="app4grp.php?grp=ENG1G">ENG1G</a></li>
                     <li><a href="app4grp.php?grp=ENG2G">ENG2G</a></li>
                     <li><a href="app4grp.php?grp=ITS1G">ITS1G</a></li>

@@ -18,7 +18,7 @@ class cls_members
         try {
             $results = array();
             require app_root('db').'/dns.php';
-            $stmt = $pdo->prepare("SELECT * FROM  `members` WHERE m_date IS NOT NULL ORDER BY m_date,m_time");
+            $stmt = $pdo->prepare("SELECT * FROM  `members` WHERE m_date IS NOT NULL AND m_flg1<>9 ORDER BY m_date,m_time");
             execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $result = new cls_members();

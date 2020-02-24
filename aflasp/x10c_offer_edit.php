@@ -19,11 +19,16 @@ $id = empty($_GET['id']) ? $_POST['id'] : $_GET['id'];
 $pid = empty($_GET['pid']) ? $_POST['pid'] : $_GET['pid'];
 
 if (isset($_POST['doEdit'])) {
+    $user='';
     $stts = $_POST['stts'];
     foreach ($stts as $sts) {
         $ss = explode(":", $sts);
         updateX10Offer($id, $ss[1], $ss[0]);
+        if ($ss[0]=="2") {
+            $user.=$ss[1].PHP_EOL;
+        }
     }
+    updateAdwareOpenUser($id, $user);
 
     header('Location: x10c_offer_edited.php');
 }
@@ -108,12 +113,14 @@ if ($adware->adware_type=="1") {
                                     <?php
                                     $offer = getOffer($id);
                                     foreach ($offer as $ofr) {
+                                        $i=0;
                                         $stts = array('','','');
                                         $stts[$ofr->status] = ' checked';
-                                        echo "<input type='radio' name='stts[]' value='0:".$ofr->nuser."'".$stts[0].">承認待ち</input>　" ;
-                                        echo "<input type='radio' name='stts[]' value='1:".$ofr->nuser."'".$stts[1].">否認</input>　" ;
-                                        echo "<input type='radio' name='stts[]' value='2:".$ofr->nuser."'".$stts[2].">承認</input>　" ;
+                                        echo "<input type='radio' name='stts[".$i."]' value='0:".$ofr->nuser."'".$stts[0].">承認待ち</input>　" ;
+                                        echo "<input type='radio' name='stts[".$i."]' value='1:".$ofr->nuser."'".$stts[1].">否認</input>　" ;
+                                        echo "<input type='radio' name='stts[".$i."]' value='2:".$ofr->nuser."'".$stts[2].">承認</input>　" ;
                                         echo "　　<a href='x10c_nuser_info.php?nuser=".$ofr->nuser."&id=".$id."'>".$ofr->nuser."</a><br>" ;
+                                        $i++;
                                     }
 
                                     ?>

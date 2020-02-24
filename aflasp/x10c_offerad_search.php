@@ -94,6 +94,10 @@ if ($LOGIN_TYPE=='cUser') {
     $where .= " AND (cuser='".$LOGIN_ID."') ";
 }
 
+if(isset($_GET['ofr'])){
+    $where .= " AND (cnt_offer>0)";
+    $offered[1]= " checked";
+}
 
 //検索結果件数を取得
 $cnt = countAdwares($where);
@@ -159,7 +163,7 @@ function paging(vlu) {
 
     <!--角丸-->
     <div class="cc">
-        <form action="" method="POST" name="frm">
+        <form action="x10c_offerad_search.php" method="POST" name="frm">
             <dl>
                 <dt><span>検索</span></dt>
                 <dd>
