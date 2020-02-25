@@ -66,6 +66,35 @@ $adware->startdt = $_POST['startdt'];
 $adware->enddt = $_POST['enddt'];
 
 if (isset($_POST['doCheck'])) {
+    $pattern = "{\A(https?|ftp)(://[-_.!~*\'()a-zA-Z0-9;/?:\@&=+\$,%#]+\z)}";
+    if(!preg_match($pattern, $adware->url)){
+        $errorMessage .= '<li>URL形式が間違っています</li>';
+    } 
+    
+    if($adware->adware_type=="0" && !preg_match("/^[0-9]+$/", $adware->money)){
+        $errorMessage .= '<li>獲得単価は半角数字で入力してください。</li>';
+    }
+
+    if($adware->adware_type=="1" && !preg_match("/^[0-9]+$/", $adware->click_money)){
+        $errorMessage .= '<li>クリック単価は半角数字で入力してください。</li>';
+    }
+
+    if($adware->limit_type=="1" && !preg_match("/^[0-9]+$/", $adware->limits)){
+        $errorMessage .= '<li>予算上限は半角数字で入力してください。</li>';
+    }
+
+    if((empty($adware->startdt) && !empty($adware->enddt)) ||
+       (!empty($adware->startdt) && empty($adware->enddt))){
+        $errorMessage .= '<li>開始日と終了日は両方入力してください。</li>';
+    }
+
+    if(!preg_match("/^[0-9]+$/", $adware->span)){
+        $errorMessage .= '<li>クリック間隔は半角数字で入力してください。</li>';
+    }
+
+    if(!preg_match("/^[0-9]+$/", $adware->pay_span)){
+        $errorMessage .= '<li>報酬成果間隔は半角数字で入力してください。</li>';
+    }
 
     //画像処理
     //フォルダの確認
@@ -82,7 +111,7 @@ if (isset($_POST['doCheck'])) {
         $filepath = pathinfo($_FILES ['banner'] ['name']);
         //拡張子の確認
         if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
-            $tmpMgs .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
+            $tmpMgs = '<li>[広告バナー１]　アップロード画像が正しくありません。 png/bmp/jpgの拡張子のファイルをアップロードしてください。</li>';
         }
 
         if (empty($tmpMgs)) {
@@ -91,7 +120,8 @@ if (isset($_POST['doCheck'])) {
             $adware->banner = 'file/image/'.date('Ym')."/".$tmpFileNm;
             move_uploaded_file($_FILES ['banner'] ['tmp_name'], $imgDir."/".$tmpFileNm);
         } else {
-            $errorMessage .= '<br>アップロードされたファイル：'.$upFileNm.$tmpMgs."<br>";
+            $errorMessage .= '<li>[広告バナー１]　アップロードされたファイル：'.$upFileNm."</li>".$tmpMgs;
+            $tmpMgs = '';
         }
     } elseif (isset($_POST['banner_filetmp'])) {
         $adware->banner = $_POST['banner_filetmp'];
@@ -105,7 +135,7 @@ if (isset($_POST['doCheck'])) {
         $filepath = pathinfo($_FILES ['banner2'] ['name']);
         //拡張子の確認
         if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
-            $tmpMgs .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
+            $tmpMgs = '<li>[広告バナー２]　アップロード画像が正しくありません。 png/bmp/jpgの拡張子のファイルをアップロードしてください。</li>';
         }
 
         if (empty($tmpMgs)) {
@@ -114,7 +144,8 @@ if (isset($_POST['doCheck'])) {
             $adware->banner2 = 'file/image/'.date('Ym')."/".$tmpFileNm;
             move_uploaded_file($_FILES ['banner2'] ['tmp_name'], $imgDir."/".$tmpFileNm);
         } else {
-            $errorMessage .= '<br>アップロードされたファイル：'.$upFileNm.$tmpMgs."<br>";
+            $errorMessage .= '<li>[広告バナー２]　アップロードされたファイル：'.$upFileNm."</li>".$tmpMgs;
+            $tmpMgs = '';
         }
     } elseif (isset($_POST['banner2_filetmp'])) {
         $adware->banner2 = $_POST['banner2_filetmp'];
@@ -128,7 +159,7 @@ if (isset($_POST['doCheck'])) {
         $filepath = pathinfo($_FILES ['banner3'] ['name']);
         //拡張子の確認
         if (!(strtolower($filepath['extension']) == 'png' || strtolower($filepath['extension']) == 'bmp' || strtolower($filepath['extension']) == 'jpg')) {
-            $tmpMgs .= '<br>・アップロード画像が正しくありません。<br>png/bmp/jpgの拡張子のファイルをアップロードしてください。';
+            $tmpMgs = '<li>[広告バナー３]　アップロード画像が正しくありません。 png/bmp/jpgの拡張子のファイルをアップロードしてください。</li>';
         }
 
         if (empty($tmpMgs)) {
@@ -137,7 +168,7 @@ if (isset($_POST['doCheck'])) {
             $adware->banner3 = 'file/image/'.date('Ym')."/".$tmpFileNm;
             move_uploaded_file($_FILES ['banner3'] ['tmp_name'], $imgDir."/".$tmpFileNm);
         } else {
-            $errorMessage .= '<br>アップロードされたファイル：'.$upFileNm.$tmpMgs."<br>";
+            $errorMessage .= '<li>[広告バナー３]　アップロードされたファイル：'.$upFileNm."</li>".$tmpMgs;
         }
     } elseif (isset($_POST['banner3_filetmp'])) {
         $adware->banner3 = $_POST['banner3_filetmp'];
@@ -270,32 +301,45 @@ if ($adware->adware_type=="1") {
 
 ?>
 <script type="text/javascript">
-    function typeChange() {
-        radio = document.getElementsByName('adware_type')
-        if (radio[0].checked) {
-            document.getElementById('money').readOnly = false;
-            document.getElementById('money').style.backgroundColor = "white";
-            document.getElementById('click_money').readOnly = true;
-            document.getElementById('click_money').style.backgroundColor = "#9fa0a0";
-        } else if (radio[1].checked) {
-            document.getElementById('money').readOnly = true;
-            document.getElementById('money').style.backgroundColor = "#9fa0a0";
-            document.getElementById('click_money').readOnly = false;
-            document.getElementById('click_money').style.backgroundColor = "white";
-        }
+function typeChange() {
+    radio = document.getElementsByName('adware_type')
+    if (radio[0].checked) {
+        document.getElementById('money').readOnly = false;
+        document.getElementById('money').style.backgroundColor = "white";
+        document.getElementById('click_money').readOnly = true;
+        document.getElementById('click_money').style.backgroundColor = "#9fa0a0";
+    } else if (radio[1].checked) {
+        document.getElementById('money').readOnly = true;
+        document.getElementById('money').style.backgroundColor = "#9fa0a0";
+        document.getElementById('click_money').readOnly = false;
+        document.getElementById('click_money').style.backgroundColor = "white";
     }
+}
 
-    window.onload = entryChange1;
+window.onload = entryChange1;
 </script>
 <style>
-    .inactive {
-        background-color: #9fa0a0;
-    }
+.inactive {
+    background-color: #9fa0a0;
+}
 </style>
 
 <div id="inc_side_body">
 
     <div class="topics">HOME &gt; 広告の編集 &gt; <span>入力フォーム</span> &gt; 入力内容の確認 &gt; 登録完了</div>
+
+    <?php if(!empty($errorMessage)){ ?>
+    <div class="error_list">
+        <dl>
+            <dt>ERROR - [ 登録エラー ] もう一度、入力した内容を確認してください。</dt>
+            <dd>
+                <ul>
+                    <?php echo $errorMessage; ?>
+                </ul>
+            </dd>
+        </dl>
+    </div>
+    <?php } ?>
 
     <form action="" method="POST" enctype="multipart/form-data">
         <div class="search_list">
@@ -314,8 +358,7 @@ if ($adware->adware_type=="1") {
                                             <?php echo $adware_type_1; ?>>クリック報酬タイプ</label>
                                     <?php } else { ?>
                                     <?php echo $txt_adtype; ?>
-                                    <input type="hidden" name="adware_type"
-                                        value="<?php echo $adware->adware_type; ?>">
+                                    <input type="hidden" name="adware_type" value="<?php echo $adware->adware_type; ?>">
                                     <?php } ?>
                                 </td>
                             </tr>
@@ -323,20 +366,20 @@ if ($adware->adware_type=="1") {
                                 <th>承認タイプ<span>※</span></th>
                                 <td>
                                     <?php if (empty($adware->id)) { ?>
-                                    <label><input type="radio" name="approvable" value="0" <?php echo $approvable_0; ?>>オープン</label>
-                                    <label><input type="radio" name="approvable" value="1" <?php echo $approvable_1; ?>>承認</label>
+                                    <label><input type="radio" name="approvable" value="0"
+                                            <?php echo $approvable_0; ?>>オープン</label>
+                                    <label><input type="radio" name="approvable" value="1"
+                                            <?php echo $approvable_1; ?>>承認</label>
                                     <?php } else { ?>
                                     <?php echo $txt_approvable; ?>
-                                    <input type="hidden" name="approvable"
-                                        value="<?php echo $adware->approvable; ?>">
+                                    <input type="hidden" name="approvable" value="<?php echo $adware->approvable; ?>">
                                     <?php } ?>
                                 </td>
                             </tr>
                             <tr>
                                 <th>成果表示名<span>※</span></th>
-                                <td><input type="text" name="name"
-                                        value="<?php echo $adware->name; ?>"
-                                        size="50" maxlength="128" required>
+                                <td><input type="text" name="name" value="<?php echo $adware->name; ?>" size="50"
+                                        maxlength="128" required>
                                 </td>
                             </tr>
                             <tr>
@@ -356,37 +399,35 @@ if ($adware->adware_type=="1") {
                             </tr>
                             <tr>
                                 <th>テキスト広告文<span>※</span></th>
-                                <td><input type="text" name="ad_text"
-                                        value="<?php echo $adware->ad_text; ?>"
-                                        size="50" maxlength="128" required>
+                                <td><input type="text" name="ad_text" value="<?php echo $adware->ad_text; ?>" size="50"
+                                        maxlength="128" required>
                                 </td>
                             </tr>
                             <tr>
-                                <th>ジャンプ先URL(PC用)<span>※</span></th>
+                                <th>ジャンプ先URL<span>※</span></th>
                                 <td>
-                                    <input type="text" name="url"
-                                        value="<?php echo $adware->url; ?>"
-                                        size="50" maxlength="256" required>
+                                    <input type="text" name="url" value="<?php echo $adware->url; ?>" size="50"
+                                        maxlength="256" required>
 
-                                    <label><input type="radio" name="url_users" value="0" <?php echo $url_users_0; ?>>固定</label>
-                                    <label><input type="radio" name="url_users" value="1" <?php echo $url_users_1; ?>>アフィリエイターの自由入力</label>
+                                    <label><input type="radio" name="url_users" value="0"
+                                            <?php echo $url_users_0; ?>>固定</label>
+                                    <label><input type="radio" name="url_users" value="1"
+                                            <?php echo $url_users_1; ?>>アフィリエイターの自由入力</label>
 
                                 </td>
                             </tr>
 
                             <tr id="box_money">
                                 <th>獲得単価<span>※</span></th>
-                                <td><input type="text" name="money" id="money"
-                                        value="<?php echo $adware->money; ?>"
+                                <td><input type="text" name="money" id="money" value="<?php echo $adware->money; ?>"
                                         size="15" maxlength="10" <?php echo $cls_money; ?> required>
                                     円</td>
                             </tr>
                             <tr id="box_click_money">
                                 <th>クリック単価<span>※</span></th>
                                 <td><input type="text" name="click_money" id="click_money"
-                                        value="<?php echo $adware->click_money; ?>"
-                                        size="15" maxlength="10" <?php echo $cls_click_money; ?>
-                                    required>
+                                        value="<?php echo $adware->click_money; ?>" size="15" maxlength="10"
+                                        <?php echo $cls_click_money; ?> required>
                                     円</td>
                             </tr>
                             <!--
@@ -402,9 +443,8 @@ if ($adware->adware_type=="1") {
                             -->
                             <tr>
                                 <th>予算上限<span>※</span></th>
-                                <td><input type="text" name="limits"
-                                        value="<?php echo $adware->limits; ?>"
-                                        size="15" maxlength="10">
+                                <td><input type="text" name="limits" value="<?php echo $adware->limits; ?>" size="15"
+                                        maxlength="10">
                                     <select name="limit_type">
                                         <option value="0" <?php echo $limit_type_0; ?>>予算上限なし
                                         </option>
@@ -414,8 +454,7 @@ if ($adware->adware_type=="1") {
 
                                     <div class="in_clip">
                                         予算オーバー時のジャンプ先URL　<input type="text" name="url_over"
-                                            value="<?php echo $adware->url_over; ?>"
-                                            size="50" maxlength="256">
+                                            value="<?php echo $adware->url_over; ?>" size="50" maxlength="256">
 
                                         <span class="info">予算オーバー時には上記で設定したURLに遷移します。</span>
                                     </div>
@@ -424,8 +463,7 @@ if ($adware->adware_type=="1") {
                             <tr>
                                 <th>クリック間隔<span>※</span></th>
                                 <td>
-                                    不正防止の為、最後のクリックから <input type="text" name="span"
-                                        value="<?php echo $adware->span; ?>"
+                                    不正防止の為、最後のクリックから <input type="text" name="span" value="<?php echo $adware->span; ?>"
                                         size="15" maxlength="10" required>
                                     <select name="span_type">
                                         <option value="s" <?php echo $span_type_s; ?>>秒
@@ -441,7 +479,8 @@ if ($adware->adware_type=="1") {
                                     <div class="in_clip">
                                         同一ユーザーかどうかを　「　<label><input type="radio" name="use_cookie_interval" value="1"
                                                 <?php echo $use_cookie_interval_1; ?>>COOKIEで判別</label>
-                                        <label><input type="radio" name="use_cookie_interval" value="0" <?php echo $use_cookie_interval_0; ?>>IPで判別</label>
+                                        <label><input type="radio" name="use_cookie_interval" value="0"
+                                                <?php echo $use_cookie_interval_0; ?>>IPで判別</label>
                                         　」する
                                     </div>
                                 </td>
@@ -449,8 +488,7 @@ if ($adware->adware_type=="1") {
                             <tr>
                                 <th>報酬成果間隔<span>※</span></th>
                                 <td>不正防止の為、最後の成果発生から <input type="text" name="pay_span"
-                                        value="<?php echo $adware->pay_span; ?>"
-                                        size="15" maxlength="10" required>
+                                        value="<?php echo $adware->pay_span; ?>" size="15" maxlength="10" required>
                                     <select name="pay_span_type">
                                         <option value="s" <?php echo $pay_span_type_s; ?>>秒
                                         </option>
@@ -465,8 +503,10 @@ if ($adware->adware_type=="1") {
                             </tr>
                             <tr>
                                 <th>クリック成果の認証<span>※</span></th>
-                                <td><label><input type="radio" name="click_auto" value="1" <?php echo $click_auto_1; ?>>自動</label>
-                                    <label><input type="radio" name="click_auto" value="0" <?php echo $click_auto_0; ?>>手動</label>
+                                <td><label><input type="radio" name="click_auto" value="1"
+                                            <?php echo $click_auto_1; ?>>自動</label>
+                                    <label><input type="radio" name="click_auto" value="0"
+                                            <?php echo $click_auto_0; ?>>手動</label>
                                 </td>
                             </tr>
                             <tr>
@@ -485,54 +525,42 @@ if ($adware->adware_type=="1") {
                             </tr>
                             -->
                             <tr>
-                                <th>広告バナー(PC用)</th>
+                                <th>広告バナー</th>
                                 <td>
                                     <?php if (empty($adware->banner)) { ?>
                                     <input name="banner" type="file">
                                     <input name="banner" type="hidden" value="">
                                     <?php } else { ?>
-                                    <a href="<?php echo $adware->banner; ?>"
-                                        target="_blank"><img
-                                            src="<?php echo $adware->banner; ?>"
-                                            alt=""></a>
+                                    <a href="<?php echo $adware->banner; ?>" target="_blank"><img
+                                            src="<?php echo $adware->banner; ?>" alt=""></a>
                                     <br><input name="banner" type="file">
-                                    <input name="banner_filetmp" type="hidden"
-                                        value="<?php echo $adware->banner; ?>">
+                                    <input name="banner_filetmp" type="hidden" value="<?php echo $adware->banner; ?>">
                                     <label><input type="checkbox" name="banner_DELETE" value="1">削除</label>
-                                    <input name="banner" type="hidden"
-                                        value="<?php echo $adware->banner; ?>">
+                                    <input name="banner" type="hidden" value="<?php echo $adware->banner; ?>">
                                     <?php } ?>
                                     <br>
                                     <?php if (empty($adware->banner2)) { ?>
                                     <input name="banner2" type="file">
                                     <input name="banner2" type="hidden" value="">
                                     <?php } else { ?>
-                                    <a href="<?php echo $adware->banner2; ?>"
-                                        target="_blank"><img
-                                            src="<?php echo $adware->banner2; ?>"
-                                            alt=""></a>
+                                    <a href="<?php echo $adware->banner2; ?>" target="_blank"><img
+                                            src="<?php echo $adware->banner2; ?>" alt=""></a>
                                     <br><input name="banner2" type="file">
-                                    <input name="banner2_filetmp" type="hidden"
-                                        value="<?php echo $adware->banner2; ?>">
+                                    <input name="banner2_filetmp" type="hidden" value="<?php echo $adware->banner2; ?>">
                                     <label><input type="checkbox" name="banner2_DELETE" value="1">削除</label>
-                                    <input name="banner2" type="hidden"
-                                        value="<?php echo $adware->banner2; ?>">
+                                    <input name="banner2" type="hidden" value="<?php echo $adware->banner2; ?>">
                                     <?php } ?>
                                     <br>
                                     <?php if (empty($adware->banner3)) { ?>
                                     <input name="banner3" type="file">
                                     <input name="banner3" type="hidden" value="">
                                     <?php } else { ?>
-                                    <a href="<?php echo $adware->banner3; ?>"
-                                        target="_blank"><img
-                                            src="<?php echo $adware->banner3; ?>"
-                                            alt=""></a>
+                                    <a href="<?php echo $adware->banner3; ?>" target="_blank"><img
+                                            src="<?php echo $adware->banner3; ?>" alt=""></a>
                                     <br><input name="banner3" type="file">
-                                    <input name="banner3_filetmp" type="hidden"
-                                        value="<?php echo $adware->banner3; ?>">
+                                    <input name="banner3_filetmp" type="hidden" value="<?php echo $adware->banner3; ?>">
                                     <label><input type="checkbox" name="banner3_DELETE" value="1">削除</label>
-                                    <input name="banner3" type="hidden"
-                                        value="<?php echo $adware->banner3; ?>">
+                                    <input name="banner3" type="hidden" value="<?php echo $adware->banner3; ?>">
                                     <?php } ?>
 
                                 </td>
@@ -540,9 +568,12 @@ if ($adware->adware_type=="1") {
 
                             <tr>
                                 <th>広告認証形式<span>※</span></th>
-                                <td><label><input type="radio" name="check_type" value="ip" <?php echo $check_type_ip; ?>>IPアドレス</label>
-                                    <label><input type="radio" name="check_type" value="aid" <?php echo $check_type_aid; ?>>Cookie(1st)</label>
-                                    <label><input type="radio" name="check_type" value="cookie" <?php echo $check_type_cookie; ?>>Cookie(3rd)</label>
+                                <td><label><input type="radio" name="check_type" value="ip"
+                                            <?php echo $check_type_ip; ?>>IPアドレス</label>
+                                    <label><input type="radio" name="check_type" value="aid"
+                                            <?php echo $check_type_aid; ?>>Cookie(1st)</label>
+                                    <label><input type="radio" name="check_type" value="cookie"
+                                            <?php echo $check_type_cookie; ?>>Cookie(3rd)</label>
 
                                     <span class="info">広告経由情報の認証方法を選択して下さい。(PCのみ設定可能です)</span>
                                     <span class="info">※Apple ITPに対応したトラッキングを行うにはIPまたはCookie(1st)を使用してください。</span>
@@ -593,14 +624,12 @@ if ($adware->adware_type=="1") {
                             </tr>
                             <tr>
                                 <th>開始日</th>
-                                <td><input type="date" name="startdt"
-                                        value="<?php echo $adware->startdt; ?>">
+                                <td><input type="date" name="startdt" value="<?php echo $adware->startdt; ?>">
                                 </td>
                             </tr>
                             <tr>
                                 <th>終了日</th>
-                                <td><input type="date" name="enddt"
-                                        value="<?php echo $adware->enddt; ?>">
+                                <td><input type="date" name="enddt" value="<?php echo $adware->enddt; ?>">
                                 </td>
                             </tr>
                             <?php if(!empty($id) && $adware->approvable=="1"){ ?>
@@ -608,7 +637,7 @@ if ($adware->adware_type=="1") {
                                 <th><a href='x10c_offer_edit.php?pid=ad&id=<?php echo $id; ?>'>対象ユーザー</a></th>
                                 <td>
                                     <?php foreach($offer as $ofr){ ?>
-                                        <?php echo $ofr->nuser; ?><br>
+                                    <?php echo $ofr->nuser; ?><br>
                                     <?php } ?>
                                 </td>
                             </tr>
@@ -627,14 +656,10 @@ if ($adware->adware_type=="1") {
         <div class="input_box">
             <input type="submit" value="入力内容の確認" class="input_base">
             <input type="reset" value="リセット" class="input_base">
-            <input type="hidden" name="shadow_id"
-                value="<?php echo $adware->shadow_id; ?>">
-            <input type="hidden" name="id"
-                value="<?php echo $id; ?>">
-            <input type="hidden" name="mode"
-                value="<?php echo $mode; ?>">
-            <input type="hidden" name="st"
-                value="<?php echo $st; ?>">
+            <input type="hidden" name="shadow_id" value="<?php echo $adware->shadow_id; ?>">
+            <input type="hidden" name="id" value="<?php echo $id; ?>">
+            <input type="hidden" name="mode" value="<?php echo $mode; ?>">
+            <input type="hidden" name="st" value="<?php echo $st; ?>">
             <input type="hidden" name="MAX_FILE_SIZE" value="512000">
             <input type="hidden" name="doCheck" value="0">
         </div>

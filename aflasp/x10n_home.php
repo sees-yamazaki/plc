@@ -17,12 +17,14 @@ $errorMessage = '';
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
 $thisY = date('Y');
 $thisM = date('m');
+// 指定月の目標設定広告のデータを取得
 $cnt_click_0 = countMonthlyClicks($thisY, $thisM, $LOGIN_ID, 0);
 $pays_0 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 0);
+// 指定月のクリック広告のデータを取得
 $cnt_click_1 = countMonthlyClicks($thisY, $thisM, $LOGIN_ID, 1);
 $pays_1 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 1);
 
-
+// 直近７日間に公開されて、現在公開中の広告を取得する
 $ads = getAdwaresRecentry(7);
 
 $rcntyHtml='';
@@ -33,7 +35,7 @@ foreach ($ads as $ad) {
     } else {
         $rcntyHtml .= '[クリック]';
     }
-    if ($ad->approvable=="1") {
+    if ($ad->approvable=="0") {
         $rcntyHtml .= '</td><td><a href="x10n_adwares_info.php?id='.$ad->id.'">'.$ad->name.'</a></td><td>';
     } else {
         $rcntyHtml .= '</td><td><a href="x10n_adwares_info.php?id='.$ad->id.'">'.$ad->name.'</a> [承認制]</td><td>';
@@ -44,7 +46,9 @@ if (empty($rcntyHtml)) {
     $rcntyHtml='＞新着オファーはありません。';
 }
 
+// 自身がオファー申請中の広告を全て取得する
 $offering = getOfferingAdware($LOGIN_ID);
+
 $html1 = '';
 foreach ($offering as $ofr) {
     $wk = $ofr->adware_type=="0" ? "[目標]" : "[クリック]";
@@ -167,7 +171,7 @@ if (empty($html2)) {
     <table>
         <?php echo  $rcntyHtml; ?>
         <tr>
-            <td colspan=2>オファー一覧へ</td>
+            <td colspan=2><a href='x10n_adwares_search.php'>オファー一覧へ</a></td>
         </tr>
     </table>
 
@@ -191,8 +195,6 @@ if (empty($html2)) {
     <input type="button" onclick="location.href='x10n_offer_list.php'" value="承認制オファー概要">
     <br><br>
     <input type="button" onclick="location.href='x10n_result_list.php'" value="成果情報">
-    <br><br>
-    <input type="button" onclick="location.href='x10n_adwares_search.php'" value="オファー一覧へ">
     <br><br>
     <input type="button" onclick="location.href='x10n_nuser_info.php'" value="ユーザー情報">
 

@@ -20,7 +20,8 @@ $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
 $thisY = empty($_POST['thisY']) ? date('Y') : $_POST['thisY'];
 $thisM = empty($_POST['thisM']) ? date('m') : $_POST['thisM'];
 //$cnt_click = countMonthlyClicks($thisY, $thisM, $LOGIN_ID, $adtype);
-$pays = countMonthlyPaysGroups($thisY, $thisM, $LOGIN_ID, $adtype);
+//$pays = countMonthlyPaysGroups($thisY, $thisM, $LOGIN_ID, $adtype);
+$pays = getPaysX10Monthly($thisY, $thisM, $LOGIN_ID);
 $nextYM = date('Ym', strtotime(date($thisY.'-'.$thisM.'-1') . '+1 month'));
 $lastYM = date('Ym', strtotime(date($thisY.'-'.$thisM.'-1') . '-1 month'));
 
@@ -93,6 +94,7 @@ $mHtml.='</select>';
             <td>非認証</td>
         </tr>
         <?php foreach($pays as $p){ ?>
+        <?php if($p->approvable==$adtype){ ?>
         <tr>
             <td><a href='x10n_adwares_info.php?id=<?php echo $p->id; ?>'><?php echo $p->name; ?></a></td>
             <?php $cnt = countMonthlyClicksAdwares($thisY, $thisM, $LOGIN_ID, $p->id); ?>
@@ -103,6 +105,7 @@ $mHtml.='</select>';
             <td><?php echo $p->cst2; ?>円</td>
             <td><?php echo($p->cnt0 + $p->cnt1); ?>件</td>
         </tr>
+        <?php } ?>
         <?php } ?>
     </table>
 

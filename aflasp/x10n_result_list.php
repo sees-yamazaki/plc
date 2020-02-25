@@ -17,8 +17,10 @@ $errorMessage = '';
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
 $thisY = date('Y');
 $thisM = date('m');
+// 指定月の目標設定広告のデータを取得
 $cnt_click_0 = countMonthlyClicks($thisY, $thisM, $LOGIN_ID, 0);
 $pays_0 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 0);
+// 指定月のクリック広告のデータを取得
 $cnt_click_1 = countMonthlyClicks($thisY, $thisM, $LOGIN_ID, 1);
 $pays_1 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 1);
 

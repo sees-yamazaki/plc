@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: 2020 年 2 月 18 日 16:58
+-- Generation Time: 2020 年 2 月 25 日 18:15
 -- サーバのバージョン： 5.7.25
 -- PHP Version: 7.3.1
 
@@ -48,7 +48,9 @@ INSERT INTO `access` (`shadow_id`, `delete_key`, `id`, `ipaddress`, `cookie`, `a
 (4, 0, 'f5d5ce8ce93c3631831fe5714bb1ccd2', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'secretAdwares', 'SA000002', 'C0000001', 'N0000001', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', 'http://localhost:81/aflasp/x10/', 1, 'FALSE', 1581486153),
 (5, 0, 'ee5f9bce1452c59170141345ae672a74', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'adwares', 'A0000001', 'C0000001', 'N0000001', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', 'http://localhost:81/aflasp/x10/', 1, 'FALSE', 1581487470),
 (6, 0, '76c4ea785b9bb6f09190a5c56cc6572a', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'secretAdwares', 'SA000001', 'C0000001', 'N0000001', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', '', 1, 'FALSE', 1581573091),
-(7, 0, '19cd417c0be9031ff149c9ef54adad3a', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'adwares', 'A0000002', 'C0000001', 'N0000001', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', '', 1, 'FALSE', 1581573126);
+(7, 0, '19cd417c0be9031ff149c9ef54adad3a', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'adwares', 'A0000002', 'C0000001', 'N0000001', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', '', 1, 'FALSE', 1581573126),
+(8, 0, '4fecd62a5e8ff2df1a8f52ad47122228', '::1', '4fecd62a5e8ff2df1a8f52ad47122228', 'secretAdwares', 'SA000002', 'C0000001', 'N0000001', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', '', 1, 'FALSE', 1582619127),
+(9, 0, '032d5508443d53a0c25fbc6b2c8aa667', '::1', '4fecd62a5e8ff2df1a8f52ad47122228', 'secretAdwares', 'SA000003', 'C0000001', 'N0000001', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', '', 1, 'FALSE', 1582620755);
 
 -- --------------------------------------------------------
 
@@ -132,7 +134,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`shadow_id`, `delete_key`, `id`, `name`, `mail`, `pass`, `activate`, `logout`, `login`, `old_login`, `mail_time`) VALUES
-(0, 0, 'ADMIN', '管理者', 'admin', 'admin', 2, 1581492003, 1581490115, 1580947949, 1581490116);
+(0, 0, 'ADMIN', '管理者', 'admin', 'admin', 2, 1582243010, 1582242643, 1581490115, 1582242643);
 
 -- --------------------------------------------------------
 
@@ -189,7 +191,8 @@ CREATE TABLE `adwares` (
 
 INSERT INTO `adwares` (`shadow_id`, `delete_key`, `id`, `cuser`, `comment`, `ad_text`, `category`, `banner`, `banner2`, `banner3`, `banner_m`, `banner_m2`, `banner_m3`, `url`, `url_m`, `url_over`, `url_users`, `name`, `money`, `ad_type`, `click_money`, `continue_money`, `continue_type`, `limits`, `limit_type`, `money_count`, `pay_count`, `click_money_count`, `continue_money_count`, `span`, `span_type`, `use_cookie_interval`, `pay_span`, `pay_span_type`, `auto`, `click_auto`, `continue_auto`, `check_type`, `open`, `regist`) VALUES
 (1, 0, 'A0000001', 'C0000001', '説明１\r\n説明２\r\n説明３', 'テキストこうこく', 'CT000001', 'file/image/202002/a4578ba1473c32f1f5bb3f640ac24461.png', '', '', '', '', '', 'http://localhost:81/aflasp/x10/return.html', '', '', 0, '目標、オープン、かて１の広告', '1240', 'yen', '0', '0', 'yen', 0, '0', NULL, NULL, NULL, NULL, 10, 's', 0, 10, 's', '1', '1', '1', 'ip', 1, 1581467718),
-(2, 0, 'A0000002', 'C0000001', '説明あ\n説明い', 'テキスト', 'CT000001', '', '', '', '', '', '', 'http://localhost:81/aflasp/x10/return.html', '', '', 0, 'クリック、オープン、かて１の広告', '0', 'yen', '8', '0', 'yen', 0, '0', 16, 0, 2, 0, 8, 's', 0, 8, 's', '1', '1', '1', 'ip', 1, 1581467853);
+(2, 0, 'A0000002', 'C0000001', '説明あ\n説明い', 'テキスト', 'CT000001', '', '', '', '', '', '', 'http://localhost:81/aflasp/x10/return.html', '', '', 0, 'クリック、オープン、かて１の広告', '0', 'yen', '8', '0', 'yen', 0, '0', 16, 0, 2, 0, 8, 's', 0, 8, 's', '1', '1', '1', 'ip', 1, 1581467853),
+(3, 0, 'A0000003', 'C0000002', '456のオープン広告の説明文', '456のオープン広告のテキスト', 'CT000001', '', '', '', '', '', '', 'http://www.google.com', '', '', 0, '456のオープン広告', '1200', 'yen', '0', '0', 'yen', 0, '0', 0, 0, 0, 0, 11, 's', 0, 11, 's', '1', '1', '1', 'ip', 1, 1582246104);
 
 -- --------------------------------------------------------
 
@@ -272,7 +275,8 @@ CREATE TABLE `click_pay` (
 
 INSERT INTO `click_pay` (`shadow_id`, `delete_key`, `id`, `access_id`, `owner`, `adwares_type`, `adwares`, `cuser`, `cost`, `state`, `is_notice`, `report_id`, `regist`) VALUES
 (1, 0, '2268ca07906b8f315e80363a921be488', '2268ca07906b8f315e80363a921be488', 'N0000001', 'adwares', 'A0000002', 'C0000001', 8, '2', 1, '', 1581486143),
-(2, 0, '19cd417c0be9031ff149c9ef54adad3a', '19cd417c0be9031ff149c9ef54adad3a', 'N0000001', 'adwares', 'A0000002', 'C0000001', 8, '2', 1, '', 1581573126);
+(2, 0, '19cd417c0be9031ff149c9ef54adad3a', '19cd417c0be9031ff149c9ef54adad3a', 'N0000001', 'adwares', 'A0000002', 'C0000001', 8, '2', 1, '', 1581573126),
+(3, 0, '4fecd62a5e8ff2df1a8f52ad47122228', '4fecd62a5e8ff2df1a8f52ad47122228', 'N0000001', 'secretAdwares', 'SA000002', 'C0000001', 12, '2', 1, '', 1582619127);
 
 -- --------------------------------------------------------
 
@@ -329,7 +333,7 @@ CREATE TABLE `cuser` (
 --
 
 INSERT INTO `cuser` (`shadow_id`, `delete_key`, `id`, `name`, `zip1`, `zip2`, `adds`, `add_sub`, `tel`, `fax`, `mail`, `pass`, `activate`, `mail_reception`, `is_mobile`, `limits`, `regist`, `logout`) VALUES
-(1, 0, 'C0000001', 'ヤマザキ', '123', '4567', 'PF02', 'aoao\n', '090-0000-0000', '', '123', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', 4, '', 0, 0, 1580200708, 1581572257),
+(1, 0, 'C0000001', 'ヤマザキ', '123', '4567', 'PF02', 'aoao\n', '090-0000-0000', '', '123', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', 4, '', 0, 0, 1580200708, 1582602321),
 (2, 0, 'C0000002', 'こうこくぬし２', '123', '4567', 'PF05', 'akita', '09090909091', '', '456', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', 4, '', 0, 0, 1580460211, 1580949667);
 
 -- --------------------------------------------------------
@@ -432,7 +436,7 @@ CREATE TABLE `nuser` (
 --
 
 INSERT INTO `nuser` (`shadow_id`, `delete_key`, `id`, `name`, `zip1`, `zip2`, `adds`, `add_sub`, `tel`, `fax`, `url`, `mail`, `bank_code`, `bank`, `branch_code`, `branch`, `bank_type`, `number`, `bank_name`, `parent`, `grandparent`, `greatgrandparent`, `pass`, `terminal`, `activate`, `pay`, `tier`, `rank`, `personal_rate`, `magni`, `mail_reception`, `is_mobile`, `limits`, `regist`, `logout`) VALUES
-(1, 0, 'N0000001', 'ゆーざ山崎あ', '123', '3210', 'PF05', 'akita', '080-0808-0808', '', 'http://yes.com', 'a123', '999', 'ABCD', '888', 'DEF', '1', '1234567', 'コウザコウザ', '', '', '', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', '', 4, 9685, 0, 'SA01', 5, 100, '', 0, 0, 1580267237, 1581982697),
+(1, 0, 'N0000001', 'ゆーざ山崎あ', '123', '3210', 'PF05', 'akita', '080-0808-0808', '', 'http://yes.com', 'a123', '999', 'ABCD', '888', 'DEF', '1', '1234567', 'コウザコウザ', '', '', '', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', '', 4, 20920, 0, 'SA01', 5, 100, '', 0, 0, 1580267237, 1582586999),
 (2, 0, 'N0000002', 'B-USER', '123', '4567', 'PF06', 'yama', '11', '', 'http://test.com', 'b123', '11', 'aa', '22', 'cc', '1', '11', 'ヤマ', '', '', '', 'AES_OK:fDI0VZtmHEEKwQw1T+WU3g==', '', 4, 0, 0, 'SA01', 5, 100, '', 0, 0, 1580346840, 1580346840),
 (4, 0, 'N0000004', '11', '11', '11', 'PF01', '11', '11', '', 'http://11.com', 'yamazaki.utg+d@gmail.com', '11', '11', '11', '11', '1', '11', 'カナ', '', '', '', 'AES_OK:xof+GA/IbryKYxWisWYwVg==', '', 1, 0, 0, 'SA01', 5, 100, '', 0, 0, 1580456775, 1580456775),
 (5, 0, 'N0000005', '22', '22', '22', 'PF01', '22', '22', '22', '22', 'a1234', '22', '22', '22', '22', '1', '22', '22', '', '', '', 'AES_OK:r2qV5Yx1RK9I30s5ia/2bg==', '', 4, 0, 0, 'SA01', 5, 100, '', 0, 0, 1580862427, 1580862904),
@@ -491,7 +495,8 @@ CREATE TABLE `pay` (
 
 INSERT INTO `pay` (`shadow_id`, `delete_key`, `id`, `access_id`, `ipaddress`, `cookie`, `owner`, `adwares_type`, `adwares`, `cuser`, `cost`, `sales`, `froms`, `froms_sub`, `state`, `is_notice`, `utn`, `useragent`, `continue_uid`, `report_id`, `regist`) VALUES
 (1, 0, '1', '1ef1ff9358ce1cb3e9cba7cd59cf8a3e', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'N0000001', 'adwares', 'A0000001', 'C0000001', 1240, 0, '', '', 2, 1, '', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', '', '', 1581486154),
-(2, 0, '2', 'ee5f9bce1452c59170141345ae672a74', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'N0000001', 'adwares', 'A0000001', 'C0000001', 1240, 0, '', '', 2, 1, '', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', '', '', 1581487471);
+(2, 0, '2', 'ee5f9bce1452c59170141345ae672a74', '::1', 'aa77bad97e845090a4f1de2a7ce13897', 'N0000001', 'adwares', 'A0000001', 'C0000001', 1240, 0, '', '', 2, 1, '', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', '', '', 1581487471),
+(3, 0, '3', '032d5508443d53a0c25fbc6b2c8aa667', '::1', '4fecd62a5e8ff2df1a8f52ad47122228', 'N0000001', 'secretAdwares', 'SA000003', 'C0000001', 11223, 0, '', '', 2, 1, '', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', '', '', 1582620835);
 
 -- --------------------------------------------------------
 
@@ -673,7 +678,8 @@ CREATE TABLE `secretadwares` (
 
 INSERT INTO `secretadwares` (`shadow_id`, `delete_key`, `id`, `cuser`, `comment`, `ad_text`, `category`, `banner`, `banner2`, `banner3`, `banner_m`, `banner_m2`, `banner_m3`, `url`, `url_m`, `url_over`, `url_users`, `name`, `money`, `ad_type`, `click_money`, `continue_money`, `continue_type`, `limits`, `limit_type`, `money_count`, `pay_count`, `click_money_count`, `continue_money_count`, `span`, `span_type`, `use_cookie_interval`, `pay_span`, `pay_span_type`, `auto`, `click_auto`, `continue_auto`, `check_type`, `open`, `open_user`, `regist`) VALUES
 (1, 0, 'SA000001', 'C0000001', '説明A\r\n説明B', 'てきすとこーこく', 'CT000002', 'file/image/202002/d956714bb06fd931a621574f9d0ed9f1.png', '', '', '', '', '', 'http://localhost:81/aflasp/x10/return.html', '', '', 0, '目標、承認、かて２の広告', '2340', 'yen', '0', '0', 'yen', 0, '0', 0, 0, 0, 0, 10, 's', 0, 10, 's', '1', '1', '1', 'ip', 1, '', 1581467798),
-(2, 0, 'SA000002', 'C0000001', '説明い\r\n説明ろ\r\n説明は', 'こー', 'CT000003', '', '', '', '', '', '', 'http://localhost:81/aflasp/x10/return.html', '', '', 0, 'クリック、承認、かて３', '0', 'yen', '12', '0', 'yen', 0, '0', 0, 0, 0, 0, 12, 's', 0, 12, 's', '1', '1', '1', 'ip', 1, '', 1581467921);
+(2, 0, 'SA000002', 'C0000001', '説明い\r\n説明ろ\r\n説明は', 'こー', 'CT000003', '', '', '', '', '', '', 'http://localhost:81/aflasp/x10/return.html', '', '', 0, 'クリック、承認、かて３', '0', 'yen', '12', '0', 'yen', 0, '0', NULL, NULL, NULL, NULL, 12, 's', 0, 12, 's', '1', '1', '1', 'ip', 1, 'N0000001\n', 1581467921),
+(3, 0, 'SA000003', 'C0000001', '目標、承認、１２３目標、承認、１２３', '目標、承認、１２３目標、承認、１２３', 'CT000001', '', '', '', '', '', '', 'http://localhost:81/aflasp/x10/return.html', '', '', 0, '目標、承認、１２３', '11223', 'yen', '0', '0', 'yen', 0, '0', NULL, NULL, NULL, NULL, 1, 's', 0, 1, 's', '1', '1', '1', 'ip', 1, 'N0000001\n', 1582620521);
 
 -- --------------------------------------------------------
 
@@ -1286,6 +1292,22 @@ CREATE TABLE `v_click_pay_x10` (
 --
 CREATE TABLE `v_offer_x10` (
 `adware` varchar(8)
+,`nuser` varchar(8)
+,`status` int(11)
+,`regist` int(11)
+,`name` varchar(128)
+,`adware_type` int(11)
+,`approvable` int(11)
+);
+
+-- --------------------------------------------------------
+
+--
+-- ビュー用の代替構造 `v_offer_x10_by_status`
+-- (実際のビューを参照するには下にあります)
+--
+CREATE TABLE `v_offer_x10_by_status` (
+`adware` varchar(8)
 ,`cnt` bigint(21)
 ,`status` int(11)
 );
@@ -1381,7 +1403,9 @@ INSERT INTO `x10_adwares` (`shadow_id`, `id`, `adware_type`, `approvable`, `keyw
 (1, 'A0000001', 0, 0, 'キーワ', 'せいか', 'はっし', 'ひにん', 'NGきー', 'びこー', '2020-01-01', '2020-03-01'),
 (1, 'SA000001', 0, 1, 'aaaa', 'bbbb', 'cccc', 'dddd', 'eeee', 'ffff', '2020-02-01', '2020-03-01'),
 (2, 'A0000002', 1, 0, '1111', '23233', '3333', '4444', '555', '666', NULL, NULL),
-(2, 'SA000002', 1, 1, 'a1', 'a2', 'a3', 'a4', 'a5', 'a5', '2020-01-01', '2020-03-03');
+(2, 'SA000002', 1, 1, 'a1', 'a2', 'a3', 'a4', 'a5', 'a5', '2020-01-01', '2020-02-03'),
+(3, 'A0000003', 0, 0, 'KeyWord', '', '', '', '', '', NULL, NULL),
+(3, 'SA000003', 0, 1, '', '', '', '', '', '', '2020-01-01', '2020-02-01');
 
 -- --------------------------------------------------------
 
@@ -1397,6 +1421,13 @@ CREATE TABLE `x10_nuser` (
   `twitter` varchar(100) NOT NULL,
   `youtube` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=sjis;
+
+--
+-- テーブルのデータのダンプ `x10_nuser`
+--
+
+INSERT INTO `x10_nuser` (`id`, `nickname`, `instagram`, `facebook`, `twitter`, `youtube`) VALUES
+('N0000001', '', '', 'https://ja-jp.facebook.com/welcome.city.yokohama/', '', '');
 
 -- --------------------------------------------------------
 
@@ -1417,7 +1448,8 @@ CREATE TABLE `x10_offer` (
 
 INSERT INTO `x10_offer` (`adware`, `nuser`, `status`, `regist`) VALUES
 ('SA000001', 'N0000001', 2, 1581468229),
-('SA000002', 'N0000001', 0, 1581485525);
+('SA000002', 'N0000001', 2, 1581485525),
+('SA000003', 'N0000001', 2, 1582620728);
 
 -- --------------------------------------------------------
 
@@ -1483,7 +1515,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_adwares_x10`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_adwares_x10`  AS  (select '0' AS `kind`,`s`.`shadow_id` AS `shadow_id`,`s`.`delete_key` AS `delete_key`,`s`.`id` AS `id`,`s`.`cuser` AS `cuser`,`s`.`comment` AS `comment`,`s`.`ad_text` AS `ad_text`,`s`.`category` AS `category`,`s`.`banner` AS `banner`,`s`.`banner2` AS `banner2`,`s`.`banner3` AS `banner3`,`s`.`banner_m` AS `banner_m`,`s`.`banner_m2` AS `banner_m2`,`s`.`banner_m3` AS `banner_m3`,`s`.`url` AS `url`,`s`.`url_m` AS `url_m`,`s`.`url_over` AS `url_over`,`s`.`url_users` AS `url_users`,`s`.`name` AS `name`,`s`.`money` AS `money`,`s`.`ad_type` AS `ad_type`,`s`.`click_money` AS `click_money`,`s`.`continue_money` AS `continue_money`,`s`.`continue_type` AS `continue_type`,`s`.`limits` AS `limits`,`s`.`limit_type` AS `limit_type`,`s`.`money_count` AS `money_count`,`s`.`pay_count` AS `pay_count`,`s`.`click_money_count` AS `click_money_count`,`s`.`continue_money_count` AS `continue_money_count`,`s`.`span` AS `span`,`s`.`span_type` AS `span_type`,`s`.`use_cookie_interval` AS `use_cookie_interval`,`s`.`pay_span` AS `pay_span`,`s`.`pay_span_type` AS `pay_span_type`,`s`.`auto` AS `auto`,`s`.`click_auto` AS `click_auto`,`s`.`continue_auto` AS `continue_auto`,`s`.`check_type` AS `check_type`,`s`.`open` AS `open`,'' AS `open_user`,`s`.`regist` AS `regist`,`c`.`name` AS `category_name`,`x`.`adware_type` AS `adware_type`,`x`.`approvable` AS `approvable`,`x`.`keyword` AS `keyword`,`x`.`results` AS `results`,`x`.`hashtag` AS `hashtag`,`x`.`denials` AS `denials`,`x`.`ngword` AS `ngword`,`x`.`note` AS `note`,`x`.`startdt` AS `startdt`,`x`.`enddt` AS `enddt`,(case when isnull(`v`.`cnt`) then 0 else `v`.`cnt` end) AS `cnt_offer` from (((`adwares` `s` left join `x10_adwares` `x` on((`s`.`id` = `x`.`id`))) left join `category` `c` on((`s`.`category` = `c`.`id`))) left join `v_offer_x10` `v` on(((`s`.`id` = `v`.`adware`) and (`v`.`status` = 0))))) union (select '1' AS `kind`,`s`.`shadow_id` AS `shadow_id`,`s`.`delete_key` AS `delete_key`,`s`.`id` AS `id`,`s`.`cuser` AS `cuser`,`s`.`comment` AS `comment`,`s`.`ad_text` AS `ad_text`,`s`.`category` AS `category`,`s`.`banner` AS `banner`,`s`.`banner2` AS `banner2`,`s`.`banner3` AS `banner3`,`s`.`banner_m` AS `banner_m`,`s`.`banner_m2` AS `banner_m2`,`s`.`banner_m3` AS `banner_m3`,`s`.`url` AS `url`,`s`.`url_m` AS `url_m`,`s`.`url_over` AS `url_over`,`s`.`url_users` AS `url_users`,`s`.`name` AS `name`,`s`.`money` AS `money`,`s`.`ad_type` AS `ad_type`,`s`.`click_money` AS `click_money`,`s`.`continue_money` AS `continue_money`,`s`.`continue_type` AS `continue_type`,`s`.`limits` AS `limits`,`s`.`limit_type` AS `limit_type`,`s`.`money_count` AS `money_count`,`s`.`pay_count` AS `pay_count`,`s`.`click_money_count` AS `click_money_count`,`s`.`continue_money_count` AS `continue_money_count`,`s`.`span` AS `span`,`s`.`span_type` AS `span_type`,`s`.`use_cookie_interval` AS `use_cookie_interval`,`s`.`pay_span` AS `pay_span`,`s`.`pay_span_type` AS `pay_span_type`,`s`.`auto` AS `auto`,`s`.`click_auto` AS `click_auto`,`s`.`continue_auto` AS `continue_auto`,`s`.`check_type` AS `check_type`,`s`.`open` AS `open`,`s`.`open_user` AS `open_user`,`s`.`regist` AS `regist`,`c`.`name` AS `category_name`,`x`.`adware_type` AS `adware_type`,`x`.`approvable` AS `approvable`,`x`.`keyword` AS `keyword`,`x`.`results` AS `results`,`x`.`hashtag` AS `hashtag`,`x`.`denials` AS `denials`,`x`.`ngword` AS `ngword`,`x`.`note` AS `note`,`x`.`startdt` AS `startdt`,`x`.`enddt` AS `enddt`,(case when isnull(`v`.`cnt`) then 0 else `v`.`cnt` end) AS `cnt_offer` from (((`secretadwares` `s` left join `x10_adwares` `x` on((`s`.`id` = `x`.`id`))) left join `category` `c` on((`s`.`category` = `c`.`id`))) left join `v_offer_x10` `v` on(((`s`.`id` = `v`.`adware`) and (`v`.`status` = 0))))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_adwares_x10`  AS  (select '0' AS `kind`,`s`.`shadow_id` AS `shadow_id`,`s`.`delete_key` AS `delete_key`,`s`.`id` AS `id`,`s`.`cuser` AS `cuser`,`s`.`comment` AS `comment`,`s`.`ad_text` AS `ad_text`,`s`.`category` AS `category`,`s`.`banner` AS `banner`,`s`.`banner2` AS `banner2`,`s`.`banner3` AS `banner3`,`s`.`banner_m` AS `banner_m`,`s`.`banner_m2` AS `banner_m2`,`s`.`banner_m3` AS `banner_m3`,`s`.`url` AS `url`,`s`.`url_m` AS `url_m`,`s`.`url_over` AS `url_over`,`s`.`url_users` AS `url_users`,`s`.`name` AS `name`,`s`.`money` AS `money`,`s`.`ad_type` AS `ad_type`,`s`.`click_money` AS `click_money`,`s`.`continue_money` AS `continue_money`,`s`.`continue_type` AS `continue_type`,`s`.`limits` AS `limits`,`s`.`limit_type` AS `limit_type`,`s`.`money_count` AS `money_count`,`s`.`pay_count` AS `pay_count`,`s`.`click_money_count` AS `click_money_count`,`s`.`continue_money_count` AS `continue_money_count`,`s`.`span` AS `span`,`s`.`span_type` AS `span_type`,`s`.`use_cookie_interval` AS `use_cookie_interval`,`s`.`pay_span` AS `pay_span`,`s`.`pay_span_type` AS `pay_span_type`,`s`.`auto` AS `auto`,`s`.`click_auto` AS `click_auto`,`s`.`continue_auto` AS `continue_auto`,`s`.`check_type` AS `check_type`,`s`.`open` AS `open`,'' AS `open_user`,`s`.`regist` AS `regist`,`c`.`name` AS `category_name`,`x`.`adware_type` AS `adware_type`,`x`.`approvable` AS `approvable`,`x`.`keyword` AS `keyword`,`x`.`results` AS `results`,`x`.`hashtag` AS `hashtag`,`x`.`denials` AS `denials`,`x`.`ngword` AS `ngword`,`x`.`note` AS `note`,`x`.`startdt` AS `startdt`,`x`.`enddt` AS `enddt`,(case when isnull(`v`.`cnt`) then 0 else `v`.`cnt` end) AS `cnt_offer` from (((`adwares` `s` left join `x10_adwares` `x` on((`s`.`id` = `x`.`id`))) left join `category` `c` on((`s`.`category` = `c`.`id`))) left join `v_offer_x10_by_status` `v` on(((`s`.`id` = `v`.`adware`) and (`v`.`status` = 0))))) union (select '1' AS `kind`,`s`.`shadow_id` AS `shadow_id`,`s`.`delete_key` AS `delete_key`,`s`.`id` AS `id`,`s`.`cuser` AS `cuser`,`s`.`comment` AS `comment`,`s`.`ad_text` AS `ad_text`,`s`.`category` AS `category`,`s`.`banner` AS `banner`,`s`.`banner2` AS `banner2`,`s`.`banner3` AS `banner3`,`s`.`banner_m` AS `banner_m`,`s`.`banner_m2` AS `banner_m2`,`s`.`banner_m3` AS `banner_m3`,`s`.`url` AS `url`,`s`.`url_m` AS `url_m`,`s`.`url_over` AS `url_over`,`s`.`url_users` AS `url_users`,`s`.`name` AS `name`,`s`.`money` AS `money`,`s`.`ad_type` AS `ad_type`,`s`.`click_money` AS `click_money`,`s`.`continue_money` AS `continue_money`,`s`.`continue_type` AS `continue_type`,`s`.`limits` AS `limits`,`s`.`limit_type` AS `limit_type`,`s`.`money_count` AS `money_count`,`s`.`pay_count` AS `pay_count`,`s`.`click_money_count` AS `click_money_count`,`s`.`continue_money_count` AS `continue_money_count`,`s`.`span` AS `span`,`s`.`span_type` AS `span_type`,`s`.`use_cookie_interval` AS `use_cookie_interval`,`s`.`pay_span` AS `pay_span`,`s`.`pay_span_type` AS `pay_span_type`,`s`.`auto` AS `auto`,`s`.`click_auto` AS `click_auto`,`s`.`continue_auto` AS `continue_auto`,`s`.`check_type` AS `check_type`,`s`.`open` AS `open`,`s`.`open_user` AS `open_user`,`s`.`regist` AS `regist`,`c`.`name` AS `category_name`,`x`.`adware_type` AS `adware_type`,`x`.`approvable` AS `approvable`,`x`.`keyword` AS `keyword`,`x`.`results` AS `results`,`x`.`hashtag` AS `hashtag`,`x`.`denials` AS `denials`,`x`.`ngword` AS `ngword`,`x`.`note` AS `note`,`x`.`startdt` AS `startdt`,`x`.`enddt` AS `enddt`,(case when isnull(`v`.`cnt`) then 0 else `v`.`cnt` end) AS `cnt_offer` from (((`secretadwares` `s` left join `x10_adwares` `x` on((`s`.`id` = `x`.`id`))) left join `category` `c` on((`s`.`category` = `c`.`id`))) left join `v_offer_x10_by_status` `v` on(((`s`.`id` = `v`.`adware`) and (`v`.`status` = 0))))) ;
 
 -- --------------------------------------------------------
 
@@ -1501,7 +1533,16 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_offer_x10`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_offer_x10`  AS  select `x10_offer`.`adware` AS `adware`,count(0) AS `cnt`,`x10_offer`.`status` AS `status` from `x10_offer` group by `x10_offer`.`adware`,`x10_offer`.`status` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_offer_x10`  AS  select `X`.`adware` AS `adware`,`X`.`nuser` AS `nuser`,`X`.`status` AS `status`,`X`.`regist` AS `regist`,`v`.`name` AS `name`,`v`.`adware_type` AS `adware_type`,`v`.`approvable` AS `approvable` from (`x10_offer` `X` left join `v_adwares_x10` `v` on((`X`.`adware` = `v`.`id`))) ;
+
+-- --------------------------------------------------------
+
+--
+-- ビュー用の構造 `v_offer_x10_by_status`
+--
+DROP TABLE IF EXISTS `v_offer_x10_by_status`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_offer_x10_by_status`  AS  select `x10_offer`.`adware` AS `adware`,count(0) AS `cnt`,`x10_offer`.`status` AS `status` from `x10_offer` group by `x10_offer`.`adware`,`x10_offer`.`status` ;
 
 -- --------------------------------------------------------
 

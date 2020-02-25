@@ -511,7 +511,7 @@ class cls_offer
      try {
         $results = array();
          require 'dns.php';
-         $stmt = $pdo->prepare("SELECT X.*,  v.name,  v.adware_type,  v.approvable FROM `x10_offer` X LEFT JOIN v_adwares_x10 v ON X.adware = v.id WHERE X.nuser=:nuser AND X.`status`=0");
+         $stmt = $pdo->prepare("SELECT * FROM `v_offer_x10` WHERE nuser=:nuser AND `status`=0 ORDER BY regist desc");
          $stmt->bindParam(':nuser', $nuser, PDO::PARAM_STR);
          execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
@@ -536,7 +536,7 @@ class cls_offer
      try {
         $results = array();
          require 'dns.php';
-         $stmt = $pdo->prepare("SELECT X.*,  v.name,  v.adware_type,  v.approvable FROM `x10_offer` X LEFT JOIN v_adwares_x10 v ON X.adware = v.id WHERE X.nuser=:nuser AND X.`status`=2 ORDER BY regist desc LIMIT :limit");
+         $stmt = $pdo->prepare("SELECT * FROM `v_offer_x10` WHERE nuser=:nuser AND `status`=2 ORDER BY regist desc LIMIT :limit");
          $stmt->bindParam(':nuser', $nuser, PDO::PARAM_STR);
          $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
          execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -697,9 +697,9 @@ function countPay($startdt, $enddt, $nuser,$adtype)
         $results = array();
         require 'dns.php';
         if($adtype=="0"){
-            $sql = "SELECT count(*) as cnt FROM `v_pay_x10` WHERE delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc";
+            $sql = "SELECT count(*) as cnt FROM `v_pay_x10_2in1` WHERE adware_type=0 AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc";
         }else{
-            $sql = "SELECT count(*) as cnt FROM `v_click_pay_x10` WHERE delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc";
+            $sql = "SELECT count(*) as cnt FROM `v_pay_x10_2in1` WHERE adware_type=1 AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc";
         }
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
@@ -725,9 +725,9 @@ function getPayLimit($startdt, $enddt, $nuser,$adtype, $limit, $offset)
         $results = array();
         require 'dns.php';
         if($adtype=="0"){
-            $sql = "SELECT * FROM `v_pay_x10` WHERE delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc LIMIT :limit OFFSET :offset";
+            $sql = "SELECT * FROM `v_pay_x10_2in1` WHERE adware_type=0 AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc LIMIT :limit OFFSET :offset";
         }else{
-            $sql = "SELECT * FROM `v_click_pay_x10` WHERE delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc LIMIT :limit OFFSET :offset";
+            $sql = "SELECT * FROM `v_pay_x10_2in1` WHERE adware_type=1 AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc LIMIT :limit OFFSET :offset";
         }
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);

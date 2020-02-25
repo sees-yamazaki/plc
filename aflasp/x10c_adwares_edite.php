@@ -475,4 +475,4 @@ if (empty($deleteAd)) {
 </div>
 
 
-<?php include 'footer.php';
+<?php include 'x10c_footer.php';

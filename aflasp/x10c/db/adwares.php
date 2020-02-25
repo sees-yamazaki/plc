@@ -194,7 +194,48 @@ class cls_pays
     public $approvable ;
 }
 
-function countMonthlyPaysGroups($y, $m, $nUserId, $adType)
+// function countMonthlyPaysGroups($y, $m, $nUserId, $adType)
+// {
+//     try {
+//         $results = array();
+//         $startDt = strtotime($y.'-'.$m.'-01 00:00:00');
+//         $endDt   = strtotime(date('Y-m-d 23:59:59', strtotime($y.'-'.$m.' last day of this month')));
+
+//         require 'dns.php';
+//         if ($adType=="0") {
+//             $sql = "select adwares,max(name) as name, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10` WHERE owner=:owner AND regist BETWEEN :startDt AND :endDt group by adwares";
+//         } else {
+//             $sql = "select adwares,max(name) as name, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_click_pay_x10` WHERE owner=:owner AND regist BETWEEN :startDt AND :endDt group by adwares";
+//         }
+//         $stmt = $pdo -> prepare($sql);
+//         $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
+//         $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
+//         $stmt->bindParam(':endDt', $endDt, PDO::PARAM_INT);
+//         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+//         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+//             $result = new cls_pays();
+//             $result->id = $row['adwares'];
+//             $result->name = $row['name'];
+//             $result->cnt = $row['cnt'];
+//             $result->cnt0 = $row['cnt0'];
+//             $result->cnt1 = $row['cnt1'];
+//             $result->cnt2 = $row['cnt2'];
+//             $result->cst = $row['cst'];
+//             $result->cst0 = $row['cst0'];
+//             $result->cst1 = $row['cst1'];
+//             $result->cst2 = $row['cst2'];
+//             array_push($results, $result);
+//         }
+//     } catch (PDOException $e) {
+//         $errorMessage = 'DATABASE ERROR';
+//         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+//         logging("DATABASE ERROR : ".$e->getMessage());
+//         logging("ARGS : ". json_encode(func_get_args()));
+//     }
+//     return $results;
+// }
+
+function getPaysX10Monthly($y, $m, $nUserId)
 {
     try {
         $results = array();
@@ -202,11 +243,8 @@ function countMonthlyPaysGroups($y, $m, $nUserId, $adType)
         $endDt   = strtotime(date('Y-m-d 23:59:59', strtotime($y.'-'.$m.' last day of this month')));
 
         require 'dns.php';
-        if ($adType=="0") {
-            $sql = "select adwares,max(name) as name, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10` WHERE owner=:owner AND regist BETWEEN :startDt AND :endDt group by adwares";
-        } else {
-            $sql = "select adwares,max(name) as name, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_click_pay_x10` WHERE owner=:owner AND regist BETWEEN :startDt AND :endDt group by adwares";
-        }
+
+        $sql = "select adwares,max(name) as name, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2, max(startdt) as startdt, max(enddt) as enddt, max(adware_type) as adware_type, max(approvable) as approvable  from `v_pay_x10_2in1` WHERE owner=:owner AND regist BETWEEN :startDt AND :endDt group by adwares";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
         $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
@@ -216,6 +254,10 @@ function countMonthlyPaysGroups($y, $m, $nUserId, $adType)
             $result = new cls_pays();
             $result->id = $row['adwares'];
             $result->name = $row['name'];
+            $result->startdt = $row['startdt'];
+            $result->enddt = $row['enddt'];
+            $result->adware_type = $row['adware_type'];
+            $result->approvable = $row['approvable'];
             $result->cnt = $row['cnt'];
             $result->cnt0 = $row['cnt0'];
             $result->cnt1 = $row['cnt1'];
@@ -235,18 +277,13 @@ function countMonthlyPaysGroups($y, $m, $nUserId, $adType)
     return $results;
 }
 
-
-function countMonthlyPaysGroupsAll($nUserId, $adType)
+function getPaysX10($nUserId)
 {
     try {
         $results = array();
 
         require 'dns.php';
-        if ($adType=="0") {
-            $sql = "select adwares,max(name) as name, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2, max(startdt) as startdt, max(enddt) as enddt from `v_pay_x10` WHERE owner=:owner group by adwares";
-        } else {
-            $sql = "select adwares,max(name) as name, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2, max(startdt) as startdt, max(enddt) as enddt from `v_click_pay_x10` WHERE owner=:owner group by adwares";
-        }
+        $sql = "select adwares,max(name) as name, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2, max(startdt) as startdt, max(enddt) as enddt, max(adware_type) as adware_type, max(approvable) as approvable from `v_pay_x10_2in1` WHERE owner=:owner group by adwares";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -278,6 +315,48 @@ function countMonthlyPaysGroupsAll($nUserId, $adType)
 }
 
 
+// function countMonthlyPaysGroupsAll($nUserId, $adType)
+// {
+//     try {
+//         $results = array();
+
+//         require 'dns.php';
+//         if ($adType=="0") {
+//             $sql = "select adwares,max(name) as name, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2, max(startdt) as startdt, max(enddt) as enddt from `v_pay_x10` WHERE owner=:owner group by adwares";
+//         } else {
+//             $sql = "select adwares,max(name) as name, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2, max(startdt) as startdt, max(enddt) as enddt from `v_click_pay_x10` WHERE owner=:owner group by adwares";
+//         }
+//         $stmt = $pdo -> prepare($sql);
+//         $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
+//         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+//         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+//             $result = new cls_pays();
+//             $result->id = $row['adwares'];
+//             $result->name = $row['name'];
+//             $result->startdt = $row['startdt'];
+//             $result->enddt = $row['enddt'];
+//             $result->adware_type = $row['adware_type'];
+//             $result->approvable = $row['approvable'];
+//             $result->cnt = $row['cnt'];
+//             $result->cnt0 = $row['cnt0'];
+//             $result->cnt1 = $row['cnt1'];
+//             $result->cnt2 = $row['cnt2'];
+//             $result->cst = $row['cst'];
+//             $result->cst0 = $row['cst0'];
+//             $result->cst1 = $row['cst1'];
+//             $result->cst2 = $row['cst2'];
+//             array_push($results, $result);
+//         }
+//     } catch (PDOException $e) {
+//         $errorMessage = 'DATABASE ERROR';
+//         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+//         logging("DATABASE ERROR : ".$e->getMessage());
+//         logging("ARGS : ". json_encode(func_get_args()));
+//     }
+//     return $results;
+// }
+
+
 function countMonthlyPays($y, $m, $nUserId, $adType)
 {
     $result = new cls_pays();
@@ -287,9 +366,9 @@ function countMonthlyPays($y, $m, $nUserId, $adType)
 
         require 'dns.php';
         if ($adType=="0") {
-            $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10` WHERE owner=:owner AND regist BETWEEN :startDt AND :endDt";
+            $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10_2in1` WHERE adware_type=0 AND owner=:owner AND regist BETWEEN :startDt AND :endDt";
         } else {
-            $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_click_pay_x10` WHERE owner=:owner AND regist BETWEEN :startDt AND :endDt";
+            $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10_2in1` WHERE adware_type=1 AND owner=:owner AND regist BETWEEN :startDt AND :endDt";
         }
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
@@ -323,9 +402,9 @@ function countPastPays($y, $m, $nUserId, $adType)
 
         require 'dns.php';
         if ($adType=="0") {
-            $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10` WHERE owner=:owner AND regist < :startDt";
+            $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10_2in1` WHERE adware_type=0 AND owner=:owner AND regist < :startDt";
         } else {
-            $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_click_pay_x10` WHERE owner=:owner AND regist < :startDt";
+            $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10_2in1` WHERE adware_type=0 AND owner=:owner AND regist < :startDt";
         }
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);

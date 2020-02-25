@@ -18,6 +18,7 @@ $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
 
 $id = empty($_GET['id']) ? $_POST['id'] : $_GET['id'];
 
+// 自身がオファー申請中の広告を全て取得する
 $offering = getOfferingAdware($LOGIN_ID);
 $html1 = '';
 foreach($offering as $ofr ){
@@ -25,9 +26,11 @@ foreach($offering as $ofr ){
     $html1 .= '<tr><td>'.$wk.'</td><td>'.$ofr->name.'</td></tr>';
 }
 
-$pays = countMonthlyPaysGroupsAll($LOGIN_ID,0);
-$clickpays = countMonthlyPaysGroupsAll($LOGIN_ID,1);
-var_dump($clickpays);
+
+$pays = getPaysX10($LOGIN_ID);
+// $pays = countMonthlyPaysGroupsAll($LOGIN_ID,0);
+// $clickpays = countMonthlyPaysGroupsAll($LOGIN_ID,1);
+
 $today = date('Y-m-d');
 
 ?>
@@ -67,6 +70,7 @@ $today = date('Y-m-d');
             <td></td>
         </tr>
         <?php foreach($pays as $pay){ ?>
+        <?php if($pay->approvable=="1" && $pay->adware_type=="0"){ ?>
         <?php if(is_null($pay->enddt) || $pay->enddt >= $today){ ?>
         <tr>
             <td><a href='x10n_adwares_info.php?id=<?php echo $pay->id; ?>'><?php echo $pay->name; ?></a></td>
@@ -78,6 +82,7 @@ $today = date('Y-m-d');
             <td><?php echo $pay->cst2; ?>円</td>
             <td>掲載用URL表示</td>
         </tr>
+        <?php } ?>
         <?php } ?>
         <?php } ?>
     </table>
@@ -94,18 +99,20 @@ $today = date('Y-m-d');
             <td>確定報酬</td>
             <td></td>
         </tr>
-        <?php foreach($clickpays as $clkpay){ ?>
-        <?php if(is_null($clkpay->enddt) || $clkpay->enddt >= $today){ ?>
+        <?php foreach($pays as $pay){ ?>
+        <?php if($pay->approvable=="1" && $pay->adware_type=="1"){ ?>
+        <?php if(is_null($pay->enddt) || $pay->enddt >= $today){ ?>
         <tr>
-            <td><a href='x10n_adwares_info.php?id=<?php echo $clkpay->id; ?>'><?php echo $clkpay->name; ?></a></td>
-            <?php $cnt = countClicksAdwares($LOGIN_ID, $clkpay->id); ?>
+            <td><a href='x10n_adwares_info.php?id=<?php echo $pay->id; ?>'><?php echo $pay->name; ?></a></td>
+            <?php $cnt = countClicksAdwares($LOGIN_ID, $pay->id); ?>
             <td><?php echo $cnt; ?>件</td>
-            <td><?php echo $clkpay->cnt; ?>件</td>
-            <td><?php echo $clkpay->cnt2; ?>件</td>
-            <td><?php echo($clkpay->cst0 + $clkpay->cst1); ?>円</td>
-            <td><?php echo $clkpay->cst2; ?>円</td>
+            <td><?php echo $pay->cnt; ?>件</td>
+            <td><?php echo $pay->cnt2; ?>件</td>
+            <td><?php echo($pay->cst0 + $pay->cst1); ?>円</td>
+            <td><?php echo $pay->cst2; ?>円</td>
             <td>掲載用URL表示</td>
         </tr>
+        <?php } ?>
         <?php } ?>
         <?php } ?>
     </table>
@@ -127,6 +134,7 @@ $today = date('Y-m-d');
             <td></td>
         </tr>
         <?php foreach($pays as $pay){ ?>
+        <?php if($pay->approvable=="1" && $pay->adware_type=="0"){ ?>
         <?php if(!is_null($pay->enddt) && $pay->enddt < $today){ ?>
         <tr>
             <td><a href='x10n_adwares_info.php?id=<?php echo $pay->id; ?>'><?php echo $pay->name; ?></a></td>
@@ -138,6 +146,7 @@ $today = date('Y-m-d');
             <td><?php echo $pay->cst2; ?>円</td>
             <td>掲載用URL表示</td>
         </tr>
+        <?php } ?>
         <?php } ?>
         <?php } ?>
     </table>
@@ -153,17 +162,19 @@ $today = date('Y-m-d');
             <td>未確定成果</td>
             <td>確定報酬</td>
         </tr>
-        <?php foreach($clickpays as $clkpay){ ?>
-        <?php if(!is_null($clkpay->enddt) && $clkpay->enddt < $today){ ?>
+        <?php foreach($pays as $pay){ ?>
+        <?php if($pay->approvable=="1" && $pay->adware_type=="1"){ ?>
+        <?php if(!is_null($pay->enddt) && $pay->enddt < $today){ ?>
         <tr>
-            <td><a href='x10n_adwares_info.php?id=<?php echo $clkpay->id; ?>'><?php echo $clkpay->name; ?></a></td>
-            <?php $cnt = countClicksAdwares($LOGIN_ID, $clkpay->id); ?>
+            <td><a href='x10n_adwares_info.php?id=<?php echo $pay->id; ?>'><?php echo $pay->name; ?></a></td>
+            <?php $cnt = countClicksAdwares($LOGIN_ID, $pay->id); ?>
             <td><?php echo $cnt; ?>件</td>
-            <td><?php echo $clkpay->cnt; ?>件</td>
-            <td><?php echo $clkpay->cnt2; ?>件</td>
-            <td><?php echo($clkpay->cst0 + $clkpay->cst1); ?>円</td>
-            <td><?php echo $clkpay->cst2; ?>円</td>
+            <td><?php echo $pay->cnt; ?>件</td>
+            <td><?php echo $pay->cnt2; ?>件</td>
+            <td><?php echo($pay->cst0 + $pay->cst1); ?>円</td>
+            <td><?php echo $pay->cst2; ?>円</td>
         </tr>
+        <?php } ?>
         <?php } ?>
         <?php } ?>
     </table>

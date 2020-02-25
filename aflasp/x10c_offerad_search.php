@@ -18,6 +18,7 @@ $category = $_POST['category'];
 $adware_type = $_POST['adware_type'];
 $approvable = $_POST['approvable'];
 $offer = $_POST['offer'];
+$term = $_POST['term'];
 
 $offsetPage = 0;
 $limitPage = 5;
@@ -26,6 +27,7 @@ $crntPage = empty($_POST['page']) ? 1: $_POST['page'];
 $adtyped = array('','','');
 $aprved = array('','','');
 $offered = array('','');
+$termed = array('','','','');
 
 $ads = array();
 
@@ -83,6 +85,28 @@ if (isset($_POST['run'])) {
     if (!empty($tmp5)) {
         $tmp[] = "(".implode(" OR ", $tmp5).")";
     }
+
+
+    $tdy = date('Y-m-d');
+    foreach ((array)$term as $trm) {
+        if ($trm=="0") {
+            $tmp6[] = "(enddt IS NULL)";
+            $termed[0]= " checked";
+        } elseif ($trm=="1") {
+            $tmp6[] = "(startdt>'".$tdy."')";
+            $termed[1]= " checked";
+        } elseif ($trm=="2") {
+            $tmp6[] = "(startdt<='".$tdy."' AND enddt>='".$tdy."')";
+            $termed[2]= " checked";
+        } elseif ($trm=="3") {
+            $tmp6[] = "(enddt<'".$tdy."')";
+            $termed[3]= " checked";
+        }
+    }
+    if (!empty($tmp6)) {
+        $tmp[] = "(".implode(" OR ", $tmp6).")";
+    }
+
 
     if (count($tmp)>0) {
         $where .= " AND ".implode(" AND ", $tmp);
@@ -216,6 +240,16 @@ function paging(vlu) {
                                     <label><input type="checkbox" name="offer[]" value="1" <?php echo $offered[1]; ?>>あり</label>
                                 </td>
                             </tr>
+                            <tr>
+                                <th>開催期間</th>
+                                <td>
+                                    <label><input type="checkbox" name="term[]" value="0" <?php echo $termed[0]; ?>>無期限</label>
+                                    <label><input type="checkbox" name="term[]" value="1" <?php echo $termed[1]; ?>>開催前</label>
+                                    <label><input type="checkbox" name="term[]" value="2" <?php echo $termed[2]; ?>>開催中</label>
+                                    <label><input type="checkbox" name="term[]" value="3" <?php echo $termed[3]; ?>>終了</label>
+                                </td>
+                            </tr>
+
                         </tbody>
                     </table>
                     <div class="input_box">
@@ -332,6 +366,20 @@ function paging(vlu) {
                             <?php  } ?>
                         </td>
                     </tr>
+
+
+<tr>
+    <th>広告期間</th>
+    <td>
+        <?php  if (!empty($ad->enddt)) { ?>
+        <div class="ad_image"><?php echo $ad->startdt; ?> 〜 <?php echo $ad->enddt; ?>
+        </div>
+        <?php  } else { ?>
+        <div class="ad_image"><span>無期限</span></div>
+        <?php  } ?>
+    </td>
+</tr>
+
                     <tr>
                         <th>広告の説明</th>
                         <td class="adwares_info"><?php echo nl2br($ad->comment); ?>
