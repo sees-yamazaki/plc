@@ -1,7 +1,7 @@
 <?php
-
-// セッション開始
 session_start();
+
+require('custom/conf.php');
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
 $LOGIN_TYPE = $_SESSION[ $SESSION_TYPE ];

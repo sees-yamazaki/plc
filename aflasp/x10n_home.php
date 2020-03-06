@@ -63,7 +63,7 @@ $approved = getApprovedAdwareLimit($LOGIN_ID, 3);
 $html2 = '';
 foreach ($approved as $app) {
     $wk = $app->adware_type=="0" ? "[目標]" : "[クリック]";
-    $html2 .= '<tr><td>'.$wk.'</td><td>'.$app->name.'</td></tr>';
+    $html2 .= '<tr><td>'.$wk.'</td><td><a href="x10n_adwares_info.php?id='.$app->adware.'">'.$app->name.'</a></td></tr>';
 }
 if (empty($html2)) {
     $html2='＞承認済オファーはありません。';
@@ -188,11 +188,11 @@ if (empty($html2)) {
         <?php echo $html2; ?>
     </table>
 
-    <br><a href='x10n_offer_list.php'>もっと見る</a><br>
+    <br><a href='x10n_adwares_list_secret.php'>もっと見る</a><br>
 
 
     <br><br>
-    <input type="button" onclick="location.href='x10n_offer_list.php'" value="承認制オファー概要">
+    <input type="button" onclick="location.href='x10n_adwares_list_secret.php'" value="承認制オファー概要">
     <br><br>
     <input type="button" onclick="location.href='x10n_result_list.php'" value="成果情報">
     <br><br>

@@ -19,13 +19,15 @@ $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
 
 $id = empty($_GET['id']) ? $_POST['id'] : $_GET['id'];
 
-$ad = getAdware($id );
+$id_title = substr($id, 0, 1)=="A" ? 'adwares' : 's_adwares';
+
+$ad = getAdware($id);
 
 $html = '';
 
 if ($ad->adware_type=="0") {
     $html .= 'オファー詳細（目標報酬）<br>';
-}else{
+} else {
     $html .= 'オファー詳細（クリック報酬）<br>';
 }
 
@@ -37,7 +39,7 @@ $html .= 'オファー登録日　'.date('Y/m/d', $ad->regist).'<br>';
 
 if (empty($ad->startdt) && empty($ad->enddt)) {
     $html .= 'オファー期間　無期限<br>';
-}else{
+} else {
     $html .= 'オファー期間　'.$ad->startdt.'〜'.$ad->enddt.'<br>';
 }
 
@@ -47,7 +49,7 @@ $html .= ''.nl2br($ad->comment).'<br>';
 
 if ($ad->approvable=="0") {
     $html .= '[オープン制]';
-}else{
+} else {
     $html .= '[承認制]';
 }
 
@@ -56,8 +58,7 @@ $html .= '<br>';
 if ($ad->adware_type=="0") {
     $html .= '[目標報酬]<br>';
     $html .= '報酬単価<br>'.$ad->money.'円/目標達成<br>';
-
-}else{
+} else {
     $html .= '[クリック報酬]<br>';
     $html .= '報酬単価<br>'.$ad->click_money.'円/1クリック<br>';
 }
@@ -68,9 +69,33 @@ $url = getSystemUrl();
 
 $tdy = date('Y-m-d');
 
+//広告IDとユーザIDでHASHフォルダ名を決定する
+$hashID = hash('fnv132', $LOGIN_ID.$id);
+
+if (!file_exists("p/".$hashID)) {
+    mkdir("p/".$hashID, 0777);
+    
+    // ファイルを書き込みモードで開く
+    $file_handle = fopen("p/".$hashID."/index.php", "w");
+    
+    // ファイルへデータを書き込み
+    if (substr($url, -1)=='/') {
+        $url = substr($url, 0, -1);
+    }
+    $rhtml='<?php'.PHP_EOL;
+    $rhtml.='header("location: '.$url .'/link.php?id='.$LOGIN_ID.'&'.$id_title .'='.$id.'");'.PHP_EOL;
+    $rhtml.='exit();'.PHP_EOL;
+    $rhtml.='?>';
+    fwrite($file_handle, $rhtml);
+    
+    // ファイルを閉じる
+    fclose($file_handle);
+}
+
+
 if (!is_null($ad->enddt) && $ad->enddt<$tdy) {
     $html .= 'このオファーの掲載期間は終了しています。<br>';
-}elseif ($ad->approvable=="1") {
+} elseif ($ad->approvable=="1") {
     $ofr = getOfferStatus($id, $LOGIN_ID);
 
     if (is_null($ofr->status)) {
@@ -93,18 +118,20 @@ if (!is_null($ad->enddt) && $ad->enddt<$tdy) {
         if (substr($url, -1)=='/') {
             $url = substr($url, 0, -1);
         }
-        $html .= '<input type="text" value="'.$url .'/link.php?id='.$LOGIN_ID.'&s_adwares='.$id.'" readonly><br>';
+        $html .= '<input type="text" id="url" value="'.$url .'/p/'.$hashID.'" readonly><br>';
+//        $html .= '<input type="text" id="url" value="'.$url .'/link.php?id='.$LOGIN_ID.'&'.$id_title .'='.$id.'" readonly><br>';
         $html .= '<input type="button" onclick="document.getElementById(\'url\').select();document.execCommand(\'copy\');" value="URLをコピー"><br>';
     } else {
         $html .= 'what\'s status?'.$ofr->status.'<br>';
     }
     $html .= '<br>';
-}else{
+} else {
     $html .= '以下のURLを投稿しよう<br>';
     if (substr($url, -1)=='/') {
         $url = substr($url, 0, -1);
     }
-    $html .= '<input type="text" id="url" value="'.$url .'/link.php?id='.$LOGIN_ID.'&adwares='.$id.'" readonly><br>';
+    $html .= '<input type="text" id="url" value="'.$url .'/p/'.$hashID.'" readonly><br>';
+//    $html .= '<input type="text" id="url" value="'.$url .'/link.php?id='.$LOGIN_ID.'&'.$id_title .'='.$id.'" readonly><br>';
     $html .= '<input type="button" onclick="document.getElementById(\'url\').select();document.execCommand(\'copy\');" value="URLをコピー"><br>';
 }
 
@@ -112,7 +139,13 @@ $html .= '成果条件<br>'.nl2br($ad->results).'<br>';
 $html .= '否認条件<br>'.nl2br($ad->denials).'<br>';
 $html .= 'NGキーワード<br>'.nl2br($ad->ngword).'<br>';
 $html .= '備考<br>'.nl2br($ad->note).'<br>';
-$html .= 'キーワード<br>'.$ad->keyword.'<br>';
+//$html .= 'キーワード<br>'.$ad->keyword.'<br>';
+$tags = explode(' ', $ad->keyword);
+foreach ($tags as $tag) {
+    $html .= '<a href="x10n_adwares_search_tag.php?id='.$id.'&tag='.$tag.'">'.$tag.'</a> ';
+}
+$html .= '<br>';
+
 
 
 ?>

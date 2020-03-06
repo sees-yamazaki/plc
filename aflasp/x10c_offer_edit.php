@@ -112,8 +112,8 @@ if ($adware->adware_type=="1") {
                                 <td>
                                     <?php
                                     $offer = getOffer($id);
+                                    $i=0;
                                     foreach ($offer as $ofr) {
-                                        $i=0;
                                         $stts = array('','','');
                                         $stts[$ofr->status] = ' checked';
                                         echo "<input type='radio' name='stts[".$i."]' value='0:".$ofr->nuser."'".$stts[0].">承認待ち</input>　" ;

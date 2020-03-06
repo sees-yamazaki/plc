@@ -40,11 +40,14 @@ if (isset($_POST['run'])) {
     if (!empty($name)) {
         $tmp[] = " (name LIKE '%".$name."%') ";
     }
-    foreach ((array)$category as $ctgry) {
-        $tmp2[] = "category='".$ctgry."'";
-    }
-    if (!empty($tmp2)) {
-        $tmp[] = "(".implode(" OR ", $tmp2).")";
+    // foreach ((array)$category as $ctgry) {
+    //     $tmp2[] = "category='".$ctgry."'";
+    // }
+    // if (!empty($tmp2)) {
+    //     $tmp[] = "(".implode(" OR ", $tmp2).")";
+    // }
+    if (!empty($category)) {
+        $tmp[] = "(category='".$category."')";
     }
 
     foreach ((array)$adware_type as $at) {
@@ -54,24 +57,26 @@ if (isset($_POST['run'])) {
         } elseif ($at=="1") {
             $tmp3[] = "(adware_type=1)";
             $adtyped[1]= " checked";
+        } else {
+            $tmp3[] = "(adware_type=0)";
         }
     }
     if (!empty($tmp3)) {
         $tmp[] = "(".implode(" OR ", $tmp3).")";
     }
 
-    foreach ((array)$approvable as $apv) {
-        if ($apv=="0") {
-            $tmp4[] = "(approvable=0)";
-            $aprved[0]= " checked";
-        } elseif ($apv=="1") {
-            $tmp4[] = "(approvable=1)";
-            $aprved[1]= " checked";
-        }
-    }
-    if (!empty($tmp4)) {
-        $tmp[] = "(".implode(" OR ", $tmp4).")";
-    }
+    // foreach ((array)$approvable as $apv) {
+    //     if ($apv=="0") {
+    //         $tmp4[] = "(approvable=0)";
+    //         $aprved[0]= " checked";
+    //     } elseif ($apv=="1") {
+    //         $tmp4[] = "(approvable=1)";
+    //         $aprved[1]= " checked";
+    //     }
+    // }
+    // if (!empty($tmp4)) {
+    //     $tmp[] = "(".implode(" OR ", $tmp4).")";
+    // }
 
     foreach ((array)$offer as $ofr) {
         if ($ofr=="0") {
@@ -113,12 +118,20 @@ if (isset($_POST['run'])) {
     }
 }
 
+    if (is_array($approvable)) {
+        $where .=  " AND (approvable=1) ";
+        $aprved[1]= " checked";
+    } else {
+        $where .= " AND (approvable=0) ";
+    }
+
+
 //広告主ログインの場合は自広告に制限する
 if ($LOGIN_TYPE=='cUser') {
     $where .= " AND (cuser='".$LOGIN_ID."') ";
 }
 
-if(isset($_GET['ofr'])){
+if (isset($_GET['ofr'])) {
     $where .= " AND (cnt_offer>0)";
     $offered[1]= " checked";
 }
@@ -157,11 +170,12 @@ if ($crntPage==$pages || $pages==0) {
 $ads = getAdwaresLimit($where, $limitPage, $offsetPage);
 
 
-$html="";
+$html="<option value=''>選択しない</option>";
 $categories = getCategories();
 foreach ($categories as $cat) {
-    $wk = in_array($cat->id, (array)$category) ? " checked" : "";
-    $html .= "<label><input type='checkbox' name='category[]' value='".$cat->id."' ".$wk.">".$cat->name."</label>";
+    $wk = in_array($cat->id, (array)$category) ? " selected" : "";
+    $html .= "<option  value='".$cat->id."' ".$wk.">".$cat->name."</option>";
+//    $html .= "<label><input type='checkbox' name='category[]' value='".$cat->id."' ".$wk.">".$cat->name."</label>";
 }
 
 ?>
@@ -210,8 +224,10 @@ function paging(vlu) {
                             <tr>
                                 <th>承認タイプ</th>
                                 <td>
+                                <!--
                                     <label><input type="checkbox" name="approvable[]" value="0"
                                             <?php echo $aprved[0]; ?>>オープン</label>
+                                    -->
                                     <label><input type="checkbox" name="approvable[]" value="1"
                                             <?php echo $aprved[1]; ?>>承認（クローズド）</label>
                                 </td>
@@ -230,7 +246,7 @@ function paging(vlu) {
                             </tr>
                             <tr>
                                 <th>カテゴリ</th>
-                                <td><?php  echo $html; ?>
+                                <td><select  name='category'><?php  echo $html; ?></select>
                                 </td>
                             </tr>
                             <tr>

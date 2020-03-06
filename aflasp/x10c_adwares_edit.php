@@ -67,33 +67,39 @@ $adware->enddt = $_POST['enddt'];
 
 if (isset($_POST['doCheck'])) {
     $pattern = "{\A(https?|ftp)(://[-_.!~*\'()a-zA-Z0-9;/?:\@&=+\$,%#]+\z)}";
-    if(!preg_match($pattern, $adware->url)){
+    if (!preg_match($pattern, $adware->url)) {
         $errorMessage .= '<li>URL形式が間違っています</li>';
-    } 
+    }
     
-    if($adware->adware_type=="0" && !preg_match("/^[0-9]+$/", $adware->money)){
+    if ($adware->adware_type=="0" && !preg_match("/^[0-9]+$/", $adware->money)) {
         $errorMessage .= '<li>獲得単価は半角数字で入力してください。</li>';
     }
 
-    if($adware->adware_type=="1" && !preg_match("/^[0-9]+$/", $adware->click_money)){
+    if ($adware->adware_type=="1" && !preg_match("/^[0-9]+$/", $adware->click_money)) {
         $errorMessage .= '<li>クリック単価は半角数字で入力してください。</li>';
     }
 
-    if($adware->limit_type=="1" && !preg_match("/^[0-9]+$/", $adware->limits)){
+    if ($adware->limit_type=="1" && !preg_match("/^[0-9]+$/", $adware->limits)) {
         $errorMessage .= '<li>予算上限は半角数字で入力してください。</li>';
     }
 
-    if((empty($adware->startdt) && !empty($adware->enddt)) ||
-       (!empty($adware->startdt) && empty($adware->enddt))){
+    if ((empty($adware->startdt) && !empty($adware->enddt)) ||
+       (!empty($adware->startdt) && empty($adware->enddt))) {
         $errorMessage .= '<li>開始日と終了日は両方入力してください。</li>';
     }
 
-    if(!preg_match("/^[0-9]+$/", $adware->span)){
+    if (!preg_match("/^[0-9]+$/", $adware->span)) {
         $errorMessage .= '<li>クリック間隔は半角数字で入力してください。</li>';
     }
 
-    if(!preg_match("/^[0-9]+$/", $adware->pay_span)){
+    if (!preg_match("/^[0-9]+$/", $adware->pay_span)) {
         $errorMessage .= '<li>報酬成果間隔は半角数字で入力してください。</li>';
+    }
+    $tags = explode(" ", $adware->keyword);
+    foreach ($tags as $tag) {
+        if (mb_strlen($tag)>20) {
+            $errorMessage .= '<li>キーワードは１単語２０文字以内で入力してください。:'.$tag.'</li>';
+        }
     }
 
     //画像処理
@@ -297,27 +303,94 @@ if ($adware->adware_type=="1") {
     $cls_click_money = "";
 }
 
-
+$results_0 = '成果条件(目標)のサジェスト１'.PHP_EOL.'成果条件(目標)のサジェスト２'.PHP_EOL;
+$results_1 = '成果条件(クリック)のサジェスト１\n成果条件(クリック)のサジェスト２\n';
+if (empty($id)) {
+    $adware->results = $results_0;
+}
 
 ?>
 <script type="text/javascript">
 function typeChange() {
+
     radio = document.getElementsByName('adware_type')
     if (radio[0].checked) {
         document.getElementById('money').readOnly = false;
         document.getElementById('money').style.backgroundColor = "white";
         document.getElementById('click_money').readOnly = true;
         document.getElementById('click_money').style.backgroundColor = "#9fa0a0";
+        sgstChange('results',0);
     } else if (radio[1].checked) {
         document.getElementById('money').readOnly = true;
         document.getElementById('money').style.backgroundColor = "#9fa0a0";
         document.getElementById('click_money').readOnly = false;
         document.getElementById('click_money').style.backgroundColor = "white";
+        sgstChange('results',1);
     }
 }
+function sgstChange(tgt, type){
+    document.getElementById('results').setAttribute('list', 'resultsLst2');
+    if (tgt=='results') {
+        if (type==0) {
+            document.getElementById('results').setAttribute('list', 'resultsLst0');
+        }else{
+            document.getElementById('results').setAttribute('list', 'resultsLst1');
+        }
+    }else{
+    }
+    suggest_txt = document.getElementById(tgt).value;
+    document.getElementById(tgt).value = add_word + suggest_txt;
+    suggest_txt = document.getElementById(tgt).value;
+    document.getElementById(tgt).value = suggest_txt.replace(rem_word,'');
+}
+
+
 
 window.onload = entryChange1;
 </script>
+<script async type="text/javascript" src="/wp-content/themes/webllica/base.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
+<script type="text/javascript">
+jQuery(function($) {
+  var wordlist = [
+    "あいうえお",
+    "かきくけこ",
+    "さしすせそ",
+    "たちつてと",
+    "なにぬねの",
+    "はひふへほ",
+    "まみむめも",
+    "やゆよ",
+    "らりるれろ",
+    "わをん",
+    "あかさたなはまやらわ",
+    "いきしちにひみり",
+    "うくすつぬふむゆる",
+    "えけせてねへめれ",
+    "おこそとのほもよろを",
+    "ん",
+    "abcdefg",
+    "hijklmnop",
+    "qrstuv",
+    "wxyz",
+    "abc",
+    "def",
+    "ghi",
+    "jkl",
+    "mno",
+    "pqr",
+    "stu",
+    "vwx",
+    "yz",
+    "漢字１",
+    "漢字２",
+    "漢字３"
+  ];
+  $( "#results" ).autocomplete({
+    source: wordlist
+  });
+});</script> 
 <style>
 .inactive {
     background-color: #9fa0a0;
@@ -328,7 +401,7 @@ window.onload = entryChange1;
 
     <div class="topics">HOME &gt; 広告の編集 &gt; <span>入力フォーム</span> &gt; 入力内容の確認 &gt; 登録完了</div>
 
-    <?php if(!empty($errorMessage)){ ?>
+    <?php if (!empty($errorMessage)) { ?>
     <div class="error_list">
         <dl>
             <dt>ERROR - [ 登録エラー ] もう一度、入力した内容を確認してください。</dt>
@@ -587,15 +660,26 @@ window.onload = entryChange1;
                                 </td>
                             </tr>
                             <tr>
-                                <th>キーワード、タグ</th>
+                                <th>キーワード、タグ<br><br>(区切りは半角スペース)</th>
                                 <td><textarea name="keyword" cols="" rows=""
                                         class="textarea"><?php echo $adware->keyword; ?></textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <th>成果条件</th>
-                                <td><textarea name="results" cols="" rows=""
-                                        class="textarea"><?php echo $adware->results; ?></textarea>
+                                <td><!-- <textarea id="results" name="results" cols="" rows=""
+                                        class="textarea"><?php echo $adware->results; ?></textarea>-->
+                                    <input type="text" id="results" name="results" list="resultsLst0" size="50">
+                                    <datalist id="resultsLst0">
+                                    <option value="Mokuhyo1"></option>
+                                    <option value="Mokuhyo2"></option>
+                                    <option value="Mokuhyo3"></option>
+                                    </datalist>
+                                    <datalist id="resultsLst1">
+                                    <option value="Click1"></option>
+                                    <option value="Click2"></option>
+                                    <option value="Click3"></option>
+                                    </datalist>
                                 </td>
                             </tr>
                             <tr>
@@ -632,11 +716,11 @@ window.onload = entryChange1;
                                 <td><input type="date" name="enddt" value="<?php echo $adware->enddt; ?>">
                                 </td>
                             </tr>
-                            <?php if(!empty($id) && $adware->approvable=="1"){ ?>
+                            <?php if (!empty($id) && $adware->approvable=="1") { ?>
                             <tr>
                                 <th><a href='x10c_offer_edit.php?pid=ad&id=<?php echo $id; ?>'>対象ユーザー</a></th>
                                 <td>
-                                    <?php foreach($offer as $ofr){ ?>
+                                    <?php foreach ($offer as $ofr) { ?>
                                     <?php echo $ofr->nuser; ?><br>
                                     <?php } ?>
                                 </td>

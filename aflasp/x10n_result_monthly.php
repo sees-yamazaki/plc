@@ -94,7 +94,7 @@ $mHtml.='</select>';
             <td>非認証</td>
         </tr>
         <?php foreach($pays as $p){ ?>
-        <?php if($p->approvable==$adtype){ ?>
+        <?php if($p->adware_type==$adtype){ ?>
         <tr>
             <td><a href='x10n_adwares_info.php?id=<?php echo $p->id; ?>'><?php echo $p->name; ?></a></td>
             <?php $cnt = countMonthlyClicksAdwares($thisY, $thisM, $LOGIN_ID, $p->id); ?>
