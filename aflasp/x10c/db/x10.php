@@ -71,6 +71,7 @@ class cls_x10adwares
     public $note ;
     public $startdt ;
     public $enddt ;
+    public $cuser ;
 }
 
 function countAdwares($where)
@@ -78,7 +79,7 @@ function countAdwares($where)
     try {
         $result = 0;
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `v_adwares_x10` WHERE delete_key=0 AND `open`=1 ".$where);
+        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `v_adwares_status` WHERE delete_key=0  ".$where);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result = $row['cnt'];
@@ -96,7 +97,7 @@ function getAdwaresLimit($where, $limit, $offset)
     try {
         $results = array();
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT * FROM `v_adwares_x10` WHERE delete_key=0 AND `open`=1 ".$where." ORDER BY regist desc LIMIT :limit OFFSET :offset");
+        $stmt = $pdo->prepare("SELECT * FROM `v_adwares_status` WHERE delete_key=0  ".$where." ORDER BY regist desc LIMIT :limit OFFSET :offset");
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -313,6 +314,61 @@ function getAdware($id)
     return $result;
 }
 
+function getAdwareStatus($id)
+{
+    $stts = 0;
+
+    $ad = getAdware($id);
+    $alrt = $ad->limits * 0.7;
+
+    $tdy = date('Y-m-d');
+    $nextWeekYMD = date('Y-m-d', strtotime('next week'));
+
+    require 'dns.php';
+    $stmt = $pdo->prepare("SELECT SUM(cost) as cost FROM `v_pay_x10` WHERE adwares=:adwares and state=2 GROUP BY adwares");
+    $stmt->bindParam(':adwares', $id, PDO::PARAM_STR);
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+    $rslt = $stmt->fetch(PDO::FETCH_ASSOC);
+    $pay =  $rslt['cost'];
+
+    if (!empty($ad->enddt)) {
+        if ($ad->enddt<$tdy) {
+            //期間終了
+            $stts = 20;
+        } elseif ($ad->enddt<$$nextWeekYMD) {
+            //期限注意
+            $stts = 10;
+        }
+    }
+    if (is_null($ad->limits) || $ad->limits=="0") {
+        $stts += 0;
+    }elseif ($ad->limits<$pay) {
+        //期間終了
+        $stts += 2;
+    } elseif ($alrt<$pay) {
+        //期限注意
+        $stts += 1;
+    }
+
+    return $stts;
+}
+
+function isAdwareFinish($stts){
+    $rtn=0;
+    switch ($stts) {
+        case 22:
+        case 21:
+        case 20:
+        case 12:
+        case 2:
+        $rtn = 1;
+    }
+    return $rtn;
+}
+
+
+
+
 function insertX10Adware($secretadwares)
 {
     try {
@@ -364,8 +420,16 @@ function updateX10Adware($secretadwares)
         $stmt->bindParam(':denials', $secretadwares->denials, PDO::PARAM_STR);
         $stmt->bindParam(':ngword', $secretadwares->ngword, PDO::PARAM_STR);
         $stmt->bindParam(':note', $secretadwares->note, PDO::PARAM_STR);
-        $stmt->bindParam(':startdt', $secretadwares->startdt, PDO::PARAM_STR);
-        $stmt->bindParam(':enddt', $secretadwares->enddt, PDO::PARAM_STR);
+        if ($secretadwares->startdt=='') {
+            $stmt->bindValue(':startdt', null, PDO::PARAM_NULL);
+        } else {
+            $stmt->bindParam(':startdt', $secretadwares->startdt, PDO::PARAM_STR);
+        }
+        if ($secretadwares->enddt=='') {
+            $stmt->bindValue(':enddt', null, PDO::PARAM_NULL);
+        } else {
+            $stmt->bindParam(':enddt', $secretadwares->enddt, PDO::PARAM_STR);
+        }
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
     } catch (PDOException $e) {
         $errorMessage = 'DATABASE ERROR';
@@ -430,7 +494,7 @@ function doLogin($m_mail, $m_pw)
         $pw2 = 'AES_OK:'.openssl_encrypt($pw1, 'aes-256-ecb', base64_encode('AES'));
 
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT * FROM `nuser` WHERE mail=:m_mail and pass=:m_pw and delete_key=0");
+        $stmt = $pdo->prepare("SELECT * FROM `nuser` WHERE mail=:m_mail and pass=:m_pw and delete_key=0 and activate=4");
         $stmt->bindParam(':m_mail', $m_mail, PDO::PARAM_STR);
         $stmt->bindParam(':m_pw', $pw2, PDO::PARAM_STR);
         $stmt->execute();
@@ -477,19 +541,19 @@ class cls_offer
  function getOffer($adware)
  {
      try {
-        $results = array();
+         $results = array();
          require 'dns.php';
          $stmt = $pdo->prepare("SELECT * FROM `x10_offer` WHERE adware=:adware ORDER BY `status`,`regist`");
          $stmt->bindParam(':adware', $adware, PDO::PARAM_STR);
          execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
          while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $result = new cls_offer();
-            $result->adware = $row['adware'];
-            $result->nuser = $row['nuser'];
-            $result->status = $row['status'];
-            $result->regist = $row['regist'];
-            array_push($results, $result);
+             $result = new cls_offer();
+             $result->adware = $row['adware'];
+             $result->nuser = $row['nuser'];
+             $result->status = $row['status'];
+             $result->regist = $row['regist'];
+             array_push($results, $result);
          }
      } catch (PDOException $e) {
          //
@@ -501,40 +565,60 @@ class cls_offer
  {
      public $adware ;
      public $nuser ;
+     public $cuser ;
      public $status ;
      public $regist ;
      public $adware_type ;
      public $approvable ;
  }
+
  function getOfferingAdware($nuser)
  {
      try {
-        $results = array();
+         $results = array();
          require 'dns.php';
          $stmt = $pdo->prepare("SELECT * FROM `v_offer_x10` WHERE nuser=:nuser AND `status`=0 ORDER BY regist desc");
          $stmt->bindParam(':nuser', $nuser, PDO::PARAM_STR);
          execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
          while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $result = new cls_offering();
-            $result->adware = $row['adware'];
-            $result->nuser = $row['nuser'];
-            $result->status = $row['status'];
-            $result->regist = $row['regist'];
-            $result->name = $row['name'];
-            $result->adware_type = $row['adware_type'];
-            $result->approvable = $row['approvable'];
-            array_push($results, $result);
+             $result = new cls_offering();
+             $result->adware = $row['adware'];
+             $result->nuser = $row['nuser'];
+             $result->status = $row['status'];
+             $result->regist = $row['regist'];
+             $result->name = $row['name'];
+             $result->adware_type = $row['adware_type'];
+             $result->approvable = $row['approvable'];
+             array_push($results, $result);
          }
      } catch (PDOException $e) {
          //
      }
      return $results;
  }
+
+ function countOfferingAdware($cuser)
+ {
+     try {
+         $cnt = 0;
+         require 'dns.php';
+         $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `v_offer_x10` WHERE cuser=:cuser AND `status`=0 ORDER BY regist desc");
+         $stmt->bindParam(':cuser', $cuser, PDO::PARAM_STR);
+         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+             $cnt = $row['cnt'];
+         }
+     } catch (PDOException $e) {
+         //
+     }
+     return $cnt;
+ }
  function getApprovedAdwareLimit($nuser, $limit)
  {
      try {
-        $results = array();
+         $results = array();
          require 'dns.php';
          $stmt = $pdo->prepare("SELECT * FROM `v_offer_x10` WHERE nuser=:nuser AND `status`=2 ORDER BY regist desc LIMIT :limit");
          $stmt->bindParam(':nuser', $nuser, PDO::PARAM_STR);
@@ -542,15 +626,15 @@ class cls_offer
          execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
          while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $result = new cls_offering();
-            $result->adware = $row['adware'];
-            $result->nuser = $row['nuser'];
-            $result->status = $row['status'];
-            $result->regist = $row['regist'];
-            $result->name = $row['name'];
-            $result->adware_type = $row['adware_type'];
-            $result->approvable = $row['approvable'];
-            array_push($results, $result);
+             $result = new cls_offering();
+             $result->adware = $row['adware'];
+             $result->nuser = $row['nuser'];
+             $result->status = $row['status'];
+             $result->regist = $row['regist'];
+             $result->name = $row['name'];
+             $result->adware_type = $row['adware_type'];
+             $result->approvable = $row['approvable'];
+             array_push($results, $result);
          }
      } catch (PDOException $e) {
          //
@@ -578,7 +662,7 @@ function insertX10Offer($ofr)
     }
 }
 
-function updateX10Offer($adware,$nuser,$status)
+function updateX10Offer($adware, $nuser, $status)
 {
     try {
         require 'dns.php';
@@ -665,7 +749,7 @@ function getAccessLimit($startdt, $enddt, $nuser, $limit, $offset)
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result = new cls_access();
-            $result->adware = $row['adware'];
+            $result->adware = $row['adwares'];
             $result->owner = $row['owner'];
             $result->name = $row['name'];
             $result->regist = $row['regist'];
@@ -687,7 +771,7 @@ class cls_pay
     public $regist ;
 }
 
-function countPay($startdt, $enddt, $nuser,$adtype)
+function countPay($startdt, $enddt, $nuser, $adtype)
 {
     try {
         $cnt=0;
@@ -696,10 +780,10 @@ function countPay($startdt, $enddt, $nuser,$adtype)
 
         $results = array();
         require 'dns.php';
-        if($adtype=="0"){
-            $sql = "SELECT count(*) as cnt FROM `v_pay_x10_2in1` WHERE adware_type=0 AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc";
-        }else{
-            $sql = "SELECT count(*) as cnt FROM `v_pay_x10_2in1` WHERE adware_type=1 AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc";
+        if ($adtype=="0") {
+            $sql = "SELECT count(*) as cnt FROM `v_pay_x10` WHERE adware_type=0 AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc";
+        } else {
+            $sql = "SELECT count(*) as cnt FROM `v_pay_x10` WHERE adware_type=1 AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc";
         }
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
@@ -715,7 +799,7 @@ function countPay($startdt, $enddt, $nuser,$adtype)
     return $cnt;
 }
 
-function getPayLimit($startdt, $enddt, $nuser,$adtype, $limit, $offset)
+function getPayLimit($startdt, $enddt, $nuser, $adtype, $limit, $offset)
 {
     try {
         $results = array();
@@ -724,10 +808,10 @@ function getPayLimit($startdt, $enddt, $nuser,$adtype, $limit, $offset)
 
         $results = array();
         require 'dns.php';
-        if($adtype=="0"){
-            $sql = "SELECT * FROM `v_pay_x10_2in1` WHERE adware_type=0 AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc LIMIT :limit OFFSET :offset";
-        }else{
-            $sql = "SELECT * FROM `v_pay_x10_2in1` WHERE adware_type=1 AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc LIMIT :limit OFFSET :offset";
+        if ($adtype=="0") {
+            $sql = "SELECT * FROM `v_pay_x10` WHERE adware_type=0 AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc LIMIT :limit OFFSET :offset";
+        } else {
+            $sql = "SELECT * FROM `v_pay_x10` WHERE adware_type=1 AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc LIMIT :limit OFFSET :offset";
         }
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
@@ -743,6 +827,33 @@ function getPayLimit($startdt, $enddt, $nuser,$adtype, $limit, $offset)
             $result->state = $row['state'];
             $result->cost = $row['cost'];
             $result->regist = $row['regist'];
+            array_push($results, $result);
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $results;
+}
+
+class cls_keyword
+{
+    public $adware_type ;
+    public $keyword ;
+}
+
+function getKeywords()
+{
+    try {
+        $results = array();
+        require 'dns.php';
+
+        $sql = "SELECT * FROM `x10_keyword` ORDER BY `keyword`";
+        $stmt = $pdo->prepare($sql);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_keyword();
+            $result->adware_type = $row['adware_type'];
+            $result->keyword = $row['keyword'];
             array_push($results, $result);
         }
     } catch (PDOException $e) {

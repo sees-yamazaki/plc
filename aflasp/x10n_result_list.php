@@ -8,6 +8,9 @@ include 'x10c/db/x10.php';
 // セッション再開
 session_start();
 
+$LOGIN_ID = $_SESSION[ $SESSION_NAME ];
+if(empty($LOGIN_ID)){ header('Location: x10n_logoff.php'); }
+
 //Timezone
 date_default_timezone_set('Asia/Tokyo');
 
@@ -195,7 +198,10 @@ $accss = getAccessLimit($startdt, $enddt, $LOGIN_ID, $limitPage, $offsetPage);
         <tr>
             <td><?php echo date('Y-m-d H:i:s', $acs->regist); ?>
             </td>
-            <td><?php echo $acs->name; ?>
+            <?php $stts = isAdwareFinish(getAdwareStatus($acs->adware));?>
+            <?php $wk =  $stts =="0" ? "": "[終了]"; ?>
+            <td><a href='x10n_adwares_info.php#url?id=<?php echo $acs->adware; ?>'>
+            <?php echo $wk.$acs->name ; ?></a>
             </td>
         </tr>
         <?php } ?>

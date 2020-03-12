@@ -17,6 +17,8 @@ $errorMessage = '';
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
 
+if(empty($LOGIN_ID)){ header('Location: x10n_logoff.php'); }
+
 $id = empty($_GET['id']) ? $_POST['id'] : $_GET['id'];
 
 $id_title = substr($id, 0, 1)=="A" ? 'adwares' : 's_adwares';
@@ -45,6 +47,32 @@ if (empty($ad->startdt) && empty($ad->enddt)) {
 
 $html .= '<h1>'.$ad->name.'</h1><br>';
 
+$stts = getAdwareStatus($id);
+
+switch ($stts) {
+    case 22:
+    case 21:
+    case 20:
+    case 12:
+    case 2:
+    $html .= '<h3>ここのオファーは終了しています。</h3>このオファーは終了しておりますので成果は計測されません<br>';
+    break;
+    case 11:
+    case 10:
+    $html .= '<h3>このオファーは期間終了が近づいています。</h3>期間終了後は成果が発生しませんのでご注意下さい<br>';
+    break;
+    case 11:
+    case 1:
+    $html .= '<h3>このオファーは予算上限が近づいています。</h3>予算上限到達後は成果が発生しませんのでご注意下さい<br>';
+    break;
+}
+
+
+
+
+
+
+
 $html .= ''.nl2br($ad->comment).'<br>';
 
 if ($ad->approvable=="0") {
@@ -65,9 +93,9 @@ if ($ad->adware_type=="0") {
 
 $html .= '<br>';
 
-$url = getSystemUrl();
+$sys = getSystem();
+$url = $sys->home;
 
-$tdy = date('Y-m-d');
 
 //広告IDとユーザIDでHASHフォルダ名を決定する
 $hashID = hash('fnv132', $LOGIN_ID.$id);

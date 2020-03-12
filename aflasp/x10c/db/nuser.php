@@ -231,7 +231,7 @@ function insertNuser($nuser)
         logging("DATABASE ERROR : ".$e->getMessage());
         logging("ARGS : ". json_encode(func_get_args()));
     }
-    return $insertid;
+    return $nuser->id;
 }
 
 function updateNuserB($nuser)

@@ -8,6 +8,9 @@ include 'x10c/db/x10.php';
 // セッション再開
 session_start();
 
+$LOGIN_ID = $_SESSION[ $SESSION_NAME ];
+if(empty($LOGIN_ID)){ header('Location: x10n_logoff.php'); }
+
 //Timezone
 date_default_timezone_set('Asia/Tokyo');
 
@@ -16,7 +19,6 @@ $errorMessage = '';
 
 $adtype =  isset($_GET['adtype']) ? $_GET['adtype'] : $_POST['adtype'] ;
 
-$LOGIN_ID = $_SESSION[ $SESSION_NAME ];
 $thisY = empty($_POST['thisY']) ? date('Y') : $_POST['thisY'];
 $thisM = empty($_POST['thisM']) ? date('m') : $_POST['thisM'];
 //$cnt_click = countMonthlyClicks($thisY, $thisM, $LOGIN_ID, $adtype);
@@ -96,7 +98,9 @@ $mHtml.='</select>';
         <?php foreach($pays as $p){ ?>
         <?php if($p->adware_type==$adtype){ ?>
         <tr>
-            <td><a href='x10n_adwares_info.php?id=<?php echo $p->id; ?>'><?php echo $p->name; ?></a></td>
+            <?php $stts = isAdwareFinish(getAdwareStatus($p->id));?>
+            <?php $wk =  $stts =="0" ? "": "[終了]"; ?>
+            <td><a href='x10n_adwares_info.php?id=<?php echo $p->id; ?>'><?php echo $wk.$p->name; ?></a></td>
             <?php $cnt = countMonthlyClicksAdwares($thisY, $thisM, $LOGIN_ID, $p->id); ?>
             <td><?php echo $cnt; ?>件</td>
             <td><?php echo $p->cnt; ?>件</td>

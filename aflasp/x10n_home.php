@@ -15,6 +15,7 @@ date_default_timezone_set('Asia/Tokyo');
 $errorMessage = '';
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
+if(empty($LOGIN_ID)){ header('Location: x10n_logoff.php'); }
 $thisY = date('Y');
 $thisM = date('m');
 // 指定月の目標設定広告のデータを取得

@@ -5,6 +5,7 @@ include 'custom/conf.php';
 include 'x10c_logging.php';
 include 'x10c_helper.php';
 include 'x10c/db/x10.php';
+include 'x10c/db/nuser.php';
 include 'x10c/db/adwares.php';
 //include 'x10c/db/dns.php';
 //require('custom/conf.php');
@@ -53,7 +54,6 @@ if ($adware->adware_type=="1") {
 
 
 ?>
-
 <div id="inc_side_body">
 
     <div class="topics">HOME &gt; 広告の編集 &gt; <span>対象ユーザー</span> &gt; 登録完了</div>
@@ -119,7 +119,29 @@ if ($adware->adware_type=="1") {
                                         echo "<input type='radio' name='stts[".$i."]' value='0:".$ofr->nuser."'".$stts[0].">承認待ち</input>　" ;
                                         echo "<input type='radio' name='stts[".$i."]' value='1:".$ofr->nuser."'".$stts[1].">否認</input>　" ;
                                         echo "<input type='radio' name='stts[".$i."]' value='2:".$ofr->nuser."'".$stts[2].">承認</input>　" ;
-                                        echo "　　<a href='x10c_nuser_info.php?nuser=".$ofr->nuser."&id=".$id."'>".$ofr->nuser."</a><br>" ;
+
+
+                                        $user = getNuser($ofr->nuser);
+
+                                        $txt = '';
+                                        $sns = getNuserX10($ofr->nuser);
+                                        if(!empty($sns->instagram)){
+                                            $txt .= '[instagram]'.$sns->instagram."<br>";
+                                        }
+                                        if(!empty($sns->facebook)){
+                                            $txt .= '[facebook]'.$sns->facebook."<br>";
+                                        }
+                                        if(!empty($sns->twitter)){
+                                            $txt .= '[twitter]'.$sns->twitter."<br>";
+                                        }
+                                        if(!empty($sns->youtube)){
+                                            $txt .= '[youtube]'.$sns->youtube."<br>";
+                                        }
+                                        if(empty($txt)){
+                                            $txt .= 'SNSアカウントは設定されていません';
+                                        }
+                                        $txt = "<span class='cp_tooltiptext'>".$user->name."<br>".$txt."</span>";
+                                        echo "　　<div class='cp_tooltip'>".$ofr->nuser.$txt ."</div><br>" ;
                                         $i++;
                                     }
 

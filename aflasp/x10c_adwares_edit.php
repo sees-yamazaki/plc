@@ -56,7 +56,11 @@ $adware->open = $_POST['open'];
 //$adware->regist = $_POST['regist'];
 $adware->adware_type = $_POST['adware_type'];
 $adware->approvable = $_POST['approvable'];
-$adware->keyword = $_POST['keyword'];
+if(is_array($_POST['keyword'])){
+    $adware->keyword = implode(' ',$_POST['keyword']);
+}else{
+    $adware->keyword = $_POST['keyword'];
+}
 $adware->results = $_POST['results'];
 $adware->hashtag = $_POST['hashtag'];
 $adware->denials = $_POST['denials'];
@@ -193,10 +197,11 @@ if (isset($_POST['doCheck'])) {
     $adware= getAdware($id);
 }
 
+$kword = explode(' ',$adware->keyword);
 
 $offer = getOffer($id);
 
-
+$keywords = getKeywords();
 
 $catHtml="";
 $categories = getCategories();
@@ -298,51 +303,75 @@ if ($adware->approvable=="1") {
 
 $cls_money = "";
 $cls_click_money = " class='inactive' readonly";
+$cls_radio_c = " disabled";
+$cls_radio_c_row = " class='inactive'";
+$cls_radio_a = "";
+$cls_radio_a_row = "";
 if ($adware->adware_type=="1") {
     $cls_money = " class='inactive' readonly";
     $cls_click_money = "";
+    $cls_radio_c = "";
+    $cls_radio_c_row = "";
+    $cls_radio_a = " disabled";
+    $cls_radio_a_row = " class='inactive'";
 }
 
-$results_0 = '成果条件(目標)のサジェスト１'.PHP_EOL.'成果条件(目標)のサジェスト２'.PHP_EOL;
-$results_1 = '成果条件(クリック)のサジェスト１\n成果条件(クリック)のサジェスト２\n';
-if (empty($id)) {
-    $adware->results = $results_0;
-}
+// $results_0 = '成果条件(目標)のサジェスト１'.PHP_EOL.'成果条件(目標)のサジェスト２'.PHP_EOL;
+// $results_1 = '成果条件(クリック)のサジェスト１\n成果条件(クリック)のサジェスト２\n';
+// if (empty($id)) {
+//     $adware->results = $results_0;
+// }
 
 ?>
 <script type="text/javascript">
 function typeChange() {
 
-    radio = document.getElementsByName('adware_type')
+    radio = document.getElementsByName('adware_type');
+    radio_click = document.getElementsByName('click_auto');
+    radio_auto = document.getElementsByName('auto');
     if (radio[0].checked) {
         document.getElementById('money').readOnly = false;
         document.getElementById('money').style.backgroundColor = "white";
         document.getElementById('click_money').readOnly = true;
         document.getElementById('click_money').style.backgroundColor = "#9fa0a0";
-        sgstChange('results',0);
+        radio_click[0].checked = true;
+        radio_click[1].disabled = true;
+        document.getElementById('a_row').style.backgroundColor = "white";
+        radio_auto[0].checked = true;
+        radio_auto[1].disabled = false;
+        document.getElementById('c_row').style.backgroundColor = "#9fa0a0";
+//        sgstChange('results',0);
+
     } else if (radio[1].checked) {
         document.getElementById('money').readOnly = true;
         document.getElementById('money').style.backgroundColor = "#9fa0a0";
         document.getElementById('click_money').readOnly = false;
         document.getElementById('click_money').style.backgroundColor = "white";
-        sgstChange('results',1);
+        radio_click[0].checked = true;
+        radio_click[1].disabled = false;
+        document.getElementById('a_row').style.backgroundColor = "#9fa0a0";
+        radio_auto[0].checked = true;
+        radio_auto[1].disabled = true;
+        document.getElementById('c_row').style.backgroundColor = "white";
+//        sgstChange('results',1);
+
     }
 }
-function sgstChange(tgt, type){
-    document.getElementById('results').setAttribute('list', 'resultsLst2');
-    if (tgt=='results') {
-        if (type==0) {
-            document.getElementById('results').setAttribute('list', 'resultsLst0');
-        }else{
-            document.getElementById('results').setAttribute('list', 'resultsLst1');
-        }
-    }else{
-    }
-    suggest_txt = document.getElementById(tgt).value;
-    document.getElementById(tgt).value = add_word + suggest_txt;
-    suggest_txt = document.getElementById(tgt).value;
-    document.getElementById(tgt).value = suggest_txt.replace(rem_word,'');
-}
+// function sgstChange(tgt, type){
+//     document.getElementById('results').setAttribute('list', 'resultsLst2');
+//     if (tgt=='results') {
+//         if (type==0) {
+//             document.getElementById('results').setAttribute('list', 'resultsLst0');
+//         }else{
+//             document.getElementById('results').setAttribute('list', 'resultsLst1');
+//         }
+//     }else{
+//     }
+//     suggest_txt = document.getElementById(tgt).value;
+//     document.getElementById(tgt).value = add_word + suggest_txt;
+//     suggest_txt = document.getElementById(tgt).value;
+//     document.getElementById(tgt).value = suggest_txt.replace(rem_word,'');
+// }
 
 
 
@@ -354,43 +383,52 @@ window.onload = entryChange1;
 <script type="text/javascript">
 jQuery(function($) {
   var wordlist = [
-    "あいうえお",
-    "かきくけこ",
-    "さしすせそ",
-    "たちつてと",
-    "なにぬねの",
-    "はひふへほ",
-    "まみむめも",
-    "やゆよ",
-    "らりるれろ",
-    "わをん",
-    "あかさたなはまやらわ",
-    "いきしちにひみり",
-    "うくすつぬふむゆる",
-    "えけせてねへめれ",
-    "おこそとのほもよろを",
-    "ん",
-    "abcdefg",
-    "hijklmnop",
-    "qrstuv",
-    "wxyz",
-    "abc",
-    "def",
-    "ghi",
-    "jkl",
-    "mno",
-    "pqr",
-    "stu",
-    "vwx",
-    "yz",
-    "漢字１",
-    "漢字２",
-    "漢字３"
+<?php 
+foreach ($keywords as $word) {
+    if ($word->adware_type=="0") {
+        echo '"'.$word->keyword.'",';
+    }
+} 
+?>
+    ""
   ];
-  $( "#results" ).autocomplete({
+  var wordlist2 = [
+    <?php 
+foreach ($keywords as $word) {
+    if ($word->adware_type=="1") {
+        echo '"'.$word->keyword.'",';
+    }
+} 
+?>
+    ""
+  ];
+  $('input[name="adware_type"]').change(function() {
+    if($(this).val()==0){
+        $( 'input[name="keyword[]"]' ).autocomplete({
+            source: wordlist
+        });
+    }else{
+        $( 'input[name="keyword[]"]' ).autocomplete({
+            source: wordlist2
+        });
+    }
+  });
+  $( 'input[name="keyword[]"]' ).autocomplete({
     source: wordlist
   });
 });</script> 
+<script type="text/javascript">
+$(function(){
+    $('#comment').bind('keydown keyup keypress change',function(){
+        var thisValueLength = $(this).val().length;
+        $('.count1').html(thisValueLength);
+    });
+    $('#ad_text').bind('keydown keyup keypress change',function(){
+        var thisValueLength = $(this).val().length;
+        $('.count2').html(thisValueLength);
+    });
+});
+</script>
 <style>
 .inactive {
     background-color: #9fa0a0;
@@ -443,6 +481,7 @@ jQuery(function($) {
                                             <?php echo $approvable_0; ?>>オープン</label>
                                     <label><input type="radio" name="approvable" value="1"
                                             <?php echo $approvable_1; ?>>承認</label>
+                                            　　<div class='cp_tooltip'>？<span class='cp_tooltiptext'>オープンは誰でも参加できる項目で、承認は広告主がユーザーのステータスを見て参加承認ができる広告になります。</span><div>
                                     <?php } else { ?>
                                     <?php echo $txt_approvable; ?>
                                     <input type="hidden" name="approvable" value="<?php echo $adware->approvable; ?>">
@@ -450,9 +489,9 @@ jQuery(function($) {
                                 </td>
                             </tr>
                             <tr>
-                                <th>成果表示名<span>※</span></th>
+                                <th>広告名<span>※</span></th>
                                 <td><input type="text" name="name" value="<?php echo $adware->name; ?>" size="50"
-                                        maxlength="128" required>
+                                        maxlength="50" required>
                                 </td>
                             </tr>
                             <tr>
@@ -466,14 +505,16 @@ jQuery(function($) {
                             </tr>
                             <tr>
                                 <th>広告説明文<span>※</span></th>
-                                <td><textarea name="comment" cols="" rows="" class="textarea"
-                                        required><?php echo $adware->comment; ?></textarea>
+                                <td><span class="count1">0</span><br>
+                                <textarea name="comment" id="comment" cols="" rows="" class="textarea"
+                                        required maxlength="500"><?php echo $adware->comment; ?></textarea>
                                 </td>
                             </tr>
                             <tr>
-                                <th>テキスト広告文<span>※</span></th>
-                                <td><input type="text" name="ad_text" value="<?php echo $adware->ad_text; ?>" size="50"
-                                        maxlength="128" required>
+                                <th>キャッチコピー</th>
+                                <td><span class="count2">0</span><br>
+                                    <input type="text" id="ad_text" name="ad_text" value="<?php echo $adware->ad_text; ?>" size="50"
+                                        maxlength="25">
                                 </td>
                             </tr>
                             <tr>
@@ -482,10 +523,13 @@ jQuery(function($) {
                                     <input type="text" name="url" value="<?php echo $adware->url; ?>" size="50"
                                         maxlength="256" required>
 
+                                    <input type="hidden" name="url_users" value="0">
+                                    <!--
                                     <label><input type="radio" name="url_users" value="0"
                                             <?php echo $url_users_0; ?>>固定</label>
                                     <label><input type="radio" name="url_users" value="1"
                                             <?php echo $url_users_1; ?>>アフィリエイターの自由入力</label>
+                                    -->
 
                                 </td>
                             </tr>
@@ -574,18 +618,18 @@ jQuery(function($) {
                                     </select>
                                     間の成果発生を無効にする。(同一IP)</td>
                             </tr>
-                            <tr>
+                            <tr id="c_row" <?php echo $cls_radio_c_row; ?>>
                                 <th>クリック成果の認証<span>※</span></th>
                                 <td><label><input type="radio" name="click_auto" value="1"
                                             <?php echo $click_auto_1; ?>>自動</label>
                                     <label><input type="radio" name="click_auto" value="0"
-                                            <?php echo $click_auto_0; ?>>手動</label>
+                                            <?php echo $click_auto_0; ?> <?php echo $cls_radio_c; ?>>手動</label>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr id="a_row" <?php echo $cls_radio_a_row; ?>>
                                 <th>アフィリエイト成果の認証<span>※</span></th>
                                 <td><label><input type="radio" name="auto" value="1" <?php echo $auto_1; ?>>自動</label>
-                                    <label><input type="radio" name="auto" value="0" <?php echo $auto_0; ?>>手動</label>
+                                    <label><input type="radio" name="auto" value="0" <?php echo $auto_0; ?> <?php echo $cls_radio_a; ?>>手動</label>
                                 </td>
                             </tr>
                             <!--
@@ -598,7 +642,7 @@ jQuery(function($) {
                             </tr>
                             -->
                             <tr>
-                                <th>広告バナー</th>
+                                <th>広告キービジュアル<br>920x560推奨</th>
                                 <td>
                                     <?php if (empty($adware->banner)) { ?>
                                     <input name="banner" type="file">
@@ -611,6 +655,7 @@ jQuery(function($) {
                                     <label><input type="checkbox" name="banner_DELETE" value="1">削除</label>
                                     <input name="banner" type="hidden" value="<?php echo $adware->banner; ?>">
                                     <?php } ?>
+                                    <!--
                                     <br>
                                     <?php if (empty($adware->banner2)) { ?>
                                     <input name="banner2" type="file">
@@ -635,7 +680,7 @@ jQuery(function($) {
                                     <label><input type="checkbox" name="banner3_DELETE" value="1">削除</label>
                                     <input name="banner3" type="hidden" value="<?php echo $adware->banner3; ?>">
                                     <?php } ?>
-
+                                    -->
                                 </td>
                             </tr>
 
@@ -660,26 +705,25 @@ jQuery(function($) {
                                 </td>
                             </tr>
                             <tr>
-                                <th>キーワード、タグ<br><br>(区切りは半角スペース)</th>
-                                <td><textarea name="keyword" cols="" rows=""
-                                        class="textarea"><?php echo $adware->keyword; ?></textarea>
+                                <th>キーワード、タグ</th>
+                                <td><!--<textarea name="keyword" cols="" rows=""
+                                        class="textarea"><?php echo $adware->keyword; ?></textarea>-->
+                                    <input type="text" name="keyword[]" size="40" maxlength="25" value=<?php echo $kword[0]; ?>>
+                                    <input type="text" name="keyword[]" size="40" maxlength="25" value=<?php echo $kword[1]; ?>>
+                                    <input type="text" name="keyword[]" size="40" maxlength="25" value=<?php echo $kword[2]; ?>>
+                                    <input type="text" name="keyword[]" size="40" maxlength="25" value=<?php echo $kword[3]; ?>>
+                                    <input type="text" name="keyword[]" size="40" maxlength="25" value=<?php echo $kword[4]; ?>>
+                                    <input type="text" name="keyword[]" size="40" maxlength="25" value=<?php echo $kword[5]; ?>>
+                                    <input type="text" name="keyword[]" size="40" maxlength="25" value=<?php echo $kword[6]; ?>>
+                                    <input type="text" name="keyword[]" size="40" maxlength="25" value=<?php echo $kword[7]; ?>>
+                                    <input type="text" name="keyword[]" size="40" maxlength="25" value=<?php echo $kword[8]; ?>>
+                                    <input type="text" name="keyword[]" size="40" maxlength="25" value=<?php echo $kword[9]; ?>>
                                 </td>
                             </tr>
                             <tr>
                                 <th>成果条件</th>
-                                <td><!-- <textarea id="results" name="results" cols="" rows=""
-                                        class="textarea"><?php echo $adware->results; ?></textarea>-->
-                                    <input type="text" id="results" name="results" list="resultsLst0" size="50">
-                                    <datalist id="resultsLst0">
-                                    <option value="Mokuhyo1"></option>
-                                    <option value="Mokuhyo2"></option>
-                                    <option value="Mokuhyo3"></option>
-                                    </datalist>
-                                    <datalist id="resultsLst1">
-                                    <option value="Click1"></option>
-                                    <option value="Click2"></option>
-                                    <option value="Click3"></option>
-                                    </datalist>
+                                <td><textarea id="results" name="results" cols="" rows=""
+                                        class="textarea"><?php echo $adware->results; ?></textarea>
                                 </td>
                             </tr>
                             <tr>

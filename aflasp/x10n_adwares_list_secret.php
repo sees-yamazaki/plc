@@ -15,19 +15,26 @@ date_default_timezone_set('Asia/Tokyo');
 $errorMessage = '';
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
+if(empty($LOGIN_ID)){ header('Location: x10n_logoff.php'); }
 
 $id = empty($_GET['id']) ? $_POST['id'] : $_GET['id'];
 
 // 自身がオファー申請中の広告を全て取得する
 $offering = getOfferingAdware($LOGIN_ID);
 $html1 = '';
-foreach($offering as $ofr ){
+foreach ($offering as $ofr) {
     $wk = $ofr->adware_type=="0" ? "[目標]" : "[クリック]";
-    $html1 .= '<tr><td>'.$wk.'</td><td>'.$ofr->name.'</td></tr>';
+    $html1 .= '<tr><td>'.$wk.'</td><td><a href="x10n_adwares_info.php?id='.$ofr->adware.'#url">'.$ofr->name.'</a></td></tr>';
+}
+if (empty($html1)) {
+    $html1 = '承認待ちオファーはありません';
 }
 
 
 $pays = getPaysX10($LOGIN_ID);
+foreach ($pays as $pay) {
+    $pay->stts = isAdwareFinish(getAdwareStatus($pay->id));
+}
 // $pays = countMonthlyPaysGroupsAll($LOGIN_ID,0);
 // $clickpays = countMonthlyPaysGroupsAll($LOGIN_ID,1);
 
@@ -46,7 +53,7 @@ $today = date('Y-m-d');
 
 <body>
 
-オファー進行中<br>
+リクエスト結果待機中<br>
 <br>
 
 <table>
@@ -69,20 +76,19 @@ $today = date('Y-m-d');
             <td>確定報酬</td>
             <td></td>
         </tr>
-        <?php foreach($pays as $pay){ ?>
-        <?php if($pay->approvable=="1" && $pay->adware_type=="0"){ ?>
-        <?php if(is_null($pay->enddt) || $pay->enddt >= $today){ ?>
+        <?php foreach ($pays as $pay) { ?>
+        <?php if ($pay->approvable=="1" && $pay->adware_type=="0" && $pay->stts=="0" ) { ?>
         <tr>
-            <td><a href='x10n_adwares_info.php?id=<?php echo $pay->id; ?>'><?php echo $pay->name; ?></a></td>
+            <td><a href='x10n_adwares_info.php?id=<?php echo $pay->id; ?>#url'><?php echo $pay->name; ?></a></td>
             <?php $cnt = countClicksAdwares($LOGIN_ID, $pay->id); ?>
             <td><?php echo $cnt; ?>件</td>
             <td><?php echo $pay->cnt; ?>件</td>
             <td><?php echo $pay->cnt2; ?>件</td>
             <td><?php echo($pay->cst0 + $pay->cst1); ?>円</td>
             <td><?php echo $pay->cst2; ?>円</td>
-            <td>掲載用URL表示</td>
+            <?php $wk = $cnt>0 ? "成果発生中" : "掲載用URL表示"; ?>
+            <td><a href='x10n_adwares_info.php?id=<?php echo $pay->id; ?>#url'><?php echo $wk; ?></a></td>
         </tr>
-        <?php } ?>
         <?php } ?>
         <?php } ?>
     </table>
@@ -99,9 +105,8 @@ $today = date('Y-m-d');
             <td>確定報酬</td>
             <td></td>
         </tr>
-        <?php foreach($pays as $pay){ ?>
-        <?php if($pay->approvable=="1" && $pay->adware_type=="1"){ ?>
-        <?php if(is_null($pay->enddt) || $pay->enddt >= $today){ ?>
+        <?php foreach ($pays as $pay) { ?>
+        <?php if ($pay->approvable=="1" && $pay->adware_type=="1" && $pay->stts=="0" ) { ?>
         <tr>
             <td><a href='x10n_adwares_info.php?id=<?php echo $pay->id; ?>'><?php echo $pay->name; ?></a></td>
             <?php $cnt = countClicksAdwares($LOGIN_ID, $pay->id); ?>
@@ -110,15 +115,15 @@ $today = date('Y-m-d');
             <td><?php echo $pay->cnt2; ?>件</td>
             <td><?php echo($pay->cst0 + $pay->cst1); ?>円</td>
             <td><?php echo $pay->cst2; ?>円</td>
-            <td>掲載用URL表示</td>
+            <?php $wk = $cnt>0 ? "成果発生中" : "掲載用URL表示"; ?>
+            <td><a href='x10n_adwares_info.php#url?id=<?php echo $pay->id; ?>'><?php echo $wk; ?></a></td>
         </tr>
-        <?php } ?>
         <?php } ?>
         <?php } ?>
     </table>
 
     <br>
-期間終了オファー<br>
+    掲載終了オファー<br>
 <br>
 <br>
 
@@ -133,9 +138,8 @@ $today = date('Y-m-d');
             <td>確定報酬</td>
             <td></td>
         </tr>
-        <?php foreach($pays as $pay){ ?>
-        <?php if($pay->approvable=="1" && $pay->adware_type=="0"){ ?>
-        <?php if(!is_null($pay->enddt) && $pay->enddt < $today){ ?>
+        <?php foreach ($pays as $pay) { ?>
+        <?php if ($pay->approvable=="1" && $pay->adware_type=="0" && $pay->stts=="1" ) { ?>
         <tr>
             <td><a href='x10n_adwares_info.php?id=<?php echo $pay->id; ?>'><?php echo $pay->name; ?></a></td>
             <?php $cnt = countClicksAdwares($LOGIN_ID, $pay->id); ?>
@@ -144,9 +148,9 @@ $today = date('Y-m-d');
             <td><?php echo $pay->cnt2; ?>件</td>
             <td><?php echo($pay->cst0 + $pay->cst1); ?>円</td>
             <td><?php echo $pay->cst2; ?>円</td>
-            <td>掲載用URL表示</td>
+            <?php $wk = $cnt>0 ? "成果発生中" : "掲載用URL表示"; ?>
+            <td><a href='x10n_adwares_info.php#url?id=<?php echo $pay->id; ?>'><?php //echo $wk; ?></a></td>
         </tr>
-        <?php } ?>
         <?php } ?>
         <?php } ?>
     </table>
@@ -162,9 +166,8 @@ $today = date('Y-m-d');
             <td>未確定成果</td>
             <td>確定報酬</td>
         </tr>
-        <?php foreach($pays as $pay){ ?>
-        <?php if($pay->approvable=="1" && $pay->adware_type=="1"){ ?>
-        <?php if(!is_null($pay->enddt) && $pay->enddt < $today){ ?>
+        <?php foreach ($pays as $pay) { ?>
+        <?php if ($pay->approvable=="1" && $pay->adware_type=="1" && $pay->stts=="1" ) { ?>
         <tr>
             <td><a href='x10n_adwares_info.php?id=<?php echo $pay->id; ?>'><?php echo $pay->name; ?></a></td>
             <?php $cnt = countClicksAdwares($LOGIN_ID, $pay->id); ?>
@@ -174,7 +177,6 @@ $today = date('Y-m-d');
             <td><?php echo($pay->cst0 + $pay->cst1); ?>円</td>
             <td><?php echo $pay->cst2; ?>円</td>
         </tr>
-        <?php } ?>
         <?php } ?>
         <?php } ?>
     </table>

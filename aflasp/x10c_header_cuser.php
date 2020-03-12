@@ -21,10 +21,50 @@
     <script src="x10c/assets/vendors/js/core.js"></script>
     <title>アフィリエイトシステム</title>
     <script type="text/javascript">
-        $(function() {
-            $('a[@rel*=lightbox]').lightBox();
-        });
+    $(function() {
+        $('a[@rel*=lightbox]').lightBox();
+    });
     </script>
+    <style>
+    .cp_tooltip {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        background: linear-gradient(transparent 60%, #c1e4e9 60%);
+    }
+
+    .cp_tooltip .cp_tooltiptext {
+        position: absolute;
+        z-index: 1;
+        top: -5px;
+        left: 105%;
+        visibility: hidden;
+        /*width: auto;*/
+        white-space: nowrap;
+        padding: 0.3em 0.5em;
+        transition: opacity 1s;
+        text-align: center;
+        opacity: 0;
+        color: #ffffff;
+        border-radius: 3px;
+        background-color: #16160e;
+    }
+
+    cp_tooltip .cp_tooltiptext::after {
+        position: absolute;
+        top: 40%;
+        right: 100%;
+        margin-left: -5px;
+        content: ' ';
+        border: 5px solid transparent;
+        border-right-color: #16160e;
+    }
+
+    .cp_tooltip:hover .cp_tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+    </style>
 </head>
 
 <body>
@@ -85,33 +125,34 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#pages2" data-toggle="collapse" aria-expanded="false" class="menu">
+                                <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">
                                     <span class="link-title">広告の掲載</span>
                                     <i class="mdi mdi-content-copy link-icon"></i>
                                 </a>
-                                <ul class="collapse navigation-submenu" id="pages2">
+                                <ul class=" navigation-submenu" id="pages">
                                     <li><a href="x10c_adwares_edit.php" class="menu">新しい広告を登録</a></li>
-                                    <li><a href="x10c_offerad_search.php?ofr=1" class="menu">申請のある広告</a></li>
+                                    <li><a href="x10c_offerad_search.php?ofr=1&approvable=1" class="menu">申請のある広告</a>
+                                    </li>
                                     <li><a href="x10c_offerad_search.php" class="menu">過去に登録した広告</a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="#pages3" data-toggle="collapse" aria-expanded="false" class="menu">
+                                <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">
                                     <span class="link-title">累計</span>
                                     <i class="mdi mdi-file-document link-icon"></i>
                                 </a>
-                                <ul class="collapse navigation-submenu" id="pages3">
+                                <ul class=" navigation-submenu" id="pages3">
                                     <li><a href="search.php?type=access&run=true" class="menu">広告へのアクセス履歴</a></li>
-                                    <li><a href="search.php?type=pay&run=true" class="menu">獲得報酬の発生履歴</a></li>
+                                    <li><a href="search.php?type=pay&run=true" class="menu">目標報酬の発生履歴</a></li>
                                     <li><a href="search.php?type=click_pay&run=true" class="menu">クリック報酬の発生履歴</a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="#pages4" data-toggle="collapse" aria-expanded="false" class="menu">
+                                <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">
                                     <span class="link-title">ユーザー情報</span>
                                     <i class="mdi mdi-account-circle link-icon"></i>
                                 </a>
-                                <ul class="collapse navigation-submenu" id="pages4">
+                                <ul class=" navigation-submenu" id="pages4">
                                     <li><a href="edit.php?type=cUser&id=<?php echo $LOGIN_ID; ?>"
                                             class="menu">ユーザー情報の編集</a></li>
                                     <li><a href="other.php?key=pay_report" class="menu">成果レポート出力</a></li>

@@ -8,6 +8,9 @@ include 'x10c/db/x10.php';
 // セッション再開
 session_start();
 
+$LOGIN_ID = $_SESSION[ $SESSION_NAME ];
+if(empty($LOGIN_ID)){ header('Location: x10n_logoff.php'); }
+
 //Timezone
 date_default_timezone_set('Asia/Tokyo');
 

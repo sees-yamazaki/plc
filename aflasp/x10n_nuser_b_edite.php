@@ -9,6 +9,9 @@ include 'x10c/db/system.php';
 
 session_start();
 
+$LOGIN_ID = $_SESSION[ $SESSION_NAME ];
+if(empty($LOGIN_ID)){ header('Location: x10n_logoff.php'); }
+
 $errorMessage='';
 
 $nUser = new cls_nuser();

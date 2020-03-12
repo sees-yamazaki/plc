@@ -15,6 +15,7 @@ date_default_timezone_set('Asia/Tokyo');
 $errorMessage = '';
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
+if(empty($LOGIN_ID)){ header('Location: x10n_logoff.php'); }
 
 $category = $_POST['category'];
 $adware_type = $_POST['adware_type'];
@@ -56,24 +57,34 @@ if (isset($_POST['run'])) {
         $tmp[] = "(".implode(" OR ", $tmp3).")";
     }
 
-    foreach ((array)$approvable as $apv) {
-        if ($apv=="0") {
-            $tmp4[] = "(approvable=0)";
-            $aprved[0]= " checked";
-        } elseif ($apv=="1") {
-            $tmp4[] = "(approvable=1)";
-            $aprved[1]= " checked";
-        }
-    }
-    if (!empty($tmp4)) {
-        $tmp[] = "(".implode(" OR ", $tmp4).")";
-    }
+    // foreach ((array)$approvable as $apv) {
+    //     if ($apv=="0") {
+    //         $tmp4[] = "(approvable=0)";
+    //         $aprved[0]= " checked";
+    //     } elseif ($apv=="1") {
+    //         $tmp4[] = "(approvable=1)";
+    //         $aprved[1]= " checked";
+    //     }
+    // }
+    // if (!empty($tmp4)) {
+    //     $tmp[] = "(".implode(" OR ", $tmp4).")";
+    // }
 
 
     if (count($tmp)>0) {
         $where .= " AND ".implode(" AND ", $tmp);
     }
 }
+
+
+if (is_array($approvable)) {
+    $where .=  " AND (approvable=1) ";
+    $aprved[1]= " checked";
+} else {
+    $where .= " AND (approvable=0) ";
+}
+
+$where .= " AND (isFinish=0) ";
 
 //検索結果件数を取得
 $cnt = countAdwares($where);
@@ -161,10 +172,12 @@ function paging(vlu) {
                 <tr>
                     <th>承認タイプ</th>
                     <td>
+                        <!--
                         <label><input type="checkbox" name="approvable[]" value="0"
                                 <?php echo $aprved[0]; ?>>オープン</label>
+                        -->
                         <label><input type="checkbox" name="approvable[]" value="1"
-                                <?php echo $aprved[1]; ?>>承認（クローズド）</label>
+                                <?php echo $aprved[1]; ?>>承認制オファー</label>
                     </td>
                 </tr>
                 <tr>

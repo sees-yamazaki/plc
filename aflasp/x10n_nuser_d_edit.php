@@ -16,7 +16,8 @@ date_default_timezone_set('Asia/Tokyo');
 // エラーメッセージの初期化
 $errorMessage = '';
 
-$LOGIN_ID =  $_SESSION[ $SESSION_NAME ] ;
+$LOGIN_ID = $_SESSION[ $SESSION_NAME ];
+if(empty($LOGIN_ID)){ header('Location: x10n_logoff.php'); }
 
 $nUser = new cls_nuser_x10();
 

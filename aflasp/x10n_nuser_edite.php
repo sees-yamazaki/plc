@@ -9,6 +9,9 @@ include 'x10c/db/system.php';
 
 session_start();
 
+$LOGIN_ID = $_SESSION[ $SESSION_NAME ];
+if(empty($LOGIN_ID)){ header('Location: x10n_logoff.php'); }
+
 $errorMessage='';
 
 $nUser = new cls_nuser();
@@ -46,7 +49,35 @@ if (isset($_POST['doCheck'])) {
         $pw2 = openssl_encrypt($pw1, 'aes-256-ecb', base64_encode('AES'));
         $nUser->pass = $pw2;
 
-        insertNuser($nUser);
+        $nId = insertNuser($nUser);
+
+
+    $sys = getSystem();
+
+    mb_language("Japanese");
+    mb_internal_encoding("UTF-8");
+
+    $text = "\n\nメールアドレスを認証するために、下記URLをクリックしてください。\n\n";
+    if (substr($sys->home, -1)=='/') {
+        $sys->home = substr($sys->home, 0, -1);
+    }
+    $md5 = md5( $nId . $nUser->mail );
+    $text .= $sys->home."/activate.php?type=nUser&id=".$nId."&md5=".$md5;
+    $text .= "\n\n".$sys->site_title."\n\n".$sys->home;
+
+    $to      = $nUser->mail;
+    $subject = "【".$sys->site_title."】メールアドレスの認証が完了しました。";
+    $message = $text;
+    $headers = 'From:"'.mb_encode_mimeheader($sys->mail_name).'" <'. trim($sys->mail_address).'>';
+    logging($text);
+    mb_send_mail($to, $subject, $message, $headers);
+
+
+
+
+
+
+
 
         header('Location: x10n_nuser_edited.php');
 

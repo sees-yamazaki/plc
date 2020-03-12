@@ -15,6 +15,7 @@ date_default_timezone_set('Asia/Tokyo');
 $errorMessage = '';
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
+if(empty($LOGIN_ID)){ header('Location: x10n_logoff.php'); }
 
 $adtype =  isset($_GET['adtype']) ? $_GET['adtype'] : $_POST['adtype'] ;
 

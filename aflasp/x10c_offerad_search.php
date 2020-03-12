@@ -118,12 +118,19 @@ if (isset($_POST['run'])) {
     }
 }
 
+
+if (isset($_GET['approvable'])) {
+    $where .=  " AND (approvable=1) ";
+    $aprved[1]= " checked";
+}else{
     if (is_array($approvable)) {
         $where .=  " AND (approvable=1) ";
         $aprved[1]= " checked";
     } else {
         $where .= " AND (approvable=0) ";
     }
+
+}
 
 
 //広告主ログインの場合は自広告に制限する

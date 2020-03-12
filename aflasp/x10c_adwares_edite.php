@@ -50,7 +50,11 @@ $adware->open = $_POST['open'];
 
 $adware->adware_type = $_POST['adware_type'];
 $adware->approvable = $_POST['approvable'];
-$adware->keyword = $_POST['keyword'];
+if(is_array($_POST['keyword'])){
+    $adware->keyword = implode(' ',$_POST['keyword']);
+}else{
+    $adware->keyword = $_POST['keyword'];
+}
 $adware->results = $_POST['results'];
 $adware->hashtag = $_POST['hashtag'];
 $adware->denials = $_POST['denials'];

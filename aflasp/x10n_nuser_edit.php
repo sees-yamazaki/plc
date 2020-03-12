@@ -10,6 +10,9 @@ include 'x10c/db/system.php';
 // セッション再開
 session_start();
 
+$LOGIN_ID = $_SESSION[ $SESSION_NAME ];
+if(empty($LOGIN_ID)){ header('Location: x10n_logoff.php'); }
+
 //Timezone
 date_default_timezone_set('Asia/Tokyo');
 
@@ -74,10 +77,11 @@ foreach ($prefs as $pref) {
     <title><?php echo ""; ?>
     </title>
     <link rel="stylesheet" href="x10n/css/main.css">
+    <script src="https://zipaddr.github.io/bankauto0.js" charset="UTF-8"></script>
+    <script src="https://zipaddr.github.io/zipaddra.js" charset="UTF-8"></script>
 </head>
 
 <body>
-
 
     <?php if (!empty($errorMessage)) { ?>
     <span class="err"><?php echo $errorMessage; ?></span>
@@ -109,17 +113,17 @@ foreach ($prefs as $pref) {
         <br>
         <br>
         現住所<br>
-        〒&nbsp;<input type="text" name="zip1"
+        〒&nbsp;<input type="text" id="zip1" name="zip1"
             value="<?php echo $nUser->zip1;?>" size="3"
-            maxlength="3">
-        &nbsp;-&nbsp;<input type="text" name="zip2"
+            maxlength="3" placeholder="" >
+        &nbsp;-&nbsp;<input type="text" id="zip2" name="zip2"
             value="<?php echo $nUser->zip2;?>" size="4"
             maxlength="4">
 
-        &nbsp;<select name="adds">
+        &nbsp;<select name="adds" id="pref">
             <?php echo $html; ?>
         </select>
-        &nbsp;<input type="text" name="add_sub"
+        &nbsp;<input id="city" type="text" name="add_sub"
             value="<?php echo $nUser->add_sub;?>" size="48"
             maxlength="128"><br>
         <br>
@@ -140,19 +144,19 @@ foreach ($prefs as $pref) {
             maxlength="256"><br>
         <br><br>
         金融機関名<br>
-        <input type="text" name="bank"
+        <input type="text" id="bank_name" name="bank"
             value="<?php echo $nUser->bank;?>" size="30"
             maxlength="30"><br>
         金融機関番号<br>
-        <input type="text" name="bank_code"
+        <input type="text" id="bank_code" name="bank_code"
             value="<?php echo $nUser->bank_code;?>" size="6"
             maxlength="4"><br>
         支店名<br>
-        <input type="text" name="branch"
+        <input type="text" id="branch_name" name="branch"
             value="<?php echo $nUser->branch;?>" size="30"
             maxlength="30"><br>
         支店番号<br>
-        <input type="text" name="branch_code"
+        <input type="text" id="branch_code" name="branch_code"
             value="<?php echo $nUser->branch_code;?>" size="5"
             maxlength="3"><br>
         種別<br>
@@ -182,8 +186,6 @@ foreach ($prefs as $pref) {
     <br><br>
     <hr>
     <input type="button" onclick="location.href='x10n_login.php'" value="戻る">
-
-
 
 </body>
 
