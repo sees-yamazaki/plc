@@ -1,0 +1,113 @@
+@charset "UTF-8";
+
+
+.main {
+  padding-bottom: 0;
+}
+
+/* article
+--------------------------------- */
+.article__section_title .label span {
+  display: inline-block;
+  min-width: 100px;
+  text-align: center;
+  color: #fff;
+  font-size: 1.4rem;
+  padding: 3px 5px;
+  border-radius: 3px;
+}
+.article__section_title .article__title {
+  font-size: 2.2rem;
+  font-weight: bold;
+  line-height: 1.3;
+  margin: 15px auto;
+}
+.article__section_title .label-op {
+  color: #fff;
+  font-size: 1.4rem;
+  padding: 3px 5px;
+  margin-bottom: 15px;
+  width: 100%;
+  text-align: center;
+  border-radius: 3px;
+}
+.article__section {
+  margin-top: 30px;
+}
+.article__section_price .price {
+  text-align: center;
+  margin: 20px auto;
+}
+.article__section_price .price .num {
+  font-size: 3rem;
+  font-weight: bold;
+  font-style: italic;
+  letter-spacing: 0;
+  line-height: 1;
+  margin-right: 6px;
+}
+.article__section_outline {
+  position: relative;
+}
+.article__section_outline_text {
+  margin: 20px auto;
+  max-height: 160px;
+  min-height: 60px;
+  overflow: hidden;
+}
+.article__section_outline_text.is-view {
+  max-height: auto;
+}
+.article__section_outline .filter-cover {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(180deg, rgba(255, 255, 255,0) 0%, rgba(255, 255, 255,1) 50%);
+}
+.article__section_outline .btn-filter-off {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  padding: 10px 20px;
+}
+.article__link_block {
+  margin-top: 30px;
+}
+.article__link_request-complete {
+  margin-bottom: 15px;
+}
+.article__link_share .copy_text {
+  border: 1px solid #bbb;
+  padding: 15px;
+  max-width: 400px;
+  margin: 15px auto;
+}
+.article__info {
+  margin-top: 30px;
+}
+
+.pagelink_block {
+  width: 100%;
+}
+.pagelink_block a {
+  display: block;
+  width: 50%;
+  text-align: center;
+  padding: 20px 10px;
+  border: 1px solid #ccc;
+}
+
+/* ============================================
+  @media min-767
+============================================ */
+@media only screen and (min-width: 767px) {
+
+  .article__section_outline_text {
+    font-size: 1.4rem;
+    min-height: auto;
+    max-height: 100%;
+  }
+}

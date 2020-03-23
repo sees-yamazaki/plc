@@ -1,0 +1,36 @@
+@charset "UTF-8";
+@import 'form.css';
+
+/* ============================================
+  login
+============================================ */
+.login__forget_text {
+  text-align: center;
+  margin: 20px auto 0;
+}
+
+.newmember＿＿box {
+  border: 1px solid #e7e7e7;
+  padding: 20px;
+}
+.newmember＿＿box_title {
+  color: #00abeb;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 0 20px;
+}
+.newmember＿＿box_text {
+  margin: 0 0 20px;
+}
+
+/* ============================================
+  @media min-767
+============================================ */
+@media only screen and (min-width: 767px) {
+
+  .newmember＿＿box_text {
+    text-align: center;
+  }
+
+}

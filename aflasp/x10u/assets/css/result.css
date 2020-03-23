@@ -1,0 +1,68 @@
+@charset "UTF-8";
+
+.search__form_row_wrap .input_date_wrap {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: calc(100% - 4em);
+}
+.search__form_row_wrap .input_date_wrap .icon_calendar {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  right: 13px;
+  top: 13px;
+}
+.search__form_row_wrap .search__submit {
+  margin-top: 40px;
+}
+
+.result__table_wrap {
+  padding: 30px 0 0;
+}
+
+.result__link_btn_list .btn {
+  margin-bottom: 15px;
+}
+
+/* ============================================
+  @media min-767
+============================================ */
+@media only screen and (min-width: 767px) {
+
+  .result__table_wrap {
+    padding: 20px 0;
+  }
+
+  .search__contents {
+    display: block;
+  }
+  .search__form_row_wrap {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+  .search__form_row_wrap .form-row {
+    margin-bottom: 0;
+  }
+  .search__form_row_wrap .search__submit {
+    width: 280px;
+    margin: 0;
+    margin-left: 40px;
+  }
+  .search__form_row_wrap .search__select_wrap {
+    width: 290px;
+  }
+  .search__form_row_wrap .input_date_wrap  {
+    width: 240px;
+  }
+
+  .result__link_btn_list {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+  }
+
+}
