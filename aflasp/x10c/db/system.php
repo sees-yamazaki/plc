@@ -51,3 +51,20 @@ class cls_pref
      }
      return $results;
  }
+ function getPrefectureByName($prefName)
+ {
+     $result = 0;
+     try {
+         require 'dns.php';
+         $stmt = $pdo->prepare("SELECT * FROM `prefectures` WHERE name=:name");
+         $stmt->bindParam(':name', $prefName, PDO::PARAM_STR);
+         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+         $row = $stmt->fetch(PDO::FETCH_ASSOC);
+         $result = $row['id'];
+
+        } catch (PDOException $e) {
+         //
+     }
+     return $result;
+ }

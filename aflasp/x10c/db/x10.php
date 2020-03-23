@@ -55,6 +55,8 @@ class cls_secretadwares
     public $startdt ;
     public $enddt ;
     public $cnt_offer ;
+    public $stts ;
+    public $isFinish ;
 }
 
 class cls_x10adwares
@@ -249,7 +251,7 @@ function getAdware($id)
     try {
         $result = new cls_secretadwares();
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT * FROM `v_adwares_x10` WHERE id=:id");
+        $stmt = $pdo->prepare("SELECT * FROM `v_adwares_status` WHERE id=:id");
         $stmt->bindParam(':id', $id, PDO::PARAM_STR);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -307,6 +309,8 @@ function getAdware($id)
             $result->startdt = $row['startdt'];
             $result->enddt = $row['enddt'];
             $result->cnt_offer = $row['cnt_offer'];
+            $result->stts = $row['stts'];
+            $result->isFinish = $row['isFinish'];
         }
     } catch (PDOException $e) {
         //
@@ -704,6 +708,10 @@ class cls_access
     public $owner ;
     public $name ;
     public $regist ;
+    public $adware_type ;
+    public $approvable ;
+    public $stts ;
+    public $isFinish ;
 }
 
 function countAccess($startdt, $enddt, $nuser)
@@ -739,7 +747,7 @@ function getAccessLimit($startdt, $enddt, $nuser, $limit, $offset)
 
         $results = array();
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT * FROM `v_access_x10` WHERE delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc LIMIT :limit OFFSET :offset");
+        $stmt = $pdo->prepare("SELECT a.*,v.stts, v.isFinish FROM `v_access_x10` as a LEFT JOIN `v_adwares_status` as v ON a.adwares=v.id WHERE a.delete_key=0 and a.owner=:owner and a.regist BETWEEN :start AND :end ORDER BY a.regist desc LIMIT :limit OFFSET :offset");
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
@@ -753,6 +761,10 @@ function getAccessLimit($startdt, $enddt, $nuser, $limit, $offset)
             $result->owner = $row['owner'];
             $result->name = $row['name'];
             $result->regist = $row['regist'];
+            $result->approvable = $row['approvable'];
+            $result->adware_type = $row['adware_type'];
+            $result->stts = $row['stts'];
+            $result->isFinish = $row['isFinish'];
             array_push($results, $result);
         }
     } catch (PDOException $e) {
@@ -860,4 +872,12 @@ function getKeywords()
         //
     }
     return $results;
+}
+
+function abbrStr($str,$len){
+    if(mb_strlen($str)>$len){
+        $str = mb_substr($str,0,$len).'[...]';
+    }
+    return $str;
+
 }

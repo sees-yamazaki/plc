@@ -166,6 +166,24 @@ function countNUserByMail($mail)
     return $cnt;
 }
 
+function countNUserByMailOthers($mail,$id)
+{
+    $cnt=0;
+    try {
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `nuser` WHERE mail=:mail AND id<>:id");
+        $stmt->bindParam(':mail', $mail, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+        $stmt->execute();
+        if ($row = $stmt->fetch()) {
+            $cnt = $row['cnt'];
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $cnt;
+}
+
 function getNUserNextId()
 {
     $id=0;
@@ -293,6 +311,83 @@ function updateNuserC($nuser)
     }
 }
 
+function updateNuserBasic($nuser)
+{
+    try {
+        require 'dns.php';
+        if (empty($nuser->pass)) {
+            $stmt = $pdo -> prepare("UPDATE `nuser` SET `name`=:name, `tel`=:tel WHERE id=:id");
+        }else{
+            $stmt = $pdo -> prepare("UPDATE `nuser` SET `pass`=:pass, `name`=:name, `tel`=:tel WHERE id=:id");
+            $stmt->bindParam(':pass', $nuser->pass, PDO::PARAM_STR);
+        }
+        $stmt->bindParam(':id', $nuser->id, PDO::PARAM_STR);
+        $stmt->bindParam(':name', $nuser->name, PDO::PARAM_STR);
+        $stmt->bindParam(':tel', $nuser->tel, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("UPDATE ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+}
+
+function updateNuserBank($nuser)
+{
+    try {
+        require 'dns.php';
+        $sql = "UPDATE `nuser` SET `bank`=:bank, `branch`=:branch, `bank_type`=:bank_type,  `number`=:number,  `bank_name`=:bank_name WHERE id=:id";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':id', $nuser->id, PDO::PARAM_STR);
+        $stmt->bindParam(':bank', $nuser->bank, PDO::PARAM_STR);
+        $stmt->bindParam(':branch', $nuser->branch, PDO::PARAM_STR);
+        $stmt->bindParam(':bank_type', $nuser->bank_type, PDO::PARAM_STR);
+        $stmt->bindParam(':number', $nuser->number, PDO::PARAM_STR);
+        $stmt->bindParam(':bank_name', $nuser->bank_name, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("UPDATE ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+}
+
+function updateNuserActivate($nId,$stts)
+{
+    try {
+        require 'dns.php';
+        $sql = "UPDATE `nuser` SET `activate`=:activate WHERE id=:id";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':id', $nuser->id, PDO::PARAM_STR);
+        $stmt->bindParam(':activate', $stts, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("UPDATE ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+}
 // function updateNuser($nuser)
 // {
 //     try {
