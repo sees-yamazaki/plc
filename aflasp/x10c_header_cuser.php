@@ -131,9 +131,10 @@
                                 </a>
                                 <ul class=" navigation-submenu" id="pages">
                                     <li><a href="x10c_adwares_edit.php" class="menu">新しい広告を登録</a></li>
-                                    <li><a href="x10c_offerad_search.php?ofr=1&approvable=1" class="menu">申請のある広告</a>
-                                    </li>
-                                    <li><a href="x10c_offerad_search.php" class="menu">過去に登録した広告</a></li>
+                                    <li><a href="x10c_offerad_search.php?ofr=1&approvable=1" class="menu">申請のある広告</a></li>
+                                    <li><a href="x10c_offerad_search.php?adstts=0" class="menu">進行中の広告</a></li>
+                                    <li><a href="x10c_offerad_search.php?adstts=1" class="menu">終了した広告</a></li>
+                                    <!--<li><a href="x10c_offerad_search.php" class="menu">過去に登録した広告</a></li>-->
                                 </ul>
                             </li>
                             <li>

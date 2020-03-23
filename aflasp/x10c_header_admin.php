@@ -22,9 +22,9 @@
     <script src="x10c/assets/vendors/js/core.js"></script>
     <title>アフィリエイトシステム</title>
     <script type="text/javascript">
-        $(function() {
-            $('a[@rel*=lightbox]').lightBox();
-        });
+    $(function() {
+        $('a[@rel*=lightbox]').lightBox();
+    });
     </script>
 </head>
 
@@ -100,7 +100,93 @@
                 </div>
                 -->
 
+                <div class="sidebar">
+                    <ul class="navigation-menu">
+                        <li>
+                            <a href="index.php" class="menu">
+                                <span class="link-title">ホーム</span>
+                                <i class="mdi mdi-home link-icon"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">
+                                <span class="link-title">ユーザー管理</span>
+                                <i class="mdi mdi-account-multiple link-icon"></i>
+                            </a>
+                            <ul class=" navigation-submenu" id="pages1">
+                                <li><a href="search.php?type=nUser" class="menu">ユーザー検索</a></li>
+                                <li><a href="regist.php?type=multimail" class="menu">一括メール送信</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">
+                                <span class="link-title">広告の掲載</span>
+                                <i class="mdi mdi-content-copy link-icon"></i>
+                            </a>
+                            <ul class=" navigation-submenu" id="pages2">
+                                <li><a href="x10c_adwares_edit.php" class="menu">新しい広告を登録</a></li>
+                                <li><a href="x10c_offerad_search.php?ofr=1&approvable=1" class="menu">申請のある広告</a></li>
+                                <li><a href="x10c_offerad_search.php?adstts=0" class="menu">進行中の広告</a></li>
+                                <li><a href="x10c_offerad_search.php?adstts=1" class="menu">終了した広告</a></li>
+                                <!--<li><a href="x10c_offerad_search.php" class="menu">過去に登録した広告</a></li>-->
+                                <li><a href="regist.php?type=pay" class="menu">成果の登録</a></li>
+                                <li><a href="search.php?type=category&run=true" class="menu">広告カテゴリの管理</a></li>
+                                <li><a href="search.php?type=cUser" class="menu">広告主検索</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">
+                                <span class="link-title">リスト</span>
+                                <i class="mdi mdi-file-document link-icon"></i>
+                            </a>
+                            <ul class=" navigation-submenu" id="pages3">
+                                <li><a href="search.php?type=access&run=true" class="menu">アクセスリスト</a></li>
+                                <li><a href="search.php?type=pay&run=true" class="menu">会員登録・商品の購入履歴</a></li>
+                                <li><a href="search.php?type=click_pay&run=true" class="menu">広告クリック履歴</a></li>
+                                <li><a href="search.php?type=log_pay&run=true" class="menu">報酬の変動ログ</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">
+                                <span class="link-title">換金</span>
+                                <i class="mdi mdi-diamond link-icon"></i>
+                            </a>
+                            <ul class=" navigation-submenu" id="pages4">
+                                <li><a href="return.php" class="menu">一括換金処理</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">
+                                <span class="link-title">レポート</span>
+                                <i class="mdi mdi-package-down link-icon"></i>
+                            </a>
+                            <ul class=" navigation-submenu" id="pages">
+                                <li><a href="other.php?key=pay_report" class="menu">成果レポート出力</a></li>
+                                <li><a href="other.php?key=access4month" class="menu">アクセス集計</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">
+                                <span class="link-title">サイト設定</span>
+                                <i class="mdi mdi-tune-vertical link-icon"></i>
+                            </a>
+                            <ul class=" navigation-submenu" id="pages5">
+                                <li><a href="edit.php?type=system&id=ADMIN" class="menu">サイト設定の変更</a></li>
+                                <li><a href="edit.php?type=admin&id=ADMIN" class="menu">ログイン情報の変更</a></li>
+                                <li><a href="search.php?type=accountLockConfig&run=true" class="menu">ログイン情報の変更</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="login.php?logout=true" class="menu">
+                                <span class="link-title">ログオフ</span>
+                                <i class="mdi mdi-logout link-icon"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
+            <!--
                 <div class="page-body">
 
                     <div class="page-body">
@@ -191,4 +277,5 @@
                 </div>
 
             </div>
+    -->
             <!--side_bar_END-->

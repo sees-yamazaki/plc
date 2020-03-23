@@ -11,6 +11,7 @@ $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
 $LOGIN_TYPE = $_SESSION[ $SESSION_TYPE ];
 
 $mode = empty($_GET['mode']) ? $_POST['mode'] : $_GET['mode'];
+$adstts = isset($_GET['adstts']) ? $_GET['adstts'] : $_POST['adstts'];
 
 $id = $_POST['id'];
 $name = $_POST['name'];
@@ -95,13 +96,13 @@ if (isset($_POST['run'])) {
     $tdy = date('Y-m-d');
     foreach ((array)$term as $trm) {
         if ($trm=="0") {
-            $tmp6[] = "(enddt IS NULL)";
+            $tmp6[] = "(enddt IS NULL AND isFinish = 0)";
             $termed[0]= " checked";
         } elseif ($trm=="1") {
-            $tmp6[] = "(startdt>'".$tdy."')";
+            $tmp6[] = "(startdt>'".$tdy."' AND isFinish = 0)";
             $termed[1]= " checked";
         } elseif ($trm=="2") {
-            $tmp6[] = "(startdt<='".$tdy."' AND enddt>='".$tdy."')";
+            $tmp6[] = "(startdt<='".$tdy."' AND enddt>='".$tdy."' AND isFinish = 0)";
             $termed[2]= " checked";
         } elseif ($trm=="3") {
             $tmp6[] = "(enddt<'".$tdy."')";
@@ -119,9 +120,21 @@ if (isset($_POST['run'])) {
 }
 
 
+
 if (isset($_GET['approvable'])) {
     $where .=  " AND (approvable=1) ";
     $aprved[1]= " checked";
+}elseif($adstts<>""){
+    if($adstts=="0"){
+        $termed[0]= " checked";
+        $termed[1]= " checked";
+        $termed[2]= " checked";
+        $where .=  " AND (isFinish=0) ";
+    }else{
+        $termed[3]= " checked";
+        $where .=  " AND (isFinish=1) ";
+    }
+    //
 }else{
     if (is_array($approvable)) {
         $where .=  " AND (approvable=1) ";
@@ -217,6 +230,9 @@ function paging(vlu) {
                     <input type="hidden" name="run" value="true">
                     <input type="hidden" name="page" value="">
                     <input type="hidden" name="mode" value="<?php echo $mode; ?>">
+                    <?php if($adstts<>""){  ?>
+                        <input type="hidden" name="adstts" value="<?php echo $adstts; ?>">
+                    <?php  } ?>
                     <table class="search_table" summary="検索用テーブル">
                         <tbody>
                             <tr>

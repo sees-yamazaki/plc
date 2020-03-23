@@ -419,12 +419,27 @@ foreach ($keywords as $word) {
 });</script> 
 <script type="text/javascript">
 $(function(){
+    $('#name').bind('keydown keyup keypress change',function(){
+        var thisValueLength = 50 - $(this).val().length;
+        $('.count0').html(thisValueLength);
+    });
     $('#comment').bind('keydown keyup keypress change',function(){
-        var thisValueLength = $(this).val().length;
-        $('.count1').html(thisValueLength);
+        input = $(this).val().replace(/\\n|\r\n|\n\r|\r|\n/g, "\r\n");
+        if (input == null) {
+            $('.count1').html(0);
+        } else if (input.length == 0) {
+            $('.count1').html(500);
+        } else {
+            var inputLen = 500 - input.length;
+            inputLen >= 0 ? inputLen : 0;
+            $('.count1').html(inputLen);
+        }
+
+        //var thisValueLength = 500 - $(this).val().length;
+        //$('.count1').html(thisValueLength);
     });
     $('#ad_text').bind('keydown keyup keypress change',function(){
-        var thisValueLength = $(this).val().length;
+        var thisValueLength = 25 - $(this).val().length;
         $('.count2').html(thisValueLength);
     });
 });
@@ -490,7 +505,8 @@ $(function(){
                             </tr>
                             <tr>
                                 <th>広告名<span>※</span></th>
-                                <td><input type="text" name="name" value="<?php echo $adware->name; ?>" size="50"
+                                <td><span class="count0"><?php echo 50-mb_strlen($adware->name); ?></span><br>
+                                <input type="text" id="name" name="name" value="<?php echo $adware->name; ?>" size="50"
                                         maxlength="50" required>
                                 </td>
                             </tr>
@@ -505,14 +521,14 @@ $(function(){
                             </tr>
                             <tr>
                                 <th>広告説明文<span>※</span></th>
-                                <td><span class="count1">0</span><br>
+                                <td><span class="count1"><?php echo 500-mb_strlen($adware->comment); ?></span><br>
                                 <textarea name="comment" id="comment" cols="" rows="" class="textarea"
                                         required maxlength="500"><?php echo $adware->comment; ?></textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <th>キャッチコピー</th>
-                                <td><span class="count2">0</span><br>
+                                <td><span class="count2"><?php echo 25-mb_strlen($adware->ad_text); ?></span><br>
                                     <input type="text" id="ad_text" name="ad_text" value="<?php echo $adware->ad_text; ?>" size="50"
                                         maxlength="25">
                                 </td>
