@@ -12,6 +12,8 @@ date_default_timezone_set('Asia/Tokyo');
 // エラーメッセージの初期化
 $errorMessage = '';
 
+$_SESSION[ $SESSION_NAME ] = '';
+
 
 ?>
 <!DOCTYPE html>

@@ -27,7 +27,7 @@ $isPaging = $_POST['isPaging'];
 
 
 $offsetPage = 0;
-$limitPage = 3;
+$limitPage = 10;
 $crntPage = empty($_POST['page']) ? 1: $_POST['page'];
 
 if (!isset($_POST['run'])) {

@@ -76,7 +76,7 @@ $accss = getAccessLimit($startdt, $enddt, $LOGIN_ID, $limitPage, $offsetPage);
 $adHtml='<div class="affiliate_rowList">';
 foreach ($accss as $ad) {
     $adHtml.='<div class="row">';
-    $adHtml.='<a href="x10u_offer_detail.php?id='.$ad->id.'">';
+    $adHtml.='<a href="x10u_offer_detail.php?id='.$ad->adware.'">';
     if ($ad->adware_type=="0") {
         $adHtml .= '<p class="label"><span class="bg_pink">目標達成</span>';
     } else {
@@ -85,7 +85,7 @@ foreach ($accss as $ad) {
     if ($ad->isFinish=="1") {
         $adHtml .= '<span class="bg_gry_dark2">掲載終了</span>';
     }
-    $adHtml .= '<span class="time">'.date('Y-m-d H:i:s', $acs->regist).'</span></p>';
+    $adHtml .= '<span class="time">'.date('Y-m-d H:i:s', $ad->regist).'</span></p>';
 
     $wk = $ad->approvable=="1" ? '<span class="ap">承</span>' : '';
     $adHtml.='<p class="row_text">'.$wk.$ad->name.'</p>';

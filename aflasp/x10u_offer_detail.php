@@ -24,16 +24,20 @@ if (empty($LOGIN_ID)) {
 $id = empty($_GET['id']) ? $_POST['id'] : $_GET['id'];
 
 if (isset($_GET['req'])) {
-    $ofr = new cls_offer();
-    $ofr->adware = $id;
-    $ofr->nuser = $LOGIN_ID ;
-    $ofr->status = "0";
     if ($_GET['req']=="0") {
         $ofr = getOfferStatus($id, $LOGIN_ID);
-        if (is_null($ofr->status)) {
+          if (is_null($ofr->status)) {
+            $ofr = new cls_offer();
+            $ofr->adware = $id;
+            $ofr->nuser = $LOGIN_ID ;
+            $ofr->status = "0";
             insertX10Offer($ofr);
         }
     } else {
+        $ofr = new cls_offer();
+        $ofr->adware = $id;
+        $ofr->nuser = $LOGIN_ID ;
+        $ofr->status = "0";
         deleteX10Offer($ofr);
     }
 }

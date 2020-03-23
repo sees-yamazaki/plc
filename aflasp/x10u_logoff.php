@@ -1,3 +1,20 @@
+<?php
+include 'custom/conf.php';
+include 'x10c_logging.php';
+include 'x10c_helper.php';
+
+// セッション再開
+session_start();
+
+//Timezone
+date_default_timezone_set('Asia/Tokyo');
+
+// エラーメッセージの初期化
+$errorMessage = '';
+
+$_SESSION[ $SESSION_NAME ] = '';
+
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
