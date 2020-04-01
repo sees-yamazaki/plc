@@ -195,6 +195,7 @@ class cls_pays
     public $adware_type ;
     public $approvable ;
     public $stts ;
+    public $isFinish ;
 }
 
 
@@ -246,27 +247,32 @@ function getPaysX10($nUserId)
         $results = array();
 
         require 'dns.php';
-        $sql = "select adwares,max(name) as name, max(limits) as limits, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2, max(startdt) as startdt, max(enddt) as enddt, max(adware_type) as adware_type, max(approvable) as approvable from `v_pay_x10` WHERE owner=:owner group by adwares";
+        // $sql = "select adwares,max(name) as name, max(limits) as limits, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2, max(startdt) as startdt, max(enddt) as enddt, max(adware_type) as adware_type, max(approvable) as approvable from `v_pay_x10` WHERE owner=:owner group by adwares";
+        $sql = "select x.id,x.name as xname,x.startdt as xstartdt,x.enddt as xenddt,x.limits as xlimits,x.adware_type as xadware_type,x.approvable as xapprovable, x.stts as xstts,x.isFinish as xisFinish, p.* from `x10_all_adwares` x LEFT JOIN `v_pay_x10_by_owner` p ON p.owner=:owner AND p.adwares=x.id  where (x.nuser='OPN' OR x.nuser=:owner) AND x.status=2";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result = new cls_pays();
-            $result->id = $row['adwares'];
-            $result->name = $row['name'];
-            $result->startdt = $row['startdt'];
-            $result->enddt = $row['enddt'];
-            $result->limits = is_null($row['limits']) ? 0 : $row['limits'];
-            $result->adware_type = $row['adware_type'];
-            $result->approvable = $row['approvable'];
-            $result->cnt = $row['cnt'];
-            $result->cnt0 = $row['cnt0'];
-            $result->cnt1 = $row['cnt1'];
-            $result->cnt2 = $row['cnt2'];
-            $result->cst = $row['cst'];
-            $result->cst0 = $row['cst0'];
-            $result->cst1 = $row['cst1'];
-            $result->cst2 = $row['cst2'];
+            $result->id = $row['id'];
+            $result->name = $row['xname'];
+            $result->startdt = $row['xstartdt'];
+            $result->enddt = $row['xenddt'];
+            $result->limits = is_null($row['xlimits']) ? 0 : $row['xlimits'];
+            $result->adware_type = $row['xadware_type'];
+            $result->approvable = $row['xapprovable'];
+            $result->cnt = is_null($row['cnt']) ? 0 : $row['cnt'];
+            $result->cnt0 = is_null($row['cnt0']) ? 0 : $row['cnt0'];
+            $result->cnt1 = is_null($row['cnt1']) ? 0 : $row['cnt1'];
+            $result->cnt2 = is_null($row['cnt2']) ? 0 : $row['cnt2'];
+            $result->cst = is_null($row['cst']) ? 0 : $row['cst'];
+            $result->cst0 = is_null($row['cst0']) ? 0 : $row['cst0'];
+            $result->cst1 = is_null($row['cst1']) ? 0 : $row['cst1'];
+            $result->cst2 = is_null($row['cst2']) ? 0 : $row['cst2'];
+            $result->stts = $row['xstts'];
+            $result->isFinish = $row['xisFinish'];
+            logging($result->id);
+            logging($result->isFinish);
             array_push($results, $result);
         }
     } catch (PDOException $e) {

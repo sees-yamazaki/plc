@@ -3,6 +3,13 @@
 // セッション開始
 session_start();
 
+include 'custom/conf.php';
+include 'x10c_logging.php';
+include 'x10c_helper.php';
+include 'x10c/db/x10.php';
+include 'x10c/db/nuser.php';
+include 'x10c/db/adwares.php';
+
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
 $LOGIN_TYPE = $_SESSION[ $SESSION_TYPE ];
 

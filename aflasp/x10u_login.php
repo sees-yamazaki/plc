@@ -3,6 +3,7 @@ include 'custom/conf.php';
 include 'x10c_logging.php';
 include 'x10c_helper.php';
 include 'x10c/db/x10.php';
+include 'x10c/db/nuser.php';
 
 // セッション再開
 session_start();
@@ -31,11 +32,24 @@ if (isset($_POST['login'])) {
         $m_mail = $_POST['m_mail'];
         $m_pw = $_POST['m_pw'];
         $nId = doLogin($m_mail, $m_pw);
-        if (!empty($nId)) {
-            $_SESSION[ $SESSION_NAME ] = $nId;
-            header('Location: x10u_mypage.php');
-        } else {
-            $errorMessage = 'ログインできませんでした。';
+        if (is_null($nId)) {
+            $err_mail_div = ' is-error';
+            $err_mail_msg = '<p class="form-row-error-text">ログインできませんでした。</p>';
+        }else{
+            $nUser = getNuser($nId);
+            if ($nUser->activate=="1") {
+                $err_mail_div = ' is-error';
+                $err_mail_msg = '<p class="form-row-error-text">メール認証が完了しておりません。メール認証を完了の上ログイン下さい。</p>';
+            } elseif ($nUser->activate=="2") {
+                $err_mail_div = ' is-error';
+                $err_mail_msg = '<p class="form-row-error-text">管理者の承認が完了しておりません。</p>';
+            } elseif ($nUser->activate=="4") {
+                $_SESSION[ $SESSION_NAME ] = $nId;
+                header('Location: x10u_mypage.php');
+            } else {
+                $err_mail_div = ' is-error';
+                $err_mail_msg = '<p class="form-row-error-text">ログインできませんでした。</p>';
+            }
         }
     }
 }
@@ -75,14 +89,14 @@ if (isset($_POST['login'])) {
         <form action="" class="form__login" method="post" name="frm1">
           <div class="form-row <?php echo $err_mail_div; ?>">
               <?php echo $err_mail_msg; ?>
-            <input type="text" name="m_mail" placeholder="メールアドレスを入力" required>
+            <input type="text" name="m_mail" value="<?php echo $_POST['m_mail'] ?>" placeholder="メールアドレスを入力" required>
           </div>
           <div class="form-row <?php echo $err_pass_div; ?>">
               <?php echo $err_pass_msg; ?>
-            <input type="text" name="m_pw" placeholder="パスワードを入力" required>
+            <input type="password" name="m_pw" placeholder="パスワードを入力" required>
           </div>
           <div class="btn"><a href="javascript:document.frm1.submit()" class="bg_blu">ログイン</a></div>
-          <p class="login__forget_text">ID・パスワードをお忘れの方は<a href="" class="text-link text-underline">こちら</a></p>
+          <p class="login__forget_text">ID・パスワードをお忘れの方は<a href="x10u_reminder.php" class="text-link text-underline">こちら</a></p>
           <input type="hidden" name="login" value="1" />
         </form>
       </div>

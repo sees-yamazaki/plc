@@ -28,7 +28,8 @@ $pays_1 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 1);
 $termHtml = date('Y年m月d日', strtotime("first day of this month"))."〜".date('m月d日', strtotime("now"));
 
 // 直近５日間に公開されて、現在公開中の広告を取得する
-$ads = getAdwaresRecentry(5);
+//$ads = getAdwaresRecentry(5);
+$ads = getAdwaresLimit(" AND (isFinish=0) ",5,0);
 
 $pickupHtml='';
 foreach ($ads as $ad) {
@@ -118,7 +119,7 @@ $approved = getApprovedAdwareLimit($LOGIN_ID, 3);
 $approvedHtml = '';
 foreach ($approved as $app) {
     $approvedHtml .= '<div class="row">';
-    $approvedHtml .= '<a href="x10u_offer_detail.php?id='.$ad->id.'">';
+    $approvedHtml .= '<a href="x10u_offer_detail.php?id='.$app->adware.'">';
     if ($app->adware_type=="0") {
         $approvedHtml .= '<p class="label"><span class="bg_pink">目標達成</span></p>';
     }else{
@@ -130,7 +131,7 @@ foreach ($approved as $app) {
     $approvedHtml .= '';
 }
 if (empty($approvedHtml)) {
-    $approvedHtml='';
+    $approvedHtml='<div class="row"><p class="row_text">まだ承認済みオファーがありません</p></div>';
 }
 
 ?>

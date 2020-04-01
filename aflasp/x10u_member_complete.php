@@ -50,7 +50,7 @@
       <div class="sec__inner container">
 
         <div class="form__complete_text text-center">
-          <p>会員登録が完了しました。</p>
+          <p>会員登録が完了しました。<br>登録されたメールアドレスに認証URLを送信しましたのでクリックして認証後、ログイン可能です。</p>
         </div>
 
         <div class="form__submit">

@@ -319,11 +319,13 @@ foreach ($tags as $tag) {
         <?php echo $titleHtml; ?>
 
         
-        <div class="article__section article__section_outline">
+        <div class="article__section article__section_outline" id="url">
           <h3 class="bar-title"><span class="bar-title-text">オファー概要</span></h3>
           <p class="article__section_outline_text"><?php echo $ad->comment; ?></p>
+          <?php if(mb_strlen($ad->comment)>120){ ?>
           <div class="filter-cover sp"></div>
           <p class="js-btn-filter btn-filter-off f-blu sp">続きを読む</p>
+          <?php } ?>
         </div>
         <div class="article__section">
             <?php echo $offerHtml; ?>

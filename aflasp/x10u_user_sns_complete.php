@@ -68,19 +68,19 @@ $nUserX = getNuserX10($LOGIN_ID);
             <div class="dl-style">
               <dl>
                 <dt>Instagramアカウント名</dt>
-                <dd><?php echo $nUserX->instagram; ?></dd>
+                <dd><?php echo empty($nUserX->instagram) ? '設定なし' :  $nUserX->instagram; ?></dd>
               </dl>
               <dl>
                 <dt>Twitterアカウント名</dt>
-                <dd><?php echo $nUserX->twitter; ?></dd>
+                <dd><?php echo empty($nUserX->twitter) ? '設定なし' :  $nUserX->twitter; ?></dd>
               </dl>
               <dl>
                 <dt>Facebookアカウント名</dt>
-                <dd><?php echo $nUserX->facebook; ?></dd>
+                <dd><?php echo empty($nUserX->facebook) ? '設定なし' :  $nUserX->facebook; ?></dd>
               </dl>
               <dl>
                 <dt>Youtubeアカウント名</dt>
-                <dd><?php echo $nUserX->youtube; ?></dd>
+                <dd><?php echo empty($nUserX->youtube) ? '設定なし' :  $nUserX->youtube; ?></dd>
               </dl>
             </div>
           </div>

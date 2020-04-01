@@ -240,14 +240,14 @@ $adHtml.='</div>';
             <form class="search__form" action="" method="post" name="frm">
               <div class="search__form_row_wrap access__form_row_wrap">
                 <div class="form-row">
-                  <span class="input_date_wrap"><input type="date" name="startdt" value="<?php echo $startdt; ?>" placeholder="日付を選択して下さい"><img class="icon_calendar" src="./assets/img/icon_calendar.svg" alt=""></span> から　
+                  <span class="input_date_wrap"><input type="date" name="startdt" value="<?php echo $startdt; ?>" placeholder="日付を選択して下さい"><img class="icon_calendar" src="./x10u/assets/img/icon_calendar.svg" alt=""></span> から　
                 </div>
                 <div class="form-row">
-                  <span class="input_date_wrap"><input type="date" name="enddt" value="<?php echo $enddt; ?>" placeholder="日付を選択して下さい"><img class="icon_calendar" src="./assets/img/icon_calendar.svg" alt=""></span> まで　
+                  <span class="input_date_wrap"><input type="date" name="enddt" value="<?php echo $enddt; ?>" placeholder="日付を選択して下さい"><img class="icon_calendar" src="./x10u/assets/img/icon_calendar.svg" alt=""></span> まで　
                 </div>
                 <div class="search__submit search__submit">
                   <input type="submit" value="表示する" class="input_base">
-                    <input type="hidden" name="page" value=""><br>
+                    <input type="hidden" name="page" value="">
                 </div>
               </div>
             </form>

@@ -96,70 +96,70 @@ $nUserX = getNuserX10($LOGIN_ID);
                             </div>
                         <?php } ?>    
                         <div class="dl-style">
+                                            <?php if(!empty($nUserX->instagram)){  ?>
                             <dl>
                                 <dt>Instagram</dt>
                                 <dd>
                                     <div class="icon-sns-wrap">
                                         <span class="icon-sns icon-sns-insta"></span>
                                         <p class="input-sns">&nbsp;
-                                            <?php if(!empty($nUserX->instagram)){  ?>
                                             <a href="https://www.instagram.com/<?php echo $nUserX->instagram; ?>/?hl=ja"
                                                 target="_blank" class="text-link text-underline">
                                                 <?php echo $nUserX->instagram; ?>
                                                 <span class="icon_gaibulink"></span></a>
-                                            <?php }  ?>
                                         </p>
                                     </div>
                                 </dd>
                             </dl>
+                                            <?php }  ?>
+                                            <?php if(!empty($nUserX->twitter)){  ?>
                             <dl>
                                 <dt>Twitter</dt>
                                 <dd>
                                     <div class="icon-sns-wrap">
                                         <span class="icon-sns icon-sns-tw"></span>
                                         <p class="input-sns">&nbsp;
-                                            <?php if(!empty($nUserX->twitter)){  ?>
                                             <a href="https://twitter.com/<?php echo $nUserX->twitter; ?>"
                                                 target="_blank" class="text-link text-underline">
                                                 <?php echo $nUserX->twitter; ?>
                                                 <span class="icon_gaibulink"></span></a>
-                                            <?php }  ?>
                                         </p>
                                     </div>
                                 </dd>
                             </dl>
+                                            <?php }  ?>
+                                            <?php if(!empty($nUserX->facebook)){  ?>
                             <dl>
                                 <dt>Facebook</dt>
                                 <dd>
                                     <div class="icon-sns-wrap">
                                         <span class="icon-sns icon-sns-fb"></span>
                                         <p class="input-sns">&nbsp;
-                                            <?php if(!empty($nUserX->facebook)){  ?>
                                             <a href="https://www.facebook.com/<?php echo $nUserX->facebook; ?>"
                                                 target="_blank" class="text-link text-underline">
                                                 <?php echo $nUserX->facebook; ?>
                                                 <span class="icon_gaibulink"></span></a>
-                                            <?php }  ?>
                                         </p>
                                     </div>
                                 </dd>
                             </dl>
+                                            <?php }  ?>
+                                            <?php if(!empty($nUserX->youtube)){  ?>
                             <dl>
                                 <dt>Youtube</dt>
                                 <dd>
                                     <div class="icon-sns-wrap">
                                         <span class="icon-sns icon-sns-yt"></span>
                                         <p class="input-sns">&nbsp;
-                                            <?php if(!empty($nUserX->youtube)){  ?>
                                             <a href="https://www.youtube.com/user/<?php echo $nUserX->youtube;  ?>"
                                                 target="_blank" class="text-link text-underline">
                                                 <?php echo $nUserX->youtube;  ?>
                                                 <span class="icon_gaibulink"></span></a>
-                                            <?php }  ?>
                                         </p>
                                     </div>
                                 </dd>
                             </dl>
+                                            <?php }  ?>
                         </div>
                         <div class="btn_wrap">
                             <div class="btn btn_edit"><a href="./x10u_user_sns_edit.php" class="bg_blu"><span
@@ -177,14 +177,19 @@ $nUserX = getNuserX10($LOGIN_ID);
                             </div>
                         <?php } ?>
                         <div class="dl-style">
+                                            <?php if(!empty($nUser->bank)){  ?>
                             <dl>
                                 <dt>金融機関名</dt>
                                 <dd><?php echo $nUser->bank; ?></dd>
                             </dl>
+                                            <?php }  ?>
+                                            <?php if(!empty($nUser->branch)){  ?>
                             <dl>
                                 <dt>支店名</dt>
                                 <dd><?php echo $nUser->branch; ?></dd>
                             </dl>
+                                            <?php }  ?>
+                                            <?php if(!empty($nUser->bank_name)){  ?>
                             <dl>
                                 <dt>種別</dt>
                                 <?php
@@ -192,20 +197,27 @@ $nUserX = getNuserX10($LOGIN_ID);
                                     $bankType = "貯蓄";
                                 } elseif ($nUser->bank_type=="2") {
                                     $bankType = "当座";
-                                } else {
+                                } elseif ($nUser->bank_type=="1") {
                                     $bankType = "普通";
+                                } else {
+                                    $bankType = "";
                                 }
                                 ?>
                                 <dd><?php echo $bankType; ?></dd>
                             </dl>
+                                            <?php }  ?>
+                                            <?php if(!empty($nUser->bank_name)){  ?>
                             <dl>
                                 <dt>口座名義（カナ）</dt>
                                 <dd><?php echo $nUser->bank_name; ?></dd>
                             </dl>
+                                            <?php }  ?>
+                                            <?php if(!empty($nUser->number)){  ?>
                             <dl>
                                 <dt>口座番号</dt>
                                 <dd><?php echo $nUser->number; ?></dd>
                             </dl>
+                                            <?php }  ?>
                         </div>
                         <div class="btn_wrap">
                             <div class="btn btn_edit"><a href="./x10u_user_bank_edit.php" class="bg_blu"><span
@@ -213,7 +225,7 @@ $nUserX = getNuserX10($LOGIN_ID);
                         </div>
                     </div>
 
-                    <div class="btn"><a href="" class="bg_gry_dark">退会</a></div>
+                    <div class="btn"><a href="x10u_user_withdrawal_confirm.php" class="bg_gry_dark">退会</a></div>
 
                 </div>
             </div>

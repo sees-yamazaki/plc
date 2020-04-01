@@ -6,6 +6,7 @@ class cls_sys
     public $mail_name ;
     public $site_title ;
     public $home ;
+    public $nuser_accept_admin;
 }
 
 function getSystem()
@@ -20,6 +21,7 @@ function getSystem()
         $result->mail_name = $row['mail_name'];
         $result->site_title = $row['site_title'];
         $result->home = $row['home'];
+        $result->nuser_accept_admin = $row['nuser_accept_admin'];
 
     } catch (PDOException $e) {
         //

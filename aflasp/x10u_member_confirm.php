@@ -48,15 +48,15 @@ if (isset($_POST['doCheck'])) {
 
         $nId = insertNuser($nUser);
 
-        $nUser = new cls_nuser_x10();
-        $nUser->id =  $nId;
-        $nUser->nickname = "";
-        $nUser->instagram = $_POST['instagram'];
-        $nUser->facebook = $_POST['facebook'];
-        $nUser->twitter = $_POST['twitter'];
-        $nUser->youtube = $_POST['youtube'];
+        $nUserX = new cls_nuser_x10();
+        $nUserX->id =  $nId;
+        $nUserX->nickname = "";
+        $nUserX->instagram = $_POST['instagram'];
+        $nUserX->facebook = $_POST['facebook'];
+        $nUserX->twitter = $_POST['twitter'];
+        $nUserX->youtube = $_POST['youtube'];
 
-        insertNuserX10($nUser);
+        insertNuserX10($nUserX);
 
 
         $sys = getSystem();
@@ -69,7 +69,7 @@ if (isset($_POST['doCheck'])) {
             $sys->home = substr($sys->home, 0, -1);
         }
         $md5 = md5($nId . $nUser->mail);
-        $text .= $sys->home."/x10n_activation.php?type=nUser&id=".$nId."&md5=".$md5;
+        $text .= $sys->home."/x10u_activation.php?type=nUser&id=".$nId."&md5=".$md5;
         $text .= "\n\n".$sys->site_title."\n\n".$sys->home;
 
         $to      = $nUser->mail;
@@ -172,19 +172,19 @@ $youtube = str_replace('/','',str_replace('https://www.youtube.com/channel/','',
             <div class="dl-style">
               <dl>
                 <dt>Instagramアカウント名</dt>
-                <dd><?php echo $instagram; ?></dd>
+                <dd><?php echo empty($instagram) ? '未設定' :  $instagram; ?></dd>
               </dl>
               <dl>
                 <dt>Twitterアカウント名</dt>
-                <dd><?php echo $twitter; ?></dd>
+                <dd><?php echo empty($twitter) ? '未設定' :  $twitter; ?></dd>
               </dl>
               <dl>
                 <dt>Facebookアカウント名</dt>
-                <dd><?php echo $facebook; ?></dd>
+                <dd><?php echo empty($facebook) ? '未設定' :  $facebook; ?></dd>
               </dl>
               <dl>
                 <dt>Youtubeアカウント名</dt>
-                <dd><?php echo $youtube; ?></dd>
+                <dd><?php echo empty($youtube) ? '未設定' :  $youtube; ?></dd>
               </dl>
             </div>
           </div>
@@ -194,11 +194,11 @@ $youtube = str_replace('/','',str_replace('https://www.youtube.com/channel/','',
             <div class="dl-style">
               <dl>
                 <dt>金融機関名</dt>
-                <dd><?php echo $_POST['bank']; ?></dd>
+                <dd><?php echo empty($_POST['bank']) ? '未設定' :  $_POST['bank']; ?></dd>
               </dl>
               <dl>
                 <dt>支店名</dt>
-                <dd><?php echo $_POST['branch']; ?></dd>
+                <dd><?php echo empty($_POST['branch']) ? '未設定' :  $_POST['branch']; ?></dd>
               </dl>
               <dl>
                 <dt>種別</dt>
@@ -207,19 +207,21 @@ $youtube = str_replace('/','',str_replace('https://www.youtube.com/channel/','',
                     $bankType = "貯蓄";
                 } elseif ($_POST['bank-type']=="2") {
                     $bankType = "当座";
-                } else {
+                  } elseif ($_POST['bank-type']=="1") {
                     $bankType = "普通";
+                } else {
+                    $bankType = "未設定";
                 }
                 ?>
                 <dd><?php echo $bankType; ?></dd>
               </dl>
               <dl>
                 <dt>口座番号</dt>
-                <dd><?php echo $_POST['number']; ?></dd>
+                <dd><?php echo empty($_POST['number']) ? '未設定' :  $_POST['number']; ?></dd>
               </dl>
               <dl>
                 <dt>口座名義（カナ）</dt>
-                <dd><?php echo $_POST['bank_name']; ?></dd>
+                <dd><?php echo empty($_POST['bank_name']) ? '未設定' :  $_POST['bank_name']; ?></dd>
               </dl>
             </div>
           </div>

@@ -167,9 +167,8 @@ function paging(vlu) {
 
     <section class="sec-search section">
       <div class="section__inner container">
-        <h2 class="sec-title"><span class="icon_note"></span>オファー一覧</h2>
         <div class="search__contents_wrap">
-          <div class="search__btn_drop"><a class="js-drop_btn" href="">絞り込んで検索</a></div>
+          <div class="custom__btn_drop"><a class="js-drop_btn" href="">絞り込んで検索</a></div>
           <div class="search__contents drop_contents">
             <form action="" method="POST" name="frm">
               <div class="search__contents_block">

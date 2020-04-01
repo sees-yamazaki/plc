@@ -149,12 +149,65 @@ function getNuser($nId)
     return $result;
 }
 
+function getNuserByMail($mail)
+{
+    try {
+        $result = new cls_nuser();
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT * FROM `nuser` WHERE delete_key=0 AND mail=:mail");
+        $stmt->bindParam(':mail', $mail, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        if ($row = $stmt->fetch()) {
+            $result->delete_key = $row['delete_key'];
+            $result->id = $row['id'];
+            $result->name = $row['name'];
+            $result->zip1 = $row['zip1'];
+            $result->zip2 = $row['zip2'];
+            $result->adds = $row['adds'];
+            $result->add_sub = $row['add_sub'];
+            $result->tel = $row['tel'];
+            $result->fax = $row['fax'];
+            $result->url = $row['url'];
+            $result->mail = $row['mail'];
+            $result->bank_code = $row['bank_code'];
+            $result->bank = $row['bank'];
+            $result->branch_code = $row['branch_code'];
+            $result->branch = $row['branch'];
+            $result->bank_type = $row['bank_type'];
+            $result->number = $row['number'];
+            $result->bank_name = $row['bank_name'];
+            $result->parent = $row['parent'];
+            $result->grandparent = $row['grandparent'];
+            $result->greatgrandparent = $row['greatgrandparent'];
+            $result->pass = $row['pass'];
+            $result->terminal = $row['terminal'];
+            $result->activate = $row['activate'];
+            $result->pay = $row['pay'];
+            $result->tier = $row['tier'];
+            $result->rank = $row['rank'];
+            $result->personal_rate = $row['personal_rate'];
+            $result->magni = $row['magni'];
+            $result->mail_reception = $row['mail_reception'];
+            $result->is_mobile = $row['is_mobile'];
+            $result->limits = $row['limits'];
+            $result->regist = $row['regist'];
+            $result->logout = $row['logout'];
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $result;
+}
+
 function countNUserByMail($mail)
 {
     $cnt=0;
     try {
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `nuser` WHERE mail=:mail");
+        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `nuser` WHERE mail=:mail AND delete_key=0");
         $stmt->bindParam(':mail', $mail, PDO::PARAM_STR);
         $stmt->execute();
         if ($row = $stmt->fetch()) {
@@ -171,7 +224,7 @@ function countNUserByMailOthers($mail,$id)
     $cnt=0;
     try {
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `nuser` WHERE mail=:mail AND id<>:id");
+        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `nuser` WHERE mail=:mail AND delete_key=0 AND id<>:id");
         $stmt->bindParam(':mail', $mail, PDO::PARAM_STR);
         $stmt->bindParam(':id', $id, PDO::PARAM_STR);
         $stmt->execute();
@@ -366,13 +419,35 @@ function updateNuserBank($nuser)
     }
 }
 
+function withdrawalNuser($nId)
+{
+    try {
+        require 'dns.php';
+        $sql = "UPDATE `nuser` SET delete_key=1 WHERE id=:id";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':id', $nId, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("UPDATE ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+}
+
 function updateNuserActivate($nId,$stts)
 {
     try {
         require 'dns.php';
         $sql = "UPDATE `nuser` SET `activate`=:activate WHERE id=:id";
         $stmt = $pdo -> prepare($sql);
-        $stmt->bindParam(':id', $nuser->id, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $nId, PDO::PARAM_STR);
         $stmt->bindParam(':activate', $stts, PDO::PARAM_INT);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 

@@ -82,19 +82,19 @@ $youtube = str_replace('/','',str_replace('https://www.youtube.com/channel/','',
             <div class="dl-style">
               <dl>
                 <dt>Instagramアカウント名</dt>
-                <dd><?php echo $instagram; ?></dd>
+                <dd><?php echo empty($instagram) ? '設定なし' :  $instagram; ?></dd>
               </dl>
               <dl>
                 <dt>Twitterアカウント名</dt>
-                <dd><?php echo $twitter; ?></dd>
+                <dd><?php echo empty($twitter) ? '設定なし' :  $twitter; ?></dd>
               </dl>
               <dl>
                 <dt>Facebookアカウント名</dt>
-                <dd><?php echo $facebook; ?></dd>
+                <dd><?php echo empty($facebook) ? '設定なし' :  $facebook; ?></dd>
               </dl>
               <dl>
                 <dt>Youtubeアカウント名</dt>
-                <dd><?php echo $youtube; ?></dd>
+                <dd><?php echo empty($youtube) ? '設定なし' :  $youtube; ?></dd>
               </dl>
             </div>
           </div>

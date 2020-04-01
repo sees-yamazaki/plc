@@ -25,7 +25,8 @@ $md5_ = md5($nId . $nUser->mail);
 
 $html='';
 if ($md5_==$md5) {
-  updateNuserActivate($nId,2);
+  $sys = getSystem();
+  updateNuserActivate($nUser->id,$sys->nuser_accept_admin);
   $html.='<div class="alert_box_complete">';
   $html.='<h4 class="alert_box_complete_title"><span class="icon_check_grn"></span>アクティベーションが完了致しました。</h4>';
   $html.='<p class="alert_box_text">下記よりログイン画面にお進み下さい。</p>';

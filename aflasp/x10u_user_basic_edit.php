@@ -17,41 +17,77 @@ date_default_timezone_set('Asia/Tokyo');
 $errorMessage = '';
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
-if(empty($LOGIN_ID)){ header('Location: x10u_logoff.php'); }
+if (empty($LOGIN_ID)) {
+    header('Location: x10u_logoff.php');
+}
 
 
-if(isset($_POST['doCheck'])){
-
-    $nUser->mail = $_POST['mail'];
-    $nUser->mail_confirm = $_POST['mail_confirm'];
-    $nUser->pass = $_POST['pass'];
-    $nUser->pass_confirm = $_POST['pass_confirm'];
-    $nUser->name = $_POST['name'];
-    $nUser->tel = $_POST['tel'];
-    if ($_POST['mail'] <> $_POST['mail_confirm']) {
+if (isset($_POST['doCheck'])) {
+    $isErr ='';
+    if (empty($_POST['mail']) || empty($_POST['mail_confirm'])) {
+        $err_mail_div = ' is-error';
+        $err_mail_msg = '<p class="form-row-error-text">メールアドレスとメールアドレス（再入力）を入力してください。</p>';
+        $isErr ='e';
+    } elseif ($_POST['mail'] <> $_POST['mail_confirm']) {
         $err_mail_div = ' is-error';
         $err_mail_msg = '<p class="form-row-error-text">メールアドレスが一致しません。</p>';
+        $isErr ='e';
+    } elseif (!preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\+\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $_POST['mail'])) {
+        $err_mail_div = ' is-error';
+        $err_mail_msg = '<p class="form-row-error-text">メールアドレスが正しい形式ではありません。</p>';
+        $isErr ='e';
+    } elseif (countNUserByMailOthers($_POST['mail'], $LOGIN_ID)>0) {
+        $err_mail_div = ' is-error';
+        $err_mail_msg = '<p class="form-row-error-text">このメールアドレスは使用されています。</p>';
+        $isErr ='e';
+    }
+    
+    if (empty($_POST['pass']) || empty($_POST['pass_confirm'])) {
+        $err_pass_div = ' is-error';
+        $err_pass_msg = '<p class="form-row-error-text">パスワードとパスワード（再入力）を入力してください。</p>';
+        $isErr ='e';
     } elseif ($_POST['pass'] <> $_POST['pass_confirm']) {
         $err_pass_div = ' is-error';
         $err_pass_msg = '<p class="form-row-error-text">パスワードが一致しません。</p>';
-    } elseif (countNUserByMailOthers($_POST['mail'],$LOGIN_ID)>0) {
-        $err_mail_div = ' is-error';
-        $err_mail_msg = '<p class="form-row-error-text">このメールアドレスは使用されています。</p>';
-    } else {
-        // $pw1 = preg_replace('/^\w+:/', '', $nUser->pass);
-        // $pw2 = openssl_encrypt($pw1, 'aes-256-ecb', base64_encode('AES'));
-        // $nUser->pass = $pw2;
-
+        $isErr ='e';
+    } elseif (mb_strlen($_POST['pass'])<8) {
+        $err_pass_div = ' is-error';
+        $err_pass_msg = '<p class="form-row-error-text">パスワードは８文字以上で入力してください。</p>';
+        $isErr ='e';
+    } elseif (!preg_match("/^[\w]+$/", $_POST['pass'])) {
+        $err_pass_div = ' is-error';
+        $err_pass_msg = '<p class="form-row-error-text">パスワードは半角英数字で入力してください。</p>';
+        $isErr ='e';
+    }
+    
+    if (empty($_POST['name'])) {
+        $err_name_div = ' is-error';
+        $err_name_msg = '<p class="form-row-error-text">お名前を入力してください。</p>';
+        $isErr ='e';
+    }
+    
+    $tel = str_replace('-', '', $_POST['tel']);
+    if (empty($_POST['tel'])) {
+        $err_tel_div = ' is-error';
+        $err_tel_msg = '<p class="form-row-error-text">電話番号を入力してください。</p>';
+        $isErr ='e';
+    } elseif (!preg_match("/^(0{1}\d{9,10})$/", $tel)) {
+        $err_tel_div = ' is-error';
+        $err_tel_msg = '<p class="form-row-error-text">電話番号が正しい形式ではありません。</p>';
+        $isErr ='e';
+    }
+    
+    if (empty($isErr)) {
         header('Location: x10u_user_basic_confirm.php', true, 307);
     }
-}elseif(isset($_POST['4back'])){
+} elseif (isset($_POST['4back'])) {
     $nUser->mail = $_POST['mail'];
     $nUser->mail_confirm = $_POST['mail_confirm'];
     $nUser->pass = $_POST['pass'];
     $nUser->pass_confirm = $_POST['pass_confirm'];
     $nUser->name = $_POST['name'];
     $nUser->tel = $_POST['tel'];
-}else{
+} else {
     $nUser = getNuser($LOGIN_ID);
     $nUser->pass = "nochange";
     $nUser->mail_confirm = $nUser->mail;

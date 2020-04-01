@@ -498,10 +498,10 @@ function doLogin($m_mail, $m_pw)
         $pw2 = 'AES_OK:'.openssl_encrypt($pw1, 'aes-256-ecb', base64_encode('AES'));
 
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT * FROM `nuser` WHERE mail=:m_mail and pass=:m_pw and delete_key=0 and activate=4");
+        $stmt = $pdo->prepare("SELECT * FROM `nuser` WHERE mail=:m_mail and pass=:m_pw and delete_key=0");
         $stmt->bindParam(':m_mail', $m_mail, PDO::PARAM_STR);
         $stmt->bindParam(':m_pw', $pw2, PDO::PARAM_STR);
-        $stmt->execute();
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         if ($row = $stmt->fetch()) {
             $result = $row['id'];
         }

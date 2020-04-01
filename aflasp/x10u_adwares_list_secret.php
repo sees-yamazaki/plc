@@ -24,25 +24,31 @@ $offering = getOfferingAdware($LOGIN_ID);
 
 $ofrHtml='';
 foreach ($offering as $ofr) {
-    $ofrHtml.='<div class="row">';
-    $ofrHtml.='<a href="x10u_offer_detail.php?id='.$ofr->adware.'">';
-    if ($ofr->adware_type=="0") {
-        $ofrHtml .= '<p class="label"><span class="bg_pink">目標達成</span></p>';
-    } else {
-        $ofrHtml .= '<p class="label"><span class="bg_grn">クリック</span></p>';
+    $ad = getAdware($ofr->adware);
+    if ($ad->isFinish=="0") {
+        $ofrHtml.='<div class="row">';
+        $ofrHtml.='<a href="x10u_offer_detail.php?id='.$ofr->adware.'">';
+        if ($ofr->adware_type=="0") {
+            $ofrHtml .= '<p class="label"><span class="bg_pink">目標達成</span></p>';
+        } else {
+            $ofrHtml .= '<p class="label"><span class="bg_grn">クリック</span></p>';
+        }
+        $wk = $ofr->approvable=="1" ? '<span class="ap">承</span>' : '';
+        $ofrHtml.='<p class="row_text">'.$wk.$ofr->name.'</p>';
+        $ofrHtml.='</a>';
+        $ofrHtml.='</div>';
     }
-    $wk = $ofr->approvable=="1" ? '<span class="ap">承</span>' : '';
-    $ofrHtml.='<p class="row_text">'.$wk.$ofr->name.'</p>';
-    $ofrHtml.='</a>';
-    $ofrHtml.='</div>';
+}
+if(empty($ofrHtml)){
+    $ofrHtml='<div class="row"><p class="row_text">リクエスト中のオファーはございません。</p></div>';
 }
 
 
 
 $pays = getPaysX10($LOGIN_ID);
-foreach ($pays as $pay) {
-    $pay->stts = isAdwareFinish(getAdwareStatus($pay->id));
-}
+// foreach ($pays as $pay) {
+//     $pay->stts = isAdwareFinish(getAdwareStatus($pay->id));
+// }
 // $pays = countMonthlyPaysGroupsAll($LOGIN_ID,0);
 // $clickpays = countMonthlyPaysGroupsAll($LOGIN_ID,1);
 
@@ -113,7 +119,7 @@ $today = date('Y-m-d');
                                     </thead>
                                     <tbody>
                                         <?php foreach ($pays as $pay) { ?>
-                                        <?php if ($pay->approvable=="1" && $pay->adware_type=="0" && $pay->stts=="0" ) { ?>
+                                        <?php if ($pay->approvable=="1" && $pay->adware_type=="0" && $pay->isFinish=="0" ) { ?>
                                         <tr>
                                             <td class="td-text"><a
                                                     href='x10u_offer_detail.php?id=<?php echo $pay->id; ?>#url'><?php echo $pay->name; ?></a>
@@ -152,7 +158,7 @@ $today = date('Y-m-d');
                                     </thead>
                                     <tbody>
                                         <?php foreach ($pays as $pay) { ?>
-                                        <?php if ($pay->approvable=="1" && $pay->adware_type=="1" && $pay->stts=="0" ) { ?>
+                                        <?php if ($pay->approvable=="1" && $pay->adware_type=="1" && $pay->isFinish=="0" ) { ?>
                                         <tr>
                                             <td class="td-text"><a
                                                     href='x10u_offer_detail.php?id=<?php echo $pay->id; ?>'><?php echo $pay->name; ?></a>
@@ -166,7 +172,7 @@ $today = date('Y-m-d');
                                             <td class="td-num"><span class="num"><?php echo $pay->cst2; ?></span>円</td>
                                             <?php $wk = $cnt>0 ? "成果発生中" : "掲載用URL表示"; ?>
                                             <td class="td-text"><a
-                                                    href='x10u_offer_detail.php#url?id=<?php echo $pay->id; ?>'><?php echo $wk; ?></a>
+                                                    href='x10u_offer_detail.php?id=<?php echo $pay->id; ?>#url'><?php echo $wk; ?></a>
                                             </td>
                                         </tr>
                                         <?php } ?>
@@ -204,7 +210,7 @@ $today = date('Y-m-d');
                                     </thead>
                                     <tbody>
                                         <?php foreach ($pays as $pay) { ?>
-                                        <?php if ($pay->approvable=="1" && $pay->adware_type=="0" && $pay->stts=="1" ) { ?>
+                                        <?php if ($pay->approvable=="1" && $pay->adware_type=="0" && $pay->isFinish=="1" ) { ?>
                                         <tr>
                                             <td class="td-text"><a
                                                     href='x10u_offer_detail.php?id=<?php echo $pay->id; ?>'><?php echo $pay->name; ?></a>
@@ -238,7 +244,7 @@ $today = date('Y-m-d');
                                     </thead>
                                     <tbody>
                                         <?php foreach ($pays as $pay) { ?>
-                                        <?php if ($pay->approvable=="1" && $pay->adware_type=="1" && $pay->stts=="1" ) { ?>
+                                        <?php if ($pay->approvable=="1" && $pay->adware_type=="1" && $pay->isFinish=="1" ) { ?>
                                         <tr>
                                             <td class="td-text"><a
                                                     href='x10u_offer_detail.php?id=<?php echo $pay->id; ?>'><?php echo $pay->name; ?></a>
@@ -262,7 +268,7 @@ $today = date('Y-m-d');
 
                 <br><br><br>
                 <div class="btn">
-                    <a href="/" class="bd_blu">トップへ戻る</a>
+                    <a href="./x10u_mypage.php" class="bd_blu">トップへ戻る</a>
                 </div>
 
             </div>
