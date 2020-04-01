@@ -1,4 +1,4 @@
-<h1 class="header__logo"><a href="x10u_index.php"><img src="./x10u/assets/img/logo.png" alt="smafee スマフィー"></a></h1>
+<h1 class="header__logo"><a href="x10u_mypage.php"><img src="./x10u/assets/img/logo.png" alt="smafee スマフィー"></a></h1>
 <div class="header__btn_mypage"><a href="./x10u_mypage.php"><span class="mypage_text">MY<br class="sp">PAGE</span></a></div>
 <div class="header__menu">
   <nav class="header__gnavi">
@@ -19,7 +19,7 @@
     <div class="header__gnavi_group">
       <p class="header__gnavi_group_title">Conf</p>
       <ul class="header__gnavi_list flex-wrap">
-        <li><a href="./x10u_nuser.php">設定変更</a></li>
+        <li><a href="./x10u_user.php">設定変更</a></li>
       </ul>
     </div>
     <div class="header__gnavi_group">
