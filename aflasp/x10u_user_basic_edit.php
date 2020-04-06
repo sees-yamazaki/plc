@@ -80,6 +80,14 @@ if (isset($_POST['doCheck'])) {
     if (empty($isErr)) {
         header('Location: x10u_user_basic_confirm.php', true, 307);
     }
+
+    $nUser->mail = $_POST['mail'];
+    $nUser->mail_confirm = $_POST['mail_confirm'];
+    $nUser->pass = $_POST['pass'];
+    $nUser->pass_confirm = $_POST['pass_confirm'];
+    $nUser->name = $_POST['name'];
+    $nUser->tel = $_POST['tel'];
+    
 } elseif (isset($_POST['4back'])) {
     $nUser->mail = $_POST['mail'];
     $nUser->mail_confirm = $_POST['mail_confirm'];
@@ -155,13 +163,15 @@ if (isset($_POST['doCheck'])) {
                                 placeholder="パスワードを入力">
                             <p class="form-row-anno">※注意書きがここに入ります</p>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row <?php echo $err_name_div; ?>">
                             <p class="form-row-text"><span class="req">必須</span>お名前</p>
+                              <?php echo $err_name_msg; ?>
                             <input type="text" name="name" value="<?php echo $nUser->name;?>" placeholder="お名前を入力" required>
                             <p class="form-row-anno">※注意書きがここに入ります</p>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row <?php echo $err_tel_div; ?>">
                             <p class="form-row-text"><span class="req">必須</span>電話番号</p>
+                              <?php echo $err_tel_msg; ?>
                             <input type="tel" name="tel" value="<?php echo $nUser->tel;?>" placeholder="電話番号を入力" required>
                             <p class="form-row-anno">※注意書きがここに入ります</p>
                         </div>

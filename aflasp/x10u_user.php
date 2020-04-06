@@ -22,7 +22,8 @@ if(empty($LOGIN_ID)){ header('Location: x10u_logoff.php'); }
 
 $nUser = getNuser($LOGIN_ID);
 $nUserX = getNuserX10($LOGIN_ID);
-
+$x10Mail = getX10MailStts0($LOGIN_ID);
+$now = strtotime("now");
 
 ?>
 <!DOCTYPE html>
@@ -56,6 +57,14 @@ $nUserX = getNuserX10($LOGIN_ID);
 
         <section class="sec-member section">
             <div class="sec__inner container">
+
+<?php if(!empty($x10Mail->limittime) && $x10Mail->limittime>$now){ ?>
+    <div class="alert_box">
+    <h4 class="alert_box_title"><span class="icon_chuui_pnk"></span>メールアドレスが変更されています</h4>
+    <p class="alert_box_text">新しいアドレスへの変更は送信済みの認証メール内のURLをクリックすると変更が完了致します。</p>
+    </div>
+  <?php } ?>    
+
                 <div class="form__contents">
 
                     <div class="form__content_block">

@@ -398,7 +398,7 @@ function paging(vlu) {
                         <th>広告バナー画像</th>
                         <td>
                             <?php  if (!empty($ad->banner)) { ?>
-                            <div class="ad_image"><img src="<?php echo $ad->banner; ?>">
+                            <div class="ad_image"><img src="<?php echo $ad->banner; ?>" style="max-width: 400px;">
                             </div>
                             <?php  } else { ?>
                             <div class="ad_image"><span>No Image</span></div>

@@ -665,7 +665,7 @@ $(function(){
                                     <input name="banner" type="hidden" value="">
                                     <?php } else { ?>
                                     <a href="<?php echo $adware->banner; ?>" target="_blank"><img
-                                            src="<?php echo $adware->banner; ?>" alt=""></a>
+                                            src="<?php echo $adware->banner; ?>" alt=""  style="max-width: 80%;"></a>
                                     <br><input name="banner" type="file">
                                     <input name="banner_filetmp" type="hidden" value="<?php echo $adware->banner; ?>">
                                     <label><input type="checkbox" name="banner_DELETE" value="1">削除</label>

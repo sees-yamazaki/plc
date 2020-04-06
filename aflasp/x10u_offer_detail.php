@@ -48,13 +48,13 @@ $ad = getAdware($id);
 
 $titleHtml = '';
 $titleHtml .= '<div class="article__section_title">';
-if ($app->adware_type=="0") {
+if ($ad->adware_type=="0") {
     $titleHtml .= '<p class="label"><span class="bg_pink">目標達成</span></p>';
 } else {
     $titleHtml .= '<p class="label"><span class="bg_grn">クリック</span></p>';
 }
 $titleHtml .= '<h2 class="article__title">'.$ad->name.'</h2>';
-if ($app->approvable=="1") {
+if ($ad->approvable=="1") {
     $titleHtml .= '<p class="label-op bg_orn">承認制</p>';
 }
 $titleHtml .= '<div class="article__img"><img src="'.$ad->banner.'" alt=""></div>';

@@ -126,16 +126,18 @@ if ($adware->adware_type=="1") {
                                         $txt = '';
                                         $sns = getNuserX10($ofr->nuser);
                                         if(!empty($sns->instagram)){
-                                            $txt .= '[instagram]'.$sns->instagram."<br>";
+                                            $txt .= '[instagram]<a href="https://www.instagram.com/'.str_replace('@','',$sns->instagram).'" target="_blank" class="text-link text-underline">'.$sns->instagram."</a><br>";
                                         }
                                         if(!empty($sns->facebook)){
-                                            $txt .= '[facebook]'.$sns->facebook."<br>";
+                                            $txt .= '[facebook]<a href="https://www.facebook.com/'.str_replace('@','',$sns->facebook).'" target="_blank" class="text-link text-underline">'.$sns->facebook."</a><br>";
                                         }
                                         if(!empty($sns->twitter)){
-                                            $txt .= '[twitter]'.$sns->twitter."<br>";
+                                            $txt .= '[twitter]<a href="https://twitter.com/'.str_replace('@','',$sns->twitter).'"
+                                            target="_blank" class="text-link text-underline">'.$sns->twitter."</a><br>";
                                         }
                                         if(!empty($sns->youtube)){
-                                            $txt .= '[youtube]'.$sns->youtube."<br>";
+                                            $txt .= '[youtube]<a href="https://www.youtube.com/user/'.str_replace('@','',$sns->youtube).'"
+                                            target="_blank" class="text-link text-underline">'.$sns->youtube."</a><br>";
                                         }
                                         if(empty($txt)){
                                             $txt .= 'SNSアカウントは設定されていません';

@@ -33,6 +33,10 @@ if (isset($_POST['doSend'])) {
         $headers = 'From:"'.mb_encode_mimeheader($sys->mail_name).'" <'. trim($sys->mail_address).'>';
         mb_send_mail($to, $subject, $message, $headers);
         
+        //問い合わせ者にも送信
+        $to      = trim($_POST['mail']);
+        mb_send_mail($to, $subject, $message, $headers);
+
 
         header('Location: x10u_contact_complete.php');
     

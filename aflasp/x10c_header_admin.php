@@ -25,7 +25,46 @@
     $(function() {
         $('a[@rel*=lightbox]').lightBox();
     });
-    </script>
+    </script>    <style>
+    .cp_tooltip {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        background: linear-gradient(transparent 60%, #c1e4e9 60%);
+    }
+
+    .cp_tooltip .cp_tooltiptext {
+        position: absolute;
+        z-index: 1;
+        top: -5px;
+        left: 105%;
+        visibility: hidden;
+        /*width: auto;*/
+        white-space: nowrap;
+        padding: 0.3em 0.5em;
+        transition: opacity 1s;
+        text-align: center;
+        opacity: 0;
+        color: #ffffff;
+        border-radius: 3px;
+        background-color: #16160e;
+    }
+
+    cp_tooltip .cp_tooltiptext::after {
+        position: absolute;
+        top: 40%;
+        right: 100%;
+        margin-left: -5px;
+        content: ' ';
+        border: 5px solid transparent;
+        border-right-color: #16160e;
+    }
+
+    .cp_tooltip:hover .cp_tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+    </style>
 </head>
 
 <body>

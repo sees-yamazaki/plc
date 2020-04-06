@@ -98,17 +98,20 @@ $offering = getOfferingAdware($LOGIN_ID);
 
 $offeringHtml = '';
 foreach ($offering as $ofr) {
-    $offeringHtml .= '<div class="row">';
-    $offeringHtml .= '<a href="x10u_offer_detail.php?id='.$ad->id.'">';
-    if ($ofr->adware_type=="0") {
-        $offeringHtml .= '<p class="label"><span class="bg_pink">目標達成</span></p>';
-    }else{
-        $offeringHtml .= '<p class="label"><span class="bg_grn">クリック</span></p>';
+    $ad = getAdware($ofr->adware);
+    if ($ad->isFinish=="0") {
+        $offeringHtml .= '<div class="row">';
+        $offeringHtml .= '<a href="x10u_offer_detail.php?id='.$ad->id.'">';
+        if ($ofr->adware_type=="0") {
+            $offeringHtml .= '<p class="label"><span class="bg_pink">目標達成</span></p>';
+        } else {
+            $offeringHtml .= '<p class="label"><span class="bg_grn">クリック</span></p>';
+        }
+        $offeringHtml .= '<p class="row_text"><span class="ap">承</span>'.$ofr->name.'</p>';
+        $offeringHtml .= '</a>';
+        $offeringHtml .= '</div>';
+        $offeringHtml .= '';
     }
-    $offeringHtml .= '<p class="row_text"><span class="ap">承</span>'.$ofr->name.'</p>';
-    $offeringHtml .= '</a>';
-    $offeringHtml .= '</div>';
-    $offeringHtml .= '';
 }
 if (empty($offeringHtml)) {
     $offeringHtml='';
@@ -322,8 +325,14 @@ if (empty($approvedHtml)) {
                     </div>
                 </div>
                 <?php } ?>
-                <p class="add_link_btn text-right"><a href="./x10u_adwares_list_secret.php"><span class="icon_add"></span>オファー一覧</a>
+                <p class="add_link_btn text-right"><a href="javascript:frmN.submit()"><span class="icon_add"></span>承認制オファー一覧</a>
                 </p>
+                <form action="x10u_offer_list.php" method="POST" name="frmN">
+                <input type="hidden" name="run" value="1">
+                <input type="hidden" name="page" value="">
+                <input type="hidden" name="isPaging" value="0">
+                <input type="hidden" name="approvable[]" value="1">
+                </form>
             </div>
         </section>
 

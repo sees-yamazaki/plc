@@ -19,7 +19,7 @@ $errorMessage = '';
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
 if(empty($LOGIN_ID)){ header('Location: x10u_logoff.php'); }
 
-$nUser = getNuser($LOGIN_ID);
+$crntNUser = getNuser($LOGIN_ID);
 
 ?>
 <!DOCTYPE html>
@@ -52,21 +52,29 @@ $nUser = getNuser($LOGIN_ID);
     </div>
 
     <section class="sec-member section">
-      <div class="sec__inner container">
+      <div class="sec__inner container">  
+
         <form action="./user_basic_complete.html" method="post" class="form__basic_user">
           <div class="form__member__basic form__content_block">
 
             <div class="alert_box_complete">
               <h4 class="alert_box_complete_title"><span class="icon_check_grn"></span>変更が完了しました。</h4>
               <p class="alert_box_text">下記より編集項目が変更されている事をご確認ください。</p>
-            </div>
+           </div>
+
+            <?php if( $crntNUser->mail<> $_POST['newmail']){ ?>
+                <div class="alert_box">
+                <h4 class="alert_box_title"><span class="icon_chuui_pnk"></span>メールアドレスが変更されています</h4>
+                <p class="alert_box_text">新しいアドレスは確定するボタンを押した後に送られる認証メール内のURLをクリックすると変更が完了致します。</p>
+                </div>
+              <?php } ?>  
 
             <h3 class="bar-title"><span class="bar-title-text">基本情報</span></h3>
 
             <div class="dl-style">
               <dl>
                 <dt>メールアドレス</dt>
-                <dd><?php echo $nUser->mail; ?></dd>
+                <dd><?php echo $_POST['newmail']; ?></dd>
               </dl>
               <dl>
                 <dt>パスワード</dt>
@@ -74,11 +82,11 @@ $nUser = getNuser($LOGIN_ID);
               </dl>
               <dl>
                 <dt>お名前</dt>
-                <dd><?php echo $nUser->name; ?></dd>
+                <dd><?php echo $_POST['name']; ?></dd>
               </dl>
               <dl>
                 <dt>電話番号</dt>
-                <dd><?php echo $nUser->tel; ?></dd>
+                <dd><?php echo $_POST['tel']; ?></dd>
               </dl>
             </div>
           </div>

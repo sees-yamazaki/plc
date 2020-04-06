@@ -297,7 +297,7 @@ if (empty($deleteAd)) {
                                     <span>No Image</span><br>
                                     <?php } else { ?>
                                     <img src="<?php echo $adware->banner; ?>"
-                                        alt=""><br>
+                                        alt="" style="max-width: 80%;"><br>
                                     <?php } ?>
                                     <?php if (empty($adware->banner2)) { ?>
                                     <span>No Image</span><br>
