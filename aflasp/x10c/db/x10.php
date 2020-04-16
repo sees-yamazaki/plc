@@ -346,7 +346,7 @@ function getAdwareStatus($id)
     }
     if (is_null($ad->limits) || $ad->limits=="0") {
         $stts += 0;
-    }elseif ($ad->limits<$pay) {
+    } elseif ($ad->limits<$pay) {
         //期間終了
         $stts += 2;
     } elseif ($alrt<$pay) {
@@ -357,7 +357,8 @@ function getAdwareStatus($id)
     return $stts;
 }
 
-function isAdwareFinish($stts){
+function isAdwareFinish($stts)
+{
     $rtn=0;
     switch ($stts) {
         case 22:
@@ -874,10 +875,154 @@ function getKeywords()
     return $results;
 }
 
-function abbrStr($str,$len){
-    if(mb_strlen($str)>$len){
-        $str = mb_substr($str,0,$len).'[...]';
+function abbrStr($str, $len)
+{
+    if (mb_strlen($str)>$len) {
+        $str = mb_substr($str, 0, $len).'[...]';
     }
     return $str;
+}
 
+
+
+class cls_x10mail
+{
+    public $id ;
+    public $nuser ;
+    public $mail ;
+    public $limittime ;
+    public $stts ;
+}
+
+function getX10Mail($id)
+{
+    try {
+        $result = new cls_x10mail();
+        require 'dns.php';
+
+        $sql = "SELECT * FROM `x10_mail` WHERE id=:id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result->id = $row['id'];
+            $result->nuser= $row['nuser'];
+            $result->mail= $row['mail'];
+            $result->limittime= $row['limittime'];
+            $result->stts= $row['stts'];
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $result;
+}
+
+function getX10MailStts0($nuser)
+{
+    try {
+        $result = new cls_x10mail();
+        require 'dns.php';
+
+        $sql = "SELECT * FROM `x10_mail` WHERE nuser=:nuser AND stts=0";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':nuser', $nuser, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result->id = $row['id'];
+            $result->nuser= $row['nuser'];
+            $result->mail= $row['mail'];
+            $result->limittime= $row['limittime'];
+            $result->stts= $row['stts'];
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $result;
+}
+
+
+function countX10Mail($nuser)
+{
+    try {
+        $cnt = 0;
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `x10_mail` WHERE nuser=:nuser");
+        $stmt->bindParam(':nuser', $nuser, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $cnt = $row['cnt'];
+
+    } catch (PDOException $e) {
+        //
+    }
+    return $cnt;
+}
+
+
+function insertX10Mail($x10mail)
+{
+    try {
+        $insertid = 0;
+
+        require 'dns.php';
+        $sql = "UPDATE `x10_mail` SET `stts`=1  WHERE  nuser=:nuser AND `stts`=0";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':nuser', $x10mail->nuser, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+
+        $sql = "INSERT INTO `x10_mail`(`nuser`, `mail`, `limittime`, `stts`) VALUES (:nuser, :mail, :limittime, 0)";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':nuser', $x10mail->nuser, PDO::PARAM_STR);
+        $stmt->bindParam(':mail', $x10mail->mail, PDO::PARAM_STR);
+        $stmt->bindParam(':limittime', $x10mail->limittime, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        $insertid = $pdo->lastInsertId();
+
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("INSERT ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
+
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $insertid;
+}
+
+
+function activateX10Mail($x10mail)
+{
+    try {
+
+        require 'dns.php';
+        $sql = "UPDATE `x10_mail` SET `stts`=2  WHERE  id=:id";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':id', $x10mail->id, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        $sql = "UPDATE `nuser` SET `mail`=:mail  WHERE  id=:id";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':id', $x10mail->nuser, PDO::PARAM_STR);
+        $stmt->bindParam(':mail', $x10mail->mail, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("INSERT ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
+
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $insertid;
 }

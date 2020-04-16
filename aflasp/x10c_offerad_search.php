@@ -421,7 +421,7 @@ function paging(vlu) {
 
                     <tr>
                         <th>広告の説明</th>
-                        <td class="adwares_info"><?php echo nl2br($ad->comment); ?>
+                        <td class="adwares_info" style="max-width: 500px;"><?php echo nl2br($ad->comment); ?>
                         </td>
                     </tr>
                     <?php  if ($ad->approvable=="1") { ?>

@@ -24,10 +24,14 @@ if (isset($_POST['doCheck'])) {
     $nUser->pass = $_POST['pass'];
     $nUser->pass_confirm = $_POST['pass_confirm'];
     $nUser->name = $_POST['name'];
-    $nUser->zip1 ='';
-    $nUser->zip2 = '';
-    $nUser->adds = '';
-    $nUser->add_sub = '';
+    $nUser->zip1 =substr($_POST['zip'],0,3);
+    $nUser->zip2 = substr($_POST['zip'],3);
+    if(empty($_POST['pref'])){
+      $nUser->adds = '';
+    }else{
+      $nUser->adds = getPrefectureByName($_POST['pref']);
+    }
+    $nUser->add_sub = $_POST['addr'];
     $nUser->tel = $_POST['tel'];
     $nUser->fax = '';
     $nUser->url = '';
@@ -55,6 +59,7 @@ if (isset($_POST['doCheck'])) {
         $nUserX->facebook = $_POST['facebook'];
         $nUserX->twitter = $_POST['twitter'];
         $nUserX->youtube = $_POST['youtube'];
+        $nUserX->kubun = $_POST['kubun'];
 
         insertNuserX10($nUserX);
 
@@ -157,8 +162,23 @@ $youtube = str_replace('/','',str_replace('https://www.youtube.com/channel/','',
                 <dd><?php echo $_POST['pass']; ?></dd>
               </dl>
               <dl>
+                <dt>区分</dt>
+                <?php
+                if ($_POST['kubun']=="1") {
+                    $kubun = "法人";
+                } else {
+                    $kubun = "個人または個人事業主";
+                }
+                ?>
+                <dd><?php echo $kubun; ?></dd>
+              </dl>
+              <dl>
                 <dt>お名前</dt>
                 <dd><?php echo $_POST['name']; ?></dd>
+              </dl>
+              <dl>
+                <dt>住所</dt>
+                <dd><?php echo $_POST['zip']; ?>　<?php echo $_POST['pref']; ?><?php echo $_POST['addr']; ?></dd>
               </dl>
               <dl>
                 <dt>電話番号</dt>
@@ -235,7 +255,11 @@ $youtube = str_replace('/','',str_replace('https://www.youtube.com/channel/','',
             <input type="hidden" name="mail_confirm" value="<?php echo $_POST['mail_confirm']; ?>">
             <input type="hidden" name="pass" value="<?php echo $_POST['pass']; ?>">
             <input type="hidden" name="pass_confirm" value="<?php echo $_POST['pass_confirm']; ?>">
+            <input type="hidden" name="kubun" value="<?php echo $_POST['kubun']; ?>">
             <input type="hidden" name="name" value="<?php echo $_POST['name']; ?>">
+            <input type="hidden" name="pref" value="<?php echo $_POST['pref']; ?>">
+            <input type="hidden" name="zip" value="<?php echo $_POST['zip']; ?>">
+            <input type="hidden" name="addr" value="<?php echo $_POST['addr']; ?>">
             <input type="hidden" name="tel" value="<?php echo $_POST['tel']; ?>">
             <input type="hidden" name="bank" value="<?php echo $_POST['bank']; ?>">
             <input type="hidden" name="branch" value="<?php echo $_POST['branch']; ?>">

@@ -79,8 +79,23 @@ $now = strtotime("now");
                                 <dd>*********</dd>
                             </dl>
                             <dl>
+                                <dt>区分</dt>
+                                <?php
+                                if ($nUserX->kubun=="1") {
+                                    $kubun = "法人";
+                                } else {
+                                    $kubun = "個人または個人事業主";
+                                }
+                                ?>
+                                <dd><?php echo $kubun; ?></dd>
+                            </dl>
+                            <dl>
                                 <dt>お名前</dt>
                                 <dd><?php echo $nUser->name; ?></dd>
+                            </dl>
+                            <dl>
+                                <dt>住所</dt>
+                                <dd><?php echo $nUser->zip1.'-'.$nUser->zip2; ?>　<?php echo getPrefectureById($nUser->adds); ?><?php echo $nUser->add_sub; ?></dd>
                             </dl>
                             <dl>
                                 <dt>電話番号</dt>

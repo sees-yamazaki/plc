@@ -158,10 +158,10 @@ $hashID = hash('fnv132', $LOGIN_ID.$id);
 
 if (!file_exists("p/".$hashID)) {
     mkdir("p/".$hashID, 0777);
-    
+
     // ファイルを書き込みモードで開く
     $file_handle = fopen("p/".$hashID."/index.php", "w");
-    
+
     // ファイルへデータを書き込み
     if (substr($url, -1)=='/') {
         $url = substr($url, 0, -1);
@@ -171,7 +171,7 @@ if (!file_exists("p/".$hashID)) {
     $rhtml.='exit();'.PHP_EOL;
     $rhtml.='?>';
     fwrite($file_handle, $rhtml);
-    
+
     // ファイルを閉じる
     fclose($file_handle);
 }
@@ -212,11 +212,9 @@ if ($ad->isFinish=="1") {
 //         $html .= '<input type="hidden" name="status" value="0">';
 //         $html .= '</form>';
     } elseif ($ofr->status=="0") {
-        $offerHtml.='<div class="article__link_block article__link_request-approval">';
-        $offerHtml.='<div class="article__link_request-complete text-center">';
-        $offerHtml.='<div class="fukidashi-bk">';
+        $offerHtml.='<div class="article__link_block article__link_request-approval fukidashi-wrap">';
+        $offerHtml.='<div class="fukidashi-bk fukidashi-load-fade js-fukidashi-load-fade">';
         $offerHtml.='<span class="icon_chuui"></span>リクエスト完了！';
-        $offerHtml.='</div>';
         $offerHtml.='</div>';
         $offerHtml.='<div class="btn"><a class="bg_grad_grn" href="x10u_offer_detail.php?id='.$ad->id.'&req=1"><span class="icon_sunadokei"></span>リクエストを取り下げる</a></div>';
         $offerHtml.='</div>';
@@ -235,6 +233,11 @@ if ($ad->isFinish=="1") {
             $url = substr($url, 0, -1);
         }
         $offerHtml.='<p class="js-copy_text copy_text">'.$url .'/p/'.$hashID.'</p>';
+        $offerHtml.='<div class="fukidashi-wrap">';
+        $offerHtml.='<div class="fukidashi-bk fukidashi-click-fade js-fukidashi-click-fade">';
+        $offerHtml.='<span class="icon_chuui"></span>URLをコピーしました';
+        $offerHtml.='</div>';
+        $offerHtml.='</div>';
         $offerHtml.='<div class="btn js-copy_btn"><a class="bg_grad_orn" href=""><span class="icon_share"></span>URLをコピーする</a></div>';
         $offerHtml.='</div>';
 //         $html .= '以下のURLを投稿しよう<br>';
@@ -259,6 +262,11 @@ if ($ad->isFinish=="1") {
         $url = substr($url, 0, -1);
     }
     $offerHtml.='<p class="js-copy_text copy_text">'.$url .'/p/'.$hashID.'</p>';
+    $offerHtml.='<div class="fukidashi-wrap">';
+    $offerHtml.='<div class="fukidashi-bk fukidashi-click-fade js-fukidashi-click-fade">';
+    $offerHtml.='<span class="icon_chuui"></span>URLをコピーしました';
+    $offerHtml.='</div>';
+    $offerHtml.='</div>';
     $offerHtml.='<div class="btn js-copy_btn"><a class="bg_grad_orn" href=""><span class="icon_share"></span>URLをコピーする</a></div>';
     $offerHtml.='</div>';
     $offerHtml.='</div>';
@@ -307,8 +315,8 @@ foreach ($tags as $tag) {
 
     <div class="mainheader">
       <p class="breadcrumbs">
-        <a href="#">トップ</a>
-        <a href="#">オファー一覧</a>
+        <a href="./x10u_mypage.php">マイページTOP</a>
+        <a href="./x10u_offer_list.php">オファー一覧</a>
         <a href="#"><?php echo $ad->name; ?></a>
       </p>
     </div>
@@ -318,7 +326,7 @@ foreach ($tags as $tag) {
 
         <?php echo $titleHtml; ?>
 
-        
+
         <div class="article__section article__section_outline" id="url">
           <h3 class="bar-title"><span class="bar-title-text">オファー概要</span></h3>
           <p class="article__section_outline_text"><?php echo $ad->comment; ?></p>

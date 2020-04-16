@@ -83,6 +83,7 @@ if (isset($_POST['doCheck'])) {
 <title>口座情報を編集する</title>
 <meta name="description" content="アフィリエイト管理画面">
 <?php include(__DIR__ . '/x10u/inc/meta.php'); ?>
+    <script src="https://zipaddr.github.io/bankauto0.js" charset="UTF-8"></script>
 </head>
 
 <body>
@@ -113,13 +114,13 @@ if (isset($_POST['doCheck'])) {
             <div class="form-row <?php echo $err_bank_div; ?>">
               <p class="form-row-text">金融機関名</p>
               <?php echo $err_bank_msg; ?>
-              <input type="text" name="bank"
+              <input type="text" id="bank_name" name="bank"
             value="<?php echo $nUser->bank;?>" placeholder="金融機関名を入力">
             </div>
             <div class="form-row <?php echo $err_branch_div; ?>">
               <p class="form-row-text">支店名</p>
               <?php echo $err_branch_msg; ?>
-              <input type="text" name="branch"
+              <input type="text" id="branch_name" name="branch"
             value="<?php echo $nUser->branch;?>" placeholder="支店名を入力">
             </div>
             <div class="form-row">

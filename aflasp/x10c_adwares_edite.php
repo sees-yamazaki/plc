@@ -240,7 +240,7 @@ if (empty($deleteAd)) {
                             </tr>
                             <tr>
                                 <th>広告説明文</th>
-                                <td><?php echo nl2br($adware->comment); ?>
+                                <td style="max-width: 500px;"><?php echo nl2br($adware->comment); ?>
                                 </td>
                             </tr>
                             <tr>
@@ -331,27 +331,27 @@ if (empty($deleteAd)) {
                             </tr>
                             <tr>
                                 <th>成果条件</th>
-                                <td><?php echo nl2br($adware->results); ?>
+                                <td style="max-width: 500px;"><?php echo nl2br($adware->results); ?>
                                 </td>
                             </tr>
                             <tr>
                                 <th>指定ハッシュタグ</th>
-                                <td><?php echo nl2br($adware->hashtag); ?>
+                                <td style="max-width: 500px;"><?php echo nl2br($adware->hashtag); ?>
                                 </td>
                             </tr>
                             <tr>
                                 <th>否認条件</th>
-                                <td><?php echo nl2br($adware->denials); ?>
+                                <td style="max-width: 500px;"><?php echo nl2br($adware->denials); ?>
                                 </td>
                             </tr>
                             <tr>
                                 <th>NGキーワード</th>
-                                <td><?php echo nl2br($adware->ngword); ?>
+                                <td style="max-width: 500px;"><?php echo nl2br($adware->ngword); ?>
                                 </td>
                             </tr>
                             <tr>
                                 <th>備考</th>
-                                <td><?php echo nl2br($adware->note); ?>
+                                <td style="max-width: 500px;"><?php echo nl2br($adware->note); ?>
                                 </td>
                             </tr>
                             <tr>

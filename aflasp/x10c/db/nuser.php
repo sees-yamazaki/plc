@@ -369,13 +369,17 @@ function updateNuserBasic($nuser)
     try {
         require 'dns.php';
         if (empty($nuser->pass)) {
-            $stmt = $pdo -> prepare("UPDATE `nuser` SET `name`=:name, `tel`=:tel WHERE id=:id");
+            $stmt = $pdo -> prepare("UPDATE `nuser` SET `name`=:name, `zip1`=:zip1, `zip2`=:zip2, `adds`=:adds, `add_sub`=:add_sub, `tel`=:tel WHERE id=:id");
         }else{
-            $stmt = $pdo -> prepare("UPDATE `nuser` SET `pass`=:pass, `name`=:name, `tel`=:tel WHERE id=:id");
+            $stmt = $pdo -> prepare("UPDATE `nuser` SET `pass`=:pass, `name`=:name, `zip1`=:zip1, `zip2`=:zip2, `adds`=:adds, `add_sub`=:add_sub,  `tel`=:tel WHERE id=:id");
             $stmt->bindParam(':pass', $nuser->pass, PDO::PARAM_STR);
         }
         $stmt->bindParam(':id', $nuser->id, PDO::PARAM_STR);
         $stmt->bindParam(':name', $nuser->name, PDO::PARAM_STR);
+        $stmt->bindParam(':zip1', $nuser->zip1, PDO::PARAM_STR);
+        $stmt->bindParam(':zip2', $nuser->zip2, PDO::PARAM_STR);
+        $stmt->bindParam(':adds', $nuser->adds, PDO::PARAM_STR);
+        $stmt->bindParam(':add_sub', $nuser->add_sub, PDO::PARAM_STR);
         $stmt->bindParam(':tel', $nuser->tel, PDO::PARAM_STR);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
@@ -523,6 +527,7 @@ class cls_nuser_x10
     public $facebook ;
     public $twitter ;
     public $youtube ;
+    public $kubun ;
 }
 
 function getNuserX10($nId)
@@ -540,6 +545,7 @@ function getNuserX10($nId)
             $result->facebook = $row['facebook'];
             $result->twitter = $row['twitter'];
             $result->youtube = $row['youtube'];
+            $result->kubun = $row['kubun'];
         }
     } catch (PDOException $e) {
         $errorMessage = 'DATABASE ERROR';
@@ -574,7 +580,7 @@ function insertNuserX10($nuser)
 {
     try {
         require 'dns.php';
-        $sql = "INSERT INTO `x10_nuser`(`id`, `nickname`, `instagram`, `facebook`, `twitter`, `youtube`) VALUES (:id, :nickname, :instagram, :facebook, :twitter, :youtube)";
+        $sql = "INSERT INTO `x10_nuser`(`id`, `nickname`, `instagram`, `facebook`, `twitter`, `youtube`, `kubun`) VALUES (:id, :nickname, :instagram, :facebook, :twitter, :youtube, :kubun)";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':id', $nuser->id, PDO::PARAM_STR);
         $stmt->bindParam(':nickname', $nuser->nickname, PDO::PARAM_STR);
@@ -582,6 +588,7 @@ function insertNuserX10($nuser)
         $stmt->bindParam(':facebook', $nuser->facebook, PDO::PARAM_STR);
         $stmt->bindParam(':twitter', $nuser->twitter, PDO::PARAM_STR);
         $stmt->bindParam(':youtube', $nuser->youtube, PDO::PARAM_STR);
+        $stmt->bindParam(':kubun', $nuser->kubun, PDO::PARAM_INT);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
         if ($stmt->rowCount()==0) {
@@ -602,7 +609,7 @@ function updateNuserX10($nuser)
 {
     try {
         require 'dns.php';
-        $sql = "UPDATE `x10_nuser` SET `nickname`=:nickname, `instagram`=:instagram, `facebook`=:facebook, `twitter`=:twitter, `youtube`=:youtube  WHERE `id`=:id";
+        $sql = "UPDATE `x10_nuser` SET `nickname`=:nickname, `instagram`=:instagram, `facebook`=:facebook, `twitter`=:twitter, `youtube`=:youtube, `kubun`=:kubun  WHERE `id`=:id";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':id', $nuser->id, PDO::PARAM_STR);
         $stmt->bindParam(':nickname', $nuser->nickname, PDO::PARAM_STR);
@@ -610,6 +617,7 @@ function updateNuserX10($nuser)
         $stmt->bindParam(':facebook', $nuser->facebook, PDO::PARAM_STR);
         $stmt->bindParam(':twitter', $nuser->twitter, PDO::PARAM_STR);
         $stmt->bindParam(':youtube', $nuser->youtube, PDO::PARAM_STR);
+        $stmt->bindParam(':kubun', $nuser->kubun, PDO::PARAM_INT);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
         if ($stmt->rowCount()==0) {
@@ -624,4 +632,27 @@ function updateNuserX10($nuser)
         logging("ARGS : ". json_encode(func_get_args()));
     }
     return $insertid;
+}
+
+function updateNuserX10Kubun($nuserId,$kubun)
+{
+    try {
+        require 'dns.php';
+        $sql = "UPDATE `x10_nuser` SET `kubun`=:kubun WHERE `id`=:id";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':id', $nuserId, PDO::PARAM_STR);
+        $stmt->bindParam(':kubun', $kubun, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("UPDATE ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
 }

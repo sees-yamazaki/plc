@@ -57,7 +57,7 @@ if(isset($_POST['doCheck'])){
 
     <div class="mainheader">
       <p class="breadcrumbs">
-        <a href="x10u_index.php">トップ</a>
+        <a href="/">トップ</a>
         <a href="#">パスワードをお忘れの方へ</a>
       </p>
     </div>
@@ -71,11 +71,13 @@ if(isset($_POST['doCheck'])){
     <section class="sec-login section">
       <div class="sec__inner container">
         <form action="" class="form__login" method="post" name="frm1">
-        　<p>登録しているメールアドレスに新しいパスワードを送信します。</p>
           <div class="form-row <?php echo $err_mail_div; ?>">
-          <?php echo $err_mail_msg; ?>
+            <p>登録しているメールアドレスに新しいパスワードを送信します。</p>
+            <br>
+            <?php echo $err_mail_msg; ?>
             <input type="text" name="mail" value="<?php echo $_POST['mail']; ?>" placeholder="メールアドレスを入力">
           </div>
+          <br>
           <div class="btn"><a href="javascript:document.frm1.submit()" class="bg_blu">登録を確認する</a></div>
           <input type="hidden" name="doCheck" value="1">
         </form>

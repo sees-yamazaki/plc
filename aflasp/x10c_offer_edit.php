@@ -142,8 +142,8 @@ if ($adware->adware_type=="1") {
                                         if(empty($txt)){
                                             $txt .= 'SNSアカウントは設定されていません';
                                         }
-                                        $txt = "<span class='cp_tooltiptext'>".$user->name."<br>".$txt."</span>";
-                                        echo "　　<div class='cp_tooltip'>".$ofr->nuser.$txt ."</div><br>" ;
+                                        $txt = "<span class=''>".$user->name."<br>".$txt."</span><br>";
+                                        echo "　　<div class=''>".$ofr->nuser.$txt ."</div><br>" ;
                                         $i++;
                                     }
 

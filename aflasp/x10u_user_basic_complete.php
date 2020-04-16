@@ -81,8 +81,23 @@ $crntNUser = getNuser($LOGIN_ID);
                 <dd>xxxxxxxxxx</dd>
               </dl>
               <dl>
+                <dt>区分</dt>
+                <?php
+                if ($_POST['kubun']=="1") {
+                    $kubun = "法人";
+                } else {
+                    $kubun = "個人または個人事業主";
+                }
+                ?>
+                <dd><?php echo $kubun; ?></dd>
+              </dl>
+              <dl>
                 <dt>お名前</dt>
                 <dd><?php echo $_POST['name']; ?></dd>
+              </dl>
+              <dl>
+                <dt>住所</dt>
+                <dd><?php echo $_POST['zip']; ?>　<?php echo $_POST['pref']; ?><?php echo $_POST['addr']; ?></dd>
               </dl>
               <dl>
                 <dt>電話番号</dt>

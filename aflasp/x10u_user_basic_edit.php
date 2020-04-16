@@ -86,7 +86,12 @@ if (isset($_POST['doCheck'])) {
     $nUser->pass = $_POST['pass'];
     $nUser->pass_confirm = $_POST['pass_confirm'];
     $nUser->name = $_POST['name'];
+    $nUser->zip1 = $_POST['zip'];
+    $nUser->add_sub = $_POST['addr'];
     $nUser->tel = $_POST['tel'];
+    $pref_ = $_POST['pref'];
+    $nUserX = new cls_nuser();
+    $nUserX->kubun = $_POST['kubun'];
     
 } elseif (isset($_POST['4back'])) {
     $nUser->mail = $_POST['mail'];
@@ -95,13 +100,26 @@ if (isset($_POST['doCheck'])) {
     $nUser->pass_confirm = $_POST['pass_confirm'];
     $nUser->name = $_POST['name'];
     $nUser->tel = $_POST['tel'];
+    $nUser->zip1 = $_POST['zip'];
+    $nUser->add_sub = $_POST['addr'];
+    $pref_ = $_POST['pref'];
+    $nUserX = new cls_nuser();
+    $nUserX->kubun = $_POST['kubun'];
 } else {
     $nUser = getNuser($LOGIN_ID);
+    $nUserX = getNuserX10($LOGIN_ID);
     $nUser->pass = "nochange";
     $nUser->mail_confirm = $nUser->mail;
     $nUser->pass_confirm = $nUser->pass;
+    $pref_ = getPrefectureById($nUser->adds);
 }
 
+$prefs = ['北海道','青森県','岩手県','宮城県','秋田県','山形県','福島県','茨城県','栃木県','群馬県','埼玉県','千葉県','東京都','神奈川県','新潟県','富山県','石川県','福井県','山梨県','長野県','岐阜県','静岡県','愛知県','三重県','滋賀県','京都府','大阪府','兵庫県','奈良県','和歌山県','鳥取県','島根県','岡山県','広島県','山口県','徳島県','香川県','愛媛県','高知県','福岡県','佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県','沖縄県'];
+$prefHtml='';
+foreach($prefs as $pref){
+  $wk = $pref_==$pref ? ' selected' : '';
+  $prefHtml.='<option value="'.$pref.'"'.$wk.'>'.$pref.'</option>';
+}
 
 ?>
 <!DOCTYPE html>
@@ -163,12 +181,39 @@ if (isset($_POST['doCheck'])) {
                                 placeholder="パスワードを入力">
                             <p class="form-row-anno">※注意書きがここに入ります</p>
                         </div>
+            <div class="form-row">
+              <p class="form-row-text"><span class="req">必須</span>区分</p>
+              <?php
+                if ($nUserX->kubun=="1") {
+                  $kbn1 = " checked";
+                } else {
+                  $kbn0 = " checked";
+                }
+                ?>
+              <label class="label-radio"><input type="radio" class="radiocheck" name="kubun" value="0" <?php echo $kbn0;?>>個人または個人事業主</label>
+              <label class="label-radio"><input type="radio" class="radiocheck" name="kubun" value="1" <?php echo $kbn1;?>>法人</label>
+              <p class="form-row-anno">※注意書きがここに入ります</p>
+            </div>
                         <div class="form-row <?php echo $err_name_div; ?>">
                             <p class="form-row-text"><span class="req">必須</span>お名前</p>
                               <?php echo $err_name_msg; ?>
                             <input type="text" name="name" value="<?php echo $nUser->name;?>" placeholder="お名前を入力" required>
                             <p class="form-row-anno">※注意書きがここに入ります</p>
                         </div>
+
+<div class="form-row">
+  <p class="form-row-text"><span class="op">任意</span>住所</p>
+  <input type="text" name="zip" value="<?php echo $nUser->zip1.$nUser->zip2;?>" placeholder="郵便番号を入力" class="w200"><span class="js-form__btn_addr from__btn_addr">住所検索</span>
+  <p class="form-row-anno">※注意書きがここに入ります</p>
+  <br>
+  <select name="pref" class="w200">
+    <option value="" selected>都道府県を選択</option>
+    <?php echo $prefHtml; ?>
+  </select>
+  <br><br>
+  <input name="addr" type="text" value="<?php echo $nUser->add_sub;?>" placeholder="住所を入力">
+  <p class="form-row-anno">※注意書きがここに入ります</p>
+</div>
                         <div class="form-row <?php echo $err_tel_div; ?>">
                             <p class="form-row-text"><span class="req">必須</span>電話番号</p>
                               <?php echo $err_tel_msg; ?>

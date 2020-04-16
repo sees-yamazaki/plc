@@ -49,7 +49,7 @@ if(isset($_POST['doRePW'])){
     $message = $text;
     $headers = 'From:"'.mb_encode_mimeheader($sys->mail_name).'" <'. trim($sys->mail_address).'>';
     mb_send_mail($to, $subject, $message, $headers);
-    
+
 
     header('Location: x10u_reminder_complete.php');
 
@@ -77,7 +77,7 @@ if(isset($_POST['doRePW'])){
 
     <div class="mainheader">
       <p class="breadcrumbs">
-        <a href="x10u_index.php">トップ</a>
+        <a href="/">トップ</a>
         <a href="#">パスワードをお忘れの方へ</a>
       </p>
     </div>
@@ -91,16 +91,17 @@ if(isset($_POST['doRePW'])){
     <section class="sec-login section">
     <form action="" method="post" name="mem_conf" class="form__confirm">
       <div class="sec__inner container">
-        　<p>初期化したパスワードをメールアドレスに送信します。</p>
-        <?php echo $_POST['mail']; ?>
-          </div>
-      </div>
-      <div class="form__submit">
-            <div class="btn bd_blu"><input type="button" name="doBack"  value="修正する" onclick="document.mem_conf.submit();"></div>
-            <div class="btn bg_blu"><input type="submit" name="doRePW"  value="確定する"></div>
-            <input type="hidden" name="4back" value="1">
-            <input type="hidden" name="mail" value="<?php echo $_POST['mail']; ?>">
+      　<p>初期化したパスワードをメールアドレスに送信します。</p>
+      <br>
+        <p><?php echo $_POST['mail']; ?></p>
+        <br>
+        <div class="form__submit">
+          <div class="btn bd_blu"><input type="button" name="doBack"  value="修正する" onclick="document.mem_conf.submit();"></div>
+          <div class="btn bg_blu"><input type="submit" name="doRePW"  value="確定する"></div>
+          <input type="hidden" name="4back" value="1">
+          <input type="hidden" name="mail" value="<?php echo $_POST['mail']; ?>">
         </div>
+      </div>
     </form>
     </section>
 

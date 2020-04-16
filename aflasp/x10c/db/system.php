@@ -70,3 +70,20 @@ class cls_pref
      }
      return $result;
  }
+ function getPrefectureById($id)
+ {
+     $result = 0;
+     try {
+         require 'dns.php';
+         $stmt = $pdo->prepare("SELECT * FROM `prefectures` WHERE id=:id");
+         $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+         $row = $stmt->fetch(PDO::FETCH_ASSOC);
+         $result = $row['name'];
+
+        } catch (PDOException $e) {
+         //
+     }
+     return $result;
+ }
