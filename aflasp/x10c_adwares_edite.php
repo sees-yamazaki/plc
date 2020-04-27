@@ -63,7 +63,7 @@ $adware->note = $_POST['note'];
 $adware->startdt = $_POST['startdt'];
 $adware->enddt = $_POST['enddt'];
 
-if ($adware->adware_type=="0") {
+if ($adware->adware_type=="0" || $adware->adware_type=="2") {
     $adware->click_money = 0;
 } else {
     $adware->money = 0;
@@ -179,6 +179,8 @@ if ($adware->open=="0") {
 $txt_adware_type = "目標達成タイプ";
 if ($adware->adware_type=="1") {
     $txt_adware_type = 'クリック報酬タイプ';
+}elseif ($adware->adware_type=="2") {
+    $txt_adware_type = '投稿報酬タイプ';
 }
 
 $txt_approvable= "オープン";

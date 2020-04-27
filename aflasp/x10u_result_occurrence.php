@@ -15,7 +15,9 @@ date_default_timezone_set('Asia/Tokyo');
 $errorMessage = '';
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
-if(empty($LOGIN_ID)){ header('Location: x10u_logoff.php'); }
+if (empty($LOGIN_ID)) {
+    header('Location: x10u_logoff.php');
+}
 
 $adtype =  isset($_GET['adtype']) ? $_GET['adtype'] : $_POST['adtype'] ;
 
@@ -65,9 +67,12 @@ $backHtml='';
 if ($adtype=="0") {
     $titleHtml .= '目標達成報酬（発生別）';
     $backHtml='<a href="x10u_result_monthry.php?adtype=0" class="bd_blu">目的達成報酬（月別）へ</a>';
-} else {
+} elseif ($adtype=="1") {
     $titleHtml .= 'クリック報酬（発生別）';
     $backHtml='<a href="x10u_result_monthry.php?adtype=1" class="bd_blu">クリック報酬（月別）へ</a>';
+} elseif ($adtype=="2") {
+    $titleHtml .= '投稿報酬（発生別）';
+    $backHtml='<a href="x10u_result_monthry.php?adtype=2" class="bd_blu">投稿報酬（月別）へ</a>';
 }
 
 $txt_state = array('認定中','非認証','認証');

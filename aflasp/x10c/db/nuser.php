@@ -202,6 +202,61 @@ function getNuserByMail($mail)
     return $result;
 }
 
+function getNuserByPay($pay)
+{
+    try {
+        $results = array();
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT * FROM `nuser` WHERE delete_key=0 AND pay>=:pay");
+        $stmt->bindParam(':pay', $pay, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_nuser();
+            $result->delete_key = $row['delete_key'];
+            $result->id = $row['id'];
+            $result->name = $row['name'];
+            $result->zip1 = $row['zip1'];
+            $result->zip2 = $row['zip2'];
+            $result->adds = $row['adds'];
+            $result->add_sub = $row['add_sub'];
+            $result->tel = $row['tel'];
+            $result->fax = $row['fax'];
+            $result->url = $row['url'];
+            $result->mail = $row['mail'];
+            $result->bank_code = $row['bank_code'];
+            $result->bank = $row['bank'];
+            $result->branch_code = $row['branch_code'];
+            $result->branch = $row['branch'];
+            $result->bank_type = $row['bank_type'];
+            $result->number = $row['number'];
+            $result->bank_name = $row['bank_name'];
+            $result->parent = $row['parent'];
+            $result->grandparent = $row['grandparent'];
+            $result->greatgrandparent = $row['greatgrandparent'];
+            $result->pass = $row['pass'];
+            $result->terminal = $row['terminal'];
+            $result->activate = $row['activate'];
+            $result->pay = $row['pay'];
+            $result->tier = $row['tier'];
+            $result->rank = $row['rank'];
+            $result->personal_rate = $row['personal_rate'];
+            $result->magni = $row['magni'];
+            $result->mail_reception = $row['mail_reception'];
+            $result->is_mobile = $row['is_mobile'];
+            $result->limits = $row['limits'];
+            $result->regist = $row['regist'];
+            $result->logout = $row['logout'];
+            array_push($results, $result);
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $results;
+}
+
 function countNUserByMail($mail)
 {
     $cnt=0;
@@ -219,7 +274,7 @@ function countNUserByMail($mail)
     return $cnt;
 }
 
-function countNUserByMailOthers($mail,$id)
+function countNUserByMailOthers($mail, $id)
 {
     $cnt=0;
     try {
@@ -370,7 +425,7 @@ function updateNuserBasic($nuser)
         require 'dns.php';
         if (empty($nuser->pass)) {
             $stmt = $pdo -> prepare("UPDATE `nuser` SET `name`=:name, `zip1`=:zip1, `zip2`=:zip2, `adds`=:adds, `add_sub`=:add_sub, `tel`=:tel WHERE id=:id");
-        }else{
+        } else {
             $stmt = $pdo -> prepare("UPDATE `nuser` SET `pass`=:pass, `name`=:name, `zip1`=:zip1, `zip2`=:zip2, `adds`=:adds, `add_sub`=:add_sub,  `tel`=:tel WHERE id=:id");
             $stmt->bindParam(':pass', $nuser->pass, PDO::PARAM_STR);
         }
@@ -445,7 +500,7 @@ function withdrawalNuser($nId)
     }
 }
 
-function updateNuserActivate($nId,$stts)
+function updateNuserActivate($nId, $stts)
 {
     try {
         require 'dns.php';
@@ -528,6 +583,8 @@ class cls_nuser_x10
     public $twitter ;
     public $youtube ;
     public $kubun ;
+    public $kana ;
+    public $birthday ;
 }
 
 function getNuserX10($nId)
@@ -546,6 +603,8 @@ function getNuserX10($nId)
             $result->twitter = $row['twitter'];
             $result->youtube = $row['youtube'];
             $result->kubun = $row['kubun'];
+            $result->kana = $row['kana'];
+            $result->birthday = $row['birthday'];
         }
     } catch (PDOException $e) {
         $errorMessage = 'DATABASE ERROR';
@@ -580,7 +639,7 @@ function insertNuserX10($nuser)
 {
     try {
         require 'dns.php';
-        $sql = "INSERT INTO `x10_nuser`(`id`, `nickname`, `instagram`, `facebook`, `twitter`, `youtube`, `kubun`) VALUES (:id, :nickname, :instagram, :facebook, :twitter, :youtube, :kubun)";
+        $sql = "INSERT INTO `x10_nuser`(`id`, `nickname`, `instagram`, `facebook`, `twitter`, `youtube`, `kubun`,`kana`,`birthday`) VALUES (:id, :nickname, :instagram, :facebook, :twitter, :youtube, :kubun, :kana, :birthday)";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':id', $nuser->id, PDO::PARAM_STR);
         $stmt->bindParam(':nickname', $nuser->nickname, PDO::PARAM_STR);
@@ -589,6 +648,8 @@ function insertNuserX10($nuser)
         $stmt->bindParam(':twitter', $nuser->twitter, PDO::PARAM_STR);
         $stmt->bindParam(':youtube', $nuser->youtube, PDO::PARAM_STR);
         $stmt->bindParam(':kubun', $nuser->kubun, PDO::PARAM_INT);
+        $stmt->bindParam(':kana', $nuser->kana, PDO::PARAM_STR);
+        $stmt->bindParam(':birthday', $nuser->birthday, PDO::PARAM_STR);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
         if ($stmt->rowCount()==0) {
@@ -609,7 +670,7 @@ function updateNuserX10($nuser)
 {
     try {
         require 'dns.php';
-        $sql = "UPDATE `x10_nuser` SET `nickname`=:nickname, `instagram`=:instagram, `facebook`=:facebook, `twitter`=:twitter, `youtube`=:youtube, `kubun`=:kubun  WHERE `id`=:id";
+        $sql = "UPDATE `x10_nuser` SET `nickname`=:nickname, `instagram`=:instagram, `facebook`=:facebook, `twitter`=:twitter, `youtube`=:youtube, `kubun`=:kubun, `kana`=:kana, `birthday`=:birthday  WHERE `id`=:id";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':id', $nuser->id, PDO::PARAM_STR);
         $stmt->bindParam(':nickname', $nuser->nickname, PDO::PARAM_STR);
@@ -618,6 +679,8 @@ function updateNuserX10($nuser)
         $stmt->bindParam(':twitter', $nuser->twitter, PDO::PARAM_STR);
         $stmt->bindParam(':youtube', $nuser->youtube, PDO::PARAM_STR);
         $stmt->bindParam(':kubun', $nuser->kubun, PDO::PARAM_INT);
+        $stmt->bindParam(':kana', $nuser->kana, PDO::PARAM_STR);
+        $stmt->bindParam(':birthday', $nuser->birthday, PDO::PARAM_STR);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
         if ($stmt->rowCount()==0) {
@@ -634,14 +697,16 @@ function updateNuserX10($nuser)
     return $insertid;
 }
 
-function updateNuserX10Kubun($nuserId,$kubun)
+function updateNuserX10Kubun($nuserId, $kubun, $kana, $birthday)
 {
     try {
         require 'dns.php';
-        $sql = "UPDATE `x10_nuser` SET `kubun`=:kubun WHERE `id`=:id";
+        $sql = "UPDATE `x10_nuser` SET `kubun`=:kubun, `kana`=:kana, `birthday`=:birthday  WHERE `id`=:id";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':id', $nuserId, PDO::PARAM_STR);
         $stmt->bindParam(':kubun', $kubun, PDO::PARAM_INT);
+        $stmt->bindParam(':kana', $kana, PDO::PARAM_STR);
+        $stmt->bindParam(':birthday', $birthday, PDO::PARAM_STR);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
         if ($stmt->rowCount()==0) {

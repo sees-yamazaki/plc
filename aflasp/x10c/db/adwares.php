@@ -248,7 +248,7 @@ function getPaysX10($nUserId)
 
         require 'dns.php';
         // $sql = "select adwares,max(name) as name, max(limits) as limits, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2, max(startdt) as startdt, max(enddt) as enddt, max(adware_type) as adware_type, max(approvable) as approvable from `v_pay_x10` WHERE owner=:owner group by adwares";
-        $sql = "select x.id,x.name as xname,x.startdt as xstartdt,x.enddt as xenddt,x.limits as xlimits,x.adware_type as xadware_type,x.approvable as xapprovable, x.stts as xstts,x.isFinish as xisFinish, p.* from `x10_all_adwares` x LEFT JOIN `v_pay_x10_by_owner` p ON p.owner=:owner AND p.adwares=x.id  where (x.nuser='OPN' OR x.nuser=:owner) AND x.status=2";
+        $sql = "select x.id,x.name as xname,x.startdt as xstartdt,x.enddt as xenddt,x.limits as xlimits,x.adware_type as xadware_type,x.approvable as xapprovable, x.stts as xstts,x.isFinish as xisFinish, p.* from `x10_all_adwares` x LEFT JOIN `v_pay_x10_by_owner` p ON p.owner=:owner AND p.adwares=x.id  where (x.nuser='OPN' OR x.nuser=:owner) AND (x.status=2 OR x.status=12)";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -285,8 +285,6 @@ function getPaysX10($nUserId)
 }
 
 
-
-
 function countMonthlyPays($y, $m, $nUserId, $adType)
 {
     $result = new cls_pays();
@@ -295,15 +293,14 @@ function countMonthlyPays($y, $m, $nUserId, $adType)
         $endDt   = strtotime(date('Y-m-d 23:59:59', strtotime($y.'-'.$m.' last day of this month')));
 
         require 'dns.php';
-        if ($adType=="0") {
-            $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10` WHERE adware_type=0 AND owner=:owner AND regist BETWEEN :startDt AND :endDt";
-        } else {
-            $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10` WHERE adware_type=1 AND owner=:owner AND regist BETWEEN :startDt AND :endDt";
-        }
+        
+        $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10` WHERE adware_type=:adware_type AND owner=:owner AND regist BETWEEN :startDt AND :endDt";
+
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
         $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
         $stmt->bindParam(':endDt', $endDt, PDO::PARAM_INT);
+        $stmt->bindParam(':adware_type', $adType, PDO::PARAM_INT);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result->cnt = $row['cnt'];
@@ -332,14 +329,12 @@ function countPastPays($y, $m, $nUserId, $adType)
         $startDt = strtotime('NOW');
 
         require 'dns.php';
-        if ($adType=="0") {
-            $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10` WHERE adware_type=0 AND owner=:owner AND regist < :startDt";
-        } else {
-            $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10` WHERE adware_type=1 AND owner=:owner AND regist < :startDt";
-        }
+        $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10` WHERE adware_type=:adware_type AND owner=:owner AND regist < :startDt";
+
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
         $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
+        $stmt->bindParam(':adware_type', $adType, PDO::PARAM_INT);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result->cnt = $row['cnt'];
@@ -446,9 +441,9 @@ function insertAdwares($adwares)
         }
 
 
-        $kword = explode(' ',$adwares->keyword);
-        foreach ($kword as $word){
-            if(!empty($word)){
+        $kword = explode(' ', $adwares->keyword);
+        foreach ($kword as $word) {
+            if (!empty($word)) {
                 $stmt = $pdo -> prepare("SELECT count(*) as cnt FROM `x10_keyword` WHERE `keyword`=:keyword");
                 $stmt->bindParam(':keyword', $word, PDO::PARAM_STR);
                 execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -465,9 +460,6 @@ function insertAdwares($adwares)
                 }
             }
         }
-
-
-
     } catch (PDOException $e) {
         $errorMessage = 'DATABASE ERROR';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -553,9 +545,9 @@ function updateAdwares($adwares)
         }
         $stmt=null;
 
-        $kword = explode(' ',$adwares->keyword);
-        foreach ($kword as $word){
-            if(!empty($word)){
+        $kword = explode(' ', $adwares->keyword);
+        foreach ($kword as $word) {
+            if (!empty($word)) {
                 $stmt = $pdo -> prepare("SELECT count(*) as cnt FROM `x10_keyword` WHERE `keyword`=:keyword");
                 $stmt->bindParam(':keyword', $word, PDO::PARAM_STR);
                 execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -572,10 +564,6 @@ function updateAdwares($adwares)
                 }
             }
         }
-
-
-
-
     } catch (PDOException $e) {
         $errorMessage = 'DATABASE ERROR';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);

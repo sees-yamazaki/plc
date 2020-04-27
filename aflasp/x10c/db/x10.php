@@ -55,6 +55,7 @@ class cls_secretadwares
     public $startdt ;
     public $enddt ;
     public $cnt_offer ;
+    public $cnt_post ;
     public $stts ;
     public $isFinish ;
 }
@@ -159,6 +160,7 @@ function getAdwaresLimit($where, $limit, $offset)
             $result->startdt = $row['startdt'];
             $result->enddt = $row['enddt'];
             $result->cnt_offer = $row['cnt_offer'];
+            $result->cnt_post = $row['cnt_post'];
             array_push($results, $result);
         }
     } catch (PDOException $e) {
@@ -236,6 +238,7 @@ function getAdwaresRecentry($days)
             $result->startdt = $row['startdt'];
             $result->enddt = $row['enddt'];
             $result->cnt_offer = $row['cnt_offer'];
+            $result->cnt_post = $row['cnt_post'];
             array_push($results, $result);
         }
     } catch (PDOException $e) {
@@ -309,6 +312,7 @@ function getAdware($id)
             $result->startdt = $row['startdt'];
             $result->enddt = $row['enddt'];
             $result->cnt_offer = $row['cnt_offer'];
+            $result->cnt_post = $row['cnt_post'];
             $result->stts = $row['stts'];
             $result->isFinish = $row['isFinish'];
         }
@@ -582,7 +586,7 @@ class cls_offer
      try {
          $results = array();
          require 'dns.php';
-         $stmt = $pdo->prepare("SELECT * FROM `v_offer_x10` WHERE nuser=:nuser AND `status`=0 ORDER BY regist desc");
+         $stmt = $pdo->prepare("SELECT * FROM `v_offer_x10` WHERE nuser=:nuser AND (`status`=0 OR `status`=10) ORDER BY regist desc");
          $stmt->bindParam(':nuser', $nuser, PDO::PARAM_STR);
          execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
@@ -821,17 +825,14 @@ function getPayLimit($startdt, $enddt, $nuser, $adtype, $limit, $offset)
 
         $results = array();
         require 'dns.php';
-        if ($adtype=="0") {
-            $sql = "SELECT * FROM `v_pay_x10` WHERE adware_type=0 AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc LIMIT :limit OFFSET :offset";
-        } else {
-            $sql = "SELECT * FROM `v_pay_x10` WHERE adware_type=1 AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc LIMIT :limit OFFSET :offset";
-        }
+        $sql = "SELECT * FROM `v_pay_x10` WHERE adware_type=:adware_type AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc LIMIT :limit OFFSET :offset";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
         $stmt->bindParam(':start', $start, PDO::PARAM_INT);
         $stmt->bindParam(':end', $end, PDO::PARAM_INT);
+        $stmt->bindParam(':adware_type', $adtype, PDO::PARAM_INT);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result = new cls_pay();
@@ -952,7 +953,6 @@ function countX10Mail($nuser)
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $cnt = $row['cnt'];
-
     } catch (PDOException $e) {
         //
     }
@@ -985,7 +985,6 @@ function insertX10Mail($x10mail)
             logging("INSERT ERROR : ". $sql);
             logging("ARGS : ". json_encode(func_get_args()));
         }
-
     } catch (PDOException $e) {
         $errorMessage = 'DATABASE ERROR';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -999,7 +998,6 @@ function insertX10Mail($x10mail)
 function activateX10Mail($x10mail)
 {
     try {
-
         require 'dns.php';
         $sql = "UPDATE `x10_mail` SET `stts`=2  WHERE  id=:id";
         $stmt = $pdo -> prepare($sql);
@@ -1017,7 +1015,6 @@ function activateX10Mail($x10mail)
             logging("INSERT ERROR : ". $sql);
             logging("ARGS : ". json_encode(func_get_args()));
         }
-
     } catch (PDOException $e) {
         $errorMessage = 'DATABASE ERROR';
         logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -1025,4 +1022,271 @@ function activateX10Mail($x10mail)
         logging("ARGS : ". json_encode(func_get_args()));
     }
     return $insertid;
+}
+
+
+
+function insertPost($adwares, $cuser, $nuser)
+{
+    $ad = getAdware($adwares);
+
+    require 'dns.php';
+    $stmt = $pdo->prepare("SELECT MAX(shadow_id) as shadow_id, MAX(id) as id FROM `pay`");
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $shadow_id= is_null($row['shadow_id']) ? 0 : $row['shadow_id'];
+    $id= is_null($row['id']) ? 0 : $row['id'];
+    $new_id = $shadow_id>$id ? $shadow_id + 1 : $id + 1;
+    $stmt=null;
+
+    $sql = "INSERT INTO `pay`(`shadow_id`, `delete_key`, `id`, `access_id`, `ipaddress`, `cookie`, `owner`, `adwares_type`, `adwares`, `cuser`, `cost`, `sales`, `froms`, `froms_sub`, `state`, `is_notice`, `utn`, `useragent`, `continue_uid`, `report_id`, `regist`) VALUES (:shadow_id, 0, :id, '', '', '', :owner, :adwares_type, :adwares, :cuser, :cost, 0, '', '', 0, 0, '', '', '', '', :regist)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':shadow_id', $new_id, PDO::PARAM_INT);
+    $stmt->bindParam(':id', $new_id, PDO::PARAM_INT);
+    $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
+    $stmt->bindParam(':adwares', $adwares, PDO::PARAM_STR);
+    $adType = substr($adwares, 0, 1)=="A" ? "adwares" : "secretAdwares";
+    $stmt->bindParam(':adwares_type', $adType, PDO::PARAM_STR);
+    $stmt->bindParam(':cuser', $cuser, PDO::PARAM_STR);
+    $stmt->bindParam(':cost', $ad->money, PDO::PARAM_STR);
+    $stmt->bindParam(':regist', strtotime("NOW"), PDO::PARAM_INT);
+
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+    if ($stmt->rowCount()==0) {
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("INSERT ERROR : ". $sql);
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+
+    $stmt=null;
+}
+
+
+function deletePost($adwares, $cuser, $nuser)
+{
+    require 'dns.php';
+
+    $sql = "DELETE FROM `pay` WHERE `owner`=:owner AND `adwares`=:adwares";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
+    $stmt->bindParam(':adwares', $adwares, PDO::PARAM_STR);
+
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+    // if ($stmt->rowCount()==0) {
+    //     logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+    //     logging("DELETE ERROR : ". $sql);
+    //     logging("ARGS : ". json_encode(func_get_args()));
+    // }
+}
+
+class cls_post
+{
+    public $owner ;
+    public $adwares ;
+    public $cuser ;
+    public $cost ;
+    public $state ;
+    public $regist ;
+    public $name ;
+}
+
+function getPosts($where)
+{
+    try {
+        $results = array();
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT `pay`.*, `ad`.`name` FROM `pay` LEFT JOIN `v_adwares_status` as `ad` ON `pay`.`adwares`=`ad`.`id` ".$where);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_post();
+            $result->owner = $row['owner'];
+            $result->adwares = $row['adwares'];
+            $result->cuser = $row['cuser'];
+            $result->cost = $row['cost'];
+            $result->state = $row['state'];
+            $result->regist = $row['regist'];
+            $result->name = $row['name'];
+            array_push($results, $result);
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $results;
+}
+
+
+function adCost($adwares, $nuser, $cost)
+{
+
+    //nuserにコスト追加
+    require 'dns.php';
+    $sql = "UPDATE `nuser` SET `pay`= `pay`+:cost WHERE  id=:id";
+    $stmt = $pdo -> prepare($sql);
+    $stmt->bindParam(':id', $nuser, PDO::PARAM_STR);
+    $stmt->bindParam(':cost', $cost, PDO::PARAM_INT);
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+    $sql = "UPDATE `pay` SET `state`=2 , `is_notice`=1 WHERE owner=:owner AND  adwares=:adwares";
+    $stmt = $pdo -> prepare($sql);
+    $stmt->bindParam(':adwares', $adwares, PDO::PARAM_STR);
+    $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+    if (substr($adwares, 0, 1)=="A") {
+        $sql = "UPDATE `adwares` SET `money_count`= `money_count`+:cost, `pay_count`=`pay_count`+1 WHERE  id=:id";
+    } else {
+        $sql = "UPDATE `secretadwares` SET `money_count`= `money_count`+:cost, `pay_count`=`pay_count`+1 WHERE  id=:id";
+    }
+    $stmt = $pdo -> prepare($sql);
+    $stmt->bindParam(':id', $adwares, PDO::PARAM_STR);
+    $stmt->bindParam(':cost', $cost, PDO::PARAM_INT);
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+}
+
+function delCost($adwares, $nuser, $cost)
+{
+    //nuserにコスト追加
+    require 'dns.php';
+    $sql = "UPDATE `nuser` SET `pay`= `pay`-:cost WHERE  id=:id";
+    $stmt = $pdo -> prepare($sql);
+    $stmt->bindParam(':id', $nuser, PDO::PARAM_STR);
+    $stmt->bindParam(':cost', $cost, PDO::PARAM_INT);
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+    $sql = "UPDATE `pay` SET `state`=0 , `is_notice`=1 WHERE owner=:owner AND  adwares=:adwares";
+    $stmt = $pdo -> prepare($sql);
+    $stmt->bindParam(':adwares', $adwares, PDO::PARAM_STR);
+    $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+    if (substr($adwares, 0, 1)=="A") {
+        $sql = "UPDATE `adwares` SET `money_count`= `money_count`-:cost, `pay_count`=`pay_count`-1 WHERE  id=:id";
+    } else {
+        $sql = "UPDATE `secretadwares` SET `money_count`= `money_count`-:cost, `pay_count`=`pay_count`-1 WHERE  id=:id";
+    }
+    $stmt = $pdo -> prepare($sql);
+    $stmt->bindParam(':id', $adwares, PDO::PARAM_STR);
+    $stmt->bindParam(':cost', $cost, PDO::PARAM_INT);
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+}
+
+
+
+function doPay($nuser, $cost)
+{
+
+    //nuserにコスト追加
+    require 'dns.php';
+    $sql = "UPDATE `nuser` SET `pay`= `pay`-:cost WHERE  id=:id";
+    $stmt = $pdo -> prepare($sql);
+    $stmt->bindParam(':id', $nuser, PDO::PARAM_STR);
+    $stmt->bindParam(':cost', $cost, PDO::PARAM_INT);
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+    $stmt = $pdo->prepare("SELECT MAX(shadow_id) as shadow_id, MAX(id) as id FROM `returnss`");
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $shadow_id= is_null($row['shadow_id']) ? 0 : $row['shadow_id'];
+    $id= is_null($row['id']) ? 0 : $row['id'];
+    $new_id = $shadow_id>$id ? $shadow_id + 1 : $id + 1;
+    $stmt=null;
+
+
+    $sql = "INSERT INTO `returnss`(`shadow_id`, `delete_key`, `id`, `owner`, `cost`, `state`, `regist`) VALUES (:shadow_id, 0, :id, :owner, :cost, '入金待ち', :regist)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':shadow_id', $new_id, PDO::PARAM_INT);
+    $stmt->bindParam(':id', $new_id, PDO::PARAM_INT);
+    $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
+    $stmt->bindParam(':cost', $cost, PDO::PARAM_INT);
+    $stmt->bindParam(':regist', strtotime("NOW"), PDO::PARAM_INT);
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+}
+
+function doUnPay($id, $nuser, $cost)
+{
+
+    //nuserにコスト追加
+    require 'dns.php';
+    $sql = "UPDATE `nuser` SET `pay`= `pay`+:cost WHERE  id=:id";
+    $stmt = $pdo -> prepare($sql);
+    $stmt->bindParam(':id', $nuser, PDO::PARAM_STR);
+    $stmt->bindParam(':cost', $cost, PDO::PARAM_INT);
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+
+    $sql = "DELETE FROM `returnss` WHERE `id`=:id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+}
+
+function updatePayStatus($id, $state)
+{
+    require 'dns.php';
+    $sql = "UPDATE `returnss` SET `state`=:stare WHERE `id`=:id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->bindParam(':stare', $state, PDO::PARAM_STR);
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+    if ($state=="入金済み") {
+        $stmt = $pdo->prepare("SELECT * FROM `returnss` WHERE id=:id ");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $owner = $row['owner'];
+        $cost = $row['cost'];
+        $stmt=null;
+
+
+        $sql = "INSERT INTO `x10_returnss`(`id`, `owner`, `cost`, `state`, `regist`) VALUES (:id, :owner, :cost, '入金済み', :regist)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':owner', $owner, PDO::PARAM_STR);
+        $stmt->bindParam(':cost', $cost, PDO::PARAM_INT);
+        $stmt->bindParam(':regist', strtotime("NOW"), PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+    } else {
+        $sql = "DELETE FROM `x10_returnss` WHERE `id`=:id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+    }
+}
+
+class cls_returnss
+{
+    public $id ;
+    public $owner ;
+    public $cost ;
+    public $state ;
+    public $regist ;
+    public $name ;
+}
+
+function getReturnsses($where)
+{
+    try {
+        $results = array();
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT `returnss`.*, `nuser`.`name` FROM `returnss` LEFT JOIN `nuser` ON `returnss`.`owner`=`nuser`.`id` ".$where);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_post();
+            $result->id = $row['id'];
+            $result->owner = $row['owner'];
+            $result->cost = $row['cost'];
+            $result->state = $row['state'];
+            $result->regist = $row['regist'];
+            $result->name = $row['name'];
+            array_push($results, $result);
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $results;
 }

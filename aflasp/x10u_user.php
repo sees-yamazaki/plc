@@ -17,7 +17,9 @@ date_default_timezone_set('Asia/Tokyo');
 $errorMessage = '';
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
-if(empty($LOGIN_ID)){ header('Location: x10u_logoff.php'); }
+if (empty($LOGIN_ID)) {
+    header('Location: x10u_logoff.php');
+}
 
 
 $nUser = getNuser($LOGIN_ID);
@@ -58,7 +60,7 @@ $now = strtotime("now");
         <section class="sec-member section">
             <div class="sec__inner container">
 
-<?php if(!empty($x10Mail->limittime) && $x10Mail->limittime>$now){ ?>
+<?php if (!empty($x10Mail->limittime) && $x10Mail->limittime>$now) { ?>
     <div class="alert_box">
     <h4 class="alert_box_title"><span class="icon_chuui_pnk"></span>メールアドレスが変更されています</h4>
     <p class="alert_box_text">新しいアドレスへの変更は送信済みの認証メール内のURLをクリックすると変更が完了致します。</p>
@@ -94,8 +96,16 @@ $now = strtotime("now");
                                 <dd><?php echo $nUser->name; ?></dd>
                             </dl>
                             <dl>
+                                <dt>フリガナ</dt>
+                                <dd><?php echo $nUserX->kana; ?></dd>
+                            </dl>
+                            <dl>
                                 <dt>住所</dt>
                                 <dd><?php echo $nUser->zip1.'-'.$nUser->zip2; ?>　<?php echo getPrefectureById($nUser->adds); ?><?php echo $nUser->add_sub; ?></dd>
+                            </dl>
+                            <dl>
+                                <dt>生年月日</dt>
+                                <dd><?php echo $nUserX->birthday; ?></dd>
                             </dl>
                             <dl>
                                 <dt>電話番号</dt>
@@ -111,7 +121,7 @@ $now = strtotime("now");
 
                     <div class="form__content_block">
                         <h3 class="bar-title"><span class="bar-title-text">SNSアカウント</span></h3>
-                        <?php if(empty($nUserX->instagram) && empty($nUserX->twitter) && empty($nUserX->facebook) && empty($nUserX->youtube) ){ ?>
+                        <?php if (empty($nUserX->instagram) && empty($nUserX->twitter) && empty($nUserX->facebook) && empty($nUserX->youtube)) { ?>
                             <div class="alert_box">
                             <h4 class="alert_box_title"><span class="icon_chuui_pnk"></span>まだSNSアカウントが未設定です。</h4>
                             <p class="alert_box_text">ＳＮＳアカウント設定を行うとより報酬の高いオファーを受けることが出来ます。<br><a
@@ -120,7 +130,7 @@ $now = strtotime("now");
                             </div>
                         <?php } ?>    
                         <div class="dl-style">
-                                            <?php if(!empty($nUserX->instagram)){  ?>
+                                            <?php if (!empty($nUserX->instagram)) {  ?>
                             <dl>
                                 <dt>Instagram</dt>
                                 <dd>
@@ -136,7 +146,7 @@ $now = strtotime("now");
                                 </dd>
                             </dl>
                                             <?php }  ?>
-                                            <?php if(!empty($nUserX->twitter)){  ?>
+                                            <?php if (!empty($nUserX->twitter)) {  ?>
                             <dl>
                                 <dt>Twitter</dt>
                                 <dd>
@@ -152,7 +162,7 @@ $now = strtotime("now");
                                 </dd>
                             </dl>
                                             <?php }  ?>
-                                            <?php if(!empty($nUserX->facebook)){  ?>
+                                            <?php if (!empty($nUserX->facebook)) {  ?>
                             <dl>
                                 <dt>Facebook</dt>
                                 <dd>
@@ -168,7 +178,7 @@ $now = strtotime("now");
                                 </dd>
                             </dl>
                                             <?php }  ?>
-                                            <?php if(!empty($nUserX->youtube)){  ?>
+                                            <?php if (!empty($nUserX->youtube)) {  ?>
                             <dl>
                                 <dt>Youtube</dt>
                                 <dd>
@@ -193,7 +203,7 @@ $now = strtotime("now");
 
                     <div class="form__content_block">
                         <h3 class="bar-title"><span class="bar-title-text">口座情報</span></h3>
-                        <?php if(empty($nUser->bank) || empty($nUser->branch) || empty($nUser->bank_name) || empty($nUser->number) ){ ?>
+                        <?php if (empty($nUser->bank) || empty($nUser->branch) || empty($nUser->bank_name) || empty($nUser->number)) { ?>
                             <div class="alert_box">
                                 <h4 class="alert_box_title"><span class="icon_chuui_pnk"></span>まだ口座情報が未設定です。</h4>
                                 <p class="alert_box_text">口座情報の設定を行わないと報酬の支払いが行われません。<br><a href="./user_bank_edit.html"
@@ -201,19 +211,19 @@ $now = strtotime("now");
                             </div>
                         <?php } ?>
                         <div class="dl-style">
-                                            <?php if(!empty($nUser->bank)){  ?>
+                                            <?php if (!empty($nUser->bank)) {  ?>
                             <dl>
                                 <dt>金融機関名</dt>
                                 <dd><?php echo $nUser->bank; ?></dd>
                             </dl>
                                             <?php }  ?>
-                                            <?php if(!empty($nUser->branch)){  ?>
+                                            <?php if (!empty($nUser->branch)) {  ?>
                             <dl>
                                 <dt>支店名</dt>
                                 <dd><?php echo $nUser->branch; ?></dd>
                             </dl>
                                             <?php }  ?>
-                                            <?php if(!empty($nUser->bank_name)){  ?>
+                                            <?php if (!empty($nUser->bank_name)) {  ?>
                             <dl>
                                 <dt>種別</dt>
                                 <?php
@@ -230,13 +240,13 @@ $now = strtotime("now");
                                 <dd><?php echo $bankType; ?></dd>
                             </dl>
                                             <?php }  ?>
-                                            <?php if(!empty($nUser->bank_name)){  ?>
+                                            <?php if (!empty($nUser->bank_name)) {  ?>
                             <dl>
                                 <dt>口座名義（カナ）</dt>
                                 <dd><?php echo $nUser->bank_name; ?></dd>
                             </dl>
                                             <?php }  ?>
-                                            <?php if(!empty($nUser->number)){  ?>
+                                            <?php if (!empty($nUser->number)) {  ?>
                             <dl>
                                 <dt>口座番号</dt>
                                 <dd><?php echo $nUser->number; ?></dd>

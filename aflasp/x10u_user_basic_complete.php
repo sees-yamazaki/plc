@@ -17,7 +17,9 @@ date_default_timezone_set('Asia/Tokyo');
 $errorMessage = '';
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
-if(empty($LOGIN_ID)){ header('Location: x10u_logoff.php'); }
+if (empty($LOGIN_ID)) {
+    header('Location: x10u_logoff.php');
+}
 
 $crntNUser = getNuser($LOGIN_ID);
 
@@ -62,7 +64,7 @@ $crntNUser = getNuser($LOGIN_ID);
               <p class="alert_box_text">下記より編集項目が変更されている事をご確認ください。</p>
            </div>
 
-            <?php if( $crntNUser->mail<> $_POST['newmail']){ ?>
+            <?php if ($crntNUser->mail<> $_POST['newmail']) { ?>
                 <div class="alert_box">
                 <h4 class="alert_box_title"><span class="icon_chuui_pnk"></span>メールアドレスが変更されています</h4>
                 <p class="alert_box_text">新しいアドレスは確定するボタンを押した後に送られる認証メール内のURLをクリックすると変更が完了致します。</p>
@@ -96,8 +98,16 @@ $crntNUser = getNuser($LOGIN_ID);
                 <dd><?php echo $_POST['name']; ?></dd>
               </dl>
               <dl>
+                <dt>お名前</dt>
+                <dd><?php echo $_POST['kana']; ?></dd>
+              </dl>
+              <dl>
                 <dt>住所</dt>
                 <dd><?php echo $_POST['zip']; ?>　<?php echo $_POST['pref']; ?><?php echo $_POST['addr']; ?></dd>
+              </dl>
+              <dl>
+                <dt>生年月日</dt>
+                <dd><?php echo $_POST['birthday-y'].'/'.$_POST['birthday-m'].'/'.$_POST['birthday-d']; ?></dd>
               </dl>
               <dl>
                 <dt>電話番号</dt>

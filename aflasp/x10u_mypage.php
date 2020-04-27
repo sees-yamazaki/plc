@@ -15,7 +15,9 @@ date_default_timezone_set('Asia/Tokyo');
 $errorMessage = '';
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
-if(empty($LOGIN_ID)){ header('Location: x10u_logoff.php'); }
+if (empty($LOGIN_ID)) {
+    header('Location: x10u_logoff.php');
+}
 $thisY = date('Y');
 $thisM = date('m');
 // 指定月の目標設定広告のデータを取得
@@ -24,12 +26,14 @@ $pays_0 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 0);
 // 指定月のクリック広告のデータを取得
 $cnt_click_1 = countMonthlyClicks($thisY, $thisM, $LOGIN_ID, 1);
 $pays_1 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 1);
+// 指定月の投稿広告のデータを取得
+$pays_2 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 2);
 
 $termHtml = date('Y年m月d日', strtotime("first day of this month"))."〜".date('m月d日', strtotime("now"));
 
 // 直近５日間に公開されて、現在公開中の広告を取得する
 //$ads = getAdwaresRecentry(5);
-$ads = getAdwaresLimit(" AND (isFinish=0) ",5,0);
+$ads = getAdwaresLimit(" AND (isFinish=0) ", 5, 0);
 
 $pickupHtml='';
 foreach ($ads as $ad) {
@@ -43,7 +47,7 @@ foreach ($ads as $ad) {
     $pickupHtml.='<ul class="label_list flex-wrap">';
     if ($ad->adware_type=="0") {
         $pickupHtml.='<li class="bg_pink">目標達成</li>';
-    }else{
+    } else {
         $pickupHtml.='<li class="bg_grn">クリック</li>';
     }
     $pickupHtml.='</ul>';
@@ -52,7 +56,7 @@ foreach ($ads as $ad) {
     }
     $pickupHtml.='</div>';
     $pickupHtml.='</div>';
-    $pickupHtml.='<p class="box_text">'.abbrStr($ad->comment,60).'</p>';
+    $pickupHtml.='<p class="box_text">'.abbrStr($ad->comment, 60).'</p>';
     $pickupHtml.='</a>';
     $pickupHtml.='</div>';
     $pickupHtml.='';
@@ -65,8 +69,10 @@ foreach ($ads as $ad) {
     $newerHtml.='<a href="x10u_offer_detail.php?id='.$ad->id.'">';
     if ($ad->adware_type=="0") {
         $newerHtml.='<p class="label"><span class="bg_pink">目標達成</span></p>';
-    }else{
+    } elseif ($ad->adware_type=="1") {
         $newerHtml.='<p class="label"><span class="bg_grn">クリック</span></p>';
+    } elseif ($ad->adware_type=="2") {
+        $newerHtml.='<p class="label"><span class="bg_gld">投稿</span></p>';
     }
     $wk = $ad->approvable=="1" ? '<span class="ap">承</span>' : '';
     $newerHtml.='<p class="row_text">'.$wk.$ad->name.'</p>';
@@ -104,8 +110,10 @@ foreach ($offering as $ofr) {
         $offeringHtml .= '<a href="x10u_offer_detail.php?id='.$ad->id.'">';
         if ($ofr->adware_type=="0") {
             $offeringHtml .= '<p class="label"><span class="bg_pink">目標達成</span></p>';
-        } else {
+        } elseif ($ofr->adware_type=="1") {
             $offeringHtml .= '<p class="label"><span class="bg_grn">クリック</span></p>';
+        } elseif ($ofr->adware_type=="2") {
+            $offeringHtml .= '<p class="label"><span class="bg_gld">投稿</span></p>';
         }
         $offeringHtml .= '<p class="row_text"><span class="ap">承</span>'.$ofr->name.'</p>';
         $offeringHtml .= '</a>';
@@ -125,8 +133,10 @@ foreach ($approved as $app) {
     $approvedHtml .= '<a href="x10u_offer_detail.php?id='.$app->adware.'">';
     if ($app->adware_type=="0") {
         $approvedHtml .= '<p class="label"><span class="bg_pink">目標達成</span></p>';
-    }else{
+    } elseif ($app->adware_type=="1") {
         $approvedHtml .= '<p class="label"><span class="bg_grn">クリック</span></p>';
+    } elseif ($app->adware_type=="2") {
+        $approvedHtml .= '<p class="label"><span class="bg_gld">投稿</span></p>';
     }
     $approvedHtml .= '<p class="row_text"><span class="ap">承</span>'.$app->name.'</p>';
     $approvedHtml .= '</a>';
@@ -170,6 +180,7 @@ if (empty($approvedHtml)) {
                         <li class="tab_item is-active">すべて</li>
                         <li class="tab_item">目標報酬</li>
                         <li class="tab_item">クリック報酬</li>
+                        <li class="tab_item">投稿報酬</li>
                     </ul>
           <div class="tab-style_contents_wrap">
             <div class="tab-style_content tab_content is-show">
@@ -189,12 +200,12 @@ if (empty($approvedHtml)) {
                                     <tbody>
                                         <tr>
                                             <td class="td-num"><?php echo(number_format($cnt_click_0 + $cnt_click_1)); ?>件</td>
-                                            <td class="td-num"><?php echo(number_format($pays_0->cnt + $pays_1->cnt)); ?>件</td>
-                                            <td class="td-num"><?php echo(number_format($pays_0->cnt2 + $pays_1->cnt2)); ?>件</td>
-                                            <td class="td-num"><?php echo(number_format($pays_0->cst0 + $pays_0->cst1 + $pays_1->cst0 + $pays_1->cst1)); ?>円</td>
-                                            <td class="td-num"><?php echo(number_format($pays_0->cst2 + $pays_1->cst2)); ?>円</td>
+                                            <td class="td-num"><?php echo(number_format($pays_0->cnt + $pays_1->cnt + $pays_2->cnt)); ?>件</td>
+                                            <td class="td-num"><?php echo(number_format($pays_0->cnt2 + $pays_1->cnt2 + $pays_2->cnt2)); ?>件</td>
+                                            <td class="td-num"><?php echo(number_format($pays_0->cst0 + $pays_0->cst1 + $pays_1->cst0 + $pays_1->cst1 + $pays_2->cst0 + $pays_2->cst1)); ?>円</td>
+                                            <td class="td-num"><?php echo(number_format($pays_0->cst2 + $pays_1->cst2 + $pays_2->cst2)); ?>円</td>
                                             <td class="td-num">
-                                                <?php echo($pays_0->cnt0 + $pays_0->cnt1 + $pays_1->cnt0 + $pays_1->cnt1); ?>件
+                                                <?php echo($pays_0->cnt0 + $pays_0->cnt1 + $pays_1->cnt0 + $pays_1->cnt1 + $pays_2->cnt0 + $pays_2->cnt1); ?>件
                                             </td>
                                         </tr>
                                     </tbody>
@@ -255,6 +266,33 @@ if (empty($approvedHtml)) {
                                 </table>
                             </div>
                         </div>
+                        <div class="achieve_content tab_content">
+                            <p class="archieve__content_date f-bold">今月の成果（<?php echo $termHtml; ?>）</p>
+                            <div class="table_wrap">
+                                <table class="table-style">
+                                    <thead>
+                                        <tr>
+                                            <th>クリック</th>
+                                            <th>発生成果</th>
+                                            <th>確定成果</th>
+                                            <th>未確定成果</th>
+                                            <th>確定報酬</th>
+                                            <th>非認証</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="td-num">--</td>
+                                            <td class="td-num"><?php echo number_format($pays_2->cnt); ?>件</td>
+                                            <td class="td-num"><?php echo number_format($pays_2->cnt2); ?>件</td>
+                                            <td class="td-num"><?php echo(number_format($pays_2->cst0 + $pays_2->cst1)); ?>円</td>
+                                            <td class="td-num"><?php echo number_format($pays_2->cst2); ?>円</td>
+                                            <td class="td-num"><?php echo(number_format($pays_2->cnt0 + $pays_2->cnt1)); ?>件</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                         <p class="add_link_btn text-right"><a href="x10u_result_list.php"><span class="icon_add"></span>詳しく見る</a></p>
                     </div>
                 </div>
@@ -285,7 +323,7 @@ if (empty($approvedHtml)) {
             <div class="section__inner container">
                 <h2 class="sec-title"><span class="icon_note"></span>承認制オファー概要</h2>
 
-                <?php if(!empty($offeringHtml)){ ?>
+                <?php if (!empty($offeringHtml)) { ?>
                 <div class="affiliate_list__group">
                     <h3 class="bar-title"><span class="bar-title-text">リクエスト結果待機中</span></h3>
                     <div class="affiliate_rowList">
@@ -299,7 +337,7 @@ if (empty($approvedHtml)) {
                     </div>
                 </div>
                 <?php } ?>
-                <?php if(!empty($approvedHtml)){ ?>
+                <?php if (!empty($approvedHtml)) { ?>
                 <div class="affiliate_list__group">
                     <h3 class="bar-title"><span class="bar-title-text">承認済みオファー</span></h3>
                     <div class="affiliate_rowList">

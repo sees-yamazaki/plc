@@ -23,35 +23,40 @@ if (empty($LOGIN_ID)) {
 
 $id = empty($_GET['id']) ? $_POST['id'] : $_GET['id'];
 
+$id_title = substr($id, 0, 1)=="A" ? 'adwares' : 's_adwares';
+
+$ad = getAdware($id);
+
 if (isset($_GET['req'])) {
     if ($_GET['req']=="0") {
         $ofr = getOfferStatus($id, $LOGIN_ID);
-          if (is_null($ofr->status)) {
+        if (is_null($ofr->status)) {
             $ofr = new cls_offer();
             $ofr->adware = $id;
             $ofr->nuser = $LOGIN_ID ;
-            $ofr->status = "0";
+            if ($ad->adware_type=="2") {
+                $ofr->status = "10";
+            } else {
+                $ofr->status = "0";
+            }
             insertX10Offer($ofr);
         }
     } else {
         $ofr = new cls_offer();
         $ofr->adware = $id;
         $ofr->nuser = $LOGIN_ID ;
-        $ofr->status = "0";
         deleteX10Offer($ofr);
     }
 }
-
-$id_title = substr($id, 0, 1)=="A" ? 'adwares' : 's_adwares';
-
-$ad = getAdware($id);
 
 $titleHtml = '';
 $titleHtml .= '<div class="article__section_title">';
 if ($ad->adware_type=="0") {
     $titleHtml .= '<p class="label"><span class="bg_pink">目標達成</span></p>';
-} else {
+} elseif ($ad->adware_type=="1") {
     $titleHtml .= '<p class="label"><span class="bg_grn">クリック</span></p>';
+} elseif ($ad->adware_type=="2") {
+    $titleHtml .= '<p class="label"><span class="bg_gld">投稿</span></p>';
 }
 $titleHtml .= '<h2 class="article__title">'.$ad->name.'</h2>';
 if ($ad->approvable=="1") {
@@ -211,7 +216,7 @@ if ($ad->isFinish=="1") {
 //         $html .= '<input type="hidden" name="adware" value="'.$id.'">';
 //         $html .= '<input type="hidden" name="status" value="0">';
 //         $html .= '</form>';
-    } elseif ($ofr->status=="0") {
+    } elseif ($ofr->status=="0" || $ofr->status=="10") {
         $offerHtml.='<div class="article__link_block article__link_request-approval fukidashi-wrap">';
         $offerHtml.='<div class="fukidashi-bk fukidashi-load-fade js-fukidashi-load-fade">';
         $offerHtml.='<span class="icon_chuui"></span>リクエスト完了！';
@@ -224,7 +229,7 @@ if ($ad->isFinish=="1") {
 //         $html .= '<input type="hidden" name="adware" value="'.$id.'">';
 //         $html .= '<input type="hidden" name="status" value="1">';
 //         $html .= '</form>';
-    } elseif ($ofr->status=="1") {
+    } elseif ($ofr->status=="1" || $ofr->status=="11") {
         $offerHtml.='残念ながら承認されませんでした<br>';
     } elseif ($ofr->status=="2") {
         $offerHtml.='<div class="article__link_block article__link_share">';
@@ -330,7 +335,7 @@ foreach ($tags as $tag) {
         <div class="article__section article__section_outline" id="url">
           <h3 class="bar-title"><span class="bar-title-text">オファー概要</span></h3>
           <p class="article__section_outline_text"><?php echo $ad->comment; ?></p>
-          <?php if(mb_strlen($ad->comment)>120){ ?>
+          <?php if (mb_strlen($ad->comment)>120) { ?>
           <div class="filter-cover sp"></div>
           <p class="js-btn-filter btn-filter-off f-blu sp">続きを読む</p>
           <?php } ?>

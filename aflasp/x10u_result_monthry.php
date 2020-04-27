@@ -9,7 +9,9 @@ include 'x10c/db/x10.php';
 session_start();
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
-if(empty($LOGIN_ID)){ header('Location: x10u_logoff.php'); }
+if (empty($LOGIN_ID)) {
+    header('Location: x10u_logoff.php');
+}
 
 //Timezone
 date_default_timezone_set('Asia/Tokyo');
@@ -34,9 +36,12 @@ $backHtml='';
 if ($adtype=="0") {
     $titleHtml .= '目標達成報酬成果一覧（月別）';
     $backHtml='<a href="x10u_result_occurrence.php?adtype=0" class="bd_blu">目的達成報酬（発生別）へ</a>';
-} else {
+} elseif ($adtype=="1") {
     $titleHtml .= 'クリック報酬成果一覧（月別）';
     $backHtml='<a href="x10u_result_occurrence.php?adtype=1" class="bd_blu">クリック報酬（発生別）へ</a>';
+} elseif ($adtype=="2") {
+    $titleHtml .= '投稿報酬成果一覧（月別）';
+    $backHtml='<a href="x10u_result_occurrence.php?adtype=2" class="bd_blu">投稿報酬（発生別）へ</a>';
 }
 
 $yHtml='';
@@ -129,8 +134,8 @@ for ($i = 1; $i <= 12; $i++) {
                 </tr>
               </thead>
               <tbody>
-        <?php foreach($pays as $p){ ?>
-        <?php if($p->adware_type==$adtype){ ?>
+        <?php foreach ($pays as $p) { ?>
+        <?php if ($p->adware_type==$adtype) { ?>
         <tr>
             <?php $stts = isAdwareFinish(getAdwareStatus($p->id));?>
             <?php $wk =  $stts =="0" ? "": "[終了]"; ?>
@@ -153,14 +158,14 @@ for ($i = 1; $i <= 12; $i++) {
         <div class="pager flex">
         <form action="" method="POST" name="frmL">
           <a href="javascript:frmL.submit()" class="prev2">前月へ</a>
-            <input type="hidden" name="thisY" value="<?php echo substr($lastYM,0,4); ?>">
-            <input type="hidden" name="thisM" value="<?php echo substr($lastYM,4); ?>">
+            <input type="hidden" name="thisY" value="<?php echo substr($lastYM, 0, 4); ?>">
+            <input type="hidden" name="thisM" value="<?php echo substr($lastYM, 4); ?>">
             <input type="hidden" name="adtype" value="<?php echo $adtype; ?>">
         </form>
         <form action="" method="POST" name="frmN">
           <a href="javascript:frmN.submit()" class="next2">翌月へ</a>
-            <input type="hidden" name="thisY" value="<?php echo substr($nextYM,0,4); ?>">
-            <input type="hidden" name="thisM" value="<?php echo substr($nextYM,4); ?>">
+            <input type="hidden" name="thisY" value="<?php echo substr($nextYM, 0, 4); ?>">
+            <input type="hidden" name="thisM" value="<?php echo substr($nextYM, 4); ?>">
             <input type="hidden" name="adtype" value="<?php echo $adtype; ?>">
         </form>
         </div>

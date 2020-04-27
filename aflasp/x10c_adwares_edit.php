@@ -71,6 +71,11 @@ $adware->enddt = $_POST['enddt'];
 
 if (isset($_POST['doCheck'])) {
     $pattern = "{\A(https?|ftp)(://[-_.!~*\'()a-zA-Z0-9;/?:\@&=+\$,%#]+\z)}";
+    
+    if ($adware->adware_type=="2" && $adware->approvable=="0") {
+        $errorMessage .= '<li>投稿報酬タイプは承認タイプを選択してください。</li>';
+    }
+
     if (!preg_match($pattern, $adware->url)) {
         $errorMessage .= '<li>URL形式が間違っています</li>';
     }
@@ -282,11 +287,18 @@ if (!empty($adware->check_type)) {
 
 $adware_type_0 = " checked";
 $adware_type_1 = "";
+$adware_type_2 = "";
 $txt_adtype="目標達成タイプ";
 if ($adware->adware_type=="1") {
     $adware_type_0 = "";
     $adware_type_1 = " checked";
+    $adware_type_2 = "";
     $txt_adtype="クリック報酬タイプ";
+}elseif($adware->adware_type=="2") {
+    $adware_type_0 = "";
+    $adware_type_1 = "";
+    $adware_type_2 = " checked";
+    $txt_adtype="報酬報酬タイプ";
 }
 
 $approvable_0 = " checked";
@@ -315,6 +327,9 @@ if ($adware->adware_type=="1") {
     $cls_radio_a = " disabled";
     $cls_radio_a_row = " class='inactive'";
 }
+if ($adware->adware_type=="2") {
+    $cls_radio_a1 = " disabled";
+}
 
 // $results_0 = '成果条件(目標)のサジェスト１'.PHP_EOL.'成果条件(目標)のサジェスト２'.PHP_EOL;
 // $results_1 = '成果条件(クリック)のサジェスト１\n成果条件(クリック)のサジェスト２\n';
@@ -328,7 +343,12 @@ function typeChange() {
 
     radio = document.getElementsByName('adware_type');
     radio_click = document.getElementsByName('click_auto');
+    radio_click[0].disabled = false;
+    radio_click[1].disabled = false;
     radio_auto = document.getElementsByName('auto');
+    radio_auto[0].disabled = false;
+    radio_auto[1].disabled = false;
+    radio_aprv = document.getElementsByName('approvable');
     if (radio[0].checked) {
         document.getElementById('money').readOnly = false;
         document.getElementById('money').style.backgroundColor = "white";
@@ -337,10 +357,9 @@ function typeChange() {
         radio_click[0].checked = true;
         radio_click[1].disabled = true;
         document.getElementById('a_row').style.backgroundColor = "white";
-        radio_auto[0].checked = true;
-        radio_auto[1].disabled = false;
+        radio_auto[1].checked = true;
         document.getElementById('c_row').style.backgroundColor = "#9fa0a0";
-//        sgstChange('results',0);
+        radio_aprv[0].disabled = false;
 
     } else if (radio[1].checked) {
         document.getElementById('money').readOnly = true;
@@ -348,14 +367,28 @@ function typeChange() {
         document.getElementById('click_money').readOnly = false;
         document.getElementById('click_money').style.backgroundColor = "white";
         radio_click[0].checked = true;
-        radio_click[1].disabled = false;
         document.getElementById('a_row').style.backgroundColor = "#9fa0a0";
         radio_auto[0].checked = true;
         radio_auto[1].disabled = true;
         document.getElementById('c_row').style.backgroundColor = "white";
-//        sgstChange('results',1);
+        radio_aprv[0].disabled = false;
+
+    } else if (radio[2].checked) {
+        document.getElementById('money').readOnly = false;
+        document.getElementById('money').style.backgroundColor = "white";
+        document.getElementById('click_money').readOnly = true;
+        document.getElementById('click_money').style.backgroundColor = "#9fa0a0";
+        radio_click[0].checked = true;
+        radio_click[1].disabled = true;
+        document.getElementById('a_row').style.backgroundColor = "white";
+        radio_auto[1].checked = true;
+        radio_auto[0].disabled = true;
+        document.getElementById('c_row').style.backgroundColor = "#9fa0a0";
+        radio_aprv[1].checked = true;
+        radio_aprv[0].disabled = true;
 
     }
+
 }
 // function sgstChange(tgt, type){
 //     document.getElementById('results').setAttribute('list', 'resultsLst2');
@@ -482,6 +515,8 @@ $(function(){
                                             <?php echo $adware_type_0; ?>>目標達成タイプ</label>
                                     <label><input type="radio" name="adware_type" onclick="typeChange();" value="1"
                                             <?php echo $adware_type_1; ?>>クリック報酬タイプ</label>
+                                            <label><input type="radio" name="adware_type" onclick="typeChange();" value="2"
+                                            <?php echo $adware_type_2; ?>>投稿報酬タイプ</label>
                                     <?php } else { ?>
                                     <?php echo $txt_adtype; ?>
                                     <input type="hidden" name="adware_type" value="<?php echo $adware->adware_type; ?>">
@@ -644,7 +679,7 @@ $(function(){
                             </tr>
                             <tr id="a_row" <?php echo $cls_radio_a_row; ?>>
                                 <th>アフィリエイト成果の認証<span>※</span></th>
-                                <td><label><input type="radio" name="auto" value="1" <?php echo $auto_1; ?>>自動</label>
+                                <td><label><input type="radio" name="auto" value="1" <?php echo $auto_1; ?> <?php echo $cls_radio_a1; ?>>自動</label>
                                     <label><input type="radio" name="auto" value="0" <?php echo $auto_0; ?> <?php echo $cls_radio_a; ?>>手動</label>
                                 </td>
                             </tr>

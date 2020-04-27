@@ -27,7 +27,7 @@ if (isset($_POST['doCheck'])) {
         $err_mail_div = ' is-error';
         $err_mail_msg = '<p class="form-row-error-text">メールアドレスとメールアドレス（再入力）を入力してください。</p>';
         $isErr ='e';
-      } elseif ($_POST['mail'] <> $_POST['mail_confirm']) {
+    } elseif ($_POST['mail'] <> $_POST['mail_confirm']) {
         $err_mail_div = ' is-error';
         $err_mail_msg = '<p class="form-row-error-text">メールアドレスが一致しません。</p>';
         $isErr ='e';
@@ -64,7 +64,15 @@ if (isset($_POST['doCheck'])) {
         $err_name_msg = '<p class="form-row-error-text">お名前を入力してください。</p>';
         $isErr ='e';
     }
-
+    if (empty($_POST['kana'])) {
+        $err_kana_div = ' is-error';
+        $err_kana_msg = '<p class="form-row-error-text">フリガナを入力してください。</p>';
+        $isErr ='e';
+    } elseif (!empty($_POST['kana']) && preg_match("/[^ァ-ヶー　 ]/u", $_POST['kana'])) {
+        $err_kana_div = ' is-error';
+        $err_kana_msg = '<p class="form-row-error-text">全角カナで入力してください。</p>';
+        $isErr ='e';
+    }
     $tel = str_replace('-', '', $_POST['tel']);
     if (empty($_POST['tel'])) {
         $err_tel_div = ' is-error';
@@ -75,45 +83,50 @@ if (isset($_POST['doCheck'])) {
         $err_tel_msg = '<p class="form-row-error-text">電話番号が正しい形式ではありません。</p>';
         $isErr ='e';
     }
+    if (empty($_POST['birthday-y']) || empty($_POST['birthday-m']) || empty($_POST['birthday-d'])) {
+        $err_birthday_div = ' is-error';
+        $err_birthday_msg = '<p class="form-row-error-text">生年月日を選択してください。</p>';
+        $isErr ='e';
+    }
 
     if (empty($_POST['bank'])) {
-      $err_bank_div = ' is-error';
-      $err_bank_msg = '<p class="form-row-error-text">金融機関名を入力してください。</p>';
-      $isErr ='e';
-      }
-      if (empty($_POST['branch'])) {
+        $err_bank_div = ' is-error';
+        $err_bank_msg = '<p class="form-row-error-text">金融機関名を入力してください。</p>';
+        $isErr ='e';
+    }
+    if (empty($_POST['branch'])) {
         $err_branch_div = ' is-error';
         $err_branch_msg = '<p class="form-row-error-text">支店名を入力してください。</p>';
         $isErr ='e';
-        }
-        if (empty($_POST['bank-type'])) {
-          $err_bank_type_div = ' is-error';
-          $err_bank_type_msg = '<p class="form-row-error-text">種別を選択してください。</p>';
-          $isErr ='e';
-          }
+    }
+    if (empty($_POST['bank-type'])) {
+        $err_bank_type_div = ' is-error';
+        $err_bank_type_msg = '<p class="form-row-error-text">種別を選択してください。</p>';
+        $isErr ='e';
+    }
 
     if (empty($_POST['number'])) {
-      $err_number_div = ' is-error';
-      $err_number_msg = '<p class="form-row-error-text">口座番号を入力してください。</p>';
-      $isErr ='e';
-      }elseif (!empty($_POST['number']) && !preg_match("/^[0-9]+$/", $_POST['number'])) {
-      $err_number_div = ' is-error';
-      $err_number_msg = '<p class="form-row-error-text">半角数字で入力してください。</p>';
-      $isErr ='e';
+        $err_number_div = ' is-error';
+        $err_number_msg = '<p class="form-row-error-text">口座番号を入力してください。</p>';
+        $isErr ='e';
+    } elseif (!empty($_POST['number']) && !preg_match("/^[0-9]+$/", $_POST['number'])) {
+        $err_number_div = ' is-error';
+        $err_number_msg = '<p class="form-row-error-text">半角数字で入力してください。</p>';
+        $isErr ='e';
     }
     if (empty($_POST['bank_name'])) {
-      $err_bank_name_div = ' is-error';
-      $err_bank_name_msg = '<p class="form-row-error-text">口座名義（カナ）を入力してください。</p>';
-      $isErr ='e';
-      }elseif (!empty($_POST['bank_name']) && preg_match("/[^ァ-ヶー　]/u", $_POST['bank_name'])) {
-    $err_bank_name_div = ' is-error';
-    $err_bank_name_msg = '<p class="form-row-error-text">全角カナで入力してください。</p>';
-    $isErr ='e';
-  }
-  if(empty($_POST['privacy-check'])){
-    $err_privacy_check_msg = '<p class="form-row-error-text">チェックしてください。</p>';
-    $isErr ='e';
-  }
+        $err_bank_name_div = ' is-error';
+        $err_bank_name_msg = '<p class="form-row-error-text">口座名義（カナ）を入力してください。</p>';
+        $isErr ='e';
+    } elseif (!empty($_POST['bank_name']) && preg_match("/[^ァ-ヶー　 ]/u", $_POST['bank_name'])) {
+        $err_bank_name_div = ' is-error';
+        $err_bank_name_msg = '<p class="form-row-error-text">全角カナで入力してください。</p>';
+        $isErr ='e';
+    }
+    if (empty($_POST['privacy-check'])) {
+        $err_privacy_check_msg = '<p class="form-row-error-text">チェックしてください。</p>';
+        $isErr ='e';
+    }
     if (empty($isErr)) {
         header('Location: x10u_member_confirm.php', true, 307);
     }
@@ -123,9 +136,25 @@ if (isset($_POST['doCheck'])) {
 
 $prefs = ['北海道','青森県','岩手県','宮城県','秋田県','山形県','福島県','茨城県','栃木県','群馬県','埼玉県','千葉県','東京都','神奈川県','新潟県','富山県','石川県','福井県','山梨県','長野県','岐阜県','静岡県','愛知県','三重県','滋賀県','京都府','大阪府','兵庫県','奈良県','和歌山県','鳥取県','島根県','岡山県','広島県','山口県','徳島県','香川県','愛媛県','高知県','福岡県','佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県','沖縄県'];
 $prefHtml='';
-foreach($prefs as $pref){
-  $wk = $_POST['pref']==$pref ? ' selected' : '';
-  $prefHtml.='<option value="'.$pref.'"'.$wk.'>'.$pref.'</option>';
+foreach ($prefs as $pref) {
+    $wk = $_POST['pref']==$pref ? ' selected' : '';
+    $prefHtml.='<option value="'.$pref.'"'.$wk.'>'.$pref.'</option>';
+}
+
+$bithdayYHtml='';
+for ($i = 1945; $i <= 2020; $i++) {
+    $wk = $_POST['birthday-y']==$i ? ' selected' : '';
+    $bithdayYHtml.='<option value="'.$i.'"'.$wk.'>'.$i.'</option>';
+}
+$bithdayMHtml='';
+for ($i = 1; $i <= 12; $i++) {
+    $wk = $_POST['birthday-m']==$i ? ' selected' : '';
+    $bithdayMHtml.='<option value="'.$i.'"'.$wk.'>'.$i.'</option>';
+}
+$bithdayDHtml='';
+for ($i = 1; $i <= 31; $i++) {
+    $wk = $_POST['birthday-d']==$i ? ' selected' : '';
+    $bithdayDHtml.='<option value="'.$i.'"'.$wk.'>'.$i.'</option>';
 }
 
 ?>
@@ -211,9 +240,9 @@ foreach($prefs as $pref){
               <p class="form-row-text"><span class="req">必須</span>区分</p>
               <?php
                 if ($_POST['kubun']=="1") {
-                  $kbn1 = " checked";
+                    $kbn1 = " checked";
                 } else {
-                  $kbn0 = " checked";
+                    $kbn0 = " checked";
                 }
                 ?>
               <label class="label-radio"><input type="radio" class="radiocheck" name="kubun" value="0" <?php echo $kbn0;?>>個人または個人事業主</label>
@@ -225,6 +254,13 @@ foreach($prefs as $pref){
               <?php echo $err_name_msg; ?>
               <input type="text" name="name"
             value="<?php echo $_POST['name'];?>"  placeholder="お名前を入力">
+              <p class="form-row-anno">※注意書きがここに入ります</p>
+            </div>
+            <div class="form-row <?php echo $err_kana_div; ?>">
+              <p class="form-row-text"><span class="req">必須</span>フリガナ</p>
+              <?php echo $err_kana_msg; ?>
+              <input type="text" name="kana"
+            value="<?php echo $_POST['kana'];?>"  placeholder="フリガナを入力">
               <p class="form-row-anno">※注意書きがここに入ります</p>
             </div>
 
@@ -249,6 +285,26 @@ foreach($prefs as $pref){
             value="<?php echo $_POST['tel'];?>" placeholder="電話番号を入力">
               <p class="form-row-anno">※注意書きがここに入ります</p>
             </div>
+            
+            <div class="form-row <?php echo $err_birthday_div; ?>">
+              <p class="form-row-text"><span class="req">必須</span>生年月日</p>
+              <?php echo $err_birthday_msg; ?>
+              <select name="birthday-y" class="w200">
+                <option value="" selected>年を選択</option>
+                <?php echo $bithdayYHtml; ?>
+              </select>
+              <select name="birthday-m" class="w200">
+                <option value="" selected>月を選択</option>
+                <?php echo $bithdayMHtml; ?>
+              </select>
+              <select name="birthday-d" class="w200">
+                <option value="" selected>日を選択</option>
+                <?php echo $bithdayDHtml; ?>
+              </select>
+              <p class="form-row-anno">※注意書きがここに入ります</p>
+            </div>
+
+
           </div>
           <div class="form__member__sns form__content_block">
             <h3 class="bar-title"><span class="bar-title-text">SNSアカウント設定</span></h3>
@@ -307,8 +363,8 @@ foreach($prefs as $pref){
                     $bt4 = " checked";
                 } elseif ($_POST['bank-type']=="2") {
                     $bt2 = " checked";
-                  } elseif ($_POST['bank-type']=="1") {
-                      $bt1 = " checked";
+                } elseif ($_POST['bank-type']=="1") {
+                    $bt1 = " checked";
                 } else {
                 }
                 ?>

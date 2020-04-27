@@ -66,6 +66,16 @@ if (isset($_POST['doCheck'])) {
         $isErr ='e';
     }
     
+    if (empty($_POST['kana'])) {
+        $err_kana_div = ' is-error';
+        $err_kana_msg = '<p class="form-row-error-text">フリガナを入力してください。</p>';
+        $isErr ='e';
+    } elseif (!empty($_POST['kana']) && preg_match("/[^ァ-ヶー　 ]/u", $_POST['kana'])) {
+        $err_kana_div = ' is-error';
+        $err_kana_msg = '<p class="form-row-error-text">全角カナで入力してください。</p>';
+        $isErr ='e';
+    }
+
     $tel = str_replace('-', '', $_POST['tel']);
     if (empty($_POST['tel'])) {
         $err_tel_div = ' is-error';
@@ -77,6 +87,12 @@ if (isset($_POST['doCheck'])) {
         $isErr ='e';
     }
     
+    if (empty($_POST['birthday-y']) || empty($_POST['birthday-m']) || empty($_POST['birthday-d'])) {
+        $err_birthday_div = ' is-error';
+        $err_birthday_msg = '<p class="form-row-error-text">生年月日を選択してください。</p>';
+        $isErr ='e';
+    }
+
     if (empty($isErr)) {
         header('Location: x10u_user_basic_confirm.php', true, 307);
     }
@@ -92,7 +108,7 @@ if (isset($_POST['doCheck'])) {
     $pref_ = $_POST['pref'];
     $nUserX = new cls_nuser();
     $nUserX->kubun = $_POST['kubun'];
-    
+    $nUserX->kana = $_POST['kana'];
 } elseif (isset($_POST['4back'])) {
     $nUser->mail = $_POST['mail'];
     $nUser->mail_confirm = $_POST['mail_confirm'];
@@ -105,6 +121,7 @@ if (isset($_POST['doCheck'])) {
     $pref_ = $_POST['pref'];
     $nUserX = new cls_nuser();
     $nUserX->kubun = $_POST['kubun'];
+    $nUserX->kana = $_POST['kana'];
 } else {
     $nUser = getNuser($LOGIN_ID);
     $nUserX = getNuserX10($LOGIN_ID);
@@ -116,9 +133,25 @@ if (isset($_POST['doCheck'])) {
 
 $prefs = ['北海道','青森県','岩手県','宮城県','秋田県','山形県','福島県','茨城県','栃木県','群馬県','埼玉県','千葉県','東京都','神奈川県','新潟県','富山県','石川県','福井県','山梨県','長野県','岐阜県','静岡県','愛知県','三重県','滋賀県','京都府','大阪府','兵庫県','奈良県','和歌山県','鳥取県','島根県','岡山県','広島県','山口県','徳島県','香川県','愛媛県','高知県','福岡県','佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県','沖縄県'];
 $prefHtml='';
-foreach($prefs as $pref){
-  $wk = $pref_==$pref ? ' selected' : '';
-  $prefHtml.='<option value="'.$pref.'"'.$wk.'>'.$pref.'</option>';
+foreach ($prefs as $pref) {
+    $wk = $pref_==$pref ? ' selected' : '';
+    $prefHtml.='<option value="'.$pref.'"'.$wk.'>'.$pref.'</option>';
+}
+
+$bithdayYHtml='';
+for ($i = 1945; $i <= 2020; $i++) {
+    $wk = $_POST['birthday-y']==$i ? ' selected' : '';
+    $bithdayYHtml.='<option value="'.$i.'"'.$wk.'>'.$i.'</option>';
+}
+$bithdayMHtml='';
+for ($i = 1; $i <= 12; $i++) {
+    $wk = $_POST['birthday-m']==$i ? ' selected' : '';
+    $bithdayMHtml.='<option value="'.$i.'"'.$wk.'>'.$i.'</option>';
+}
+$bithdayDHtml='';
+for ($i = 1; $i <= 31; $i++) {
+    $wk = $_POST['birthday-d']==$i ? ' selected' : '';
+    $bithdayDHtml.='<option value="'.$i.'"'.$wk.'>'.$i.'</option>';
 }
 
 ?>
@@ -185,9 +218,9 @@ foreach($prefs as $pref){
               <p class="form-row-text"><span class="req">必須</span>区分</p>
               <?php
                 if ($nUserX->kubun=="1") {
-                  $kbn1 = " checked";
+                    $kbn1 = " checked";
                 } else {
-                  $kbn0 = " checked";
+                    $kbn0 = " checked";
                 }
                 ?>
               <label class="label-radio"><input type="radio" class="radiocheck" name="kubun" value="0" <?php echo $kbn0;?>>個人または個人事業主</label>
@@ -198,6 +231,12 @@ foreach($prefs as $pref){
                             <p class="form-row-text"><span class="req">必須</span>お名前</p>
                               <?php echo $err_name_msg; ?>
                             <input type="text" name="name" value="<?php echo $nUser->name;?>" placeholder="お名前を入力" required>
+                            <p class="form-row-anno">※注意書きがここに入ります</p>
+                        </div>
+                        <div class="form-row <?php echo $err_kana_div; ?>">
+                            <p class="form-row-text"><span class="req">必須</span>フリガナ</p>
+                              <?php echo $err_kana_msg; ?>
+                            <input type="text" name="kana" value="<?php echo $nUserX->kana;?>" placeholder="フリガナを入力" required>
                             <p class="form-row-anno">※注意書きがここに入ります</p>
                         </div>
 
@@ -214,6 +253,27 @@ foreach($prefs as $pref){
   <input name="addr" type="text" value="<?php echo $nUser->add_sub;?>" placeholder="住所を入力">
   <p class="form-row-anno">※注意書きがここに入ります</p>
 </div>
+
+
+            
+<div class="form-row <?php echo $err_birthday_div; ?>">
+              <p class="form-row-text"><span class="req">必須</span>生年月日</p>
+              <?php echo $err_birthday_msg; ?>
+              <select name="birthday-y" class="w200">
+                <option value="" selected>年を選択</option>
+                <?php echo $bithdayYHtml; ?>
+              </select>
+              <select name="birthday-m" class="w200">
+                <option value="" selected>月を選択</option>
+                <?php echo $bithdayMHtml; ?>
+              </select>
+              <select name="birthday-d" class="w200">
+                <option value="" selected>日を選択</option>
+                <?php echo $bithdayDHtml; ?>
+              </select>
+              <p class="form-row-anno">※注意書きがここに入ります</p>
+            </div>
+
                         <div class="form-row <?php echo $err_tel_div; ?>">
                             <p class="form-row-text"><span class="req">必須</span>電話番号</p>
                               <?php echo $err_tel_msg; ?>

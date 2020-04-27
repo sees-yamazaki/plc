@@ -26,7 +26,7 @@ $offsetPage = 0;
 $limitPage = 5;
 $crntPage = empty($_POST['page']) ? 1: $_POST['page'];
 
-$adtyped = array('','','');
+$adtyped = array('','','','');
 $aprved = array('','','');
 
 $ads = array();
@@ -51,6 +51,9 @@ if (isset($_POST['run'])) {
         } elseif ($at=="1") {
             $tmp3[] = "(adware_type=1)";
             $adtyped[1]= " checked";
+        } elseif ($at=="2") {
+            $tmp3[] = "(adware_type=2)";
+            $adtyped[2]= " checked";
         }
     }
     if (!empty($tmp3)) {
@@ -167,6 +170,8 @@ function paging(vlu) {
                                 <?php echo $adtyped[0]; ?>>目標達成タイプ</label>
                         <label><input type="checkbox" name="adware_type[]" value="1"
                                 <?php echo $adtyped[1]; ?>>クリック報酬タイプ</label>
+                        <label><input type="checkbox" name="adware_type[]" value="2"
+                                <?php echo $adtyped[2]; ?>>投稿報酬タイプ</label>
                     </td>
                 </tr>
                 <tr>
@@ -202,8 +207,10 @@ function paging(vlu) {
         <tr>
             <?php  if ($ad->adware_type=="0") { ?>
             <td>[目標]</td>
-            <?php  } else { ?>
+            <?php  } elseif ($ad->adware_type=="1") { ?>
             <td>[クリック]</td>
+            <?php  } elseif ($ad->adware_type=="2") { ?>
+            <td>[投稿]</td>
             <?php  } ?>
             <td>
                 <a href="x10n_adwares_info.php?id=<?php echo $ad->id; ?>">

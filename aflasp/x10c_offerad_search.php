@@ -20,14 +20,16 @@ $adware_type = $_POST['adware_type'];
 $approvable = $_POST['approvable'];
 $offer = $_POST['offer'];
 $term = $_POST['term'];
+$post = $_POST['post'];
 
 $offsetPage = 0;
 $limitPage = 5;
 $crntPage = empty($_POST['page']) ? 1: $_POST['page'];
 
-$adtyped = array('','','');
+$adtyped = array('','','','');
 $aprved = array('','','');
 $offered = array('','');
+$posted = array('','');
 $termed = array('','','','');
 
 $ads = array();
@@ -58,6 +60,9 @@ if (isset($_POST['run'])) {
         } elseif ($at=="1") {
             $tmp3[] = "(adware_type=1)";
             $adtyped[1]= " checked";
+        } elseif ($at=="2") {
+            $tmp3[] = "(adware_type=2)";
+            $adtyped[2]= " checked";
         } else {
             $tmp3[] = "(adware_type=0)";
         }
@@ -93,6 +98,19 @@ if (isset($_POST['run'])) {
     }
 
 
+    foreach ((array)$post as $pst) {
+        if ($pst=="0") {
+            $tmp7[] = "((cnt_post=0) OR cnt_post IS NULL)";
+            $posted[0]= " checked";
+        } elseif ($pst=="1") {
+            $tmp7[] = "(cnt_post>0)";
+            $posted[1]= " checked";
+        }
+    }
+    if (!empty($tmp7)) {
+        $tmp[] = "(".implode(" OR ", $tmp7).")";
+    }
+
     $tdy = date('Y-m-d');
     foreach ((array)$term as $trm) {
         if ($trm=="0") {
@@ -124,25 +142,24 @@ if (isset($_POST['run'])) {
 if (isset($_GET['approvable'])) {
     $where .=  " AND (approvable=1) ";
     $aprved[1]= " checked";
-}elseif($adstts<>""){
-    if($adstts=="0"){
+} elseif ($adstts<>"") {
+    if ($adstts=="0") {
         $termed[0]= " checked";
         $termed[1]= " checked";
         $termed[2]= " checked";
         $where .=  " AND (isFinish=0) ";
-    }else{
+    } else {
         $termed[3]= " checked";
         $where .=  " AND (isFinish=1) ";
     }
     //
-}else{
+} else {
     if (is_array($approvable)) {
         $where .=  " AND (approvable=1) ";
         $aprved[1]= " checked";
     } else {
         $where .= " AND (approvable=0) ";
     }
-
 }
 
 
@@ -154,6 +171,11 @@ if ($LOGIN_TYPE=='cUser') {
 if (isset($_GET['ofr'])) {
     $where .= " AND (cnt_offer>0)";
     $offered[1]= " checked";
+}
+
+if (isset($_GET['pst'])) {
+    $where .= " AND (cnt_post>0)";
+    $posted[1]= " checked";
 }
 
 //検索結果件数を取得
@@ -230,7 +252,7 @@ function paging(vlu) {
                     <input type="hidden" name="run" value="true">
                     <input type="hidden" name="page" value="">
                     <input type="hidden" name="mode" value="<?php echo $mode; ?>">
-                    <?php if($adstts<>""){  ?>
+                    <?php if ($adstts<>"") {  ?>
                         <input type="hidden" name="adstts" value="<?php echo $adstts; ?>">
                     <?php  } ?>
                     <table class="search_table" summary="検索用テーブル">
@@ -242,6 +264,8 @@ function paging(vlu) {
                                             <?php echo $adtyped[0]; ?>>目標達成タイプ</label>
                                     <label><input type="checkbox" name="adware_type[]" value="1"
                                             <?php echo $adtyped[1]; ?>>クリック報酬タイプ</label>
+                                    <label><input type="checkbox" name="adware_type[]" value="2"
+                                            <?php echo $adtyped[2]; ?>>投稿報酬タイプ</label>
                                 </td>
                             </tr>
                             <tr>
@@ -277,6 +301,13 @@ function paging(vlu) {
                                 <td>
                                     <label><input type="checkbox" name="offer[]" value="0" <?php echo $offered[0]; ?>>なし</label>
                                     <label><input type="checkbox" name="offer[]" value="1" <?php echo $offered[1]; ?>>あり</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>投稿申請</th>
+                                <td>
+                                    <label><input type="checkbox" name="post[]" value="0" <?php echo $posted[0]; ?>>なし</label>
+                                    <label><input type="checkbox" name="post[]" value="1" <?php echo $posted[1]; ?>>あり</label>
                                 </td>
                             </tr>
                             <tr>
@@ -348,8 +379,10 @@ function paging(vlu) {
                         <th>広告タイプ</th>
                         <?php  if ($ad->adware_type=="0") { ?>
                         <td>目標達成タイプ</td>
-                        <?php  } else { ?>
+                        <?php  } elseif ($ad->adware_type=="1") { ?>
                         <td>クリック報酬タイプ</td>
+                        <?php  } elseif ($ad->adware_type=="2") { ?>
+                        <td>投稿報酬タイプ</td>
                         <?php  } ?>
                     </tr>
                     <tr>
@@ -429,7 +462,7 @@ function paging(vlu) {
                         <th>申請件数</th>
                         <td class="adwares_info">
                             <a href="x10c_offer_edit.php?pid=srch&amp;id=<?php echo $ad->id; ?>&amp;mode=<?php echo $mode; ?>">
-                            <?php echo $ad->cnt_offer; ?>
+                            <?php echo $ad->cnt_offer + $ad->cnt_post; ?>
                             </a>
                         </td>
                     </tr>

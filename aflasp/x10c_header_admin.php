@@ -164,9 +164,11 @@
                             </a>
                             <ul class=" navigation-submenu" id="pages2">
                                 <li><a href="x10c_adwares_edit.php" class="menu">新しい広告を登録</a></li>
-                                <li><a href="x10c_offerad_search.php?ofr=1&approvable=1" class="menu">申請のある広告</a></li>
+                                <li><a href="x10c_offerad_search.php?ofr=1&approvable=1" class="menu">承認申請のある広告</a></li>
+                                <li><a href="x10c_offerad_search.php?pst=1&approvable=1" class="menu">投稿申請のある広告</a></li>
                                 <li><a href="x10c_offerad_search.php?adstts=0" class="menu">進行中の広告</a></li>
                                 <li><a href="x10c_offerad_search.php?adstts=1" class="menu">終了した広告</a></li>
+                                <li><a href="x10c_post_check.php" class="menu">投稿を確定する</a></li>
                                 <!--<li><a href="x10c_offerad_search.php" class="menu">過去に登録した広告</a></li>-->
                                 <li><a href="regist.php?type=pay" class="menu">成果の登録</a></li>
                                 <li><a href="search.php?type=category&run=true" class="menu">広告カテゴリの管理</a></li>
@@ -190,9 +192,23 @@
                                 <span class="link-title">換金</span>
                                 <i class="mdi mdi-diamond link-icon"></i>
                             </a>
+                            <ul class=" navigation-submenu">
+                                <li><a href="x10c_pay.php" class="menu">換金処理</a></li>
+                            </ul>
+                            <ul class=" navigation-submenu">
+                                <li><a href="x10c_unpay.php" class="menu">換金取消処理</a></li>
+                            </ul>
+                            <ul class=" navigation-submenu" id="pages4">
+                                <li><a href="x10c_payed.php" class="menu">入金処理</a></li>
+                            </ul>
+                            <ul class=" navigation-submenu" id="pages4">
+                                <li><a href="x10c_unpayed.php" class="menu">入金取消処理</a></li>
+                            </ul>
+                            <!--
                             <ul class=" navigation-submenu" id="pages4">
                                 <li><a href="return.php" class="menu">一括換金処理</a></li>
                             </ul>
+-->
                         </li>
                         <li>
                             <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">

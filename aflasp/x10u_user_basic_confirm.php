@@ -32,12 +32,12 @@ if (isset($_POST['doCheck'])) {
     $nUser->pass = $_POST['pass'];
     $nUser->pass_confirm = $_POST['pass_confirm'];
     $nUser->name = $_POST['name'];
-    $nUser->zip1 =substr($_POST['zip'],0,3);
-    $nUser->zip2 = substr($_POST['zip'],3);
-    if(empty($_POST['pref'])){
-      $nUser->adds = '';
-    }else{
-      $nUser->adds = getPrefectureByName($_POST['pref']);
+    $nUser->zip1 =substr($_POST['zip'], 0, 3);
+    $nUser->zip2 = substr($_POST['zip'], 3);
+    if (empty($_POST['pref'])) {
+        $nUser->adds = '';
+    } else {
+        $nUser->adds = getPrefectureByName($_POST['pref']);
     }
     $nUser->add_sub = $_POST['addr'];
     $nUser->tel = $_POST['tel'];
@@ -51,7 +51,7 @@ if (isset($_POST['doCheck'])) {
     }
 
     updateNuserBasic($nUser);
-    updateNuserX10Kubun($nUser->id,$_POST['kubun']);
+    updateNuserX10Kubun($nUser->id, $_POST['kubun'], $_POST['kana'], $_POST['birthday-y'].'/'.$_POST['birthday-m'].'/'.$_POST['birthday-d']);
 
     //メールアドレスが変更されている場合は拡張テーブルに格納する
     if ($_POST['mail']<>$tmpNUser->mail) {
@@ -82,11 +82,10 @@ if (isset($_POST['doCheck'])) {
 
         $headers = 'From:"'.mb_encode_mimeheader($sys->mail_name).'" <'. trim($sys->mail_address).'>';
         mb_send_mail($to, $subject, $message, $headers);
-    }        
+    }
 
     header('Location: x10u_user_basic_complete.php', true, 307);
-
-  } elseif (isset($_POST['4back'])) {
+} elseif (isset($_POST['4back'])) {
     header('Location: x10u_user_basic_edit.php', true, 307);
 }
 
@@ -125,7 +124,7 @@ $crntNUser = getNuser($LOGIN_ID);
     <section class="sec-member section">
       <div class="sec__inner container">
 
-        <?php if( $crntNUser->mail<> $_POST['mail']){ ?>
+        <?php if ($crntNUser->mail<> $_POST['mail']) { ?>
             <div class="alert_box">
             <h4 class="alert_box_title"><span class="icon_chuui_pnk"></span>メールアドレスが変更されています</h4>
             <p class="alert_box_text">新しいアドレスは確定するボタンを押した後に送られる認証メール内のURLをクリックすると変更が完了致します。</p>
@@ -161,8 +160,16 @@ $crntNUser = getNuser($LOGIN_ID);
                 <dd><?php echo $_POST['name']; ?></dd>
               </dl>
               <dl>
+                <dt>フリガナ</dt>
+                <dd><?php echo $_POST['kana']; ?></dd>
+              </dl>
+              <dl>
                 <dt>住所</dt>
                 <dd><?php echo $_POST['zip']; ?>　<?php echo $_POST['pref']; ?><?php echo $_POST['addr']; ?></dd>
+              </dl>
+              <dl>
+                <dt>生年月日</dt>
+                <dd><?php echo $_POST['birthday-y'].'/'.$_POST['birthday-m'].'/'.$_POST['birthday-d']; ?></dd>
               </dl>
               <dl>
                 <dt>電話番号</dt>
@@ -182,6 +189,10 @@ $crntNUser = getNuser($LOGIN_ID);
             <input type="hidden" name="pass_confirm" value="<?php echo $_POST['pass_confirm']; ?>">
             <input type="hidden" name="kubun" value="<?php echo $_POST['kubun']; ?>">
             <input type="hidden" name="name" value="<?php echo $_POST['name']; ?>">
+            <input type="hidden" name="kana" value="<?php echo $_POST['kana']; ?>">
+            <input type="hidden" name="birthday-y" value="<?php echo $_POST['birthday-y']; ?>">
+            <input type="hidden" name="birthday-m" value="<?php echo $_POST['birthday-m']; ?>">
+            <input type="hidden" name="birthday-d" value="<?php echo $_POST['birthday-d']; ?>">
             <input type="hidden" name="pref" value="<?php echo $_POST['pref']; ?>">
             <input type="hidden" name="zip" value="<?php echo $_POST['zip']; ?>">
             <input type="hidden" name="addr" value="<?php echo $_POST['addr']; ?>">

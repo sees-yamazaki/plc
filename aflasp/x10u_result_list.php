@@ -9,7 +9,9 @@ include 'x10c/db/x10.php';
 session_start();
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
-if(empty($LOGIN_ID)){ header('Location: x10u_logoff.php'); }
+if (empty($LOGIN_ID)) {
+    header('Location: x10u_logoff.php');
+}
 
 //Timezone
 date_default_timezone_set('Asia/Tokyo');
@@ -26,10 +28,13 @@ $pays_0 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 0);
 // 指定月のクリック広告のデータを取得
 $cnt_click_1 = countMonthlyClicks($thisY, $thisM, $LOGIN_ID, 1);
 $pays_1 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 1);
+// 指定月の投稿広告のデータを取得
+$pays_2 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 2);
 
 $past_cnt_click = countPastClicks($thisY, $thisM, $LOGIN_ID);
 $past_pays_0 = countPastPays($thisY, $thisM, $LOGIN_ID, 0);
 $past_pays_1 = countPastPays($thisY, $thisM, $LOGIN_ID, 1);
+$past_pays_2 = countPastPays($thisY, $thisM, $LOGIN_ID, 2);
 
 
 $startdt = $_POST['startdt'];
@@ -81,7 +86,7 @@ foreach ($accss as $ad) {
         $adHtml .= '<p class="label"><span class="bg_pink">目標達成</span>';
     } else {
         $adHtml .= '<p class="label"><span class="bg_grn">クリック</span>';
-    }    
+    }
     if ($ad->isFinish=="1") {
         $adHtml .= '<span class="bg_gry_dark2">掲載終了</span>';
     }
@@ -157,12 +162,12 @@ $adHtml.='</div>';
                     <tbody>
                       <tr>
                                             <td class="td-num"><?php echo(number_format($cnt_click_0 + $cnt_click_1)); ?>件</td>
-                                            <td class="td-num"><?php echo(number_format($pays_0->cnt + $pays_1->cnt)); ?>件</td>
-                                            <td class="td-num"><?php echo(number_format($pays_0->cnt2 + $pays_1->cnt2)); ?>件</td>
-                                            <td class="td-num"><?php echo(number_format($pays_0->cst0 + $pays_0->cst1 + $pays_1->cst0 + $pays_1->cst1)); ?>円</td>
-                                            <td class="td-num"><?php echo(number_format($pays_0->cst2 + $pays_1->cst2)); ?>円</td>
+                                            <td class="td-num"><?php echo(number_format($pays_0->cnt + $pays_1->cnt + $pays_2->cnt)); ?>件</td>
+                                            <td class="td-num"><?php echo(number_format($pays_0->cnt2 + $pays_1->cnt2 + $pays_2->cnt2)); ?>件</td>
+                                            <td class="td-num"><?php echo(number_format($pays_0->cst0 + $pays_0->cst1 + $pays_1->cst0 + $pays_1->cst1 + $pays_2->cst0 + $pays_2->cst1)); ?>円</td>
+                                            <td class="td-num"><?php echo(number_format($pays_0->cst2 + $pays_1->cst2 + $pays_2->cst2)); ?>円</td>
                                             <td class="td-num">
-                                                <?php echo($pays_0->cnt0 + $pays_0->cnt1 + $pays_1->cnt0 + $pays_1->cnt1); ?>件
+                                                <?php echo($pays_0->cnt0 + $pays_0->cnt1 + $pays_1->cnt0 + $pays_1->cnt1 + $pays_2->cnt0 + $pays_2->cnt1); ?>件
                                             </td>
                       </tr>
                     </tbody>
@@ -185,14 +190,14 @@ $adHtml.='</div>';
                     <tbody>
                       <tr>
             <td class="td-num"><?php echo(number_format($past_cnt_click)); ?>件</td>
-            <td class="td-num"><?php echo(number_format($past_pays_0->cnt + $past_pays_1->cnt)); ?>件</td>
-            <td class="td-num"><?php echo(number_format($past_pays_0->cnt2 + $past_pays_1->cnt2)); ?>件
+            <td class="td-num"><?php echo(number_format($past_pays_0->cnt + $past_pays_1->cnt + $past_pays_2->cnt)); ?>件</td>
+            <td class="td-num"><?php echo(number_format($past_pays_0->cnt2 + $past_pays_1->cnt2 + $past_pays_2->cnt2)); ?>件
             </td>
-            <td class="td-num"><?php echo(number_format($past_pays_0->cst0 + $past_pays_0->cst1 + $past_pays_1->cst0 + $past_pays_1->cst1)); ?>円
+            <td class="td-num"><?php echo(number_format($past_pays_0->cst0 + $past_pays_0->cst1 + $past_pays_1->cst0 + $past_pays_1->cst1 + $past_pays_2->cst0 + $past_pays_2->cst1)); ?>円
             </td>
-            <td class="td-num"><?php echo(number_format($past_pays_0->cst2 + $past_pays_1->cst2)); ?>円
+            <td class="td-num"><?php echo(number_format($past_pays_0->cst2 + $past_pays_1->cst2 + $past_pays_2->cst2)); ?>円
             </td>
-            <td class="td-num"><?php echo(number_format($past_pays_0->cnt0 + $past_pays_0->cnt1 + $past_pays_1->cnt0 + $past_pays_1->cnt1)); ?>件
+            <td class="td-num"><?php echo(number_format($past_pays_0->cnt0 + $past_pays_0->cnt1 + $past_pays_1->cnt0 + $past_pays_1->cnt1 + $past_pays_2->cnt0 + $past_pays_2->cnt1)); ?>件
             </td>
                       </tr>
                     </tbody>
@@ -224,6 +229,15 @@ $adHtml.='</div>';
               <ul class="result__type_btn_list flex">
                 <li class="result__type_btn_item cmn__column2_btn_item"><a href="./x10u_result_monthry.php?adtype=1" class="bg_blu">月別</a></li>
                 <li class="result__type_btn_item cmn__column2_btn_item"><a href="./x10u_result_occurrence.php?adtype=1" class="bg_blu">発生別</a></li>
+              </ul>
+            </dd>
+          </dl>
+          <dl>
+            <dt>投稿報酬</dt>
+            <dd>
+              <ul class="result__type_btn_list flex">
+                <li class="result__type_btn_item cmn__column2_btn_item"><a href="./x10u_result_monthry.php?adtype=2" class="bg_blu">月別</a></li>
+                <li class="result__type_btn_item cmn__column2_btn_item"><a href="./x10u_result_occurrence.php?adtype=2" class="bg_blu">発生別</a></li>
               </ul>
             </dd>
           </dl>

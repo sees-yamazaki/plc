@@ -38,7 +38,7 @@ if (!isset($_POST['run'])) {
     $apprv=1;
 }
 
-$adtyped = array('','','');
+$adtyped = array('','','','');
 $aprved = array('','','');
 
 
@@ -56,6 +56,9 @@ if (isset($_POST['run'])) {
         } elseif ($at=="1") {
             $tmp3[] = "(adware_type=1)";
             $adtyped[1]= " checked";
+        } elseif ($at=="2") {
+            $tmp3[] = "(adware_type=2)";
+            $adtyped[2]= " checked";
         }
     }
     if (!empty($tmp3)) {
@@ -113,8 +116,10 @@ foreach ($ads as $ad) {
     $adHtml.='<a href="x10u_offer_detail.php?id='.$ad->id.'">';
     if ($ad->adware_type=="0") {
         $adHtml .= '<p class="label"><span class="bg_pink">目標達成</span></p>';
-    } else {
+    } elseif ($ad->adware_type=="1") {
         $adHtml .= '<p class="label"><span class="bg_grn">クリック</span></p>';
+    } elseif ($ad->adware_type=="2") {
+        $adHtml .= '<p class="label"><span class="bg_gld">投稿</span></p>';
     }
     $wk = $ad->approvable=="1" ? '<span class="ap">承</span>' : '';
     $adHtml.='<p class="row_text">'.$wk.$ad->name.'</p>';
@@ -194,9 +199,8 @@ function paging(vlu) {
                       <span class="text">クリック<br>報酬タイプ</span>
                     </span>
                   </label>
-                  <!--
                   <label class="offer-type_label">
-                    <input type="checkbox" name="adware_type[]" value="0">
+                    <input type="checkbox" name="adware_type[]" value="2" <?php echo $adtyped[2]; ?>>
                     <span class="box">
                       <span class="icon icon-article">
                         <img class="off" src="./x10u/assets/img/icon_article.svg" alt="">
@@ -204,7 +208,7 @@ function paging(vlu) {
                       </span>
                       <span class="text">投稿<br>報酬タイプ</span>
                     </span>
-                  </label>-->
+                  </label>
                 </div>
                 <div class="search__op_row flex">
                   <p class="op_row_text">承認制オファー</p>

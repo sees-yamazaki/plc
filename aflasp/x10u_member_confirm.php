@@ -24,12 +24,12 @@ if (isset($_POST['doCheck'])) {
     $nUser->pass = $_POST['pass'];
     $nUser->pass_confirm = $_POST['pass_confirm'];
     $nUser->name = $_POST['name'];
-    $nUser->zip1 =substr($_POST['zip'],0,3);
-    $nUser->zip2 = substr($_POST['zip'],3);
-    if(empty($_POST['pref'])){
-      $nUser->adds = '';
-    }else{
-      $nUser->adds = getPrefectureByName($_POST['pref']);
+    $nUser->zip1 =substr($_POST['zip'], 0, 3);
+    $nUser->zip2 = substr($_POST['zip'], 3);
+    if (empty($_POST['pref'])) {
+        $nUser->adds = '';
+    } else {
+        $nUser->adds = getPrefectureByName($_POST['pref']);
     }
     $nUser->add_sub = $_POST['addr'];
     $nUser->tel = $_POST['tel'];
@@ -60,6 +60,8 @@ if (isset($_POST['doCheck'])) {
         $nUserX->twitter = $_POST['twitter'];
         $nUserX->youtube = $_POST['youtube'];
         $nUserX->kubun = $_POST['kubun'];
+        $nUserX->kana = $_POST['kana'];
+        $nUserX->birthday = $_POST['birthday-y'].'/'.$_POST['birthday-m'].'/'.$_POST['birthday-d'];
 
         insertNuserX10($nUserX);
 
@@ -91,10 +93,10 @@ if (isset($_POST['doCheck'])) {
 }
 
 
-$instagram = str_replace('/','',str_replace('https://www.instagram.com/','',$_POST['instagram']));
-$facebook = str_replace('/','',str_replace('https://www.facebook.com/','',$_POST['facebook']));
-$twitter = str_replace('/','',str_replace('https://twitter.com/','',$_POST['twitter']));
-$youtube = str_replace('/','',str_replace('https://www.youtube.com/channel/','',$_POST['youtube']));
+$instagram = str_replace('/', '', str_replace('https://www.instagram.com/', '', $_POST['instagram']));
+$facebook = str_replace('/', '', str_replace('https://www.facebook.com/', '', $_POST['facebook']));
+$twitter = str_replace('/', '', str_replace('https://twitter.com/', '', $_POST['twitter']));
+$youtube = str_replace('/', '', str_replace('https://www.youtube.com/channel/', '', $_POST['youtube']));
 
 
 
@@ -177,12 +179,20 @@ $youtube = str_replace('/','',str_replace('https://www.youtube.com/channel/','',
                 <dd><?php echo $_POST['name']; ?></dd>
               </dl>
               <dl>
+                <dt>フリガナ</dt>
+                <dd><?php echo $_POST['kana']; ?></dd>
+              </dl>
+              <dl>
                 <dt>住所</dt>
                 <dd><?php echo $_POST['zip']; ?>　<?php echo $_POST['pref']; ?><?php echo $_POST['addr']; ?></dd>
               </dl>
               <dl>
                 <dt>電話番号</dt>
                 <dd><?php echo $_POST['tel']; ?></dd>
+              </dl>
+              <dl>
+                <dt>生年月日</dt>
+                <dd><?php echo $_POST['birthday-y'].'/'.$_POST['birthday-m'].'/'.$_POST['birthday-d']; ?></dd>
               </dl>
             </div>
           </div>
@@ -227,7 +237,7 @@ $youtube = str_replace('/','',str_replace('https://www.youtube.com/channel/','',
                     $bankType = "貯蓄";
                 } elseif ($_POST['bank-type']=="2") {
                     $bankType = "当座";
-                  } elseif ($_POST['bank-type']=="1") {
+                } elseif ($_POST['bank-type']=="1") {
                     $bankType = "普通";
                 } else {
                     $bankType = "未設定";
@@ -257,6 +267,10 @@ $youtube = str_replace('/','',str_replace('https://www.youtube.com/channel/','',
             <input type="hidden" name="pass_confirm" value="<?php echo $_POST['pass_confirm']; ?>">
             <input type="hidden" name="kubun" value="<?php echo $_POST['kubun']; ?>">
             <input type="hidden" name="name" value="<?php echo $_POST['name']; ?>">
+            <input type="hidden" name="kana" value="<?php echo $_POST['kana']; ?>">
+            <input type="hidden" name="birthday-y" value="<?php echo $_POST['birthday-y']; ?>">
+            <input type="hidden" name="birthday-m" value="<?php echo $_POST['birthday-m']; ?>">
+            <input type="hidden" name="birthday-d" value="<?php echo $_POST['birthday-d']; ?>">
             <input type="hidden" name="pref" value="<?php echo $_POST['pref']; ?>">
             <input type="hidden" name="zip" value="<?php echo $_POST['zip']; ?>">
             <input type="hidden" name="addr" value="<?php echo $_POST['addr']; ?>">

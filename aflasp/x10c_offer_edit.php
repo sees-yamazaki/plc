@@ -20,16 +20,26 @@ $id = empty($_GET['id']) ? $_POST['id'] : $_GET['id'];
 $pid = empty($_GET['pid']) ? $_POST['pid'] : $_GET['pid'];
 
 if (isset($_POST['doEdit'])) {
-    $user='';
+    $user=''; // newStatus : nusr : oldStatus
     $stts = $_POST['stts'];
     foreach ($stts as $sts) {
         $ss = explode(":", $sts);
         updateX10Offer($id, $ss[1], $ss[0]);
-        if ($ss[0]=="2") {
+        if ($ss[0]=="2" || $ss[0]=="12") {
             $user.=$ss[1].PHP_EOL;
+        }
+
+
+        if (($ss[2]=="10" && $ss[0]=="12") || ($ss[2]=="11" && $ss[0]=="12")) {
+            //投稿がOK
+            insertPost($id, $LOGIN_ID, $ss[1]);
+        } elseif ($ss[0]=="10" || $ss[0]=="11") {
+            //投稿がダメ
+            deletePost($id, $LOGIN_ID, $ss[1]);
         }
     }
     updateAdwareOpenUser($id, $user);
+
 
     header('Location: x10c_offer_edited.php');
 }
@@ -114,32 +124,38 @@ if ($adware->adware_type=="1") {
                                     $offer = getOffer($id);
                                     $i=0;
                                     foreach ($offer as $ofr) {
-                                        $stts = array('','','');
+                                        $stts = array('','','','','','','','','','','','','','');
                                         $stts[$ofr->status] = ' checked';
-                                        echo "<input type='radio' name='stts[".$i."]' value='0:".$ofr->nuser."'".$stts[0].">承認待ち</input>　" ;
-                                        echo "<input type='radio' name='stts[".$i."]' value='1:".$ofr->nuser."'".$stts[1].">否認</input>　" ;
-                                        echo "<input type='radio' name='stts[".$i."]' value='2:".$ofr->nuser."'".$stts[2].">承認</input>　" ;
+                                        if ($ofr->status=="0" || $ofr->status=="1" || $ofr->status=="2") {
+                                            echo "<input type='radio' name='stts[".$i."]' value='0:".$ofr->nuser."'".$stts[0].">承認待ち</input>　" ;
+                                            echo "<input type='radio' name='stts[".$i."]' value='1:".$ofr->nuser."'".$stts[1].">否認</input>　" ;
+                                            echo "<input type='radio' name='stts[".$i."]' value='2:".$ofr->nuser."'".$stts[2].">承認</input>　" ;
+                                        } else {
+                                            echo "<input type='radio' name='stts[".$i."]' value='10:".$ofr->nuser.":".$ofr->status."'".$stts[10].">承認待ち</input>　" ;
+                                            echo "<input type='radio' name='stts[".$i."]' value='11:".$ofr->nuser.":".$ofr->status."'".$stts[11].">否認</input>　" ;
+                                            echo "<input type='radio' name='stts[".$i."]' value='12:".$ofr->nuser.":".$ofr->status."'".$stts[12].">承認</input>　" ;
+                                        }
 
 
                                         $user = getNuser($ofr->nuser);
 
                                         $txt = '';
                                         $sns = getNuserX10($ofr->nuser);
-                                        if(!empty($sns->instagram)){
-                                            $txt .= '[instagram]<a href="https://www.instagram.com/'.str_replace('@','',$sns->instagram).'" target="_blank" class="text-link text-underline">'.$sns->instagram."</a><br>";
+                                        if (!empty($sns->instagram)) {
+                                            $txt .= '[instagram]<a href="https://www.instagram.com/'.str_replace('@', '', $sns->instagram).'" target="_blank" class="text-link text-underline">'.$sns->instagram."</a><br>";
                                         }
-                                        if(!empty($sns->facebook)){
-                                            $txt .= '[facebook]<a href="https://www.facebook.com/'.str_replace('@','',$sns->facebook).'" target="_blank" class="text-link text-underline">'.$sns->facebook."</a><br>";
+                                        if (!empty($sns->facebook)) {
+                                            $txt .= '[facebook]<a href="https://www.facebook.com/'.str_replace('@', '', $sns->facebook).'" target="_blank" class="text-link text-underline">'.$sns->facebook."</a><br>";
                                         }
-                                        if(!empty($sns->twitter)){
-                                            $txt .= '[twitter]<a href="https://twitter.com/'.str_replace('@','',$sns->twitter).'"
+                                        if (!empty($sns->twitter)) {
+                                            $txt .= '[twitter]<a href="https://twitter.com/'.str_replace('@', '', $sns->twitter).'"
                                             target="_blank" class="text-link text-underline">'.$sns->twitter."</a><br>";
                                         }
-                                        if(!empty($sns->youtube)){
-                                            $txt .= '[youtube]<a href="https://www.youtube.com/user/'.str_replace('@','',$sns->youtube).'"
+                                        if (!empty($sns->youtube)) {
+                                            $txt .= '[youtube]<a href="https://www.youtube.com/user/'.str_replace('@', '', $sns->youtube).'"
                                             target="_blank" class="text-link text-underline">'.$sns->youtube."</a><br>";
                                         }
-                                        if(empty($txt)){
+                                        if (empty($txt)) {
                                             $txt .= 'SNSアカウントは設定されていません';
                                         }
                                         $txt = "<span class=''>".$user->name."<br>".$txt."</span><br>";
