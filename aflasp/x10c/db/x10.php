@@ -547,12 +547,12 @@ class cls_offer
      return $result;
  }
 
- function getOffer($adware)
+ function getOffer($adware, $where)
  {
      try {
          $results = array();
          require 'dns.php';
-         $stmt = $pdo->prepare("SELECT * FROM `x10_offer` WHERE adware=:adware ORDER BY `status`,`regist`");
+         $stmt = $pdo->prepare("SELECT * FROM `x10_offer` WHERE adware=:adware ".$where." ORDER BY `status`,`regist`");
          $stmt->bindParam(':adware', $adware, PDO::PARAM_STR);
          execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
@@ -569,6 +569,7 @@ class cls_offer
      }
      return $results;
  }
+
 
  class cls_offering
  {
@@ -656,12 +657,13 @@ function insertX10Offer($ofr)
 {
     try {
         require 'dns.php';
-        $sql = "INSERT  INTO `x10_offer`(`adware`, `nuser`, `status`, `regist`) VALUES (:adware, :nuser, :status, :regist)";
+        $sql = "INSERT  INTO `x10_offer`(`adware`, `nuser`, `status`, `regist`, `edittime`) VALUES (:adware, :nuser, :status, :regist, :edittime)";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':adware', $ofr->adware, PDO::PARAM_STR);
         $stmt->bindParam(':nuser', $ofr->nuser, PDO::PARAM_STR);
         $stmt->bindParam(':status', $ofr->status, PDO::PARAM_INT);
         $stmt->bindParam(':regist', strtotime("NOW"), PDO::PARAM_INT);
+        $stmt->bindParam(':edittime', strtotime("NOW"), PDO::PARAM_INT);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
@@ -675,11 +677,12 @@ function updateX10Offer($adware, $nuser, $status)
 {
     try {
         require 'dns.php';
-        $sql = "UPDATE `x10_offer` SET `status`=:status WHERE `adware`=:adware AND `nuser`=:nuser ";
+        $sql = "UPDATE `x10_offer` SET `status`=:status,edittime=:edittime WHERE `adware`=:adware AND `nuser`=:nuser ";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':adware', $adware, PDO::PARAM_STR);
         $stmt->bindParam(':nuser', $nuser, PDO::PARAM_STR);
         $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+        $stmt->bindParam(':edittime', strtotime("NOW"), PDO::PARAM_INT);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
@@ -1081,6 +1084,27 @@ function deletePost($adwares, $cuser, $nuser)
     // }
 }
 
+
+function getCostAT2($adware)
+{
+    try {
+        $result = 0;
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT SUM(money) as money FROM `v_offer_x10` WHERE (status=10 OR status=12 OR status=13) AND `adware`=:adware");
+        $stmt->bindParam(':adware', $adware, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result->owner = $row['money'];
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $result;
+}
+
+
+
 class cls_post
 {
     public $owner ;
@@ -1120,6 +1144,7 @@ function getPosts($where)
 
 function adCost($adwares, $nuser, $cost)
 {
+    updateX10Offer($adwares, $nuser, 13);
 
     //nuserにコスト追加
     require 'dns.php';
@@ -1136,9 +1161,9 @@ function adCost($adwares, $nuser, $cost)
     execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
     if (substr($adwares, 0, 1)=="A") {
-        $sql = "UPDATE `adwares` SET `money_count`= `money_count`+:cost, `pay_count`=`pay_count`+1 WHERE  id=:id";
+        $sql = "UPDATE `adwares` SET `money_count`= COALESCE(`money_count`,0)+:cost, `pay_count`=COALESCE(`pay_count`,0)+1 WHERE  id=:id";
     } else {
-        $sql = "UPDATE `secretadwares` SET `money_count`= `money_count`+:cost, `pay_count`=`pay_count`+1 WHERE  id=:id";
+        $sql = "UPDATE `secretadwares` SET `money_count`= COALESCE(`money_count`,0)+:cost, `pay_count`=COALESCE(`pay_count`,0)+1 WHERE  id=:id";
     }
     $stmt = $pdo -> prepare($sql);
     $stmt->bindParam(':id', $adwares, PDO::PARAM_STR);
@@ -1148,6 +1173,8 @@ function adCost($adwares, $nuser, $cost)
 
 function delCost($adwares, $nuser, $cost)
 {
+    updateX10Offer($adware, $nuser, 12);
+
     //nuserにコスト追加
     require 'dns.php';
     $sql = "UPDATE `nuser` SET `pay`= `pay`-:cost WHERE  id=:id";
@@ -1283,6 +1310,115 @@ function getReturnsses($where)
             $result->state = $row['state'];
             $result->regist = $row['regist'];
             $result->name = $row['name'];
+            array_push($results, $result);
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $results;
+}
+
+function getReportPayed($y, $m)
+{
+    try {
+        $startDt = strtotime($y.'-'.$m.'-01 00:00:00');
+        $endDt   = strtotime(date('Y-m-d 23:59:59', strtotime($y.'-'.$m.' last day of this month')));
+
+        $results = array();
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT `x10_returnss`.*, `nuser`.`name` FROM `x10_returnss` LEFT JOIN `nuser` ON `x10_returnss`.`owner`=`nuser`.`id` WHERE `x10_returnss`.`regist` BETWEEN :start AND :end");
+        $stmt->bindParam(':start', $startDt, PDO::PARAM_INT);
+        $stmt->bindParam(':end', $endDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_post();
+            $result->id = $row['id'];
+            $result->owner = $row['owner'];
+            $result->cost = $row['cost'];
+            $result->state = $row['state'];
+            $result->regist = $row['regist'];
+            $result->name = $row['name'];
+            array_push($results, $result);
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $results;
+}
+
+class cls_csv
+{
+    public $adwares ;
+    public $owner ;
+    public $cost ;
+    public $adname ;
+    public $adware_type ;
+    public $nname ;
+    public $cname ;
+    public $cuser ;
+}
+
+function getReportPayC($LOGIN_TYPE, $LOGIN_ID, $y, $m)
+{
+    try {
+        $startDt = strtotime($y.'-'.$m.'-01 00:00:00');
+        $endDt   = strtotime(date('Y-m-d 23:59:59', strtotime($y.'-'.$m.' last day of this month')));
+
+        $results = array();
+        require 'dns.php';
+        if ($LOGIN_TYPE=='admin') {
+            $stmt = $pdo->prepare("SELECT `p`.adwares , `p`.`owner` , SUM(`p`.`cost`) as cost  ,MAX( `p`.`name`) as adname ,MAX( `p`.`adware_type`) as adware_type,MAX( `n`.`name`) as nname, MAX( `p`.`cuser`) as cuser, MAX( `c`.`name`) as cname FROM `v_pay_x10` AS p LEFT JOIN `nuser` as n ON `p`.`owner`=`n`.`id`  LEFT JOIN `cuser` as c ON `p`.`cuser`=`c`.`id` WHERE `p`.`regist` BETWEEN :start AND :end AND `p`.`state`=2 GROUP BY `p`.adwares , `p`.`owner` ORDER BY `cuser`,`adwares` ");
+        } else {
+            $stmt = $pdo->prepare("SELECT `p`.adwares , `p`.`owner` , SUM(`p`.`cost`) as cost  ,MAX( `p`.`name`) as adname ,MAX( `p`.`adware_type`) as adware_type,MAX( `n`.`name`) as nname, MAX( `p`.`cuser`) as cuser, MAX( `c`.`name`) as cname FROM `v_pay_x10` AS p LEFT JOIN `nuser` as n ON `p`.`owner`=`n`.`id`  LEFT JOIN `cuser` as c ON `p`.`cuser`=`c`.`id` WHERE `p`.`regist` BETWEEN :start AND :end AND `p`.`cuser`=:cuser AND `p`.`state`=2 GROUP BY `p`.adwares , `p`.`owner` ORDER BY `cuser`,`adwares` ");
+            $stmt->bindParam(':cuser', $LOGIN_ID, PDO::PARAM_STR);
+        }
+
+        $stmt->bindParam(':start', $startDt, PDO::PARAM_INT);
+        $stmt->bindParam(':end', $endDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_csv();
+            $result->adwares = $row['adwares'];
+            $result->owner = $row['owner'];
+            $result->cost = $row['cost'];
+            $result->adname = $row['adname'];
+            $result->adware_type = $row['adware_type'];
+            $result->nname = $row['nname'];
+            $result->cname = is_null($row['cname']) ? 'その他': $row['cname'];
+            array_push($results, $result);
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $results;
+}
+
+
+function getReportPayN($y, $m)
+{
+    try {
+        $startDt = strtotime($y.'-'.$m.'-01 00:00:00');
+        $endDt   = strtotime(date('Y-m-d 23:59:59', strtotime($y.'-'.$m.' last day of this month')));
+
+        $results = array();
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT `p`.adwares , `p`.`owner` , SUM(`p`.`cost`) as cost  ,MAX( `p`.`name`) as adname ,MAX( `p`.`adware_type`) as adware_type,MAX( `n`.`name`) as nname, MAX( `p`.`cuser`) as cuser, MAX( `c`.`name`) as cname FROM `v_pay_x10` AS p LEFT JOIN `nuser` as n ON `p`.`owner`=`n`.`id`  LEFT JOIN `cuser` as c ON `p`.`cuser`=`c`.`id` WHERE `p`.`regist` BETWEEN :start AND :end AND `p`.`state`=2 GROUP BY `p`.adwares , `p`.`owner` ORDER BY `owner`,`adwares` ");
+
+        $stmt->bindParam(':start', $startDt, PDO::PARAM_INT);
+        $stmt->bindParam(':end', $endDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_csv();
+            $result->adwares = $row['adwares'];
+            $result->owner = $row['owner'];
+            $result->cost = $row['cost'];
+            $result->adname = $row['adname'];
+            $result->adware_type = $row['adware_type'];
+            $result->nname = $row['nname'];
+            $result->cname = is_null($row['cname']) ? 'その他': $row['cname'];
             array_push($results, $result);
         }
     } catch (PDOException $e) {

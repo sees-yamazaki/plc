@@ -29,12 +29,14 @@ $pays_0 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 0);
 $cnt_click_1 = countMonthlyClicks($thisY, $thisM, $LOGIN_ID, 1);
 $pays_1 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 1);
 // 指定月の投稿広告のデータを取得
-$pays_2 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 2);
+//$pays_2 = countMonthlyPays($thisY, $thisM, $LOGIN_ID, 2);
+$pays_2 = countMonthlyPaysAT2($thisY, $thisM, $LOGIN_ID);
 
 $past_cnt_click = countPastClicks($thisY, $thisM, $LOGIN_ID);
 $past_pays_0 = countPastPays($thisY, $thisM, $LOGIN_ID, 0);
 $past_pays_1 = countPastPays($thisY, $thisM, $LOGIN_ID, 1);
-$past_pays_2 = countPastPays($thisY, $thisM, $LOGIN_ID, 2);
+//$past_pays_2 = countPastPays($thisY, $thisM, $LOGIN_ID, 2);
+$past_pays_2 = countPastPaysAT2($thisY, $thisM, $LOGIN_ID);
 
 
 $startdt = $_POST['startdt'];
@@ -156,21 +158,23 @@ $adHtml.='</div>';
                         <th>確定成果</th>
                         <th>未確定成果</th>
                         <th>確定報酬</th>
+                                            <th>確定待ち成果</th>
                         <th>非認証</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
+                                    <tbody>
+                                        <tr>
                                             <td class="td-num"><?php echo(number_format($cnt_click_0 + $cnt_click_1)); ?>件</td>
-                                            <td class="td-num"><?php echo(number_format($pays_0->cnt + $pays_1->cnt + $pays_2->cnt)); ?>件</td>
-                                            <td class="td-num"><?php echo(number_format($pays_0->cnt2 + $pays_1->cnt2 + $pays_2->cnt2)); ?>件</td>
-                                            <td class="td-num"><?php echo(number_format($pays_0->cst0 + $pays_0->cst1 + $pays_1->cst0 + $pays_1->cst1 + $pays_2->cst0 + $pays_2->cst1)); ?>円</td>
-                                            <td class="td-num"><?php echo(number_format($pays_0->cst2 + $pays_1->cst2 + $pays_2->cst2)); ?>円</td>
+                                            <td class="td-num"><?php echo(number_format($pays_0->cnt + $pays_1->cnt + $pays_2->cnt0)); ?>件</td>
+                                            <td class="td-num"><?php echo(number_format($pays_0->cnt2 + $pays_1->cnt2 + $pays_2->cnt3)); ?>件</td>
+                                            <td class="td-num"><?php echo(number_format($pays_0->cst0 + $pays_0->cst1 + $pays_1->cst0 + $pays_1->cst1 + $pays_2->cst2)); ?>円</td>
+                                            <td class="td-num"><?php echo(number_format($pays_0->cst2 + $pays_1->cst2 + $pays_2->cst3)); ?>円</td>
+                                            <td class="td-num"><?php echo number_format($pays_2->cnt2); ?>件</td>
                                             <td class="td-num">
-                                                <?php echo($pays_0->cnt0 + $pays_0->cnt1 + $pays_1->cnt0 + $pays_1->cnt1 + $pays_2->cnt0 + $pays_2->cnt1); ?>件
+                                                <?php echo($pays_0->cnt0 + $pays_0->cnt1 + $pays_1->cnt0 + $pays_1->cnt1 + $pays_2->cnt1); ?>件
                                             </td>
-                      </tr>
-                    </tbody>
+                                        </tr>
+                                    </tbody>
                   </table>
                 </div>
               </div>
@@ -184,21 +188,19 @@ $adHtml.='</div>';
                         <th>確定成果</th>
                         <th>未確定成果</th>
                         <th>確定報酬</th>
+                                            <th>確定待ち成果</th>
                         <th>非認証</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
             <td class="td-num"><?php echo(number_format($past_cnt_click)); ?>件</td>
-            <td class="td-num"><?php echo(number_format($past_pays_0->cnt + $past_pays_1->cnt + $past_pays_2->cnt)); ?>件</td>
-            <td class="td-num"><?php echo(number_format($past_pays_0->cnt2 + $past_pays_1->cnt2 + $past_pays_2->cnt2)); ?>件
-            </td>
-            <td class="td-num"><?php echo(number_format($past_pays_0->cst0 + $past_pays_0->cst1 + $past_pays_1->cst0 + $past_pays_1->cst1 + $past_pays_2->cst0 + $past_pays_2->cst1)); ?>円
-            </td>
-            <td class="td-num"><?php echo(number_format($past_pays_0->cst2 + $past_pays_1->cst2 + $past_pays_2->cst2)); ?>円
-            </td>
-            <td class="td-num"><?php echo(number_format($past_pays_0->cnt0 + $past_pays_0->cnt1 + $past_pays_1->cnt0 + $past_pays_1->cnt1 + $past_pays_2->cnt0 + $past_pays_2->cnt1)); ?>件
-            </td>
+            <td class="td-num"><?php echo(number_format($past_pays_0->cnt + $past_pays_1->cnt + $past_pays_2->cnt0)); ?>件</td>
+            <td class="td-num"><?php echo(number_format($past_pays_0->cnt2 + $past_pays_1->cnt2 + $past_pays_2->cnt3)); ?>件</td>
+            <td class="td-num"><?php echo(number_format($past_pays_0->cst0 + $past_pays_0->cst1 + $past_pays_1->cst0 + $past_pays_1->cst1 + $past_pays_2->cst2)); ?>円</td>
+            <td class="td-num"><?php echo(number_format($past_pays_0->cst2 + $past_pays_1->cst2 + $past_pays_2->cst3)); ?>円</td>
+            <td class="td-num"><?php echo number_format($past_pays_2->cnt2); ?>件</td>
+            <td class="td-num"><?php echo(number_format($past_pays_0->cnt0 + $past_pays_0->cnt1 + $past_pays_1->cnt0 + $past_pays_1->cnt1 + $past_pays_2->cnt1)); ?>件</td>
                       </tr>
                     </tbody>
                   </table>

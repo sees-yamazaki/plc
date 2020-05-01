@@ -12,6 +12,8 @@ $LOGIN_TYPE = $_SESSION[ $SESSION_TYPE ];
 
 $mode = empty($_GET['mode']) ? $_POST['mode'] : $_GET['mode'];
 $adstts = isset($_GET['adstts']) ? $_GET['adstts'] : $_POST['adstts'];
+$adstts = isset($_POST['doSearch']) ? "" : $adstts ;
+
 
 $id = $_POST['id'];
 $name = $_POST['name'];
@@ -168,14 +170,17 @@ if ($LOGIN_TYPE=='cUser') {
     $where .= " AND (cuser='".$LOGIN_ID."') ";
 }
 
+$prmlink='';
 if (isset($_GET['ofr'])) {
     $where .= " AND (cnt_offer>0)";
     $offered[1]= " checked";
+    $prmlink='&amp;prmOfr=1';
 }
 
 if (isset($_GET['pst'])) {
     $where .= " AND (cnt_post>0)";
     $posted[1]= " checked";
+    $prmlink='&amp;prmPst=1';
 }
 
 //検索結果件数を取得
@@ -323,7 +328,7 @@ function paging(vlu) {
                         </tbody>
                     </table>
                     <div class="input_box">
-                        <input type="submit" value="検索する" class="input_base">
+                        <input type="submit" value="検索する" name="doSearch" class="input_base">
                         <input type="reset" value="リセット" class="input_base">
                     </div>
                     <!---->
@@ -459,10 +464,18 @@ function paging(vlu) {
                     </tr>
                     <?php  if ($ad->approvable=="1") { ?>
                     <tr>
-                        <th>申請件数</th>
+                        <th>申請承認待ち件数</th>
                         <td class="adwares_info">
-                            <a href="x10c_offer_edit.php?pid=srch&amp;id=<?php echo $ad->id; ?>&amp;mode=<?php echo $mode; ?>">
-                            <?php echo $ad->cnt_offer + $ad->cnt_post; ?>
+                            <a href="x10c_offer_edit.php?pid=srch&amp;id=<?php echo $ad->id; ?>&amp;prmOfr=1&amp;mode=<?php echo $mode.$prmlink; ?>">
+                            <?php echo $ad->cnt_offer; ?>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>投稿承認待ち件数</th>
+                        <td class="adwares_info">
+                            <a href="x10c_offer_edit.php?pid=srch&amp;id=<?php echo $ad->id; ?>&amp;prmPst=1&amp;mode=<?php echo $mode.$prmlink; ?>">
+                            <?php echo $ad->cnt_post; ?>
                             </a>
                         </td>
                     </tr>

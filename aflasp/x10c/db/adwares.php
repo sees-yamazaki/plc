@@ -185,10 +185,12 @@ class cls_pays
     public $cnt0 ;
     public $cnt1 ;
     public $cnt2 ;
+    public $cnt3 ;
     public $cst ;
     public $cst0 ;
     public $cst1 ;
     public $cst2 ;
+    public $cst3 ;
     public $startdt ;
     public $enddt ;
     public $limits ;
@@ -240,6 +242,50 @@ function getPaysX10Monthly($y, $m, $nUserId)
     }
     return $results;
 }
+
+
+function getPaysX10MonthlyAT2($y, $m, $nUserId)
+{
+    $results = array();
+    try {
+        $startDt = strtotime($y.'-'.$m.'-01 00:00:00');
+        $endDt   = strtotime(date('Y-m-d 23:59:59', strtotime($y.'-'.$m.' last day of this month')));
+
+        require 'dns.php';
+        
+        $sql = "select adware,max(name) as name,  SUM(CASE WHEN status <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN status = 10 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN status = 11 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN status = 12 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN status = 13 THEN 1 ELSE 0 END) AS cnt3,SUM(CASE WHEN status <> 9 THEN money ELSE 0 END) AS cst,SUM(CASE WHEN status = 10 THEN money ELSE 0 END) AS cst0,SUM(CASE WHEN status = 11 THEN money ELSE 0 END) AS cst1,SUM(CASE WHEN status = 12 THEN money ELSE 0 END) AS cst2,SUM(CASE WHEN status = 13 THEN money ELSE 0 END) AS cst3, max(adware_type) as adware_type from `v_offer_x10` WHERE adware_type=2 AND nuser=:nuser AND edittime BETWEEN :startDt AND :endDt group by adware";
+
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':nuser', $nUserId, PDO::PARAM_STR);
+        $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
+        $stmt->bindParam(':endDt', $endDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_pays();
+            $result->id = $row['adwares'];
+            $result->name = $row['name'];
+            $result->cnt = $row['cnt'];
+            $result->cnt0 = $row['cnt0'];
+            $result->cnt1 = $row['cnt1'];
+            $result->cnt2 = $row['cnt2'];
+            $result->cnt3 = $row['cnt3'];
+            $result->cst = $row['cst'];
+            $result->cst0 = $row['cst0'];
+            $result->cst1 = $row['cst1'];
+            $result->cst2 = $row['cst2'];
+            $result->cst3 = $row['cst3'];
+            $result->adware_type = $row['adware_type'];
+            array_push($results, $result);
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $results;
+}
+
 
 function getPaysX10($nUserId)
 {
@@ -321,19 +367,52 @@ function countMonthlyPays($y, $m, $nUserId, $adType)
     return $result;
 }
 
+function countMonthlyPaysAT2($y, $m, $nUserId)
+{
+    $result = new cls_pays();
+    try {
+        $startDt = strtotime($y.'-'.$m.'-01 00:00:00');
+        $endDt   = strtotime(date('Y-m-d 23:59:59', strtotime($y.'-'.$m.' last day of this month')));
+
+        require 'dns.php';
+        
+        $sql = "select SUM(CASE WHEN status <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN status = 10 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN status = 11 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN status = 12 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN status = 13 THEN 1 ELSE 0 END) AS cnt3,SUM(CASE WHEN status <> 9 THEN money ELSE 0 END) AS cst,SUM(CASE WHEN status = 10 THEN money ELSE 0 END) AS cst0,SUM(CASE WHEN status = 11 THEN money ELSE 0 END) AS cst1,SUM(CASE WHEN status = 12 THEN money ELSE 0 END) AS cst2,SUM(CASE WHEN status = 13 THEN money ELSE 0 END) AS cst3 from `v_offer_x10` WHERE adware_type=2 AND nuser=:nuser AND edittime BETWEEN :startDt AND :endDt";
+
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':nuser', $nUserId, PDO::PARAM_STR);
+        $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
+        $stmt->bindParam(':endDt', $endDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result->cnt = $row['cnt'];
+            $result->cnt0 = $row['cnt0'];
+            $result->cnt1 = $row['cnt1'];
+            $result->cnt2 = $row['cnt2'];
+            $result->cnt3 = $row['cnt3'];
+            $result->cst = $row['cst'];
+            $result->cst0 = $row['cst0'];
+            $result->cst1 = $row['cst1'];
+            $result->cst2 = $row['cst2'];
+            $result->cst3 = $row['cst3'];
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $result;
+}
+
 function countPastPays($y, $m, $nUserId, $adType)
 {
     $result = new cls_pays();
     try {
-        //$startDt = strtotime($y.'-'.$m.'-01 00:00:00');
-        $startDt = strtotime('NOW');
-
         require 'dns.php';
-        $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10` WHERE adware_type=:adware_type AND owner=:owner AND regist < :startDt";
+        $sql = "select SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2 from `v_pay_x10` WHERE adware_type=:adware_type AND owner=:owner";
 
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
-        $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
         $stmt->bindParam(':adware_type', $adType, PDO::PARAM_INT);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -345,6 +424,40 @@ function countPastPays($y, $m, $nUserId, $adType)
             $result->cst0 = $row['cst0'];
             $result->cst1 = $row['cst1'];
             $result->cst2 = $row['cst2'];
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $result;
+}
+
+
+function countPastPaysAT2($y, $m, $nUserId)
+{
+    $result = new cls_pays();
+    try {
+        require 'dns.php';
+        
+        $sql = "select SUM(CASE WHEN status <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN status = 10 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN status = 11 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN status = 12 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN status = 13 THEN 1 ELSE 0 END) AS cnt3,SUM(CASE WHEN status <> 9 THEN money ELSE 0 END) AS cst,SUM(CASE WHEN status = 10 THEN money ELSE 0 END) AS cst0,SUM(CASE WHEN status = 11 THEN money ELSE 0 END) AS cst1,SUM(CASE WHEN status = 12 THEN money ELSE 0 END) AS cst2,SUM(CASE WHEN status = 13 THEN money ELSE 0 END) AS cst3 from `v_offer_x10` WHERE adware_type=2 AND nuser=:nuser";
+
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':nuser', $nUserId, PDO::PARAM_STR);
+        $stmt->bindParam(':endDt', $endDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result->cnt = $row['cnt'];
+            $result->cnt0 = $row['cnt0'];
+            $result->cnt1 = $row['cnt1'];
+            $result->cnt2 = $row['cnt2'];
+            $result->cnt3 = $row['cnt3'];
+            $result->cst = $row['cst'];
+            $result->cst0 = $row['cst0'];
+            $result->cst1 = $row['cst1'];
+            $result->cst2 = $row['cst2'];
+            $result->cst3 = $row['cst3'];
         }
     } catch (PDOException $e) {
         $errorMessage = 'DATABASE ERROR';

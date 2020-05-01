@@ -25,7 +25,11 @@ $thisY = empty($_POST['thisY']) ? date('Y') : $_POST['thisY'];
 $thisM = empty($_POST['thisM']) ? date('m') : $_POST['thisM'];
 //$cnt_click = countMonthlyClicks($thisY, $thisM, $LOGIN_ID, $adtype);
 //$pays = countMonthlyPaysGroups($thisY, $thisM, $LOGIN_ID, $adtype);
-$pays = getPaysX10Monthly($thisY, $thisM, $LOGIN_ID);
+if ($adtype=="2") {
+    $pays = getPaysX10MonthlyAT2($thisY, $thisM, $LOGIN_ID);
+} else {
+    $pays = getPaysX10Monthly($thisY, $thisM, $LOGIN_ID);
+}
 $nextYM = date('Ym', strtotime(date($thisY.'-'.$thisM.'-1') . '+1 month'));
 $lastYM = date('Ym', strtotime(date($thisY.'-'.$thisM.'-1') . '-1 month'));
 
@@ -125,8 +129,13 @@ for ($i = 1; $i <= 12; $i++) {
               <thead>
                 <tr>
                   <th>案件名</th>
-                  <th>クリック</th>
+                  <?php if ($adtype<>"2") { ?>
+                    <th>クリック</th>
+                  <?php } ?>
                   <th>発生成果</th>
+                  <?php if ($adtype=="2") { ?>
+                    <th>確定待ち成果</th>
+                  <?php } ?>
                   <th>確定成果</th>
                   <th>未確定成果</th>
                   <th>確定報酬</th>
@@ -141,12 +150,21 @@ for ($i = 1; $i <= 12; $i++) {
             <?php $wk =  $stts =="0" ? "": "[終了]"; ?>
             <td><a href='x10u_offer_detail.php?id=<?php echo $p->id; ?>'><?php echo $wk.$p->name; ?></a></td>
             <?php $cnt = countMonthlyClicksAdwares($thisY, $thisM, $LOGIN_ID, $p->id); ?>
-            <td><?php echo $cnt; ?>件</td>
-            <td><?php echo $p->cnt; ?>件</td>
-            <td><?php echo $p->cnt2; ?>件</td>
-            <td><?php echo($p->cst0 + $p->cst1); ?>円</td>
-            <td><?php echo $p->cst2; ?>円</td>
-            <td><?php echo($p->cnt0 + $p->cnt1); ?>件</td>
+            <?php if ($p->adware_type<>"2") { ?>
+                <td><?php echo $cnt; ?>件</td>
+                <td><?php echo $p->cnt; ?>件</td>
+                <td><?php echo $p->cnt2; ?>件</td>
+                <td><?php echo number_format($p->cst0 + $p->cst1); ?>円</td>
+                <td><?php echo number_format($p->cst2); ?>円</td>
+                <td><?php echo($p->cnt0 + $p->cnt1); ?>件</td>
+            <?php } else { ?>
+                <td class="td-num"><?php echo number_format($p->cnt0); ?>件</td>
+                <td class="td-num"><?php echo number_format($p->cnt2); ?>件</td>
+                <td class="td-num"><?php echo number_format($p->cnt3); ?>件</td>
+                <td class="td-num"><?php echo number_format($p->cst2); ?>円</td>
+                <td class="td-num"><?php echo number_format($p->cst3); ?>円</td>
+                <td class="td-num"><?php echo number_format($p->cnt1); ?>件</td>
+        <?php } ?>
         </tr>
         <?php } ?>
         <?php } ?>

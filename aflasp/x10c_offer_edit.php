@@ -18,30 +18,54 @@ $LOGIN_TYPE = $_SESSION[ $SESSION_TYPE ];
 
 $id = empty($_GET['id']) ? $_POST['id'] : $_GET['id'];
 $pid = empty($_GET['pid']) ? $_POST['pid'] : $_GET['pid'];
+$prmOfr = empty($_GET['prmOfr']) ? $_POST['prmOfr'] : $_GET['prmOfr'];
+$prmPst = empty($_GET['prmPst']) ? $_POST['prmPst'] : $_GET['prmPst'];
+
+
 
 if (isset($_POST['doEdit'])) {
     $user=''; // newStatus : nusr : oldStatus
     $stts = $_POST['stts'];
+    $errMsg = '';
+
+    $ad = getAdware($id);
+    $money = is_null($ad->money) ? 0 :$ad->money;
+    $money_count = is_null($ad->money_count) ? 0 :$ad->money_count;
     foreach ($stts as $sts) {
         $ss = explode(":", $sts);
-        updateX10Offer($id, $ss[1], $ss[0]);
-        if ($ss[0]=="2" || $ss[0]=="12") {
-            $user.=$ss[1].PHP_EOL;
-        }
-
-
         if (($ss[2]=="10" && $ss[0]=="12") || ($ss[2]=="11" && $ss[0]=="12")) {
-            //投稿がOK
-            insertPost($id, $LOGIN_ID, $ss[1]);
-        } elseif ($ss[0]=="10" || $ss[0]=="11") {
-            //投稿がダメ
-            deletePost($id, $LOGIN_ID, $ss[1]);
+            $money_count = $money_count + $money;
+        }
+        if (($ss[2]=="12" && $ss[0]=="10") || ($ss[2]=="12" && $ss[0]=="11")) {
+            $money_count = $money_count - $money;
         }
     }
-    updateAdwareOpenUser($id, $user);
+    if ($ad->limits>0 && $ad->limits < $money_count) {
+        $errMsg = '<tr><td colspan=5 style="color:red;">【広告報酬の上限超過のため確定できませんでした】</td></tr>';
+    }
 
 
-    header('Location: x10c_offer_edited.php');
+    if ($errMsg=="") {
+        foreach ($stts as $sts) {
+            $ss = explode(":", $sts);
+
+            updateX10Offer($id, $ss[1], $ss[0]);
+            if ($ss[0]=="2" || $ss[0]=="12") {
+                $user.=$ss[1].PHP_EOL;
+            }
+
+
+            if (($ss[2]=="10" && $ss[0]=="12") || ($ss[2]=="11" && $ss[0]=="12")) {
+                //投稿がOK
+                insertPost($id, $LOGIN_ID, $ss[1]);
+            } elseif ($ss[0]=="10" || $ss[0]=="11") {
+                //投稿がダメ
+                deletePost($id, $LOGIN_ID, $ss[1]);
+            }
+        }
+        updateAdwareOpenUser($id, $user);
+        header('Location: x10c_offer_edited.php');
+    }
 }
 
 
@@ -74,6 +98,7 @@ if ($adware->adware_type=="1") {
                 <dd>
                     <table class="search_list_table" summary="詳細テーブル">
                         <tbody>
+                            <?php echo $errMsg; ?>
                             <tr>
                                 <th>広告タイプ</th>
                                 <td>
@@ -98,11 +123,11 @@ if ($adware->adware_type=="1") {
                                         value="<?php echo $adware->comment; ?>">
                                 </td>
                             </tr>
-                            <?php if ($adware->adware_type=="0") { ?>
+                            <?php if ($adware->adware_type=="0" || $adware->adware_type=="2") { ?>
                             <tr>
                                 <th>獲得単価</th>
                                 <td>
-                                    <?php echo $adware->money; ?>
+                                    <?php echo number_format($adware->money); ?>
                                     <input type="hidden" name="adware_type"
                                         value="<?php echo $adware->commmoneyent; ?>">
                                 </td>
@@ -111,7 +136,7 @@ if ($adware->adware_type=="1") {
                             <tr>
                                 <th>クリック単価</th>
                                 <td>
-                                    <?php echo $adware->click_money; ?>
+                                    <?php echo number_format($adware->click_money); ?>
                                     <input type="hidden" name="adware_type"
                                         value="<?php echo $adware->click_money; ?>">
                                 </td>
@@ -121,7 +146,8 @@ if ($adware->adware_type=="1") {
                                 <th>対象ユーザー</th>
                                 <td>
                                     <?php
-                                    $offer = getOffer($id);
+                                    $where = empty($prmPst) ? ' AND status<10 ' :  ' AND status>=10 ' ;
+                                    $offer = getOffer($id, $where);
                                     $i=0;
                                     foreach ($offer as $ofr) {
                                         $stts = array('','','','','','','','','','','','','','');
@@ -178,6 +204,8 @@ if ($adware->adware_type=="1") {
             <input type="submit" value="登録する" class="input_base">
             <input type="reset" value="リセット" class="input_base">
             <input type="hidden" name="id" value="<?php echo $id; ?>">
+            <input type="hidden" name="prmOfr" value="<?php echo $prmOfr; ?>">
+            <input type="hidden" name="prmPst" value="<?php echo $prmPst; ?>">
             <input type="hidden" name="doEdit" value="0">
             <?php if ($pid=="ad") { ?>
                 <br><br><input type="button" value="戻る" class="input_base" onclick="location.href='x10c_adwares_edit.php?id=<?php echo $id; ?>'">

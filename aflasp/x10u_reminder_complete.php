@@ -16,7 +16,7 @@
 
     <div class="mainheader">
       <p class="breadcrumbs">
-        <a href="x10u_index.php">トップ</a>
+        <a href="/">トップ</a>
         <a href="#">パスワードをお忘れの方へ</a>
       </p>
     </div>
@@ -27,14 +27,20 @@
       </div>
     </div>
 
+    <section class="section">
+      <div class="sec__inner container">
 
-    <div class="form__complete_text text-center">
+        <div class="form__complete_text text-center">
           <p>初期化が完了しました。<br>入力されたメールアドレスに初期化したパスワードを送信しました。</p>
         </div>
 
         <div class="form__submit">
-          <div class="btn"><a href="./x10u_index.php" class="bg_blu">トップへ</a></div>
+          <div class="btn"><a href="/" class="bg_blu">トップへ</a></div>
         </div>
+
+      </div>
+    </section>
+
   </main>
 
   <?php include(__DIR__ . '/x10u/inc/footer.php'); ?>

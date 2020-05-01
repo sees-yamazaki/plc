@@ -56,9 +56,9 @@ $adware->open = $_POST['open'];
 //$adware->regist = $_POST['regist'];
 $adware->adware_type = $_POST['adware_type'];
 $adware->approvable = $_POST['approvable'];
-if(is_array($_POST['keyword'])){
-    $adware->keyword = implode(' ',$_POST['keyword']);
-}else{
+if (is_array($_POST['keyword'])) {
+    $adware->keyword = implode(' ', $_POST['keyword']);
+} else {
     $adware->keyword = $_POST['keyword'];
 }
 $adware->results = $_POST['results'];
@@ -202,9 +202,9 @@ if (isset($_POST['doCheck'])) {
     $adware= getAdware($id);
 }
 
-$kword = explode(' ',$adware->keyword);
+$kword = explode(' ', $adware->keyword);
 
-$offer = getOffer($id);
+$offer = getOffer($id, '');
 
 $keywords = getKeywords();
 
@@ -294,7 +294,7 @@ if ($adware->adware_type=="1") {
     $adware_type_1 = " checked";
     $adware_type_2 = "";
     $txt_adtype="クリック報酬タイプ";
-}elseif($adware->adware_type=="2") {
+} elseif ($adware->adware_type=="2") {
     $adware_type_0 = "";
     $adware_type_1 = "";
     $adware_type_2 = " checked";
@@ -416,22 +416,22 @@ window.onload = entryChange1;
 <script type="text/javascript">
 jQuery(function($) {
   var wordlist = [
-<?php 
+<?php
 foreach ($keywords as $word) {
     if ($word->adware_type=="0") {
         echo '"'.$word->keyword.'",';
     }
-} 
+}
 ?>
     ""
   ];
   var wordlist2 = [
-    <?php 
+    <?php
 foreach ($keywords as $word) {
     if ($word->adware_type=="1") {
         echo '"'.$word->keyword.'",';
     }
-} 
+}
 ?>
     ""
   ];

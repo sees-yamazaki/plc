@@ -169,8 +169,9 @@
                                 <li><a href="x10c_offerad_search.php?adstts=0" class="menu">進行中の広告</a></li>
                                 <li><a href="x10c_offerad_search.php?adstts=1" class="menu">終了した広告</a></li>
                                 <li><a href="x10c_post_check.php" class="menu">投稿を確定する</a></li>
-                                <!--<li><a href="x10c_offerad_search.php" class="menu">過去に登録した広告</a></li>-->
-                                <li><a href="regist.php?type=pay" class="menu">成果の登録</a></li>
+                                <li><a href="x10c_post_uncheck.php" class="menu">投稿の確定を取消</a></li>
+                                <!--<li><a href="x10c_offerad_search.php" class="menu">過去に登録した広告</a></li>
+                                <li><a href="regist.php?type=pay" class="menu">成果の登録</a></li>-->
                                 <li><a href="search.php?type=category&run=true" class="menu">広告カテゴリの管理</a></li>
                                 <li><a href="search.php?type=cUser" class="menu">広告主検索</a></li>
                             </ul>
@@ -192,16 +193,10 @@
                                 <span class="link-title">換金</span>
                                 <i class="mdi mdi-diamond link-icon"></i>
                             </a>
-                            <ul class=" navigation-submenu">
+                            <ul class=" navigation-submenu" id="pages">
                                 <li><a href="x10c_pay.php" class="menu">換金処理</a></li>
-                            </ul>
-                            <ul class=" navigation-submenu">
                                 <li><a href="x10c_unpay.php" class="menu">換金取消処理</a></li>
-                            </ul>
-                            <ul class=" navigation-submenu" id="pages4">
                                 <li><a href="x10c_payed.php" class="menu">入金処理</a></li>
-                            </ul>
-                            <ul class=" navigation-submenu" id="pages4">
                                 <li><a href="x10c_unpayed.php" class="menu">入金取消処理</a></li>
                             </ul>
                             <!--
@@ -216,8 +211,13 @@
                                 <i class="mdi mdi-package-down link-icon"></i>
                             </a>
                             <ul class=" navigation-submenu" id="pages">
+                                <li><a href="x10c_report.php" class="menu">入金済み一覧</a></li>
+                                <li><a href="x10c_report_c.php" class="menu">広告主成果一覧</a></li>
+                                <li><a href="x10c_report_n.php" class="menu">ユーザー成果一覧</a></li>
+                                <!--
                                 <li><a href="other.php?key=pay_report" class="menu">成果レポート出力</a></li>
                                 <li><a href="other.php?key=access4month" class="menu">アクセス集計</a></li>
+-->
                             </ul>
                         </li>
                         <li>

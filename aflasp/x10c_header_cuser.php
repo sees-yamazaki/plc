@@ -151,6 +151,15 @@
                                     <li><a href="search.php?type=click_pay&run=true" class="menu">クリック報酬の発生履歴</a></li>
                                 </ul>
                             </li>
+                        <li>
+                            <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">
+                                <span class="link-title">レポート</span>
+                                <i class="mdi mdi-package-down link-icon"></i>
+                            </a>
+                            <ul class=" navigation-submenu" id="pages">
+                                <li><a href="x10c_report_c.php" class="menu">広告主成果一覧</a></li>
+                            </ul>
+                        </li>
                             <li>
                                 <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">
                                     <span class="link-title">ユーザー情報</span>

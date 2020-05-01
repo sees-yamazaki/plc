@@ -27,6 +27,14 @@ $id_title = substr($id, 0, 1)=="A" ? 'adwares' : 's_adwares';
 
 $ad = getAdware($id);
 
+if ($ad->stts==0 || $ad->stts==10) {
+    $limits = is_null($ad->limits) ? 0 :$ad->limits;
+    $money_count = is_null($ad->money_count) ? 0 :$ad->money_count;
+    if ($limits>0 && ($limits*0.7)<$money_count) {
+        $ad->stts = $ad->stts + 1;
+    }
+}
+
 if (isset($_GET['req'])) {
     if ($_GET['req']=="0") {
         $ofr = getOfferStatus($id, $LOGIN_ID);
@@ -34,13 +42,13 @@ if (isset($_GET['req'])) {
             $ofr = new cls_offer();
             $ofr->adware = $id;
             $ofr->nuser = $LOGIN_ID ;
-            if ($ad->adware_type=="2") {
-                $ofr->status = "10";
-            } else {
-                $ofr->status = "0";
-            }
+            $ofr->status = "0";
             insertX10Offer($ofr);
         }
+    } elseif ($_GET['req']=="2") {
+        updateX10Offer($id, $LOGIN_ID, 10);
+    } elseif ($_GET['req']=="3") {
+        updateX10Offer($id, $LOGIN_ID, 2);
     } else {
         $ofr = new cls_offer();
         $ofr->adware = $id;
@@ -92,67 +100,6 @@ if ($ad->stts==11 || $ad->stts==1) {
     $titleHtml .= '<p class="alert_box_text">予算上限到達後は成果が発生しませんのでご注意下さい</p>';
     $titleHtml .= '</div>';
 }
-// switch ($ad->stts) {
-//     case 22:
-//     case 21:
-//     case 20:
-//     case 12:
-//     case 2:
-//     $titleHtml .= '<div class="alert_box">';
-//     $titleHtml .= '<h4 class="alert_box_title"><span class="icon_chuui_pnk">このオファーは終了しています。</span></h4>';
-//     $titleHtml .= '<p class="alert_box_text">このオファーは終了しておりますので成果は計測されません</p>';
-//     $titleHtml .= '</div>';
-//     break;
-//     case 11:
-//     $titleHtml .= '<div class="alert_box">';
-//     $titleHtml .= '<h4 class="alert_box_title"><span class="icon_chuui_pnk">このオファーは期間終了が近づいています。</span></h4>';
-//     $titleHtml .= '<p class="alert_box_text">期間終了後は成果が発生しませんのでご注意下さい</p>';
-//     $titleHtml .= '</div>';
-//     $titleHtml .= '<div class="alert_box">';
-//     $titleHtml .= '<h4 class="alert_box_title"><span class="icon_chuui_pnk">このオファーは予算上限が近づいています。</span></h4>';
-//     $titleHtml .= '<p class="alert_box_text">予算上限到達後は成果が発生しませんのでご注意下さい</p>';
-//     $titleHtml .= '</div>';
-//     break;
-//     case 10:
-//     $titleHtml .= '<div class="alert_box">';
-//     $titleHtml .= '<h4 class="alert_box_title"><span class="icon_chuui_pnk">このオファーは期間終了が近づいています。</span></h4>';
-//     $titleHtml .= '<p class="alert_box_text">期間終了後は成果が発生しませんのでご注意下さい</p>';
-//     $titleHtml .= '</div>';
-//     break;
-//     case 1:
-//     $titleHtml .= '<div class="alert_box">';
-//     $titleHtml .= '<h4 class="alert_box_title"><span class="icon_chuui_pnk">このオファーは予算上限が近づいています。</span></h4>';
-//     $titleHtml .= '<p class="alert_box_text">予算上限到達後は成果が発生しませんのでご注意下さい</p>';
-//     $titleHtml .= '</div>';
-//     break;
-// }
-
-
-
-
-
-
-
-
-// $html .= ''.nl2br($ad->comment).'<br>';
-
-// if ($ad->approvable=="0") {
-//     $html .= '[オープン制]';
-// } else {
-//     $html .= '[承認制]';
-// }
-
-// $html .= '<br>';
-
-// if ($ad->adware_type=="0") {
-//     $html .= '[目標報酬]<br>';
-//     $html .= '報酬単価<br>'.$ad->money.'円/目標達成<br>';
-// } else {
-//     $html .= '[クリック報酬]<br>';
-//     $html .= '報酬単価<br>'.$ad->click_money.'円/1クリック<br>';
-// }
-
-// $html .= '<br>';
 
 $sys = getSystem();
 $url = $sys->home;
@@ -211,49 +158,67 @@ if ($ad->isFinish=="1") {
         $offerHtml.='<div class="article__link_block article__link_request-join">';
         $offerHtml.='<div class="btn"><a class="bg_grad_red" href="x10u_offer_detail.php?id='.$ad->id.'&req=0"><span class="icon_kamihikouki"></span>参加リクエスト</a></div>';
         $offerHtml.='</div>';
-//         $html .= '<form action="x10n_adwares_offer.php" method="POST">';
-//         $html .= '<input type="submit" value="参加リクエスト"><br>';
-//         $html .= '<input type="hidden" name="adware" value="'.$id.'">';
-//         $html .= '<input type="hidden" name="status" value="0">';
-//         $html .= '</form>';
-    } elseif ($ofr->status=="0" || $ofr->status=="10") {
+    } elseif ($ofr->status=="0") {
         $offerHtml.='<div class="article__link_block article__link_request-approval fukidashi-wrap">';
         $offerHtml.='<div class="fukidashi-bk fukidashi-load-fade js-fukidashi-load-fade">';
         $offerHtml.='<span class="icon_chuui"></span>リクエスト完了！';
         $offerHtml.='</div>';
         $offerHtml.='<div class="btn"><a class="bg_grad_grn" href="x10u_offer_detail.php?id='.$ad->id.'&req=1"><span class="icon_sunadokei"></span>リクエストを取り下げる</a></div>';
         $offerHtml.='</div>';
-//         $html .= 'リクエスト承認待ち<br>';
-//         $html .= '<form action="x10n_adwares_offer.php" method="POST">';
-//         $html .= '<input type="submit" value="参加リクエストを取り下げる"><br>';
-//         $html .= '<input type="hidden" name="adware" value="'.$id.'">';
-//         $html .= '<input type="hidden" name="status" value="1">';
-//         $html .= '</form>';
+    } elseif ($ofr->status=="10") {
+        $offerHtml.='<div class="article__link_block article__link_request-approval fukidashi-wrap">';
+        $offerHtml.='<div class="fukidashi-bk fukidashi-load-fade js-fukidashi-load-fade">';
+        $offerHtml.='<span class="icon_chuui"></span>報告完了！';
+        $offerHtml.='</div>';
+        $offerHtml.='<div class="btn"><a class="bg_grad_grn" href="x10u_offer_detail.php?id='.$ad->id.'&req=3"><span class="icon_sunadokei"></span>投稿報告を取り下げる</a></div>';
+        $offerHtml.='</div>';
     } elseif ($ofr->status=="1" || $ofr->status=="11") {
         $offerHtml.='残念ながら承認されませんでした<br>';
     } elseif ($ofr->status=="2") {
-        $offerHtml.='<div class="article__link_block article__link_share">';
-        $offerHtml.='<p class="share_text text-center">以下のURLを投稿しよう！</p>';
-        if (substr($url, -1)=='/') {
-            $url = substr($url, 0, -1);
+        if ($ad->adware_type=="2") {
+            $offerHtml.='<div class="article__link_block article__link_share">';
+            $offerHtml.='<p class="share_text text-center">以下のURLを投稿しよう！</p>';
+            if (substr($url, -1)=='/') {
+                $url = substr($url, 0, -1);
+            }
+            $offerHtml.='<p class="js-copy_text copy_text">'.$url .'/p/'.$hashID.'</p>';
+            $offerHtml.='<div class="fukidashi-wrap">';
+            $offerHtml.='<div class="fukidashi-bk fukidashi-click-fade js-fukidashi-click-fade">';
+            $offerHtml.='<span class="icon_chuui"></span>URLをコピーしました';
+            $offerHtml.='</div>';
+            $offerHtml.='</div>';
+            $offerHtml.='<div class="btn js-copy_btn"><a class="bg_grad_orn" href=""><span class="icon_share"></span>URLをコピーする</a></div>';
+            $offerHtml.='</div>';
+            
+            $offerHtml.='<div class="article__link_block article__link_share">';
+            $offerHtml.='<p class="share_text text-center">以下のハッシュタグを投稿しよう！</p>';
+            $offerHtml.='<p class="js-copy_text copy_text">'.$ad->hashtag.'</p>';
+            $offerHtml.='<div class="fukidashi-wrap">';
+            $offerHtml.='<div class="fukidashi-bk fukidashi-click-fade js-fukidashi-click-fade">';
+            $offerHtml.='<span class="icon_chuui"></span>ハッシュタグをコピーしました';
+            $offerHtml.='</div>';
+            $offerHtml.='</div>';
+            $offerHtml.='<div class="btn js-copy_btn"><a class="bg_grad_orn" href=""><span class="icon_share"></span>ハッシュタグをコピーする</a></div>';
+            $offerHtml.='</div>';
+
+            $offerHtml.='<div class="article__link_block article__link_request-join">';
+            $offerHtml.='<div class="btn"><a class="bg_grad_red" href="x10u_offer_detail.php?id='.$ad->id.'&req=2"><span class="icon_kamihikouki"></span>投稿報告</a></div>';
+            $offerHtml.='</div>';
+        } else {
+            $offerHtml.='<div class="article__link_block article__link_share">';
+            $offerHtml.='<p class="share_text text-center">以下のURLを投稿しよう！</p>';
+            if (substr($url, -1)=='/') {
+                $url = substr($url, 0, -1);
+            }
+            $offerHtml.='<p class="js-copy_text copy_text">'.$url .'/p/'.$hashID.'</p>';
+            $offerHtml.='<div class="fukidashi-wrap">';
+            $offerHtml.='<div class="fukidashi-bk fukidashi-click-fade js-fukidashi-click-fade">';
+            $offerHtml.='<span class="icon_chuui"></span>URLをコピーしました';
+            $offerHtml.='</div>';
+            $offerHtml.='</div>';
+            $offerHtml.='<div class="btn js-copy_btn"><a class="bg_grad_orn" href=""><span class="icon_share"></span>URLをコピーする</a></div>';
+            $offerHtml.='</div>';
         }
-        $offerHtml.='<p class="js-copy_text copy_text">'.$url .'/p/'.$hashID.'</p>';
-        $offerHtml.='<div class="fukidashi-wrap">';
-        $offerHtml.='<div class="fukidashi-bk fukidashi-click-fade js-fukidashi-click-fade">';
-        $offerHtml.='<span class="icon_chuui"></span>URLをコピーしました';
-        $offerHtml.='</div>';
-        $offerHtml.='</div>';
-        $offerHtml.='<div class="btn js-copy_btn"><a class="bg_grad_orn" href=""><span class="icon_share"></span>URLをコピーする</a></div>';
-        $offerHtml.='</div>';
-//         $html .= '以下のURLを投稿しよう<br>';
-//         if (substr($url, -1)=='/') {
-//             $url = substr($url, 0, -1);
-//         }
-//         $html .= '<input type="text" id="url" value="'.$url .'/p/'.$hashID.'" readonly><br>';
-// //        $html .= '<input type="text" id="url" value="'.$url .'/link.php?id='.$LOGIN_ID.'&'.$id_title .'='.$id.'" readonly><br>';
-//         $html .= '<input type="button" onclick="document.getElementById(\'url\').select();document.execCommand(\'copy\');" value="URLをコピー"><br>';
-//     } else {
-//         $html .= 'what\'s status?'.$ofr->status.'<br>';
     }
     $offerHtml.='</div>';
 

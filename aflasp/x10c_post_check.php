@@ -26,7 +26,12 @@ for ($i = 0; $i < 50; $i++) {
 
 
 if (isset($_POST['fixed'])) {
-    adCost($_POST['adwares'], $_POST['owner'], $_POST['cost']);
+    $ad = getAdware($_POST['adwares']);
+    if ($ad->limits>0 && $ad->limits < $ad->money_count) {
+        $errMsg = '<tr><td colspan=5 style="color:red;">【広告報酬の上限超過のため確定できませんでした】</td></tr>';
+    } else {
+        adCost($_POST['adwares'], $_POST['owner'], $_POST['cost']);
+    }
 }
 
 if (isset($_POST['search'])) {
@@ -117,9 +122,9 @@ foreach ($posts as $post) {
     </form>
 
 
-
     <div class="search_accs">
         <table class="search_accs_table">
+            <?php echo $errMsg; ?>
             <tr>
                 <th width="140">投稿申請日時</th>
                 <th width="120">広告名</th>

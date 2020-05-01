@@ -285,7 +285,7 @@ for ($i = 1; $i <= 31; $i++) {
             value="<?php echo $_POST['tel'];?>" placeholder="電話番号を入力">
               <p class="form-row-anno">※注意書きがここに入ります</p>
             </div>
-            
+
             <div class="form-row <?php echo $err_birthday_div; ?>">
               <p class="form-row-text"><span class="req">必須</span>生年月日</p>
               <?php echo $err_birthday_msg; ?>
@@ -305,41 +305,6 @@ for ($i = 1; $i <= 31; $i++) {
             </div>
 
 
-          </div>
-          <div class="form__member__sns form__content_block">
-            <h3 class="bar-title"><span class="bar-title-text">SNSアカウント設定</span></h3>
-            <div class="form-row">
-              <p class="form-row-text"><span class="op">任意</span>Instagramアカウント名</p>
-              <div class="icon-sns-wrap">
-                <span class="icon-sns icon-sns-insta"></span><input type="text" name="instagram"
-            value="<?php echo $_POST['instagram'];?>" placeholder="アカウント名を入力" class="input-sns">
-              </div>
-              <p class="form-row-anno">※注意書きがここに入ります</p>
-            </div>
-            <div class="form-row">
-              <p class="form-row-text"><span class="op">任意</span>Twitterアカウント名</p>
-              <div class="icon-sns-wrap">
-                <span class="icon-sns icon-sns-tw"></span><input type="text" name="twitter"
-            value="<?php echo $_POST['twitter'];?>" placeholder="アカウント名を入力" class="input-sns">
-              </div>
-              <p class="form-row-anno">※注意書きがここに入ります</p>
-            </div>
-            <div class="form-row">
-              <p class="form-row-text"><span class="op">任意</span>Facebookアカウント名</p>
-              <div class="icon-sns-wrap">
-                <span class="icon-sns icon-sns-fb"></span><input type="text" name="facebook"
-            value="<?php echo $_POST['facebook'];?>" placeholder="アカウント名を入力" class="input-sns">
-              </div>
-              <p class="form-row-anno">※注意書きがここに入ります</p>
-            </div>
-            <div class="form-row">
-              <p class="form-row-text"><span class="op">任意</span>Youtubeアカウント名</p>
-              <div class="icon-sns-wrap">
-                <span class="icon-sns icon-sns-yt"></span><input type="text" name="youtube"
-            value="<?php echo $_POST['youtube'];?>" placeholder="アカウント名を入力" class="input-sns">
-              </div>
-              <p class="form-row-anno">※注意書きがここに入ります</p>
-            </div>
           </div>
 
           <div class="form__member__bank form__content_block">
@@ -384,6 +349,47 @@ for ($i = 1; $i <= 31; $i++) {
               <?php echo $err_bank_name_msg; ?>
               <input type="text" name="bank_name"
             value="<?php echo $_POST['bank_name'];?>" placeholder="お名前を入力">
+            </div>
+          </div>
+
+          <div class="form__member__sns form__content_block">
+            <h3 class="bar-title"><span class="bar-title-text">SNSアカウント設定</span></h3>
+            <p class="text-center">あなたのSNSのアカウントを設定すると、<br class="sp">より高い報酬のオファーを受けられます。</p>
+            <br>
+            <div class="custom__btn_drop"><a class="js-drop_btn" href="">アカウントを入力する</a></div>
+            <div class="drop_contents">
+              <div class="form-row">
+                <p class="form-row-text"><span class="op">任意</span>Instagramアカウント名</p>
+                <div class="icon-sns-wrap">
+                  <span class="icon-sns icon-sns-insta"></span><input type="text" name="instagram"
+              value="<?php echo $_POST['instagram'];?>" placeholder="アカウント名を入力" class="input-sns">
+                </div>
+                <p class="form-row-anno">※注意書きがここに入ります</p>
+              </div>
+              <div class="form-row">
+                <p class="form-row-text"><span class="op">任意</span>Twitterアカウント名</p>
+                <div class="icon-sns-wrap">
+                  <span class="icon-sns icon-sns-tw"></span><input type="text" name="twitter"
+              value="<?php echo $_POST['twitter'];?>" placeholder="アカウント名を入力" class="input-sns">
+                </div>
+                <p class="form-row-anno">※注意書きがここに入ります</p>
+              </div>
+              <div class="form-row">
+                <p class="form-row-text"><span class="op">任意</span>Facebookアカウント名</p>
+                <div class="icon-sns-wrap">
+                  <span class="icon-sns icon-sns-fb"></span><input type="text" name="facebook"
+              value="<?php echo $_POST['facebook'];?>" placeholder="アカウント名を入力" class="input-sns">
+                </div>
+                <p class="form-row-anno">※注意書きがここに入ります</p>
+              </div>
+              <div class="form-row">
+                <p class="form-row-text"><span class="op">任意</span>Youtubeアカウント名</p>
+                <div class="icon-sns-wrap">
+                  <span class="icon-sns icon-sns-yt"></span><input type="text" name="youtube"
+              value="<?php echo $_POST['youtube'];?>" placeholder="アカウント名を入力" class="input-sns">
+                </div>
+                <p class="form-row-anno">※注意書きがここに入ります</p>
+              </div>
             </div>
           </div>
 
