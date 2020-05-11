@@ -68,19 +68,33 @@ $adware->ngword = $_POST['ngword'];
 $adware->note = $_POST['note'];
 $adware->startdt = $_POST['startdt'];
 $adware->enddt = $_POST['enddt'];
+$adware->results_10 = isset($_POST['results_10']) ? $_POST['results_10'] : 0;
+$adware->results_20 = isset($_POST['results_20']) ? $_POST['results_20'] : 0;
+$adware->results_21 = isset($_POST['results_21']) ? $_POST['results_21'] : 0;
+$adware->results_22 = isset($_POST['results_22']) ? $_POST['results_22'] : 0;
+$adware->results_30 = isset($_POST['results_30']) ? $_POST['results_30'] : 0;
+$adware->results_31 = isset($_POST['results_31']) ? $_POST['results_31'] : 0;
 
 if (isset($_POST['doCheck'])) {
-    $pattern = "{\A(https?|ftp)(://[-_.!~*\'()a-zA-Z0-9;/?:\@&=+\$,%#]+\z)}";
-    
     if ($adware->adware_type=="2" && $adware->approvable=="0") {
         $errorMessage .= '<li>投稿報酬タイプは承認タイプを選択してください。</li>';
     }
 
-    if (!preg_match($pattern, $adware->url)) {
+    if ($adware->adware_type<>"2" && empty($adware->url)) {
+        $errorMessage .= '<li>URLを入力してください。</li>';
+    } elseif (isset($_POST['results_30']) && empty($adware->url)) {
+        $errorMessage .= '<li>URLを入力してください。</li>';
+    }
+    if (isset($_POST['results_31']) && empty($adware->hashtag)) {
+        $errorMessage .= '<li>ハッシュタグを入力してください。2</li>';
+    }
+
+    $pattern = "{\A(https?|ftp)(://[-_.!~*\'()a-zA-Z0-9;/?:\@&=+\$,%#]+\z)}";
+    if (!empty($adware->url) && !preg_match($pattern, $adware->url)) {
         $errorMessage .= '<li>URL形式が間違っています</li>';
     }
     
-    if ($adware->adware_type=="0" && !preg_match("/^[0-9]+$/", $adware->money)) {
+    if ($adware->adware_type<>"1" && !preg_match("/^[0-9]+$/", $adware->money)) {
         $errorMessage .= '<li>獲得単価は半角数字で入力してください。</li>';
     }
 
@@ -189,6 +203,9 @@ if (isset($_POST['doCheck'])) {
         $adware->banner3 = $_POST['banner3_filetmp'];
     }
 
+
+
+
     if (empty($errorMessage)) {
         header('Location: x10c_adwares_edite.php', true, 307);
     } else {
@@ -289,16 +306,25 @@ $adware_type_0 = " checked";
 $adware_type_1 = "";
 $adware_type_2 = "";
 $txt_adtype="目標達成タイプ";
+$results_1 = ' style="display:none;"';
+$results_2 = ' style="display:block;"';
+$results_3 = ' style="display:none;"';
 if ($adware->adware_type=="1") {
     $adware_type_0 = "";
     $adware_type_1 = " checked";
     $adware_type_2 = "";
     $txt_adtype="クリック報酬タイプ";
+    $results_1 = ' style="display:block;"';
+    $results_2 = ' style="display:none;"';
+    $results_3 = ' style="display:none;"';
 } elseif ($adware->adware_type=="2") {
     $adware_type_0 = "";
     $adware_type_1 = "";
     $adware_type_2 = " checked";
     $txt_adtype="報酬報酬タイプ";
+    $results_1 = ' style="display:none;"';
+    $results_2 = ' style="display:none;"';
+    $results_3 = ' style="display:block;"';
 }
 
 $approvable_0 = " checked";
@@ -360,6 +386,9 @@ function typeChange() {
         radio_auto[1].checked = true;
         document.getElementById('c_row').style.backgroundColor = "#9fa0a0";
         radio_aprv[0].disabled = false;
+        document.getElementById('results_1').style.display ="none";
+        document.getElementById('results_2').style.display ="block";
+        document.getElementById('results_3').style.display ="none";
 
     } else if (radio[1].checked) {
         document.getElementById('money').readOnly = true;
@@ -372,6 +401,9 @@ function typeChange() {
         radio_auto[1].disabled = true;
         document.getElementById('c_row').style.backgroundColor = "white";
         radio_aprv[0].disabled = false;
+        document.getElementById('results_1').style.display ="block";
+        document.getElementById('results_2').style.display ="none";
+        document.getElementById('results_3').style.display ="none";
 
     } else if (radio[2].checked) {
         document.getElementById('money').readOnly = false;
@@ -386,6 +418,9 @@ function typeChange() {
         document.getElementById('c_row').style.backgroundColor = "#9fa0a0";
         radio_aprv[1].checked = true;
         radio_aprv[0].disabled = true;
+        document.getElementById('results_1').style.display ="none";
+        document.getElementById('results_2').style.display ="none";
+        document.getElementById('results_3').style.display ="block";
 
     }
 
@@ -572,7 +607,7 @@ $(function(){
                                 <th>ジャンプ先URL<span>※</span></th>
                                 <td>
                                     <input type="text" name="url" value="<?php echo $adware->url; ?>" size="50"
-                                        maxlength="256" required>
+                                        maxlength="256">
 
                                     <input type="hidden" name="url_users" value="0">
                                     <!--
@@ -734,7 +769,8 @@ $(function(){
                                     -->
                                 </td>
                             </tr>
-
+                            <input type="hidden" name="check_type" value="ip">
+                            <!--
                             <tr>
                                 <th>広告認証形式<span>※</span></th>
                                 <td><label><input type="radio" name="check_type" value="ip"
@@ -749,6 +785,7 @@ $(function(){
                                     <span class="info">※Cookie(1st)とそれ以外の認証形式はトラッキングコードの形式が異なりますのでご注意ください。</span>
                                 </td>
                             </tr>
+                            -->
                             <tr>
                                 <th>広告の公開/非公開<span>※</span></th>
                                 <td><label><input type="radio" name="open" value="1" <?php echo $open_1; ?>>公開</label>
@@ -772,8 +809,33 @@ $(function(){
                                 </td>
                             </tr>
                             <tr>
-                                <th>成果条件</th>
-                                <td><textarea id="results" name="results" cols="" rows=""
+                                <th>成果・否認条件</th>
+                                <td>
+                                    <div id="results_1" <?php echo $results_1; ?>>
+                                    <?php $wk = $adware->results_10=="1" ? " checked" : "" ; ?>
+                                    <label><input type="checkbox" id="results_10" name="results_10" value="1"
+                                            <?php echo $wk; ?>>URLのクリック</label><br>
+                                    </div>
+                                    <div id="results_2" <?php echo $results_2; ?>>
+                                    <?php $wk = $adware->results_20=="1" ? " checked" : "" ; ?>
+                                    <label><input type="checkbox" id="results_20" name="results_20" value="1"
+                                            <?php echo $wk; ?>>商品購入</label>
+                                    <?php $wk = $adware->results_21=="1" ? " checked" : "" ; ?>
+                                    <label><input type="checkbox" id="results_21" name="results_21" value="1"
+                                            <?php echo $wk; ?>>資料請求</label>
+                                    <?php $wk = $adware->results_22=="1" ? " checked" : "" ; ?>
+                                    <label><input type="checkbox" id="results_22" name="results_22" value="1"
+                                            <?php echo $wk; ?>>会員登録</label><br>
+                                    </div>
+                                    <div id="results_3" <?php echo $results_3; ?>>
+                                    <?php $wk = $adware->results_30=="1" ? " checked" : "" ; ?>
+                                    <label><input type="checkbox" id="results_30" name="results_30" value="1"
+                                            <?php echo $wk; ?>>URLの貼り付け</label>
+                                    <?php $wk = $adware->results_31=="1" ? " checked" : "" ; ?>
+                                    <label><input type="checkbox" id="results_31" name="results_31" value="1"
+                                            <?php echo $wk; ?>>指定のハッシュタグ</label>
+                                    </div>
+                                    <textarea id="results" name="results" cols="" rows=""
                                         class="textarea"><?php echo $adware->results; ?></textarea>
                                 </td>
                             </tr>
@@ -783,12 +845,14 @@ $(function(){
                                         class="textarea"><?php echo $adware->hashtag; ?></textarea>
                                 </td>
                             </tr>
+                            <!--
                             <tr>
                                 <th>否認条件</th>
                                 <td><textarea name="denials" cols="" rows=""
                                         class="textarea"><?php echo $adware->denials; ?></textarea>
                                 </td>
                             </tr>
+                                    -->
                             <tr>
                                 <th>NGキーワード</th>
                                 <td><textarea name="ngword" cols="" rows=""

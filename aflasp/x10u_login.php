@@ -24,7 +24,7 @@ if (isset($_POST['login'])) {
     if (empty($_POST['m_pw'])) {
         $err_pass_div = ' is-error';
         $err_pass_msg = '<p class="form-row-error-text">パスワードが未入力です。</p>';
-    } 
+    }
 
     if (!empty($_POST['m_mail']) && !empty($_POST['m_pw'])) {
 
@@ -73,7 +73,7 @@ if (isset($_POST['login'])) {
 
     <div class="mainheader">
       <p class="breadcrumbs">
-        <a href="./x10u_index.php">トップ</a>
+        <a href="/">トップ</a>
         <a href="#">ログイン・新規会員登録</a>
       </p>
     </div>
@@ -106,7 +106,7 @@ if (isset($_POST['login'])) {
       <div class="sec__inner container">
         <div class="newmember＿＿box">
           <h2 class="newmember＿＿box_title">はじめての方は新規会員登録</h2>
-          <p class="newmember＿＿box_text">スマフィーのサービスをのご利用は無料の新規登録を尾根が致します。</p>
+          <p class="newmember＿＿box_text">スマフィーのサービスをのご利用は無料の新規登録をお願い致します。</p>
           <div class="btn"><a href="./x10u_member.php" class="bg_blu">無料で会員登録</a></div>
         </div>
       </div>

@@ -32,7 +32,11 @@ $crntPage = empty($_POST['page']) ? 1: $_POST['page'];
 
 
 //検索結果件数を取得
-$cnt = countPay($startdt, $enddt, $LOGIN_ID, $adtype);
+if ($adtype<>"2") {
+    $cnt = countPay($startdt, $enddt, $LOGIN_ID, $adtype);
+} else {
+    $cnt = countPayAT2($startdt, $enddt, $LOGIN_ID, $adtype);
+}
 
 //ページ数を計算
 $pages = ceil($cnt / $limitPage);
@@ -60,7 +64,11 @@ $pagerhtml .= '</div>';
 
 
 
-$pays = getPayLimit($startdt, $enddt, $LOGIN_ID, $adtype, $limitPage, $offsetPage);
+if ($adtype<>"2") {
+    $pays = getPayLimit($startdt, $enddt, $LOGIN_ID, $adtype, $limitPage, $offsetPage);
+} else {
+    $pays = getPayLimitAT2($startdt, $enddt, $LOGIN_ID, $adtype, $limitPage, $offsetPage);
+}
 
 $titleHtml='';
 $backHtml='';
@@ -75,7 +83,7 @@ if ($adtype=="0") {
     $backHtml='<a href="x10u_result_monthry.php?adtype=2" class="bd_blu">投稿報酬（月別）へ</a>';
 }
 
-$txt_state = array('認定中','非認証','認証');
+$txt_state = array('認定中','非認証','認証','','','','','','','','確認中','非認証','最終確認中','確認済','非認証');
 
 ?>
 <!DOCTYPE html>

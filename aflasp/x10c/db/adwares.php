@@ -46,6 +46,12 @@ class cls_adwares
     public $open ;
     public $open_user ;
     public $regist ;
+    public $results_10 ;
+    public $results_20 ;
+    public $results_21 ;
+    public $results_22 ;
+    public $results_30 ;
+    public $results_31 ;
 
     public $adware_type ;
     public $approvable ;
@@ -253,7 +259,7 @@ function getPaysX10MonthlyAT2($y, $m, $nUserId)
 
         require 'dns.php';
         
-        $sql = "select adware,max(name) as name,  SUM(CASE WHEN status <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN status = 10 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN status = 11 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN status = 12 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN status = 13 THEN 1 ELSE 0 END) AS cnt3,SUM(CASE WHEN status <> 9 THEN money ELSE 0 END) AS cst,SUM(CASE WHEN status = 10 THEN money ELSE 0 END) AS cst0,SUM(CASE WHEN status = 11 THEN money ELSE 0 END) AS cst1,SUM(CASE WHEN status = 12 THEN money ELSE 0 END) AS cst2,SUM(CASE WHEN status = 13 THEN money ELSE 0 END) AS cst3, max(adware_type) as adware_type from `v_offer_x10` WHERE adware_type=2 AND nuser=:nuser AND edittime BETWEEN :startDt AND :endDt group by adware";
+        $sql = "select adware,max(name) as name,  SUM(CASE WHEN status <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN status = 10 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN status = 11 THEN 1  WHEN status = 14 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN status = 12 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN status = 13 THEN 1 ELSE 0 END) AS cnt3,SUM(CASE WHEN status <> 9 THEN money ELSE 0 END) AS cst,SUM(CASE WHEN status = 10 THEN money ELSE 0 END) AS cst0,SUM(CASE WHEN status = 11 THEN money  WHEN status = 14 THEN money ELSE 0 END) AS cst1,SUM(CASE WHEN status = 12 THEN money ELSE 0 END) AS cst2,SUM(CASE WHEN status = 13 THEN money ELSE 0 END) AS cst3, max(adware_type) as adware_type, max(isFinish) as isFinish from `v_offer_x10` WHERE adware_type=2 AND nuser=:nuser AND edittime BETWEEN :startDt AND :endDt group by adware";
 
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':nuser', $nUserId, PDO::PARAM_STR);
@@ -262,7 +268,7 @@ function getPaysX10MonthlyAT2($y, $m, $nUserId)
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result = new cls_pays();
-            $result->id = $row['adwares'];
+            $result->id = $row['adware'];
             $result->name = $row['name'];
             $result->cnt = $row['cnt'];
             $result->cnt0 = $row['cnt0'];
@@ -275,6 +281,51 @@ function getPaysX10MonthlyAT2($y, $m, $nUserId)
             $result->cst2 = $row['cst2'];
             $result->cst3 = $row['cst3'];
             $result->adware_type = $row['adware_type'];
+            $result->isFinish = $row['isFinish'];
+            array_push($results, $result);
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $results;
+}
+
+
+function getPaysX10AT2($nUserId)
+{
+    $results = array();
+    try {
+        // $startDt = strtotime($y.'-'.$m.'-01 00:00:00');
+        // $endDt   = strtotime(date('Y-m-d 23:59:59', strtotime($y.'-'.$m.' last day of this month')));
+
+        require 'dns.php';
+        
+        $sql = "select adware,max(name) as name,  SUM(CASE WHEN status <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN status = 10 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN status = 11 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN status = 12 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN status = 13 THEN 1 ELSE 0 END) AS cnt3,SUM(CASE WHEN status <> 9 THEN money ELSE 0 END) AS cst,SUM(CASE WHEN status = 10 THEN money ELSE 0 END) AS cst0,SUM(CASE WHEN status = 11 THEN money ELSE 0 END) AS cst1,SUM(CASE WHEN status = 12 THEN money ELSE 0 END) AS cst2,SUM(CASE WHEN status = 13 THEN money ELSE 0 END) AS cst3, max(adware_type) as adware_type, max(isFinish) as isFinish from `v_offer_x10` WHERE adware_type=2 AND nuser=:nuser group by adware";
+
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':nuser', $nUserId, PDO::PARAM_STR);
+        // $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
+        // $stmt->bindParam(':endDt', $endDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_pays();
+            $result->id = $row['adware'];
+            $result->name = $row['name'];
+            $result->cnt = $row['cnt'];
+            $result->cnt0 = $row['cnt0'];
+            $result->cnt1 = $row['cnt1'];
+            $result->cnt2 = $row['cnt2'];
+            $result->cnt3 = $row['cnt3'];
+            $result->cst = $row['cst'];
+            $result->cst0 = $row['cst0'];
+            $result->cst1 = $row['cst1'];
+            $result->cst2 = $row['cst2'];
+            $result->cst3 = $row['cst3'];
+            $result->adware_type = $row['adware_type'];
+            $result->isFinish = $row['isFinish'];
             array_push($results, $result);
         }
     } catch (PDOException $e) {
@@ -294,7 +345,7 @@ function getPaysX10($nUserId)
 
         require 'dns.php';
         // $sql = "select adwares,max(name) as name, max(limits) as limits, SUM(CASE WHEN state <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN state = 0 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN state = 1 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN state = 2 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN state <> 9 THEN cost ELSE 0 END) AS cst,SUM(CASE WHEN state = 0 THEN cost ELSE 0 END) AS cst0,SUM(CASE WHEN state = 1 THEN cost ELSE 0 END) AS cst1,SUM(CASE WHEN state = 2 THEN cost ELSE 0 END) AS cst2, max(startdt) as startdt, max(enddt) as enddt, max(adware_type) as adware_type, max(approvable) as approvable from `v_pay_x10` WHERE owner=:owner group by adwares";
-        $sql = "select x.id,x.name as xname,x.startdt as xstartdt,x.enddt as xenddt,x.limits as xlimits,x.adware_type as xadware_type,x.approvable as xapprovable, x.stts as xstts,x.isFinish as xisFinish, p.* from `x10_all_adwares` x LEFT JOIN `v_pay_x10_by_owner` p ON p.owner=:owner AND p.adwares=x.id  where (x.nuser='OPN' OR x.nuser=:owner) AND (x.status=2 OR x.status=12)";
+        $sql = "select x.id,x.name as xname,x.startdt as xstartdt,x.enddt as xenddt,x.limits as xlimits,x.adware_type as xadware_type,x.approvable as xapprovable, x.stts as xstts,x.isFinish as xisFinish, p.* from `x10_all_adwares` x LEFT JOIN `v_pay_x10_by_owner` p ON p.owner=:owner AND p.adwares=x.id  where (x.nuser='OPN' OR x.nuser=:owner) AND (x.status=2 OR x.status>=12)";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':owner', $nUserId, PDO::PARAM_STR);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
@@ -376,7 +427,7 @@ function countMonthlyPaysAT2($y, $m, $nUserId)
 
         require 'dns.php';
         
-        $sql = "select SUM(CASE WHEN status <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN status = 10 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN status = 11 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN status = 12 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN status = 13 THEN 1 ELSE 0 END) AS cnt3,SUM(CASE WHEN status <> 9 THEN money ELSE 0 END) AS cst,SUM(CASE WHEN status = 10 THEN money ELSE 0 END) AS cst0,SUM(CASE WHEN status = 11 THEN money ELSE 0 END) AS cst1,SUM(CASE WHEN status = 12 THEN money ELSE 0 END) AS cst2,SUM(CASE WHEN status = 13 THEN money ELSE 0 END) AS cst3 from `v_offer_x10` WHERE adware_type=2 AND nuser=:nuser AND edittime BETWEEN :startDt AND :endDt";
+        $sql = "select SUM(CASE WHEN status <> 9 THEN 1 ELSE 0 END) AS cnt,SUM(CASE WHEN status = 10 THEN 1 ELSE 0 END) AS cnt0,SUM(CASE WHEN status = 11 THEN 1 WHEN status = 14 THEN 1 ELSE 0 END) AS cnt1,SUM(CASE WHEN status = 12 THEN 1 ELSE 0 END) AS cnt2,SUM(CASE WHEN status = 13 THEN 1 ELSE 0 END) AS cnt3,SUM(CASE WHEN status <> 9 THEN money ELSE 0 END) AS cst,SUM(CASE WHEN status = 10 THEN money ELSE 0 END) AS cst0,SUM(CASE WHEN status = 11 THEN money  WHEN status = 14 THEN money ELSE 0 END) AS cst1,SUM(CASE WHEN status = 12 THEN money ELSE 0 END) AS cst2,SUM(CASE WHEN status = 13 THEN money ELSE 0 END) AS cst3 from `v_offer_x10` WHERE adware_type=2 AND nuser=:nuser AND edittime BETWEEN :startDt AND :endDt";
 
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':nuser', $nUserId, PDO::PARAM_STR);
@@ -545,6 +596,12 @@ function insertAdwares($adwares)
         $x10->startdt = $adwares->startdt;
         $x10->enddt = $adwares->enddt;
         $x10->cuser = $adwares->cuser;
+        $x10->results_10 = $adwares->results_10;
+        $x10->results_20 = $adwares->results_20;
+        $x10->results_21 = $adwares->results_21;
+        $x10->results_22 = $adwares->results_22;
+        $x10->results_30 = $adwares->results_30;
+        $x10->results_31 = $adwares->results_31;
         insertX10Adware($x10);
 
         if ($stmt->rowCount()==0) {
@@ -648,6 +705,12 @@ function updateAdwares($adwares)
         $x10->startdt = $adwares->startdt;
         $x10->enddt = $adwares->enddt;
         $x10->cuser = $adwares->cuser;
+        $x10->results_10 = $adwares->results_10;
+        $x10->results_20 = $adwares->results_20;
+        $x10->results_21 = $adwares->results_21;
+        $x10->results_22 = $adwares->results_22;
+        $x10->results_30 = $adwares->results_30;
+        $x10->results_31 = $adwares->results_31;
         updateX10Adware($x10);
 
 

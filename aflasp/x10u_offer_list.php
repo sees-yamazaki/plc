@@ -179,7 +179,7 @@ function paging(vlu) {
               <div class="search__contents_block">
                 <h3 class="bar-title"><span class="bar-title-text">オファー種別</span></h3>
                 <div class="search__offer-type flex-wrap">
-                  <label class="offer-type_label">
+                  <label class="offer-type_label offer-type_label-target">
                     <input type="checkbox" name="adware_type[]" value="0" <?php echo $adtyped[0]; ?>>
                     <span class="box">
                       <span class="icon icon-handshake">
@@ -189,7 +189,7 @@ function paging(vlu) {
                       <span class="text">目標達成<br>報酬タイプ</span>
                     </span>
                   </label>
-                  <label class="offer-type_label">
+                  <label class="offer-type_label offer-type_label-click">
                     <input type="checkbox" name="adware_type[]" value="1" <?php echo $adtyped[1]; ?>>
                     <span class="box">
                       <span class="icon icon-window">
@@ -199,7 +199,7 @@ function paging(vlu) {
                       <span class="text">クリック<br>報酬タイプ</span>
                     </span>
                   </label>
-                  <label class="offer-type_label">
+                  <label class="offer-type_label offer-type_label-post">
                     <input type="checkbox" name="adware_type[]" value="2" <?php echo $adtyped[2]; ?>>
                     <span class="box">
                       <span class="icon icon-article">

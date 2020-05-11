@@ -5,6 +5,7 @@ include 'x10c_helper.php';
 include 'x10c/db/adwares.php';
 include 'x10c/db/x10.php';
 include 'x10c/db/system.php';
+include 'x10c/db/nuser.php';
 
 // セッション再開
 session_start();
@@ -26,6 +27,7 @@ $id = empty($_GET['id']) ? $_POST['id'] : $_GET['id'];
 $id_title = substr($id, 0, 1)=="A" ? 'adwares' : 's_adwares';
 
 $ad = getAdware($id);
+$nuserX10 = getNuserX10($LOGIN_ID);
 
 if ($ad->stts==0 || $ad->stts==10) {
     $limits = is_null($ad->limits) ? 0 :$ad->limits;
@@ -49,6 +51,9 @@ if (isset($_GET['req'])) {
         updateX10Offer($id, $LOGIN_ID, 10);
     } elseif ($_GET['req']=="3") {
         updateX10Offer($id, $LOGIN_ID, 2);
+    } elseif ($_GET['req']=="5") {
+        updateX10Offer($id, $LOGIN_ID, 12);
+        delCost($id, $LOGIN_ID, 0);
     } else {
         $ofr = new cls_offer();
         $ofr->adware = $id;
@@ -98,6 +103,28 @@ if ($ad->stts==11 || $ad->stts==1) {
     $titleHtml .= '<div class="alert_box">';
     $titleHtml .= '<h4 class="alert_box_title"><span class="icon_chuui_pnk">このオファーは予算上限が近づいています。</span></h4>';
     $titleHtml .= '<p class="alert_box_text">予算上限到達後は成果が発生しませんのでご注意下さい</p>';
+    $titleHtml .= '</div>';
+}
+if ($ad->adware_type=="2") {
+    if ($ad->results_30=="1" || $ad->results_31=="1") {
+        $titleHtml .= '<div class="alert_box">';
+        $titleHtml .= '<h4 class="alert_box_title"><span class="icon_chuui_pnk">投稿ついてのご確認<br></span></h4>';
+        $titleHtml .= '<p class="alert_box_text">このオファーは成果条件として投稿に';
+        if ($ad->results_30=="1") {
+            $titleHtml .= '【URLの貼付】';
+        }
+        if ($ad->results_31=="1") {
+            $titleHtml .= '【指定ハッシュタグの貼付】';
+        }
+        $titleHtml .= 'が設定されています</p>';
+        $titleHtml .= '</div>';
+    }
+}
+$sns = $nuserX10->instagram.$nuserX10->facebook.$nuserX10->twitter.$nuserX10->youtube;
+if (empty($sns)) {
+    $titleHtml .= '<div class="alert_box">';
+    $titleHtml .= '<h4 class="alert_box_title"><span class="icon_chuui_pnk">投稿報告の際のご注意</span></h4>';
+    $titleHtml .= '<p class="alert_box_text">投稿は指定されたSNSアカウント設定が必要です。<br><a href="x10u_user.php">こちら</a>からSNSアカウント設定を１つ以上行って投稿報告をしてください</p>';
     $titleHtml .= '</div>';
 }
 
@@ -165,44 +192,45 @@ if ($ad->isFinish=="1") {
         $offerHtml.='</div>';
         $offerHtml.='<div class="btn"><a class="bg_grad_grn" href="x10u_offer_detail.php?id='.$ad->id.'&req=1"><span class="icon_sunadokei"></span>リクエストを取り下げる</a></div>';
         $offerHtml.='</div>';
-    } elseif ($ofr->status=="10") {
-        $offerHtml.='<div class="article__link_block article__link_request-approval fukidashi-wrap">';
-        $offerHtml.='<div class="fukidashi-bk fukidashi-load-fade js-fukidashi-load-fade">';
-        $offerHtml.='<span class="icon_chuui"></span>報告完了！';
-        $offerHtml.='</div>';
-        $offerHtml.='<div class="btn"><a class="bg_grad_grn" href="x10u_offer_detail.php?id='.$ad->id.'&req=3"><span class="icon_sunadokei"></span>投稿報告を取り下げる</a></div>';
-        $offerHtml.='</div>';
-    } elseif ($ofr->status=="1" || $ofr->status=="11") {
+    } elseif ($ofr->status=="1") {
         $offerHtml.='残念ながら承認されませんでした<br>';
     } elseif ($ofr->status=="2") {
         if ($ad->adware_type=="2") {
-            $offerHtml.='<div class="article__link_block article__link_share">';
-            $offerHtml.='<p class="share_text text-center">以下のURLを投稿しよう！</p>';
-            if (substr($url, -1)=='/') {
-                $url = substr($url, 0, -1);
+            if ($ad->results_30=="1") {
+                $offerHtml.='<div class="article__link_block article__link_share">';
+                $offerHtml.='<p class="share_text text-center">以下のURLを投稿しよう！</p>';
+                if (substr($url, -1)=='/') {
+                    $url = substr($url, 0, -1);
+                }
+                $offerHtml.='<p class="js-copy_text copy_text">'.$url .'/p/'.$hashID.'</p>';
+                $offerHtml.='<div class="fukidashi-wrap">';
+                $offerHtml.='<div class="fukidashi-bk fukidashi-click-fade js-fukidashi-click-fade">';
+                $offerHtml.='<span class="icon_chuui"></span>URLをコピーしました';
+                $offerHtml.='</div>';
+                $offerHtml.='</div>';
+                $offerHtml.='<div class="btn js-copy_btn"><a class="bg_grad_orn" href=""><span class="icon_share"></span>URLをコピーする</a></div>';
+                $offerHtml.='</div>';
             }
-            $offerHtml.='<p class="js-copy_text copy_text">'.$url .'/p/'.$hashID.'</p>';
-            $offerHtml.='<div class="fukidashi-wrap">';
-            $offerHtml.='<div class="fukidashi-bk fukidashi-click-fade js-fukidashi-click-fade">';
-            $offerHtml.='<span class="icon_chuui"></span>URLをコピーしました';
-            $offerHtml.='</div>';
-            $offerHtml.='</div>';
-            $offerHtml.='<div class="btn js-copy_btn"><a class="bg_grad_orn" href=""><span class="icon_share"></span>URLをコピーする</a></div>';
-            $offerHtml.='</div>';
             
-            $offerHtml.='<div class="article__link_block article__link_share">';
-            $offerHtml.='<p class="share_text text-center">以下のハッシュタグを投稿しよう！</p>';
-            $offerHtml.='<p class="js-copy_text copy_text">'.$ad->hashtag.'</p>';
-            $offerHtml.='<div class="fukidashi-wrap">';
-            $offerHtml.='<div class="fukidashi-bk fukidashi-click-fade js-fukidashi-click-fade">';
-            $offerHtml.='<span class="icon_chuui"></span>ハッシュタグをコピーしました';
-            $offerHtml.='</div>';
-            $offerHtml.='</div>';
-            $offerHtml.='<div class="btn js-copy_btn"><a class="bg_grad_orn" href=""><span class="icon_share"></span>ハッシュタグをコピーする</a></div>';
-            $offerHtml.='</div>';
+            if ($ad->results_31=="1") {
+                $offerHtml.='<div class="article__link_block article__link_share">';
+                $offerHtml.='<p class="share_text text-center">以下のハッシュタグを投稿しよう！</p>';
+                $offerHtml.='<p class="js-copy_text copy_text">'.$ad->hashtag.'</p>';
+                $offerHtml.='<div class="fukidashi-wrap">';
+                $offerHtml.='<div class="fukidashi-bk fukidashi-click-fade js-fukidashi-click-fade">';
+                $offerHtml.='<span class="icon_chuui"></span>ハッシュタグをコピーしました';
+                $offerHtml.='</div>';
+                $offerHtml.='</div>';
+                $offerHtml.='<div class="btn js-copy_btn"><a class="bg_grad_orn" href=""><span class="icon_share"></span>ハッシュタグをコピーする</a></div>';
+                $offerHtml.='</div>';
+            }
 
             $offerHtml.='<div class="article__link_block article__link_request-join">';
-            $offerHtml.='<div class="btn"><a class="bg_grad_red" href="x10u_offer_detail.php?id='.$ad->id.'&req=2"><span class="icon_kamihikouki"></span>投稿報告</a></div>';
+            if (empty($sns)) {
+                $offerHtml.='<div class="btn"><a class="bg_grad_red" href="#"><span class="icon_kamihikouki"></span>投稿報告</a></div>';
+            } else {
+                $offerHtml.='<div class="btn"><a class="bg_grad_red" href="x10u_offer_detail.php?id='.$ad->id.'&req=2"><span class="icon_kamihikouki"></span>投稿報告</a></div>';
+            }
             $offerHtml.='</div>';
         } else {
             $offerHtml.='<div class="article__link_block article__link_share">';
@@ -219,6 +247,102 @@ if ($ad->isFinish=="1") {
             $offerHtml.='<div class="btn js-copy_btn"><a class="bg_grad_orn" href=""><span class="icon_share"></span>URLをコピーする</a></div>';
             $offerHtml.='</div>';
         }
+    } elseif ($ofr->status=="10") {
+        $offerHtml.='<div class="article__link_block article__link_request-approval fukidashi-wrap">';
+        $offerHtml.='<p class="share_text text-center">投稿報告中です。オファー主が投稿を確認すると確認完了ステータスになります。<br>報告を取り下げたい場合は下記のボタンを押して下さい。</p><br>';
+        $offerHtml.='<div class="fukidashi-bk fukidashi-load-fade js-fukidashi-load-fade">';
+        $offerHtml.='<span class="icon_chuui"></span>報告完了！';
+        $offerHtml.='</div>';
+        $offerHtml.='<div class="btn"><a class="bg_grad_grn" href="x10u_offer_detail.php?id='.$ad->id.'&req=3"><span class="icon_sunadokei"></span>投稿報告を取り下げる</a></div>';
+        $offerHtml.='</div>';
+    } elseif ($ofr->status=="11") {
+        $offerHtml.='<div class="article__link_block article__link_request-approval fukidashi-wrap">';
+        $offerHtml.='<p class="share_text text-center">投稿がオファー主より確認されましたが否認となりました。<br>成果条件および否認条件を再度ご確認、投稿を修正したうえで再度投稿報告を行ってください。</p>';
+        $offerHtml.='</div>';
+        if ($ad->results_30=="1") {
+            $offerHtml.='<div class="article__link_block article__link_share">';
+            $offerHtml.='<p class="share_text text-center">以下のURLを投稿しよう！</p>';
+            if (substr($url, -1)=='/') {
+                $url = substr($url, 0, -1);
+            }
+            $offerHtml.='<p class="js-copy_text copy_text">'.$url .'/p/'.$hashID.'</p>';
+            $offerHtml.='<div class="fukidashi-wrap">';
+            $offerHtml.='<div class="fukidashi-bk fukidashi-click-fade js-fukidashi-click-fade">';
+            $offerHtml.='<span class="icon_chuui"></span>URLをコピーしました';
+            $offerHtml.='</div>';
+            $offerHtml.='</div>';
+            $offerHtml.='<div class="btn js-copy_btn"><a class="bg_grad_orn" href=""><span class="icon_share"></span>URLをコピーする</a></div>';
+            $offerHtml.='</div>';
+        }
+        
+        if ($ad->results_31=="1") {
+            $offerHtml.='<div class="article__link_block article__link_share">';
+            $offerHtml.='<p class="share_text text-center">以下のハッシュタグを投稿しよう！</p>';
+            $offerHtml.='<p class="js-copy_text copy_text">'.$ad->hashtag.'</p>';
+            $offerHtml.='<div class="fukidashi-wrap">';
+            $offerHtml.='<div class="fukidashi-bk fukidashi-click-fade js-fukidashi-click-fade">';
+            $offerHtml.='<span class="icon_chuui"></span>ハッシュタグをコピーしました';
+            $offerHtml.='</div>';
+            $offerHtml.='</div>';
+            $offerHtml.='<div class="btn js-copy_btn"><a class="bg_grad_orn" href=""><span class="icon_share"></span>ハッシュタグをコピーする</a></div>';
+            $offerHtml.='</div>';
+        }
+
+        $offerHtml.='<div class="article__link_block article__link_request-join">';
+        if (empty($sns)) {
+            $offerHtml.='<div class="btn"><a class="bg_grad_red" href="#"><span class="icon_kamihikouki"></span>投稿報告</a></div>';
+        } else {
+            $offerHtml.='<div class="btn"><a class="bg_grad_red" href="x10u_offer_detail.php?id='.$ad->id.'&req=2"><span class="icon_kamihikouki"></span>投稿報告</a></div>';
+        }
+        $offerHtml.='</div>';
+    } elseif ($ofr->status=="12") {
+        $offerHtml.='<div class="article__link_block article__link_request-approval fukidashi-wrap">';
+        $offerHtml.='<p class="share_text text-center">投稿がオファー主より確認されました。（まだ報酬が確定したわけではございません）<br>30日以内に再度オファー主が投稿を確認し最終確定（報酬確定）となりますので投稿を削除なさらないようにお願い致します。</p>';
+        $offerHtml.='</div>';
+    } elseif ($ofr->status=="13") {
+        $offerHtml.='<div class="article__link_block article__link_request-approval fukidashi-wrap">';
+        $offerHtml.='<p class="share_text text-center">オファー主から投稿の最終確認が行われ報酬が確定されました！<br><a href="x10u_result_list.php" style="color:blue">成果情報</a>から確定報酬として金額が追加されていることをご確認下さい。</p>';
+        $offerHtml.='</div>';
+    } elseif ($ofr->status=="14") {
+        $offerHtml.='<div class="article__link_block article__link_request-approval fukidashi-wrap">';
+        $offerHtml.='<p class="share_text text-center">オファー主から投稿の最終確認が行われましたが取り消しが行われました。<br>投稿が削除されていないかをご確認下さい。</p>';
+        $offerHtml.='</div>';
+        if ($ad->results_30=="1") {
+            $offerHtml.='<div class="article__link_block article__link_share">';
+            $offerHtml.='<p class="share_text text-center">以下のURLを投稿しよう！</p>';
+            if (substr($url, -1)=='/') {
+                $url = substr($url, 0, -1);
+            }
+            $offerHtml.='<p class="js-copy_text copy_text">'.$url .'/p/'.$hashID.'</p>';
+            $offerHtml.='<div class="fukidashi-wrap">';
+            $offerHtml.='<div class="fukidashi-bk fukidashi-click-fade js-fukidashi-click-fade">';
+            $offerHtml.='<span class="icon_chuui"></span>URLをコピーしました';
+            $offerHtml.='</div>';
+            $offerHtml.='</div>';
+            $offerHtml.='<div class="btn js-copy_btn"><a class="bg_grad_orn" href=""><span class="icon_share"></span>URLをコピーする</a></div>';
+            $offerHtml.='</div>';
+        }
+        
+        if ($ad->results_31=="1") {
+            $offerHtml.='<div class="article__link_block article__link_share">';
+            $offerHtml.='<p class="share_text text-center">以下のハッシュタグを投稿しよう！</p>';
+            $offerHtml.='<p class="js-copy_text copy_text">'.$ad->hashtag.'</p>';
+            $offerHtml.='<div class="fukidashi-wrap">';
+            $offerHtml.='<div class="fukidashi-bk fukidashi-click-fade js-fukidashi-click-fade">';
+            $offerHtml.='<span class="icon_chuui"></span>ハッシュタグをコピーしました';
+            $offerHtml.='</div>';
+            $offerHtml.='</div>';
+            $offerHtml.='<div class="btn js-copy_btn"><a class="bg_grad_orn" href=""><span class="icon_share"></span>ハッシュタグをコピーする</a></div>';
+            $offerHtml.='</div>';
+        }
+
+        $offerHtml.='<div class="article__link_block article__link_request-join">';
+        if (empty($sns)) {
+            $offerHtml.='<div class="btn"><a class="bg_grad_red" href="#"><span class="icon_kamihikouki"></span>投稿報告</a></div>';
+        } else {
+            $offerHtml.='<div class="btn"><a class="bg_grad_red" href="x10u_offer_detail.php?id='.$ad->id.'&req=5"><span class="icon_kamihikouki"></span>投稿報告</a></div>';
+        }
+        $offerHtml.='</div>';
     }
     $offerHtml.='</div>';
 

@@ -50,6 +50,7 @@ if (empty($ofrHtml)) {
 
 
 $pays = getPaysX10($LOGIN_ID);
+$paysAT2 = getPaysX10AT2($LOGIN_ID);
 // foreach ($pays as $pay) {
 //     $pay->stts = isAdwareFinish(getAdwareStatus($pay->id));
 // }
@@ -192,31 +193,31 @@ $today = date('Y-m-d');
                                     <thead>
                                         <tr>
                                             <th>案件名</th>
-                                            <th>クリック</th>
                                             <th>発生成果</th>
+                                            <th>確定待ち成果</th>
                                             <th>確定成果</th>
                                             <th>未確定成果</th>
                                             <th>確定報酬</th>
+                                            <th>非認証</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($pays as $pay) { ?>
-                                        <?php if ($pay->approvable=="1" && $pay->adware_type=="2" && $pay->isFinish=="0") { ?>
+                                        <?php foreach ($paysAT2 as $pay) { ?>
+                                        <?php if ($pay->isFinish=="0") { ?>
                                         <tr>
-                                            <td class="td-text"><a
-                                                    href='x10u_offer_detail.php?id=<?php echo $pay->id; ?>'><?php echo $pay->name; ?></a>
+                                            <td class="td-text">
+                                                <a href='x10u_offer_detail.php?id=<?php echo $pay->id; ?>'><?php echo $pay->name; ?></a>
                                             </td>
-                                            <?php $cnt = countClicksAdwares($LOGIN_ID, $pay->id); ?>
-                                            <td class="td-num"><span class="num"><?php echo $cnt; ?></span>件</td>
-                                            <td class="td-num"><span class="num"><?php echo $pay->cnt; ?></span>件</td>
-                                            <td class="td-num"><span class="num"><?php echo $pay->cnt2; ?></span>件</td>
-                                            <td class="td-num"><span
-                                                    class="num"><?php echo($pay->cst0 + $pay->cst1); ?></span>円</td>
-                                            <td class="td-num"><span class="num"><?php echo $pay->cst2; ?></span>円</td>
-                                            <?php $wk = $cnt>0 ? "成果発生中" : "掲載用URL表示"; ?>
-                                            <td class="td-text"><a
-                                                    href='x10u_offer_detail.php?id=<?php echo $pay->id; ?>#url'><?php echo $wk; ?></a>
+                <td class="td-num"><?php echo number_format($pay->cnt0); ?>件</td>
+                <td class="td-num"><?php echo number_format($pay->cnt2); ?>件</td>
+                <td class="td-num"><?php echo number_format($pay->cnt3); ?>件</td>
+                <td class="td-num"><?php echo number_format($pay->cst2); ?>円</td>
+                <td class="td-num"><?php echo number_format($pay->cst3); ?>円</td>
+                <td class="td-num"><?php echo number_format($pay->cnt1); ?>件</td>
+                                            <?php $wk = $pay->cnt3>0 ? "成果発生中" : "掲載用URL表示"; ?>
+                                            <td class="td-text">
+                                                <a href='x10u_offer_detail.php?id=<?php echo $pay->id; ?>#url'><?php echo $wk; ?></a>
                                             </td>
                                         </tr>
                                         <?php } ?>
@@ -314,27 +315,32 @@ $today = date('Y-m-d');
                                     <thead>
                                         <tr>
                                             <th>案件名</th>
-                                            <th>クリック</th>
                                             <th>発生成果</th>
+                                            <th>確定待ち成果</th>
                                             <th>確定成果</th>
                                             <th>未確定成果</th>
                                             <th>確定報酬</th>
+                                            <th>非認証</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($pays as $pay) { ?>
-                                        <?php if ($pay->approvable=="1" && $pay->adware_type=="2" && $pay->isFinish=="1") { ?>
+                                        <?php foreach ($paysAT2 as $pay) { ?>
+                                        <?php if ($pay->isFinish=="1") { ?>
                                         <tr>
-                                            <td class="td-text"><a
-                                                    href='x10u_offer_detail.php?id=<?php echo $pay->id; ?>'><?php echo $pay->name; ?></a>
+                                            <td class="td-text">
+                                                <a href='x10u_offer_detail.php?id=<?php echo $pay->id; ?>'><?php echo $pay->name; ?></a>
                                             </td>
-                                            <?php $cnt = countClicksAdwares($LOGIN_ID, $pay->id); ?>
-                                            <td class="td-num"><span class="num"><?php echo $cnt; ?>件</span></td>
-                                            <td class="td-num"><span class="num"><?php echo $pay->cnt; ?>件</span></td>
-                                            <td class="td-num"><span class="num"><?php echo $pay->cnt2; ?>件</span></td>
-                                            <td class="td-num"><span
-                                                    class="num"><?php echo($pay->cst0 + $pay->cst1); ?>円</span></td>
-                                            <td class="td-num"><span class="num"><?php echo $pay->cst2; ?>円</span></td>
+                <td class="td-num"><?php echo number_format($pay->cnt0); ?>件</td>
+                <td class="td-num"><?php echo number_format($pay->cnt2); ?>件</td>
+                <td class="td-num"><?php echo number_format($pay->cnt3); ?>件</td>
+                <td class="td-num"><?php echo number_format($pay->cst2); ?>円</td>
+                <td class="td-num"><?php echo number_format($pay->cst3); ?>円</td>
+                <td class="td-num"><?php echo number_format($pay->cnt1); ?>件</td>
+                                            <?php $wk = $pay->cnt3>0 ? "成果発生中" : "掲載用URL表示"; ?>
+                                            <td class="td-text">
+                                                <a href='x10u_offer_detail.php?id=<?php echo $pay->id; ?>#url'><?php echo $wk; ?></a>
+                                            </td>
                                         </tr>
                                         <?php } ?>
                                         <?php } ?>

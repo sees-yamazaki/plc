@@ -58,6 +58,12 @@ class cls_secretadwares
     public $cnt_post ;
     public $stts ;
     public $isFinish ;
+    public $results_10 ;
+    public $results_20 ;
+    public $results_21 ;
+    public $results_22 ;
+    public $results_30 ;
+    public $results_31 ;
 }
 
 class cls_x10adwares
@@ -75,6 +81,12 @@ class cls_x10adwares
     public $startdt ;
     public $enddt ;
     public $cuser ;
+    public $results_10 ;
+    public $results_20 ;
+    public $results_21 ;
+    public $results_22 ;
+    public $results_30 ;
+    public $results_31 ;
 }
 
 function countAdwares($where)
@@ -315,6 +327,12 @@ function getAdware($id)
             $result->cnt_post = $row['cnt_post'];
             $result->stts = $row['stts'];
             $result->isFinish = $row['isFinish'];
+            $result->results_10 = $row['results_10'];
+            $result->results_20 = $row['results_20'];
+            $result->results_21 = $row['results_21'];
+            $result->results_22 = $row['results_22'];
+            $result->results_30 = $row['results_30'];
+            $result->results_31 = $row['results_31'];
         }
     } catch (PDOException $e) {
         //
@@ -382,7 +400,7 @@ function insertX10Adware($secretadwares)
 {
     try {
         require 'dns.php';
-        $sql = "INSERT  INTO `x10_adwares`(`shadow_id`, `id`, `adware_type`, `approvable`, `keyword`, `results`, `hashtag`, `denials`, `ngword`, `note`, `startdt`, `enddt`) VALUES (:shadow_id, :id, :adware_type, :approvable, :keyword, :results, :hashtag, :denials, :ngword, :note, :startdt, :enddt)";
+        $sql = "INSERT  INTO `x10_adwares`(`shadow_id`, `id`, `adware_type`, `approvable`, `keyword`, `results`, `hashtag`, `denials`, `ngword`, `note`, `startdt`, `enddt`, `results_10`, `results_20`, `results_21`, `results_22`, `results_30`, `results_31`) VALUES (:shadow_id, :id, :adware_type, :approvable, :keyword, :results, :hashtag, :denials, :ngword, :note, :startdt, :enddt, :results_10, :results_20, :results_21, :results_22, :results_30, :results_31)";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':shadow_id', $secretadwares->shadow_id, PDO::PARAM_INT);
         $stmt->bindParam(':id', $secretadwares->id, PDO::PARAM_STR);
@@ -394,6 +412,12 @@ function insertX10Adware($secretadwares)
         $stmt->bindParam(':denials', $secretadwares->denials, PDO::PARAM_STR);
         $stmt->bindParam(':ngword', $secretadwares->ngword, PDO::PARAM_STR);
         $stmt->bindParam(':note', $secretadwares->note, PDO::PARAM_STR);
+        $stmt->bindParam(':results_10', $secretadwares->results_10, PDO::PARAM_INT);
+        $stmt->bindParam(':results_20', $secretadwares->results_20, PDO::PARAM_INT);
+        $stmt->bindParam(':results_21', $secretadwares->results_21, PDO::PARAM_INT);
+        $stmt->bindParam(':results_22', $secretadwares->results_22, PDO::PARAM_INT);
+        $stmt->bindParam(':results_30', $secretadwares->results_30, PDO::PARAM_INT);
+        $stmt->bindParam(':results_31', $secretadwares->results_31, PDO::PARAM_INT);
         if ($secretadwares->startdt=='') {
             $stmt->bindValue(':startdt', null, PDO::PARAM_NULL);
         } else {
@@ -418,7 +442,7 @@ function updateX10Adware($secretadwares)
 {
     try {
         require 'dns.php';
-        $sql = "UPDATE  `x10_adwares` SET `adware_type`=:adware_type,`approvable`=:approvable, `keyword`=:keyword, `results`=:results, `hashtag`=:hashtag, `denials`=:denials, `ngword`=:ngword, `note`=:note, `startdt`=:startdt, `enddt`=:enddt WHERE `id`=:id";
+        $sql = "UPDATE  `x10_adwares` SET `adware_type`=:adware_type,`approvable`=:approvable, `keyword`=:keyword, `results`=:results, `hashtag`=:hashtag, `denials`=:denials, `ngword`=:ngword, `note`=:note, `startdt`=:startdt, `enddt`=:enddt, `results_10`=:results_10, `results_20`=:results_20, `results_21`=:results_21, `results_22`=:results_22, `results_30`=:results_30, `results_31`=:results_31 WHERE `id`=:id";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':id', $secretadwares->id, PDO::PARAM_STR);
         $stmt->bindParam(':adware_type', $secretadwares->adware_type, PDO::PARAM_INT);
@@ -429,6 +453,12 @@ function updateX10Adware($secretadwares)
         $stmt->bindParam(':denials', $secretadwares->denials, PDO::PARAM_STR);
         $stmt->bindParam(':ngword', $secretadwares->ngword, PDO::PARAM_STR);
         $stmt->bindParam(':note', $secretadwares->note, PDO::PARAM_STR);
+        $stmt->bindParam(':results_10', $secretadwares->results_10, PDO::PARAM_INT);
+        $stmt->bindParam(':results_20', $secretadwares->results_20, PDO::PARAM_INT);
+        $stmt->bindParam(':results_21', $secretadwares->results_21, PDO::PARAM_INT);
+        $stmt->bindParam(':results_22', $secretadwares->results_22, PDO::PARAM_INT);
+        $stmt->bindParam(':results_30', $secretadwares->results_30, PDO::PARAM_INT);
+        $stmt->bindParam(':results_31', $secretadwares->results_31, PDO::PARAM_INT);
         if ($secretadwares->startdt=='') {
             $stmt->bindValue(':startdt', null, PDO::PARAM_NULL);
         } else {
@@ -800,15 +830,12 @@ function countPay($startdt, $enddt, $nuser, $adtype)
 
         $results = array();
         require 'dns.php';
-        if ($adtype=="0") {
-            $sql = "SELECT count(*) as cnt FROM `v_pay_x10` WHERE adware_type=0 AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc";
-        } else {
-            $sql = "SELECT count(*) as cnt FROM `v_pay_x10` WHERE adware_type=1 AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc";
-        }
+        $sql = "SELECT count(*) as cnt FROM `v_pay_x10` WHERE adware_type=:adware_type  AND delete_key=0 and owner=:owner and regist BETWEEN :start AND :end ORDER BY regist desc";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
         $stmt->bindParam(':start', $start, PDO::PARAM_INT);
         $stmt->bindParam(':end', $end, PDO::PARAM_INT);
+        $stmt->bindParam(':adware_type', $adtype, PDO::PARAM_INT);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $cnt = $row['cnt'];
@@ -844,6 +871,64 @@ function getPayLimit($startdt, $enddt, $nuser, $adtype, $limit, $offset)
             $result->state = $row['state'];
             $result->cost = $row['cost'];
             $result->regist = $row['regist'];
+            array_push($results, $result);
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $results;
+}
+
+function countPayAT2($startdt, $enddt, $nuser, $adtype)
+{
+    try {
+        $cnt=0;
+        $start = empty($startdt) ? strtotime('2000-01-01') : strtotime($startdt);
+        $end = empty($enddt) ? strtotime('2038-01-01') : strtotime($enddt);
+
+        $results = array();
+        require 'dns.php';
+        $sql = "SELECT count(*) as cnt FROM `v_offer_x10` WHERE adware_type=:adware_type and nuser=:nuser and edittime BETWEEN :start AND :end ORDER BY regist desc";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':nuser', $nuser, PDO::PARAM_STR);
+        $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+        $stmt->bindParam(':end', $end, PDO::PARAM_INT);
+        $stmt->bindParam(':adware_type', $adtype, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $cnt = $row['cnt'];
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $cnt;
+}
+
+function getPayLimitAT2($startdt, $enddt, $nuser, $adtype, $limit, $offset)
+{
+    try {
+        $results = array();
+        $start = empty($startdt) ? strtotime('2000-01-01') : strtotime($startdt);
+        $end = empty($enddt) ? strtotime('2038-01-01') : strtotime($enddt);
+
+        $results = array();
+        require 'dns.php';
+        $sql = "SELECT * FROM `v_offer_x10` WHERE adware_type=:adware_type AND nuser=:nuser and edittime BETWEEN :start AND :end ORDER BY edittime desc LIMIT :limit OFFSET :offset";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->bindParam(':nuser', $nuser, PDO::PARAM_STR);
+        $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+        $stmt->bindParam(':end', $end, PDO::PARAM_INT);
+        $stmt->bindParam(':adware_type', $adtype, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_pay();
+            $result->id = $row['adware'];
+            $result->name = $row['name'];
+            $result->state = $row['status'];
+            $result->cost = $row['money'];
+            $result->regist = $row['edittime'];
             array_push($results, $result);
         }
     } catch (PDOException $e) {
@@ -1171,9 +1256,23 @@ function adCost($adwares, $nuser, $cost)
     execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 }
 
+function ignoreCost($adwares, $nuser)
+{
+    updateX10Offer($adwares, $nuser, 14);
+
+    require 'dns.php';
+
+    $sql = "UPDATE `pay` SET `state`=1 , `is_notice`=1 WHERE owner=:owner AND  adwares=:adwares";
+    $stmt = $pdo -> prepare($sql);
+    $stmt->bindParam(':adwares', $adwares, PDO::PARAM_STR);
+    $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
+    execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+}
+
+
 function delCost($adwares, $nuser, $cost)
 {
-    updateX10Offer($adware, $nuser, 12);
+    updateX10Offer($adwares, $nuser, 12);
 
     //nuserにコスト追加
     require 'dns.php';
@@ -1190,13 +1289,18 @@ function delCost($adwares, $nuser, $cost)
     execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
     if (substr($adwares, 0, 1)=="A") {
-        $sql = "UPDATE `adwares` SET `money_count`= `money_count`-:cost, `pay_count`=`pay_count`-1 WHERE  id=:id";
+        $sql = "UPDATE `adwares` SET `money_count`= `money_count`-:cost, `pay_count`=`pay_count`-:pay_count WHERE  id=:id";
     } else {
-        $sql = "UPDATE `secretadwares` SET `money_count`= `money_count`-:cost, `pay_count`=`pay_count`-1 WHERE  id=:id";
+        $sql = "UPDATE `secretadwares` SET `money_count`= `money_count`-:cost, `pay_count`=`pay_count`-:pay_count WHERE  id=:id";
     }
     $stmt = $pdo -> prepare($sql);
     $stmt->bindParam(':id', $adwares, PDO::PARAM_STR);
     $stmt->bindParam(':cost', $cost, PDO::PARAM_INT);
+    if ($cost>0) {
+        $stmt->bindValue(':pay_count', 1);
+    } else {
+        $stmt->bindValue(':pay_count', 0);
+    }
     execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 }
 

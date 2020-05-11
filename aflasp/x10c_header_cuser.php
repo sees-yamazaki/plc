@@ -168,7 +168,8 @@
                                 <ul class=" navigation-submenu" id="pages4">
                                     <li><a href="edit.php?type=cUser&id=<?php echo $LOGIN_ID; ?>"
                                             class="menu">ユーザー情報の編集</a></li>
-                                    <li><a href="other.php?key=pay_report" class="menu">成果レポート出力</a></li>
+                                    <!--
+                                    <li><a href="other.php?key=pay_report" class="menu">成果レポート出力</a></li>-->
                                 </ul>
                             </li>
                             <li>

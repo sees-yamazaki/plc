@@ -26,11 +26,15 @@ for ($i = 0; $i < 50; $i++) {
 
 
 if (isset($_POST['fixed'])) {
-    $ad = getAdware($_POST['adwares']);
-    if ($ad->limits>0 && $ad->limits < $ad->money_count) {
-        $errMsg = '<tr><td colspan=5 style="color:red;">【広告報酬の上限超過のため確定できませんでした】</td></tr>';
-    } else {
-        adCost($_POST['adwares'], $_POST['owner'], $_POST['cost']);
+    if (isset($_POST['stts13'])) {
+        $ad = getAdware($_POST['adwares']);
+        if ($ad->limits>0 && $ad->limits < $ad->money_count) {
+            $errMsg = '<tr><td colspan=5 style="color:red;">【広告報酬の上限超過のため確定できませんでした】</td></tr>';
+        } else {
+            adCost($_POST['adwares'], $_POST['owner'], $_POST['cost']);
+        }
+    } elseif (isset($_POST['stts14'])) {
+        ignoreCost($_POST['adwares'], $_POST['owner']);
     }
 }
 
@@ -55,7 +59,6 @@ if ($LOGIN_TYPE=='admin') {
 $html='';
 foreach ($posts as $post) {
     $html.='<tr>';
-    $html.='<form name="form" method="post" action="" style="margin: 0px 0px;">';
     $html.='<td>'.date('Y-m-d H:i:s', $post->regist).'</td>';
     $html.='<td>'.$post->name.'</td>';
     $html.='<td>'.$post->cost.'</td>';
@@ -83,7 +86,9 @@ foreach ($posts as $post) {
         $txt .= 'SNSアカウントは設定されていません';
     }
     $html.='<td class="t_left">'.$user->name."<br>".$txt.'</td>';
-    $html.='<td><input type="submit" value="報酬確定"></td>';
+    $html.='<form name="form" method="post" action="" style="margin: 0px 0px;">';
+    $html.='<td><input type="submit" name="stts13" value="報酬確定"></td>';
+    $html.='<td><input type="submit" name="stts14" value="却下"></td>';
     $html.='<input name="fixed" type="hidden" value="1">';
     $html.='<input name="search" type="hidden" value="1">';
     $html.='<input name="owner" type="hidden" value="'.$post->owner.'">';

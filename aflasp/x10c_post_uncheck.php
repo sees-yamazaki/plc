@@ -75,12 +75,17 @@ foreach ($posts as $post) {
         $txt .= 'SNSアカウントは設定されていません';
     }
     $html.='<td class="t_left">'.$user->name."<br>".$txt.'</td>';
-    $html.='<td><input type="submit" value="確定取消"></td>';
+    if ($post->state==2) {
+        $html.='<td><input type="submit" value="確定取消"></td>';
+        $html.='<input name="cost" type="hidden" value="'.$post->cost.'">';
+    } else {
+        $html.='<td><input type="submit" value="否認取消"></td>';
+        $html.='<input name="cost" type="hidden" value="0">';
+    }
     $html.='<input name="fixed" type="hidden" value="1">';
     $html.='<input name="search" type="hidden" value="1">';
     $html.='<input name="owner" type="hidden" value="'.$post->owner.'">';
     $html.='<input name="adwares" type="hidden" value="'.$post->adwares.'">';
-    $html.='<input name="cost" type="hidden" value="'.$post->cost.'">';
     $html.='<input name="search_adware" type="hidden" value="'.$_POST['search_adware'].'">';
     $html.='</td>';
     $html.='</form>';

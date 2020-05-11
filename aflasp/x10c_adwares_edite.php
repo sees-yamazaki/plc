@@ -50,9 +50,9 @@ $adware->open = $_POST['open'];
 
 $adware->adware_type = $_POST['adware_type'];
 $adware->approvable = $_POST['approvable'];
-if(is_array($_POST['keyword'])){
-    $adware->keyword = implode(' ',$_POST['keyword']);
-}else{
+if (is_array($_POST['keyword'])) {
+    $adware->keyword = implode(' ', $_POST['keyword']);
+} else {
     $adware->keyword = $_POST['keyword'];
 }
 $adware->results = $_POST['results'];
@@ -62,6 +62,28 @@ $adware->ngword = $_POST['ngword'];
 $adware->note = $_POST['note'];
 $adware->startdt = $_POST['startdt'];
 $adware->enddt = $_POST['enddt'];
+$adware->results_10 = empty($_POST['results_10']) ? 0 : $_POST['results_10'];
+$adware->results_20 = empty($_POST['results_20']) ? 0 : $_POST['results_20'];
+$adware->results_21 = empty($_POST['results_21']) ? 0 : $_POST['results_21'];
+$adware->results_22 = empty($_POST['results_22']) ? 0 : $_POST['results_22'];
+$adware->results_30 = empty($_POST['results_30']) ? 0 : $_POST['results_30'];
+$adware->results_31 = empty($_POST['results_31']) ? 0 : $_POST['results_31'];
+// $adware->results_10 = 0;
+// $adware->results_20 = 0;
+// $adware->results_21 = 0;
+// $adware->results_22 = 0;
+// $adware->results_30 = 0;
+// $adware->results_31 = 0;
+// if ($adware->adware_type=="0") {
+//     $adware->results_20 = isset($_POST['results_20']) ? 1 : 0;
+//     $adware->results_21 = isset($_POST['results_21']) ? 1 : 0;
+//     $adware->results_22 = isset($_POST['results_22']) ? 1 : 0;
+// } elseif ($adware->adware_type=="1") {
+//     $adware->results_10 = isset($_POST['results_10']) ? 1 : 0;
+// } elseif ($adware->adware_type=="2") {
+//     $adware->results_30 = isset($_POST['results_30']) ? 1 : 0;
+//     $adware->results_31 = isset($_POST['results_31']) ? 1 : 0;
+// }
 
 if ($adware->adware_type=="0" || $adware->adware_type=="2") {
     $adware->click_money = 0;
@@ -179,7 +201,7 @@ if ($adware->open=="0") {
 $txt_adware_type = "目標達成タイプ";
 if ($adware->adware_type=="1") {
     $txt_adware_type = 'クリック報酬タイプ';
-}elseif ($adware->adware_type=="2") {
+} elseif ($adware->adware_type=="2") {
     $txt_adware_type = '投稿報酬タイプ';
 }
 
@@ -333,7 +355,28 @@ if (empty($deleteAd)) {
                             </tr>
                             <tr>
                                 <th>成果条件</th>
-                                <td style="max-width: 500px;"><?php echo nl2br($adware->results); ?>
+                                <td style="max-width: 500px;">
+                                <?php
+                                    if ($adware->results_10=="1") {
+                                        echo "URLのクリック<br>";
+                                    }
+                                    if ($adware->results_20=="1") {
+                                        echo "商品購入<br>";
+                                    }
+                                    if ($adware->results_21=="1") {
+                                        echo "資料請求<br>";
+                                    }
+                                    if ($adware->results_22=="1") {
+                                        echo "会員登録<br>";
+                                    }
+                                    if ($adware->results_30=="1") {
+                                        echo "URLの貼り付け<br>";
+                                    }
+                                    if ($adware->results_31=="1") {
+                                        echo "指定のハッシュタグ<br>";
+                                    }
+                                ?>
+                                <?php echo nl2br($adware->results); ?>
                                 </td>
                             </tr>
                             <tr>
@@ -475,6 +518,18 @@ if (empty($deleteAd)) {
                 value="<?php echo $adware->enddt; ?>">
             <input type="hidden" name="deleteAd"
                 value="<?php echo $deleteAd; ?>">
+            <input type="hidden" name="results_10"
+                value="<?php echo $adware->results_10; ?>">
+            <input type="hidden" name="results_20"
+                value="<?php echo $adware->results_20; ?>">
+            <input type="hidden" name="results_21"
+                value="<?php echo $adware->results_21; ?>">
+            <input type="hidden" name="results_22"
+                value="<?php echo $adware->results_22; ?>">
+            <input type="hidden" name="results_30"
+                value="<?php echo $adware->results_30; ?>">
+            <input type="hidden" name="results_31"
+                value="<?php echo $adware->results_31; ?>">
         </div>
     </form>
 
