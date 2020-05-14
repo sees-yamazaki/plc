@@ -14,9 +14,15 @@ if (empty($deleteAd)) {
     $comment = '[ COMPLETE - 編集完了 ]';
     $comment2 = '登録情報の編集が完了しました。';
 } else {
-    $pankuzu = 'HOME &gt; 広告情報削除 &gt; 削除内容の確認 &gt; <span>削除完了</span>';
-    $comment = '[ COMPLETE - 削除完了 ]';
-    $comment2 = '登録情報の削除が完了しました。';
+    if ($deleteAd=="1") {
+        $pankuzu = 'HOME &gt; 広告情報削除 &gt; 削除内容の確認 &gt; <span>削除完了</span>';
+        $comment = '[ COMPLETE - 削除完了 ]';
+        $comment2 = '登録情報の削除が完了しました。';
+    } else {
+        $pankuzu = 'HOME &gt; 広告情報削除 &gt; 削除内容の確認 &gt; <span>削除完了</span>';
+        $comment = '[ COMPLETE - 編集完了 ]';
+        $comment2 = '登録情報の終了日を設定しました。';
+    }
 }
 
 if ($LOGIN_TYPE=='admin') {

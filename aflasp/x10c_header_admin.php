@@ -166,10 +166,10 @@
                                 <li><a href="x10c_adwares_edit.php" class="menu">新しい広告を登録</a></li>
                                 <li><a href="x10c_offerad_search.php?ofr=1&approvable=1" class="menu">承認申請のある広告</a></li>
                                 <li><a href="x10c_offerad_search.php?pst=1&approvable=1" class="menu">投稿申請のある広告</a></li>
-                                <li><a href="x10c_offerad_search.php?adstts=0" class="menu">進行中の広告</a></li>
-                                <li><a href="x10c_offerad_search.php?adstts=1" class="menu">終了した広告</a></li>
                                 <li><a href="x10c_post_check.php" class="menu">投稿を確定する</a></li>
                                 <li><a href="x10c_post_uncheck.php" class="menu">投稿の確定を取消</a></li>
+                                <li><a href="x10c_offerad_search.php?adstts=0" class="menu">進行中の広告</a></li>
+                                <li><a href="x10c_offerad_search.php?adstts=1" class="menu">終了した広告</a></li>
                                 <!--<li><a href="x10c_offerad_search.php" class="menu">過去に登録した広告</a></li>
                                 <li><a href="regist.php?type=pay" class="menu">成果の登録</a></li>-->
                                 <li><a href="search.php?type=category&run=true" class="menu">広告カテゴリの管理</a></li>

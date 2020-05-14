@@ -804,3 +804,34 @@ function deleteAdwares($adwares)
         logging("ARGS : ". json_encode(func_get_args()));
     }
 }
+
+function stopAdwares($adwares)
+{
+    try {
+        require 'dns.php';
+
+        $ad = getAdware($adwares->id);
+
+        $startdt = date('Y-m-d', $ad->regist);
+        $enddt = date('Y-m-d', strtotime('tomorrow'));
+
+
+        $sql = " UPDATE `x10_adwares` SET `startdt`=:startdt, `enddt`=:enddt WHERE id=:id";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':id', $ad->id, PDO::PARAM_STR);
+        $stmt->bindParam(':startdt', $startdt, PDO::PARAM_STR);
+        $stmt->bindParam(':enddt', $enddt, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("UPDATE ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+}

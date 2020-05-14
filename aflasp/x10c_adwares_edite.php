@@ -152,8 +152,13 @@ if ($_POST['banner3_DELETE']=="1") {
 if (isset($_POST['back'])) {
     header('Location: x10c_adwares_edit.php', true, 307);
 } elseif (isset($_POST['doEdit']) && !empty($deleteAd)) {
-    deleteAdwares($adware);
-    header('Location: x10c_adwares_edited.php?deleteAd=1');
+    if ($LOGIN_TYPE=='admin') {
+        deleteAdwares($adware);
+        header('Location: x10c_adwares_edited.php?deleteAd=1');
+    } else {
+        stopAdwares($adware);
+        header('Location: x10c_adwares_edited.php?deleteAd=2');
+    }
 } elseif (isset($_POST['doEdit'])) {
     if (empty($id)) {
         insertAdwares($adware);

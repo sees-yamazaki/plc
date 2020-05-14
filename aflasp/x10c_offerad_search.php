@@ -55,23 +55,23 @@ if (isset($_POST['run'])) {
         $tmp[] = "(category='".$category."')";
     }
 
-    foreach ((array)$adware_type as $at) {
-        if ($at=="0") {
-            $tmp3[] = "(adware_type=0)";
-            $adtyped[0]= " checked";
-        } elseif ($at=="1") {
-            $tmp3[] = "(adware_type=1)";
-            $adtyped[1]= " checked";
-        } elseif ($at=="2") {
-            $tmp3[] = "(adware_type=2)";
-            $adtyped[2]= " checked";
-        } else {
-            $tmp3[] = "(adware_type=0)";
-        }
-    }
-    if (!empty($tmp3)) {
-        $tmp[] = "(".implode(" OR ", $tmp3).")";
-    }
+    // foreach ((array)$adware_type as $at) {
+    //     if ($at=="0") {
+    //         $tmp3[] = "(adware_type=0)";
+    //         $adtyped[0]= " checked";
+    //     } elseif ($at=="1") {
+    //         $tmp3[] = "(adware_type=1)";
+    //         $adtyped[1]= " checked";
+    //     } elseif ($at=="2") {
+    //         $tmp3[] = "(adware_type=2)";
+    //         $adtyped[2]= " checked";
+    //     } else {
+    //         $tmp3[] = "(adware_type=0)";
+    //     }
+    // }
+    // if (!empty($tmp3)) {
+    //     $tmp[] = "(".implode(" OR ", $tmp3).")";
+    // }
 
     // foreach ((array)$approvable as $apv) {
     //     if ($apv=="0") {
@@ -139,6 +139,39 @@ if (isset($_POST['run'])) {
     }
 }
 
+
+
+
+if (isset($_GET['adware_type'])) {
+    if ($_GET['adware_type']=="0") {
+        $where .= " AND (adware_type=0)";
+        $adtyped[0]= " checked";
+    } elseif ($_GET['adware_type']=="1") {
+        $where .= " AND (adware_type=1)";
+        $adtyped[1]= " checked";
+    } elseif ($_GET['adware_type']=="2") {
+        $where .= " AND (adware_type=2)";
+        $adtyped[2]= " checked";
+    }
+} else {
+    foreach ((array)$adware_type as $at) {
+        if ($at=="0") {
+            $tmp3[] = "(adware_type=0)";
+            $adtyped[0]= " checked";
+        } elseif ($at=="1") {
+            $tmp3[] = "(adware_type=1)";
+            $adtyped[1]= " checked";
+        } elseif ($at=="2") {
+            $tmp3[] = "(adware_type=2)";
+            $adtyped[2]= " checked";
+        } else {
+            $tmp3[] = "(adware_type=0)";
+        }
+    }
+    if (!empty($tmp3)) {
+        $where .=  " AND (".implode(" OR ", $tmp3).")";
+    }
+}
 
 
 if (isset($_GET['approvable'])) {

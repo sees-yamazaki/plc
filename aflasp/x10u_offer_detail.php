@@ -457,11 +457,18 @@ foreach ($tags as $tag) {
             </dl>
             <dl>
               <dt>成果条件</dt>
-              <dd><?php echo empty($ad->results) ? "なし" : nl2br($ad->results); ?></dd>
-            </dl>
-            <dl>
-              <dt>否認条件</dt>
-              <dd><?php echo empty($ad->denials) ? "なし" : nl2br($ad->denials); ?></dd>
+              <?php
+                $rslt = "";
+                $rslt .= $ad->results_10=="1" ? "URLが訪問者にクリックされる<br>" : "";
+                $rslt .= $ad->results_20=="1" ? "指定したサイトから訪問者が商品を購入<br>" : "";
+                $rslt .= $ad->results_21=="1" ? "指定したサイトから訪問者が資料を請求<br>" : "";
+                $rslt .= $ad->results_22=="1" ? "指定したサイトから訪問者が会員登録<br>" : "";
+                $rslt .= $ad->results_30=="1" ? "指定したURLを投稿内に掲載<br>" : "";
+                $rslt .= $ad->results_31=="1" ? "指定したハッシュタグを投稿内に掲載<br>" : "";
+                $rslt .= empty($ad->results) ? "" : nl2br($ad->results);
+                $rslt =  empty($rslt) ? "なし" : $rslt;
+              ?>
+              <dd><?php echo $rslt; ?></dd>
             </dl>
             <dl>
               <dt>NGキーワード</dt>

@@ -638,13 +638,14 @@ class cls_offer
      return $results;
  }
 
- function countOfferingAdware($cuser)
+ function countOfferingAdware($cuser, $status)
  {
      try {
          $cnt = 0;
          require 'dns.php';
-         $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `v_offer_x10` WHERE cuser=:cuser AND `status`=0 ORDER BY regist desc");
+         $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `v_offer_x10` WHERE cuser=:cuser AND `status`=:status");
          $stmt->bindParam(':cuser', $cuser, PDO::PARAM_STR);
+         $stmt->bindParam(':status', $status, PDO::PARAM_INT);
          execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
 
          while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -1529,4 +1530,169 @@ function getReportPayN($y, $m)
         //
     }
     return $results;
+}
+
+function countIndex($cuser, $adware_type, $approvable)
+{
+    $result = 0;
+    try {
+        // $startDt = strtotime("first day of this month");
+        // $endDt   = strtotime(date('Y-m-d 23:59:59', strtotime($y.'-'.$m.' last day of this month')));
+
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `v_adwares_status` WHERE `delete_key`=0 AND `cuser`=:cuser AND `adware_type`=:adware_type AND `approvable`=:approvable ") ;
+
+        $stmt->bindParam(':cuser', $cuser, PDO::PARAM_STR);
+        $stmt->bindParam(':adware_type', $adware_type, PDO::PARAM_INT);
+        $stmt->bindParam(':approvable', $approvable, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $row['cnt'];
+    } catch (PDOException $e) {
+        //
+    }
+    return $result;
+}
+
+function getCount($cuser, $flg)
+{
+    $result = 0;
+    try {
+        if ($flg=="0") {
+            $startDt = strtotime("first day of this month");
+            $endDt   = strtotime("now");
+        } else {
+            $startDt = strtotime("first day of last month");
+            $endDt   = strtotime("first day of this month");
+        }
+
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `v_offer_x10` WHERE `status`=13 AND `cuser`=:cuser AND `edittime` BETWEEN :startDt AND :endDt ") ;
+
+        $stmt->bindParam(':cuser', $cuser, PDO::PARAM_STR);
+        $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
+        $stmt->bindParam(':endDt', $endDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = is_null($row['cnt']) ? 0 : $row['cnt'];
+    } catch (PDOException $e) {
+        //
+    }
+    return $result;
+}
+
+function getTotal($cuser, $flg)
+{
+    $result = 0;
+    try {
+        if ($flg=="0") {
+            $startDt = strtotime("first day of this month");
+            $endDt   = strtotime("now");
+        } else {
+            $startDt = strtotime("first day of last month");
+            $endDt   = strtotime("first day of this month");
+        }
+
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT sum(money) as cnt FROM `v_offer_x10` WHERE `status`=13 AND `cuser`=:cuser AND `edittime` BETWEEN :startDt AND :endDt ") ;
+
+        $stmt->bindParam(':cuser', $cuser, PDO::PARAM_STR);
+        $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
+        $stmt->bindParam(':endDt', $endDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = is_null($row['cnt']) ? 0 : $row['cnt'];
+    } catch (PDOException $e) {
+        //
+    }
+    return $result;
+}
+
+function countTotal01($cuser, $adware_type, $flg)
+{
+    $result = 0;
+    try {
+        if ($flg=="0") {
+            $startDt = strtotime("first day of this month");
+            $endDt   = strtotime("now");
+        } else {
+            $startDt = strtotime("first day of last month");
+            $endDt   = strtotime("first day of this month");
+        }
+
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `v_pay_x10` WHERE `adware_type`=:adware_type  AND `cuser`=:cuser AND `regist` BETWEEN :startDt AND :endDt ") ;
+
+        $stmt->bindParam(':cuser', $cuser, PDO::PARAM_STR);
+        $stmt->bindParam(':adware_type', $adware_type, PDO::PARAM_INT);
+        $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
+        $stmt->bindParam(':endDt', $endDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = is_null($row['cnt']) ? 0 : $row['cnt'];
+    } catch (PDOException $e) {
+        //
+    }
+    return $result;
+}
+
+function getTotal01($cuser, $adware_type, $flg)
+{
+    $result = 0;
+    try {
+        if ($flg=="0") {
+            $startDt = strtotime("first day of this month");
+            $endDt   = strtotime("now");
+        } else {
+            $startDt = strtotime("first day of last month");
+            $endDt   = strtotime("first day of this month");
+        }
+
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT sum(`cost`) as cnt FROM `v_pay_x10` WHERE `adware_type`=:adware_type  AND `cuser`=:cuser AND `regist` BETWEEN :startDt AND :endDt ") ;
+
+        $stmt->bindParam(':cuser', $cuser, PDO::PARAM_STR);
+        $stmt->bindParam(':adware_type', $adware_type, PDO::PARAM_INT);
+        $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
+        $stmt->bindParam(':endDt', $endDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = is_null($row['cnt']) ? 0 : $row['cnt'];
+    } catch (PDOException $e) {
+        //
+    }
+    return $result;
+}
+
+function getTotal01All($cuser, $flg)
+{
+    $result = 0;
+    try {
+        if ($flg=="0") {
+            $startDt = strtotime("first day of this month");
+            $endDt   = strtotime("now");
+        } else {
+            $startDt = strtotime("first day of last month");
+            $endDt   = strtotime("first day of this month");
+        }
+
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT sum(`cost`) as cnt FROM `v_pay_x10` WHERE `adware_type`<>2 AND `cuser`=:cuser AND `regist` BETWEEN :startDt AND :endDt ") ;
+
+        $stmt->bindParam(':cuser', $cuser, PDO::PARAM_STR);
+        $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);
+        $stmt->bindParam(':endDt', $endDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = is_null($row['cnt']) ? 0 : $row['cnt'];
+    } catch (PDOException $e) {
+        //
+    }
+    return $result;
 }
