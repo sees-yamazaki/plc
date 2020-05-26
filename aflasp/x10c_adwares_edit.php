@@ -14,6 +14,9 @@ include 'x10c/db/adwares.php';
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
 $LOGIN_TYPE = $_SESSION[ $SESSION_TYPE ];
+if (empty($LOGIN_ID)) {
+    header('Location: x10c_session_err.php');
+}
 
 $id = empty($_GET['id']) ? $_POST['id'] : $_GET['id'];
 $mode = empty($_GET['mode']) ? $_POST['mode'] : $_GET['mode'];
@@ -287,11 +290,26 @@ if ($adware->auto=="0") {
     $auto_1 = "";
 }
 
-$open_0 = "";
-$open_1 = " checked";
-if ($adware->open=="0") {
-    $open_0 = " checked";
-    $open_1 = "";
+$htmlOC = "";
+if ($LOGIN_TYPE=='admin') {
+    $open_0 = "";
+    $open_1 = " checked";
+    if ($adware->open=="0") {
+        $open_0 = " checked";
+        $open_1 = "";
+    }
+    $htmlOC .= "<tr>";
+    $htmlOC .= "<th>広告の公開/非公開<span>※</span></th>";
+    $htmlOC .= '<td><label><input type="radio" name="open" value="1" '.$open_1.'>公開</label>';
+    $htmlOC .= '<label><input type="radio" name="open" value="0" '.$open_0.'>非公開</label>';
+    $htmlOC .= "</td>";
+    $htmlOC .= "</tr>";
+} else {
+    if ($adware->open=="1") {
+        $htmlOC .= '<input type="hidden" name="open" value="1">';
+    } else {
+        $htmlOC .= '<input type="hidden" name="open" value="0">';
+    }
 }
 
 $check_type_ip = " checked";
@@ -340,18 +358,18 @@ if ($adware->approvable=="1") {
 }
 
 $cls_money = "";
-$cls_click_money = " class='inactive' readonly";
+$cls_click_money = " style='display:none'";
 $cls_radio_c = " disabled";
-$cls_radio_c_row = " class='inactive'";
+$cls_radio_c_row = " style='display:none'";
 $cls_radio_a = "";
 $cls_radio_a_row = "";
 if ($adware->adware_type=="1") {
-    $cls_money = " class='inactive' readonly";
+    $cls_money = " style='display:none'";
     $cls_click_money = "";
     $cls_radio_c = "";
     $cls_radio_c_row = "";
     $cls_radio_a = " disabled";
-    $cls_radio_a_row = " class='inactive'";
+    $cls_radio_a_row = " style='display:none'";
 }
 if ($adware->adware_type=="2") {
     $cls_radio_a1 = " disabled";
@@ -382,13 +400,15 @@ function typeChange() {
         document.getElementById('click_money').style.backgroundColor = "#9fa0a0";
         radio_click[0].checked = true;
         radio_click[1].disabled = true;
-        document.getElementById('a_row').style.backgroundColor = "white";
+        document.getElementById('a_row').style.display = "table-row";
         radio_auto[1].checked = true;
-        document.getElementById('c_row').style.backgroundColor = "#9fa0a0";
         radio_aprv[0].disabled = false;
+        document.getElementById('c_row').style.display = "none";
         document.getElementById('results_1').style.display ="none";
         document.getElementById('results_2').style.display ="block";
         document.getElementById('results_3').style.display ="none";
+        document.getElementById('box_money').style.display = "table-row";
+        document.getElementById('box_click_money').style.display = "none";
 
     } else if (radio[1].checked) {
         document.getElementById('money').readOnly = true;
@@ -396,14 +416,16 @@ function typeChange() {
         document.getElementById('click_money').readOnly = false;
         document.getElementById('click_money').style.backgroundColor = "white";
         radio_click[0].checked = true;
-        document.getElementById('a_row').style.backgroundColor = "#9fa0a0";
+        document.getElementById('a_row').style.display = "none";
         radio_auto[0].checked = true;
         radio_auto[1].disabled = true;
-        document.getElementById('c_row').style.backgroundColor = "white";
         radio_aprv[0].disabled = false;
+        document.getElementById('c_row').style.display = "table-row";
         document.getElementById('results_1').style.display ="block";
         document.getElementById('results_2').style.display ="none";
         document.getElementById('results_3').style.display ="none";
+        document.getElementById('box_money').style.display = "none";
+        document.getElementById('box_click_money').style.display = "table-row";
 
     } else if (radio[2].checked) {
         document.getElementById('money').readOnly = false;
@@ -412,15 +434,17 @@ function typeChange() {
         document.getElementById('click_money').style.backgroundColor = "#9fa0a0";
         radio_click[0].checked = true;
         radio_click[1].disabled = true;
-        document.getElementById('a_row').style.backgroundColor = "white";
+        document.getElementById('a_row').style.display = "table-row";
         radio_auto[1].checked = true;
         radio_auto[0].disabled = true;
-        document.getElementById('c_row').style.backgroundColor = "#9fa0a0";
+        document.getElementById('c_row').style.display = "none";
         radio_aprv[1].checked = true;
         radio_aprv[0].disabled = true;
         document.getElementById('results_1').style.display ="none";
         document.getElementById('results_2').style.display ="none";
         document.getElementById('results_3').style.display ="block";
+        document.getElementById('box_money').style.display = "table-row";
+        document.getElementById('box_click_money').style.display = "none";
 
     }
 
@@ -620,17 +644,16 @@ $(function(){
                                 </td>
                             </tr>
 
-                            <tr id="box_money">
+                            <tr id="box_money" <?php echo $cls_money; ?>>
                                 <th>獲得単価<span>※</span></th>
-                                <td><input type="text" name="money" id="money" value="<?php echo $adware->money; ?>"
-                                        size="15" maxlength="10" <?php echo $cls_money; ?> required>
+                                <td><input type="text" name="money" id="money" value="<?php echo empty($adware->money) ? 0 : $adware->money ; ?>"
+                                        size="15" maxlength="10" required>
                                     円</td>
                             </tr>
-                            <tr id="box_click_money">
+                            <tr id="box_click_money" <?php echo $cls_click_money; ?>>
                                 <th>クリック単価<span>※</span></th>
                                 <td><input type="text" name="click_money" id="click_money"
-                                        value="<?php echo $adware->click_money; ?>" size="15" maxlength="10"
-                                        <?php echo $cls_click_money; ?> required>
+                                        value="<?php echo empty($adware->click_money) ? 0 : $adware->click_money; ?>" size="15" maxlength="10" required>
                                     円</td>
                             </tr>
                             <!--
@@ -786,12 +809,13 @@ $(function(){
                                 </td>
                             </tr>
                             -->
-                            <tr>
+                            <!--<tr>
                                 <th>広告の公開/非公開<span>※</span></th>
                                 <td><label><input type="radio" name="open" value="1" <?php echo $open_1; ?>>公開</label>
                                     <label><input type="radio" name="open" value="0" <?php echo $open_0; ?>>非公開</label>
                                 </td>
-                            </tr>
+                            </tr>-->
+                            <?php echo $htmlOC; ?>
                             <tr>
                                 <th>キーワード、タグ</th>
                                 <td><!--<textarea name="keyword" cols="" rows=""

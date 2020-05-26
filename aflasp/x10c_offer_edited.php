@@ -12,6 +12,9 @@ include 'x10c/db/adwares.php';
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
 $LOGIN_TYPE = $_SESSION[ $SESSION_TYPE ];
+if (empty($LOGIN_ID)) {
+    header('Location: x10c_session_err.php');
+}
 
 
 if ($LOGIN_TYPE=='admin') {

@@ -126,15 +126,11 @@
                             </li>
                             <li>
                                 <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">
-                                    <span class="link-title">広告の掲載</span>
+                                    <span class="link-title">広告の管理</span>
                                     <i class="mdi mdi-content-copy link-icon"></i>
                                 </a>
                                 <ul class=" navigation-submenu" id="pages">
                                     <li><a href="x10c_adwares_edit.php" class="menu">新しい広告を登録</a></li>
-                                    <li><a href="x10c_offerad_search.php?ofr=1&approvable=1" class="menu">承認申請のある広告</a></li>
-                                    <li><a href="x10c_offerad_search.php?pst=1&approvable=1" class="menu">投稿申請のある広告</a></li>
-                                    <li><a href="x10c_post_check.php" class="menu">投稿を確定する</a></li>
-                                    <li><a href="x10c_post_uncheck.php" class="menu">投稿の確定を取消</a></li>
                                     <li><a href="x10c_offerad_search.php?adstts=0" class="menu">進行中の広告</a></li>
                                     <li><a href="x10c_offerad_search.php?adstts=1" class="menu">終了した広告</a></li>
                                     <!--<li><a href="x10c_offerad_search.php" class="menu">過去に登録した広告</a></li>-->
@@ -142,15 +138,37 @@
                             </li>
                             <li>
                                 <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">
+                                    <span class="link-title">申請のある広告</span>
+                                    <i class="mdi mdi-content-copy link-icon"></i>
+                                </a>
+                                <ul class=" navigation-submenu" id="pages">
+                                    <li><a href="x10c_offerad_search.php?ofr=1&approvable=1" class="menu">承認申請のある広告</a></li>
+                                    <li><a href="x10c_offerad_search.php?pst=1&approvable=1" class="menu">投稿申請のある広告</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">
+                                    <span class="link-title">報酬の確定・修正</span>
+                                    <i class="mdi mdi-content-copy link-icon"></i>
+                                </a>
+                                <ul class=" navigation-submenu" id="pages">
+                                    <li><a href="x10c_post_check.php" class="menu">投稿を確定する</a></li>
+                                    <li><a href="x10c_post_uncheck.php" class="menu">投稿の確定を修正</a></li>
+                                    <li><a href="search.php?type=pay&run=true" class="menu">目標・投稿報酬の発生履歴</a></li>
+                                    <li><a href="search.php?type=click_pay&run=true" class="menu">クリック報酬の発生履歴</a></li>
+                                </ul>
+                            </li>
+                            <!--
+                            <li>
+                                <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">
                                     <span class="link-title">累計</span>
                                     <i class="mdi mdi-file-document link-icon"></i>
                                 </a>
                                 <ul class=" navigation-submenu" id="pages3">
                                     <li><a href="search.php?type=access&run=true" class="menu">広告へのアクセス履歴</a></li>
-                                    <li><a href="search.php?type=pay&run=true" class="menu">目標報酬の発生履歴</a></li>
-                                    <li><a href="search.php?type=click_pay&run=true" class="menu">クリック報酬の発生履歴</a></li>
                                 </ul>
                             </li>
+-->
                         <li>
                             <a href="#" data-toggle="collapse" aria-expanded="false" class="menu">
                                 <span class="link-title">レポート</span>

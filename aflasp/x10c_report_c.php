@@ -49,15 +49,26 @@ if (isset($_POST['output'])) {
 
 
 $html='';
+$total=0;
 foreach ($rows as $row) {
     $html.='<tr>';
     $html.='';
     $html.='<td class="t_left">'.$row->cname.'</td>';
     $html.='<td class="t_left">'.$adtype[$row->adware_type].$row->adname.'</td>';
     $html.='<td class="t_right">'.number_format($row->cost).'</td>';
+    $total = $total + $row->cost;
     $html.='<td class="t_left">'.$row->nname.'('.$row->owner.')</td>';
     $html.='<input name="search" type="hidden" value="1">';
     $html.='';
+    $html.='</tr>';
+}
+
+if (!empty($html)) {
+    $html.='<tr>';
+    $html.='<td class="t_left"></td>';
+    $html.='<td class="t_left">合計</td>';
+    $html.='<td class="t_right">'.number_format($total).'</td>';
+    $html.='<td class="t_left"></td>';
     $html.='</tr>';
 }
 

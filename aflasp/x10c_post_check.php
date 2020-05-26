@@ -41,7 +41,7 @@ if (isset($_POST['fixed'])) {
 if (isset($_POST['search'])) {
     $pDay =  strtotime("-".$pastday." day");
 
-    $where = " WHERE `pay`.`state`=0 AND `pay`.regist<".$pDay;
+    $where = " WHERE `pay`.`state`=0 AND `ad`.`adware_type`=2 AND `pay`.regist<".$pDay;
 
     $posts = getPosts($where);
 }
