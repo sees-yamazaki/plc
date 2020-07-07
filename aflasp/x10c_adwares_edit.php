@@ -6,6 +6,7 @@ include 'x10c_logging.php';
 include 'x10c_helper.php';
 include 'x10c/db/x10.php';
 include 'x10c/db/adwares.php';
+include 'x10c/db/system.php';
 //include 'x10c/db/dns.php';
 //require('custom/conf.php');
 // require('x10c/db/x10.php');
@@ -22,6 +23,7 @@ $id = empty($_GET['id']) ? $_POST['id'] : $_GET['id'];
 $mode = empty($_GET['mode']) ? $_POST['mode'] : $_GET['mode'];
 
 
+$sys = getSystem();
 
 $adware = new cls_adwares();
 //$adware->shadow_id = $_POST['shadow_id'];
@@ -34,7 +36,7 @@ $adware->category = $_POST['category'];
 $adware->banner_m = '';
 $adware->banner_m2 = '';
 $adware->banner_m3 = '';
-$adware->url = $_POST['url'];
+$adware->url = str_replace(' ', '', $_POST['url']);
 $adware->url_m = '';
 $adware->url_over = $_POST['url_over'];
 $adware->url_users = $_POST['url_users'];
@@ -99,6 +101,10 @@ if (isset($_POST['doCheck'])) {
     
     if ($adware->adware_type<>"1" && !preg_match("/^[0-9]+$/", $adware->money)) {
         $errorMessage .= '<li>獲得単価は半角数字で入力してください。</li>';
+    }
+
+    if (empty($adware->money) && empty($adware->click_money)) {
+        $errorMessage .= '<li>1円以上の金額を入力して下さい</li>';
     }
 
     if ($adware->adware_type=="1" && !preg_match("/^[0-9]+$/", $adware->click_money)) {
@@ -283,11 +289,11 @@ if ($adware->click_auto=="0") {
     $click_auto_1 = "";
 }
 
-$auto_0 = "";
-$auto_1 = " checked";
-if ($adware->auto=="0") {
-    $auto_0 = " checked";
-    $auto_1 = "";
+$auto_0 = " checked";
+$auto_1 = "";
+if ($adware->auto=="1") {
+    $auto_0 = "";
+    $auto_1 = " checked";
 }
 
 $htmlOC = "";
@@ -398,6 +404,7 @@ function typeChange() {
         document.getElementById('money').style.backgroundColor = "white";
         document.getElementById('click_money').readOnly = true;
         document.getElementById('click_money').style.backgroundColor = "#9fa0a0";
+        document.getElementById('click_money').value=0;
         radio_click[0].checked = true;
         radio_click[1].disabled = true;
         document.getElementById('a_row').style.display = "table-row";
@@ -412,6 +419,7 @@ function typeChange() {
 
     } else if (radio[1].checked) {
         document.getElementById('money').readOnly = true;
+        document.getElementById('money').value=0;
         document.getElementById('money').style.backgroundColor = "#9fa0a0";
         document.getElementById('click_money').readOnly = false;
         document.getElementById('click_money').style.backgroundColor = "white";
@@ -431,6 +439,7 @@ function typeChange() {
         document.getElementById('money').readOnly = false;
         document.getElementById('money').style.backgroundColor = "white";
         document.getElementById('click_money').readOnly = true;
+        document.getElementById('click_money').value=0;
         document.getElementById('click_money').style.backgroundColor = "#9fa0a0";
         radio_click[0].checked = true;
         radio_click[1].disabled = true;
@@ -520,9 +529,9 @@ $(function(){
         if (input == null) {
             $('.count1').html(0);
         } else if (input.length == 0) {
-            $('.count1').html(500);
+            $('.count1').html(1000);
         } else {
-            var inputLen = 500 - input.length;
+            var inputLen = 1000 - input.length;
             inputLen >= 0 ? inputLen : 0;
             $('.count1').html(inputLen);
         }
@@ -615,9 +624,9 @@ $(function(){
                             </tr>
                             <tr>
                                 <th>広告説明文<span>※</span></th>
-                                <td><span class="count1"><?php echo 500-mb_strlen($adware->comment); ?></span><br>
+                                <td><span class="count1"><?php echo 1000-mb_strlen($adware->comment); ?></span><br>
                                 <textarea name="comment" id="comment" cols="" rows="" class="textarea"
-                                        required maxlength="500"><?php echo $adware->comment; ?></textarea>
+                                        required maxlength="1000"><?php echo $adware->comment; ?></textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -686,6 +695,13 @@ $(function(){
                                     </div>
                                 </td>
                             </tr>
+                            <?php if (substr($sys->home, 0, 16)=='http://smafee.jp') { ?>
+                                <input type="hidden" name="span" value="1">
+                                <input type="hidden" name="span_type" value="d">
+                                <input type="hidden" name="use_cookie_interval" value="0">
+                                <input type="hidden" name="pay_span" value="1">
+                                <input type="hidden" name="pay_span_type" value="d">
+                            <?php } else { ?>
                             <tr>
                                 <th>クリック間隔<span>※</span></th>
                                 <td>
@@ -727,6 +743,7 @@ $(function(){
                                     </select>
                                     間の成果発生を無効にする。(同一IP)</td>
                             </tr>
+                            <?php } ?>
                             <tr id="c_row" <?php echo $cls_radio_c_row; ?>>
                                 <th>クリック成果の認証<span>※</span></th>
                                 <td><label><input type="radio" name="click_auto" value="1"
@@ -744,7 +761,8 @@ $(function(){
                             <!--
                             <tr>
                                 <th>継続成果の認証<span>※</span></th>
-                                <td><label><input type="radio" name="continue_auto" value="1"
+                                <td>
+                                    <label><input type="radio" name="continue_auto" value="1"
                                             checked="checked">自動</label>
                                     <label><input type="radio" name="continue_auto" value="0">手動</label>
                                 </td>
@@ -833,7 +851,7 @@ $(function(){
                                 </td>
                             </tr>
                             <tr>
-                                <th>成果・否認条件</th>
+                                <th>成果条件</th>
                                 <td>
                                     <div id="results_1" <?php echo $results_1; ?>>
                                     <?php $wk = $adware->results_10=="1" ? " checked" : "" ; ?>
@@ -864,19 +882,22 @@ $(function(){
                                 </td>
                             </tr>
                             <tr>
+                                <th>否認条件</th>
+                                <td>
+                                基本的な否認条件以外の否認条件は下記のテキストボックスへ記入してください。
+                                <div class='cp_tooltip2'>（基本的な否認条件）
+                                    <span class='cp_tooltiptext2'>・公序良俗に反する内容の投稿<br>・著作権・肖像権等の侵害<br>・不正なクリック、誘導と判断された場合<br>・NGキーワードを用いた誘導<br>・注文、申し込み、登録などの成果がキャンセルされた場合<br>・その他不正とみなされる場合</span>
+                            </div><br>
+                                    <textarea name="denials" cols="" rows=""
+                                        class="textarea"><?php echo $adware->denials; ?></textarea>
+                                </td>
+                            </tr>
+                            <tr>
                                 <th>指定ハッシュタグ</th>
                                 <td><textarea name="hashtag" cols="" rows=""
                                         class="textarea"><?php echo $adware->hashtag; ?></textarea>
                                 </td>
                             </tr>
-                            <!--
-                            <tr>
-                                <th>否認条件</th>
-                                <td><textarea name="denials" cols="" rows=""
-                                        class="textarea"><?php echo $adware->denials; ?></textarea>
-                                </td>
-                            </tr>
-                                    -->
                             <tr>
                                 <th>NGキーワード</th>
                                 <td><textarea name="ngword" cols="" rows=""

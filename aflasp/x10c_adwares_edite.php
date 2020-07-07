@@ -5,7 +5,9 @@ require('custom/conf.php');
 require('x10c/db/x10.php');
 require('x10c_helper.php');
 require('x10c_logging.php');
+require('x10c_mail.php');
 require('x10c/db/adwares.php');
+require('x10c/db/system.php');
 
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
@@ -28,7 +30,7 @@ $adware->category = $_POST['category'];
 $adware->banner_m = '';
 $adware->banner_m2 = '';
 $adware->banner_m3 = '';
-$adware->url = $_POST['url'];
+$adware->url = str_replace(' ', '', $_POST['url']);
 $adware->url_m = '';
 $adware->url_over = $_POST['url_over'];
 $adware->url_users = $_POST['url_users'];
@@ -151,6 +153,7 @@ if ($_POST['banner3_DELETE']=="1") {
     $adware->banner3 = substr($_POST['banner3_filetmp'], 3);
 }
 
+$sys = getSystem();
 
 if (isset($_POST['back'])) {
     header('Location: x10c_adwares_edit.php', true, 307);
@@ -160,13 +163,16 @@ if (isset($_POST['back'])) {
         header('Location: x10c_adwares_edited.php?deleteAd=1');
     } else {
         stopAdwares($adware);
+        sendMail4Admin($sys, "広告が削除されました", "広告名：".$adware->name);
         header('Location: x10c_adwares_edited.php?deleteAd=2');
     }
 } elseif (isset($_POST['doEdit'])) {
     if (empty($id)) {
         insertAdwares($adware);
+        sendMail4Admin($sys, "広告が登録されました", "広告名：".$adware->name);
     } else {
         updateAdwares($adware);
+        sendMail4Admin($sys, "広告が更新されました", "広告名：".$adware->name);
     }
 
     header('Location: x10c_adwares_edited.php');

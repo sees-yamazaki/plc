@@ -77,7 +77,8 @@ if (isset($_POST['doCheck'])) {
         }
         $md5 = md5($nId . $nUser->mail);
         $text .= $sys->home."/x10u_activation.php?type=nUser&id=".$nId."&md5=".$md5;
-        $text .= "\n\n".$sys->site_title."\n\n".$sys->home;
+        $sysurl = str_replace("a/", "", $sys->home);
+        $text .= "\n\n".$sys->site_title."\n\n".$sysurl;
 
         $to      = $nUser->mail;
         $subject = "【".$sys->site_title."】メールアドレスの認証が完了しました。";
@@ -104,6 +105,14 @@ $youtube = str_replace('/', '', str_replace('https://www.youtube.com/channel/', 
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title>新規会員登録（会員情報確認）</title>
 <meta name="description" content="アフィリエイト管理画面">

@@ -106,6 +106,14 @@ $adHtml.='</div>';
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title>成果情報</title>
 <meta name="description" content="アフィリエイト管理画面">
@@ -171,7 +179,7 @@ $adHtml.='</div>';
                                             <td class="td-num"><?php echo(number_format($pays_0->cst2 + $pays_1->cst2 + $pays_2->cst3)); ?>円</td>
                                             <td class="td-num"><?php echo number_format($pays_2->cnt2); ?>件</td>
                                             <td class="td-num">
-                                                <?php echo($pays_0->cnt0 + $pays_0->cnt1 + $pays_1->cnt0 + $pays_1->cnt1 + $pays_2->cnt1); ?>件
+                                                <?php echo($pays_0->cnt1 + $pays_1->cnt1 + $pays_2->cnt1); ?>件
                                             </td>
                                         </tr>
                                     </tbody>
@@ -200,7 +208,7 @@ $adHtml.='</div>';
             <td class="td-num"><?php echo(number_format($past_pays_0->cst0 + $past_pays_0->cst1 + $past_pays_1->cst0 + $past_pays_1->cst1 + $past_pays_2->cst2)); ?>円</td>
             <td class="td-num"><?php echo(number_format($past_pays_0->cst2 + $past_pays_1->cst2 + $past_pays_2->cst3)); ?>円</td>
             <td class="td-num"><?php echo number_format($past_pays_2->cnt2); ?>件</td>
-            <td class="td-num"><?php echo(number_format($past_pays_0->cnt0 + $past_pays_0->cnt1 + $past_pays_1->cnt0 + $past_pays_1->cnt1 + $past_pays_2->cnt1)); ?>件</td>
+            <td class="td-num"><?php echo(number_format($past_pays_0->cnt1  + $past_pays_1->cnt1 + $past_pays_2->cnt1)); ?>件</td>
                       </tr>
                     </tbody>
                   </table>

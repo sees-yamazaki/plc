@@ -35,7 +35,7 @@ if (isset($_POST['login'])) {
         if (is_null($nId)) {
             $err_mail_div = ' is-error';
             $err_mail_msg = '<p class="form-row-error-text">ログインできませんでした。</p>';
-        }else{
+        } else {
             $nUser = getNuser($nId);
             if ($nUser->activate=="1") {
                 $err_mail_div = ' is-error';
@@ -58,6 +58,14 @@ if (isset($_POST['login'])) {
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title>ログイン・新規会員登録</title>
 <meta name="description" content="アフィリエイト管理画面">

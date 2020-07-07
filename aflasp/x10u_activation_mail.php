@@ -31,19 +31,19 @@ $now = strtotime("now");
 $sccs='';
 $err='';
 if (empty($x10mail->id)) {
-  $err="メニューのお問い合わせよりお問い合わせください。（ACV010）";
-}elseif($x10mail->stts=="2"){
-  $err="アクティベーションは完了しています。<br>".$x10mail->mail;
-}elseif($x10mail->stts=="1"){
-  $err="このURLではアクティベーションできません。<br>".$x10mail->mail;
-}elseif($x10mail->limittime<$now){
-  $err="アクティベーションの期限を超えています。<br>期限日時：". date('Y-m-d H:i:s', $x10mail->limittime);
-}elseif($md5_==$md5){
-  $sccs="アクティベーション完了。";
-}elseif($md5_<>$md5){
-  $err="メニューのお問い合わせよりお問い合わせください。（ACV020）";
-}else{
-  $err="メニューのお問い合わせよりお問い合わせください。（ACV030）";
+    $err="メニューのお問い合わせよりお問い合わせください。（ACV010）";
+} elseif ($x10mail->stts=="2") {
+    $err="アクティベーションは完了しています。<br>".$x10mail->mail;
+} elseif ($x10mail->stts=="1") {
+    $err="このURLではアクティベーションできません。<br>".$x10mail->mail;
+} elseif ($x10mail->limittime<$now) {
+    $err="アクティベーションの期限を超えています。<br>期限日時：". date('Y-m-d H:i:s', $x10mail->limittime);
+} elseif ($md5_==$md5) {
+    $sccs="アクティベーション完了。";
+} elseif ($md5_<>$md5) {
+    $err="メニューのお問い合わせよりお問い合わせください。（ACV020）";
+} else {
+    $err="メニューのお問い合わせよりお問い合わせください。（ACV030）";
 }
 
 $html='';
@@ -71,6 +71,14 @@ if (!empty($sccs)) {
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title>アクティベーション完了</title>
 <meta name="description" content="アフィリエイト管理画面">

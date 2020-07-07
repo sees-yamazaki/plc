@@ -41,19 +41,19 @@ if (isset($_POST['doCheck'])) {
         $err_number_div = ' is-error';
         $err_number_msg = '<p class="form-row-error-text">入力してください。</p>';
         $isErr ='e';
-    }elseif (!preg_match("/^[0-9]+$/", $_POST['number'])) {
-      $err_number_div = ' is-error';
-      $err_number_msg = '<p class="form-row-error-text">半角数字で入力してください。</p>';
-      $isErr ='e';
+    } elseif (!preg_match("/^[0-9]+$/", $_POST['number'])) {
+        $err_number_div = ' is-error';
+        $err_number_msg = '<p class="form-row-error-text">半角数字で入力してください。</p>';
+        $isErr ='e';
     }
     if (empty($_POST['bank_name'])) {
         $err_bank_name_div = ' is-error';
         $err_bank_name_msg = '<p class="form-row-error-text">入力してください。</p>';
         $isErr ='e';
-    }elseif (preg_match("/[^ァ-ヶー　]/u", $_POST['bank_name'])) {
-      $err_bank_name_div = ' is-error';
-      $err_bank_name_msg = '<p class="form-row-error-text">全角カナで入力してください。</p>';
-      $isErr ='e';
+    } elseif (preg_match("/[^ァ-ヶー　]/u", $_POST['bank_name'])) {
+        $err_bank_name_div = ' is-error';
+        $err_bank_name_msg = '<p class="form-row-error-text">全角カナで入力してください。</p>';
+        $isErr ='e';
     }
 
     if (empty($isErr)) {
@@ -79,6 +79,14 @@ if (isset($_POST['doCheck'])) {
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title>口座情報を編集する</title>
 <meta name="description" content="アフィリエイト管理画面">

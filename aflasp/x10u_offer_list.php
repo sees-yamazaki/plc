@@ -79,7 +79,7 @@ if ($apprv==1) {
         $where .= " AND (approvable=0) ";
     }
 }
-$where .= " AND (isFinish=0) ";
+$where .= " AND (isFinish=0)  AND `open`=1 ";
 
 //検索結果件数を取得
 $cnt = countAdwares($where);
@@ -142,6 +142,14 @@ foreach ($categories as $cat) {
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title>オファー一覧</title>
 <meta name="description" content="アフィリエイト管理画面">

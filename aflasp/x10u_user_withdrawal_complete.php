@@ -18,6 +18,14 @@ $_SESSION[ $SESSION_NAME ] = '';
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title>退会する</title>
 <?php include(__DIR__ . '/x10u/inc/meta.php'); ?>

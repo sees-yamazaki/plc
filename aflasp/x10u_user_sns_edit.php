@@ -17,38 +17,40 @@ date_default_timezone_set('Asia/Tokyo');
 $errorMessage = '';
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
-if(empty($LOGIN_ID)){ header('Location: x10u_logoff.php'); }
+if (empty($LOGIN_ID)) {
+    header('Location: x10u_logoff.php');
+}
 
 
 if (isset($_POST['doCheck'])) {
-  $isErr ='';
-  //   if (empty($_POST['instagram'])) {
-  //       $err_instagram_div = ' is-error';
-  //       $err_instagram_msg = '<p class="form-row-error-text">入力してください。</p>';
-  //       $isErr ='e';
-  //   }elseif (empty($_POST['twitter'])) {
-  //     $err_twitter_div = ' is-error';
-  //     $err_twitter_msg = '<p class="form-row-error-text">入力してください。</p>';
-  //     $isErr ='e';
-  //   }elseif (empty($_POST['facebook'])) {
-  //     $err_facebook_div = ' is-error';
-  //     $err_facebook_msg = '<p class="form-row-error-text">入力してください。</p>';
-  //     $isErr ='e';
-  //   }elseif (empty($_POST['youtube'])) {
-  //     $err_youtube_div = ' is-error';
-  //     $err_youtube_msg = '<p class="form-row-error-text">入力してください。</p>';
-  //     $isErr ='e';
-  // } 
+    $isErr ='';
+    //   if (empty($_POST['instagram'])) {
+    //       $err_instagram_div = ' is-error';
+    //       $err_instagram_msg = '<p class="form-row-error-text">入力してください。</p>';
+    //       $isErr ='e';
+    //   }elseif (empty($_POST['twitter'])) {
+    //     $err_twitter_div = ' is-error';
+    //     $err_twitter_msg = '<p class="form-row-error-text">入力してください。</p>';
+    //     $isErr ='e';
+    //   }elseif (empty($_POST['facebook'])) {
+    //     $err_facebook_div = ' is-error';
+    //     $err_facebook_msg = '<p class="form-row-error-text">入力してください。</p>';
+    //     $isErr ='e';
+    //   }elseif (empty($_POST['youtube'])) {
+    //     $err_youtube_div = ' is-error';
+    //     $err_youtube_msg = '<p class="form-row-error-text">入力してください。</p>';
+    //     $isErr ='e';
+    // }
 
     if (empty($isErr)) {
-      header('Location: x10u_user_sns_confirm.php', true, 307);
-  }
-}elseif(isset($_POST['4back'])){
+        header('Location: x10u_user_sns_confirm.php', true, 307);
+    }
+} elseif (isset($_POST['4back'])) {
     $nUserX->instagram = $_POST['instagram'];
     $nUserX->twitter = $_POST['twitter'];
     $nUserX->facebook = $_POST['facebook'];
     $nUserX->youtube = $_POST['youtube'];
-}else{
+} else {
     $nUserX = getNuserX10($LOGIN_ID);
 }
 
@@ -57,6 +59,14 @@ if (isset($_POST['doCheck'])) {
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title>SNSアカウントを編集する</title>
 <meta name="description" content="アフィリエイト管理画面">

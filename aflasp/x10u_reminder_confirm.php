@@ -22,8 +22,7 @@ $errorMessage = '';
 
 
 
-if(isset($_POST['doRePW'])){
-
+if (isset($_POST['doRePW'])) {
     $nUser = getNuserByMail($_POST['mail']);
 
     $newPw=strtotime("now");
@@ -52,7 +51,6 @@ if(isset($_POST['doRePW'])){
 
 
     header('Location: x10u_reminder_complete.php');
-
 } elseif (isset($_POST['4back'])) {
     header('Location: x10u_reminder.php', true, 307);
 }
@@ -62,6 +60,14 @@ if(isset($_POST['doRePW'])){
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title>パスワードをお忘れの方へ</title>
 <meta name="description" content="アフィリエイト管理画面">

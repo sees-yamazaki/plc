@@ -16,30 +16,28 @@ $errorMessage='';
 
 
 if (isset($_POST['doSend'])) {
+    $sys = getSystem();
 
-        $sys = getSystem();
+    mb_language("Japanese");
+    mb_internal_encoding("UTF-8");
 
-        mb_language("Japanese");
-        mb_internal_encoding("UTF-8");
+    $text = "\n\n";
+    $text .= "【お問い合わせ項目】\n".$_POST['faq']."\n\n";
+    $text .= "【メールアドレス】\n".$_POST['mail']."\n\n";
+    $text .= "【お問い合わせ内容】\n".$_POST['txt']."\n\n";
 
-        $text = "\n\n";
-        $text .= "【お問い合わせ項目】\n".$_POST['faq']."\n\n";
-        $text .= "【メールアドレス】\n".$_POST['mail']."\n\n";
-        $text .= "【お問い合わせ内容】\n".$_POST['txt']."\n\n";
-
-        $to      = trim($sys->mail_address);
-        $subject = "【".$sys->site_title."】お問い合わせ";
-        $message = $text;
-        $headers = 'From:"'.mb_encode_mimeheader($sys->mail_name).'" <'. trim($sys->mail_address).'>';
-        mb_send_mail($to, $subject, $message, $headers);
+    $to      = trim($sys->mail_address);
+    $subject = "【".$sys->site_title."】お問い合わせ";
+    $message = $text;
+    $headers = 'From:"'.mb_encode_mimeheader($sys->mail_name).'" <'. trim($sys->mail_address).'>';
+    mb_send_mail($to, $subject, $message, $headers);
         
-        //問い合わせ者にも送信
-        $to      = trim($_POST['mail']);
-        mb_send_mail($to, $subject, $message, $headers);
+    //問い合わせ者にも送信
+    $to      = trim($_POST['mail']);
+    mb_send_mail($to, $subject, $message, $headers);
 
 
-        header('Location: x10u_contact_complete.php');
-    
+    header('Location: x10u_contact_complete.php');
 } elseif (isset($_POST['4back'])) {
     header('Location: x10u_contact.php', true, 307);
 }
@@ -50,6 +48,14 @@ if (isset($_POST['doSend'])) {
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title>お問い合わせ</title>
 <?php include(__DIR__ . '/x10u/inc/meta.php'); ?>

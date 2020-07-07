@@ -67,6 +67,14 @@ for ($i = 1; $i <= 12; $i++) {
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title><?php echo $titleHtml; ?></title>
 <meta name="description" content="アフィリエイト管理画面">
@@ -156,7 +164,7 @@ for ($i = 1; $i <= 12; $i++) {
                 <td><?php echo $p->cnt2; ?>件</td>
                 <td><?php echo number_format($p->cst0 + $p->cst1); ?>円</td>
                 <td><?php echo number_format($p->cst2); ?>円</td>
-                <td><?php echo($p->cnt0 + $p->cnt1); ?>件</td>
+                <td><?php echo($p->cnt1); ?>件</td>
             <?php } else { ?>
                 <td class="td-num"><?php echo number_format($p->cnt0); ?>件</td>
                 <td class="td-num"><?php echo number_format($p->cnt2); ?>件</td>

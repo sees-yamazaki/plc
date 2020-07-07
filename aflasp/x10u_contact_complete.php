@@ -12,7 +12,7 @@ session_start();
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
 if (empty($LOGIN_ID)) {
     $html = '<div class="btn"><a href="./x10u_index.php" class="bg_blu">トップへ</a></div>';
-}else{
+} else {
     $html = '<div class="btn"><a href="./x10u_mypage.php" class="bg_blu">トップへ</a></div>';
 }
 
@@ -23,6 +23,14 @@ if (empty($LOGIN_ID)) {
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title>お問い合わせ</title>
 <?php include(__DIR__ . '/x10u/inc/meta.php'); ?>

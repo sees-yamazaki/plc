@@ -17,7 +17,9 @@ date_default_timezone_set('Asia/Tokyo');
 $errorMessage = '';
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
-if(empty($LOGIN_ID)){ header('Location: x10u_logoff.php'); }
+if (empty($LOGIN_ID)) {
+    header('Location: x10u_logoff.php');
+}
 
 
 $nUserX = getNuserX10($LOGIN_ID);
@@ -27,6 +29,14 @@ $nUserX = getNuserX10($LOGIN_ID);
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title>SNSアカウントを編集する【完了】</title>
 <meta name="description" content="アフィリエイト管理画面">

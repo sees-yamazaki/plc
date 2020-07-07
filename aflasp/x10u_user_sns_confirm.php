@@ -10,7 +10,9 @@ include 'x10c/db/system.php';
 session_start();
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
-if(empty($LOGIN_ID)){ header('Location: x10u_logoff.php'); }
+if (empty($LOGIN_ID)) {
+    header('Location: x10u_logoff.php');
+}
 
 $errorMessage='';
 
@@ -18,29 +20,26 @@ $errorMessage='';
 
 if (isset($_POST['doCheck'])) {
 } elseif (isset($_POST['doEdit'])) {
-    
+    $nUser = new cls_nuser_x10();
+    $nUser->id =  $LOGIN_ID;
+    $nUser->nickname = "";
+    $nUser->instagram = $_POST['instagram'];
+    $nUser->facebook = $_POST['facebook'];
+    $nUser->twitter = $_POST['twitter'];
+    $nUser->youtube = $_POST['youtube'];
 
-        $nUser = new cls_nuser_x10();
-        $nUser->id =  $LOGIN_ID;
-        $nUser->nickname = "";
-        $nUser->instagram = $_POST['instagram'];
-        $nUser->facebook = $_POST['facebook'];
-        $nUser->twitter = $_POST['twitter'];
-        $nUser->youtube = $_POST['youtube'];
+    updateNuserX10($nUser);
 
-        updateNuserX10($nUser);
-
-        header('Location: x10u_user_sns_complete.php');
-
+    header('Location: x10u_user_sns_complete.php');
 } elseif (isset($_POST['4back'])) {
     header('Location: x10u_user_sns_edit.php', true, 307);
 }
 
 
-$instagram = str_replace('/','',str_replace('https://www.instagram.com/','',$_POST['instagram']));
-$facebook = str_replace('/','',str_replace('https://www.facebook.com/','',$_POST['facebook']));
-$twitter = str_replace('/','',str_replace('https://twitter.com/','',$_POST['twitter']));
-$youtube = str_replace('/','',str_replace('https://www.youtube.com/channel/','',$_POST['youtube']));
+$instagram = str_replace('/', '', str_replace('https://www.instagram.com/', '', $_POST['instagram']));
+$facebook = str_replace('/', '', str_replace('https://www.facebook.com/', '', $_POST['facebook']));
+$twitter = str_replace('/', '', str_replace('https://twitter.com/', '', $_POST['twitter']));
+$youtube = str_replace('/', '', str_replace('https://www.youtube.com/channel/', '', $_POST['youtube']));
 
 
 
@@ -48,6 +47,14 @@ $youtube = str_replace('/','',str_replace('https://www.youtube.com/channel/','',
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title>SNSアカウントを編集する【確認】</title>
 <meta name="description" content="アフィリエイト管理画面">

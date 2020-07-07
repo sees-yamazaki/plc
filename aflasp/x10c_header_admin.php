@@ -1,6 +1,14 @@
 <html lang="ja">
 
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
     <meta http-equiv="Content-Type" content="text/html; charset=shift_jis">
     <meta http-equiv="Content-Script-Type" content="text/javascript">
     <meta http-equiv="Content-Style-Type" content="text/css">
@@ -50,7 +58,7 @@
         background-color: #16160e;
     }
 
-    cp_tooltip .cp_tooltiptext::after {
+    .cp_tooltip .cp_tooltiptext::after {
         position: absolute;
         top: 40%;
         right: 100%;
@@ -61,6 +69,45 @@
     }
 
     .cp_tooltip:hover .cp_tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+    </style><style>
+    .cp_tooltip2 {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        background: linear-gradient(transparent 60%, #c1e4e9 60%);
+    }
+
+    .cp_tooltip2 .cp_tooltiptext2 {
+        position: absolute;
+        z-index: 1;
+        top: -5px;
+        left: 105%;
+        visibility: hidden;
+        /*width: auto;*/
+        white-space: nowrap;
+        padding: 0.3em 0.5em;
+        transition: opacity 1s;
+        text-align: left;
+        opacity: 0;
+        color: #ffffff;
+        border-radius: 3px;
+        background-color: #16160e;
+    }
+
+    .cp_tooltip2 .cp_tooltiptext2::after {
+        position: absolute;
+        top: 40%;
+        right: 100%;
+        margin-left: -5px;
+        content: ' ';
+        border: 5px solid transparent;
+        border-right-color: #16160e;
+    }
+
+    .cp_tooltip2:hover .cp_tooltiptext2 {
         visibility: visible;
         opacity: 1;
     }

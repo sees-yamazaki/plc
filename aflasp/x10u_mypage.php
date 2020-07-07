@@ -35,7 +35,7 @@ $termHtml = date('Y年m月d日', strtotime("first day of this month"))."〜".dat
 
 // 直近５日間に公開されて、現在公開中の広告を取得する
 //$ads = getAdwaresRecentry(5);
-$ads = getAdwaresLimit(" AND (isFinish=0) ", 5, 0);
+$ads = getAdwaresLimit(" AND (isFinish=0) AND `open`=1 ", 5, 0);
 
 $pickupHtml='';
 foreach ($ads as $ad) {
@@ -154,6 +154,14 @@ if (empty($approvedHtml)) {
 <html lang="ja">
 
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
     <meta charset="UTF-8">
     <title>マイページ</title>
     <meta name="description" content="アフィリエイト管理画面">
@@ -209,7 +217,7 @@ if (empty($approvedHtml)) {
                                             <td class="td-num"><?php echo(number_format($pays_0->cst2 + $pays_1->cst2 + $pays_2->cst3)); ?>円</td>
                                             <td class="td-num"><?php echo number_format($pays_2->cnt2); ?>件</td>
                                             <td class="td-num">
-                                                <?php echo($pays_0->cnt0 + $pays_0->cnt1 + $pays_1->cnt0 + $pays_1->cnt1 + $pays_2->cnt1); ?>件
+                                                <?php echo($pays_0->cnt1 + $pays_1->cnt1 + $pays_2->cnt1); ?>件
                                             </td>
                                         </tr>
                                     </tbody>
@@ -237,7 +245,7 @@ if (empty($approvedHtml)) {
                                             <td class="td-num"><?php echo number_format($pays_0->cnt2); ?>件</td>
                                             <td class="td-num"><?php echo(number_format($pays_0->cst0 + $pays_0->cst1)); ?>円</td>
                                             <td class="td-num"><?php echo number_format($pays_0->cst2); ?>円</td>
-                                            <td class="td-num"><?php echo(number_format($pays_0->cnt0 + $pays_0->cnt1)); ?>件</td>
+                                            <td class="td-num"><?php echo(number_format($pays_0->cnt1)); ?>件</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -264,7 +272,7 @@ if (empty($approvedHtml)) {
                                             <td class="td-num"><?php echo number_format($pays_1->cnt2); ?>件</td>
                                             <td class="td-num"><?php echo(number_format($pays_1->cst0 + $pays_1->cst1)); ?>円</td>
                                             <td class="td-num"><?php echo number_format($pays_1->cst2); ?>円</td>
-                                            <td class="td-num"><?php echo(number_format($pays_1->cnt0 + $pays_1->cnt1)); ?>件</td>
+                                            <td class="td-num"><?php echo(number_format($pays_1->cnt1)); ?>件</td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -89,6 +89,14 @@ $txt_state = array('認定中','非認証','認証','','','','','','','','確認
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title><?php echo $titleHtml; ?></title>
 <meta name="description" content="アフィリエイト管理画面">

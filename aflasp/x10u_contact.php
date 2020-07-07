@@ -47,23 +47,30 @@ if (isset($_POST['doCheck'])) {
 
     $mail = $_POST['mail'];
     $mail_confirm = $_POST['mail_confirm'];
-}elseif (isset($_POST['4back'])) {
-  $mail = $_POST['mail'];
-  $mail_confirm = $_POST['mail_confirm'];
-}else{
-  $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
-  if(!empty($LOGIN_ID)){
-     $nUser = getNuser($LOGIN_ID);
-     $mail = $nUser->mail;
-     $mail_confirm = $nUser->mail;
-
-  }
+} elseif (isset($_POST['4back'])) {
+    $mail = $_POST['mail'];
+    $mail_confirm = $_POST['mail_confirm'];
+} else {
+    $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
+    if (!empty($LOGIN_ID)) {
+        $nUser = getNuser($LOGIN_ID);
+        $mail = $nUser->mail;
+        $mail_confirm = $nUser->mail;
+    }
 }
 
 ?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title>お問い合わせ</title>
 <meta name="description" content="アフィリエイト管理画面">

@@ -121,7 +121,7 @@ if ($ad->adware_type=="2") {
     }
 }
 $sns = $nuserX10->instagram.$nuserX10->facebook.$nuserX10->twitter.$nuserX10->youtube;
-if (empty($sns)) {
+if (empty($sns) && $ad->adware_type=="2") {
     $titleHtml .= '<div class="alert_box">';
     $titleHtml .= '<h4 class="alert_box_title"><span class="icon_chuui_pnk">投稿報告の際のご注意</span></h4>';
     $titleHtml .= '<p class="alert_box_text">投稿は指定されたSNSアカウント設定が必要です。<br><a href="x10u_user.php">こちら</a>からSNSアカウント設定を１つ以上行って投稿報告をしてください</p>';
@@ -394,6 +394,14 @@ foreach ($tags as $tag) {
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title><?php echo $ad->name; ?></title>
 <meta name="description" content="アフィリエイト管理画面">
@@ -423,7 +431,7 @@ foreach ($tags as $tag) {
 
         <div class="article__section article__section_outline" id="url">
           <h3 class="bar-title"><span class="bar-title-text">オファー概要</span></h3>
-          <p class="article__section_outline_text"><?php echo $ad->comment; ?></p>
+          <p class="article__section_outline_text"><?php echo nl2br($ad->comment); ?></p>
           <?php if (mb_strlen($ad->comment)>120) { ?>
           <div class="filter-cover sp"></div>
           <p class="js-btn-filter btn-filter-off f-blu sp">続きを読む</p>
@@ -469,6 +477,10 @@ foreach ($tags as $tag) {
                 $rslt =  empty($rslt) ? "なし" : $rslt;
               ?>
               <dd><?php echo $rslt; ?></dd>
+            </dl>
+            <dl>
+              <dt>否認条件</dt>
+              <dd><?php echo nl2br($ad->denials).'<br>・公序良俗に反する内容の投稿<br>・著作権・肖像権等の侵害<br>・不正なクリック、誘導と判断された場合<br>・NGキーワードを用いた誘導<br>・注文、申し込み、登録などの成果がキャンセルされた場合<br>・その他不正とみなされる場合'; ?></dd>
             </dl>
             <dl>
               <dt>NGキーワード</dt>

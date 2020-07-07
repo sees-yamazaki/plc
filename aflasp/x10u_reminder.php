@@ -21,20 +21,18 @@ $errorMessage = '';
 
 
 
-if(isset($_POST['doCheck'])){
-
+if (isset($_POST['doCheck'])) {
     $cnt = countNUserByMail($_POST['mail']);
 
     if (empty($_POST['mail'])) {
         $err_mail_div = ' is-error';
         $err_mail_msg = '<p class="form-row-error-text">メールアドレスを入力してください。</p>';
-    }elseif($cnt=="0"){
+    } elseif ($cnt=="0") {
         $err_mail_div = ' is-error';
         $err_mail_msg = '<p class="form-row-error-text">このメールアドレスは登録されていません。</p>';
-    }else{
+    } else {
         header('Location: x10u_reminder_confirm.php', true, 307);
     }
-
 }
 
 
@@ -42,6 +40,14 @@ if(isset($_POST['doCheck'])){
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title>パスワードをお忘れの方へ</title>
 <meta name="description" content="アフィリエイト管理画面">

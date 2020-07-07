@@ -25,25 +25,23 @@ $md5_ = md5($nId . $nUser->mail);
 
 $html='';
 if ($md5_==$md5) {
-  $sys = getSystem();
-  updateNuserActivate($nUser->id,$sys->nuser_accept_admin);
-  $html.='<div class="alert_box_complete">';
-  $html.='<h4 class="alert_box_complete_title"><span class="icon_check_grn"></span>アクティベーションが完了致しました。</h4>';
-  $html.='<p class="alert_box_text">下記よりログイン画面にお進み下さい。</p>';
-  $html.='</div>';
-  $html.='<div class="form__submit">';
-  $html.='<div class="btn"><a href="./x10u_login.php" class="bg_blu">ログイン画面へ</a></div>';
-  $html.='</div>';
-  
-}else{
-  $html.='<div class="alert_box_complete">';
-  $html.='<h4 class="alert_box_complete_title"><span class="icon_check_grn"></span>アクティベーションに失敗しました。</h4>';
-  $html.='<p class="alert_box_text">メニューのお問い合わせよりお問い合わせください。</p>';
-  $html.='</div>';
-  $html.='<div class="form__submit">';
-  $html.='<div class="btn"><a href="./x10u_index.php" class="bg_blu">トップ画面へ</a></div>';
-  $html.='</div>';
-
+    $sys = getSystem();
+    updateNuserActivate($nUser->id, $sys->nuser_accept_admin);
+    $html.='<div class="alert_box_complete">';
+    $html.='<h4 class="alert_box_complete_title"><span class="icon_check_grn"></span>アクティベーションが完了致しました。</h4>';
+    $html.='<p class="alert_box_text">下記よりログイン画面にお進み下さい。</p>';
+    $html.='</div>';
+    $html.='<div class="form__submit">';
+    $html.='<div class="btn"><a href="./x10u_login.php" class="bg_blu">ログイン画面へ</a></div>';
+    $html.='</div>';
+} else {
+    $html.='<div class="alert_box_complete">';
+    $html.='<h4 class="alert_box_complete_title"><span class="icon_check_grn"></span>アクティベーションに失敗しました。</h4>';
+    $html.='<p class="alert_box_text">メニューのお問い合わせよりお問い合わせください。</p>';
+    $html.='</div>';
+    $html.='<div class="form__submit">';
+    $html.='<div class="btn"><a href="./x10u_index.php" class="bg_blu">トップ画面へ</a></div>';
+    $html.='</div>';
 }
 
 
@@ -51,6 +49,14 @@ if ($md5_==$md5) {
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167856896-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-167856896-1');
+</script>
 <meta charset="UTF-8">
 <title>アクティベーション完了</title>
 <meta name="description" content="アフィリエイト管理画面">
