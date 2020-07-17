@@ -52,12 +52,14 @@ class cls_secretadwares
     public $denials ;
     public $ngword ;
     public $note ;
+    public $meyasu ;
     public $startdt ;
     public $enddt ;
     public $cnt_offer ;
     public $cnt_post ;
     public $stts ;
     public $isFinish ;
+    public $results_00 ;
     public $results_10 ;
     public $results_20 ;
     public $results_21 ;
@@ -78,9 +80,11 @@ class cls_x10adwares
     public $denials ;
     public $ngword ;
     public $note ;
+    public $meyasu ;
     public $startdt ;
     public $enddt ;
     public $cuser ;
+    public $results_00 ;
     public $results_10 ;
     public $results_20 ;
     public $results_21 ;
@@ -321,12 +325,14 @@ function getAdware($id)
             $result->denials = $row['denials'];
             $result->ngword = $row['ngword'];
             $result->note = $row['note'];
+            $result->meyasu = $row['meyasu'];
             $result->startdt = $row['startdt'];
             $result->enddt = $row['enddt'];
             $result->cnt_offer = $row['cnt_offer'];
             $result->cnt_post = $row['cnt_post'];
             $result->stts = $row['stts'];
             $result->isFinish = $row['isFinish'];
+            $result->results_00 = $row['results_00'];
             $result->results_10 = $row['results_10'];
             $result->results_20 = $row['results_20'];
             $result->results_21 = $row['results_21'];
@@ -400,7 +406,7 @@ function insertX10Adware($secretadwares)
 {
     try {
         require 'dns.php';
-        $sql = "INSERT  INTO `x10_adwares`(`shadow_id`, `id`, `adware_type`, `approvable`, `keyword`, `results`, `hashtag`, `denials`, `ngword`, `note`, `startdt`, `enddt`, `results_10`, `results_20`, `results_21`, `results_22`, `results_30`, `results_31`) VALUES (:shadow_id, :id, :adware_type, :approvable, :keyword, :results, :hashtag, :denials, :ngword, :note, :startdt, :enddt, :results_10, :results_20, :results_21, :results_22, :results_30, :results_31)";
+        $sql = "INSERT  INTO `x10_adwares`(`shadow_id`, `id`, `adware_type`, `approvable`, `keyword`, `results`, `hashtag`, `denials`, `ngword`, `note`, `meyasu`, `startdt`, `enddt`, `results_00`, `results_10`, `results_20`, `results_21`, `results_22`, `results_30`, `results_31`) VALUES (:shadow_id, :id, :adware_type, :approvable, :keyword, :results, :hashtag, :denials, :ngword, :note, :meyasu, :startdt, :enddt, :results_00, :results_10, :results_20, :results_21, :results_22, :results_30, :results_31)";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':shadow_id', $secretadwares->shadow_id, PDO::PARAM_INT);
         $stmt->bindParam(':id', $secretadwares->id, PDO::PARAM_STR);
@@ -412,6 +418,8 @@ function insertX10Adware($secretadwares)
         $stmt->bindParam(':denials', $secretadwares->denials, PDO::PARAM_STR);
         $stmt->bindParam(':ngword', $secretadwares->ngword, PDO::PARAM_STR);
         $stmt->bindParam(':note', $secretadwares->note, PDO::PARAM_STR);
+        $stmt->bindParam(':meyasu', $secretadwares->meyasu, PDO::PARAM_STR);
+        $stmt->bindParam(':results_00', $secretadwares->results_00, PDO::PARAM_INT);
         $stmt->bindParam(':results_10', $secretadwares->results_10, PDO::PARAM_INT);
         $stmt->bindParam(':results_20', $secretadwares->results_20, PDO::PARAM_INT);
         $stmt->bindParam(':results_21', $secretadwares->results_21, PDO::PARAM_INT);
@@ -442,7 +450,7 @@ function updateX10Adware($secretadwares)
 {
     try {
         require 'dns.php';
-        $sql = "UPDATE  `x10_adwares` SET `adware_type`=:adware_type,`approvable`=:approvable, `keyword`=:keyword, `results`=:results, `hashtag`=:hashtag, `denials`=:denials, `ngword`=:ngword, `note`=:note, `startdt`=:startdt, `enddt`=:enddt, `results_10`=:results_10, `results_20`=:results_20, `results_21`=:results_21, `results_22`=:results_22, `results_30`=:results_30, `results_31`=:results_31 WHERE `id`=:id";
+        $sql = "UPDATE  `x10_adwares` SET `adware_type`=:adware_type,`approvable`=:approvable, `keyword`=:keyword, `results`=:results, `hashtag`=:hashtag, `denials`=:denials, `ngword`=:ngword, `note`=:note, `meyasu`=:meyasu, `startdt`=:startdt, `enddt`=:enddt, `results_00`=:results_00, `results_10`=:results_10, `results_20`=:results_20, `results_21`=:results_21, `results_22`=:results_22, `results_30`=:results_30, `results_31`=:results_31 WHERE `id`=:id";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':id', $secretadwares->id, PDO::PARAM_STR);
         $stmt->bindParam(':adware_type', $secretadwares->adware_type, PDO::PARAM_INT);
@@ -453,6 +461,8 @@ function updateX10Adware($secretadwares)
         $stmt->bindParam(':denials', $secretadwares->denials, PDO::PARAM_STR);
         $stmt->bindParam(':ngword', $secretadwares->ngword, PDO::PARAM_STR);
         $stmt->bindParam(':note', $secretadwares->note, PDO::PARAM_STR);
+        $stmt->bindParam(':meyasu', $secretadwares->meyasu, PDO::PARAM_STR);
+        $stmt->bindParam(':results_00', $secretadwares->results_00, PDO::PARAM_INT);
         $stmt->bindParam(':results_10', $secretadwares->results_10, PDO::PARAM_INT);
         $stmt->bindParam(':results_20', $secretadwares->results_20, PDO::PARAM_INT);
         $stmt->bindParam(':results_21', $secretadwares->results_21, PDO::PARAM_INT);
@@ -1323,6 +1333,7 @@ function doPay($nuser, $cost)
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $shadow_id= is_null($row['shadow_id']) ? 0 : $row['shadow_id'];
     $id= is_null($row['id']) ? 0 : $row['id'];
+    $id = is_numeric($id) ? $id : 0;
     $new_id = $shadow_id>$id ? $shadow_id + 1 : $id + 1;
     $stmt=null;
 
@@ -1473,9 +1484,9 @@ function getReportPayC($LOGIN_TYPE, $LOGIN_ID, $y, $m)
         $results = array();
         require 'dns.php';
         if ($LOGIN_TYPE=='admin') {
-            $stmt = $pdo->prepare("SELECT `p`.adwares , `p`.`owner` , SUM(`p`.`cost`) as cost  ,MAX( `p`.`name`) as adname ,MAX( `p`.`adware_type`) as adware_type,MAX( `n`.`name`) as nname, MAX( `p`.`cuser`) as cuser, MAX( `c`.`name`) as cname FROM `v_pay_x10` AS p LEFT JOIN `nuser` as n ON `p`.`owner`=`n`.`id`  LEFT JOIN `cuser` as c ON `p`.`cuser`=`c`.`id` WHERE `p`.`regist` BETWEEN :start AND :end AND `p`.`state`=2 GROUP BY `p`.adwares , `p`.`owner` ORDER BY `cuser`,`adwares` ");
+            $stmt = $pdo->prepare("SELECT `p`.adwares , `p`.`owner` , SUM(`p`.`cost`) as cost  ,MAX( `p`.`name`) as adname ,MAX( `p`.`adware_type`) as adware_type,MAX( `n`.`name`) as nname, MAX( `p`.`cuser`) as cuser, MAX( `c`.`name`) as cname FROM `v_pay_x10` AS p LEFT JOIN `nuser` as n ON `p`.`owner`=`n`.`id`  LEFT JOIN `cuser` as c ON `p`.`cuser`=`c`.`id` WHERE `p`.`state`=2 AND  `p`.`regist` BETWEEN :start AND :end AND `p`.`state`=2 GROUP BY `p`.adwares , `p`.`owner` ORDER BY `cuser`,`adwares` ");
         } else {
-            $stmt = $pdo->prepare("SELECT `p`.adwares , `p`.`owner` , SUM(`p`.`cost`) as cost  ,MAX( `p`.`name`) as adname ,MAX( `p`.`adware_type`) as adware_type,MAX( `n`.`name`) as nname, MAX( `p`.`cuser`) as cuser, MAX( `c`.`name`) as cname FROM `v_pay_x10` AS p LEFT JOIN `nuser` as n ON `p`.`owner`=`n`.`id`  LEFT JOIN `cuser` as c ON `p`.`cuser`=`c`.`id` WHERE `p`.`regist` BETWEEN :start AND :end AND `p`.`cuser`=:cuser AND `p`.`state`=2 GROUP BY `p`.adwares , `p`.`owner` ORDER BY `cuser`,`adwares` ");
+            $stmt = $pdo->prepare("SELECT `p`.adwares , `p`.`owner` , SUM(`p`.`cost`) as cost  ,MAX( `p`.`name`) as adname ,MAX( `p`.`adware_type`) as adware_type,MAX( `n`.`name`) as nname, MAX( `p`.`cuser`) as cuser, MAX( `c`.`name`) as cname FROM `v_pay_x10` AS p LEFT JOIN `nuser` as n ON `p`.`owner`=`n`.`id`  LEFT JOIN `cuser` as c ON `p`.`cuser`=`c`.`id` WHERE `p`.`state`=2 AND  `p`.`regist` BETWEEN :start AND :end AND `p`.`cuser`=:cuser AND `p`.`state`=2 GROUP BY `p`.adwares , `p`.`owner` ORDER BY `cuser`,`adwares` ");
             $stmt->bindParam(':cuser', $LOGIN_ID, PDO::PARAM_STR);
         }
 
@@ -1509,7 +1520,7 @@ function getReportPayN($y, $m)
 
         $results = array();
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT `p`.adwares , `p`.`owner` , SUM(`p`.`cost`) as cost  ,MAX( `p`.`name`) as adname ,MAX( `p`.`adware_type`) as adware_type,MAX( `n`.`name`) as nname, MAX( `p`.`cuser`) as cuser, MAX( `c`.`name`) as cname FROM `v_pay_x10` AS p LEFT JOIN `nuser` as n ON `p`.`owner`=`n`.`id`  LEFT JOIN `cuser` as c ON `p`.`cuser`=`c`.`id` WHERE `p`.`regist` BETWEEN :start AND :end AND `p`.`state`=2 GROUP BY `p`.adwares , `p`.`owner` ORDER BY `owner`,`adwares` ");
+        $stmt = $pdo->prepare("SELECT `p`.adwares , `p`.`owner` , SUM(`p`.`cost`) as cost  ,MAX( `p`.`name`) as adname ,MAX( `p`.`adware_type`) as adware_type,MAX( `n`.`name`) as nname, MAX( `p`.`cuser`) as cuser, MAX( `c`.`name`) as cname FROM `v_pay_x10` AS p LEFT JOIN `nuser` as n ON `p`.`owner`=`n`.`id`  LEFT JOIN `cuser` as c ON `p`.`cuser`=`c`.`id` WHERE `p`.`state`=2 AND  `p`.`regist` BETWEEN :start AND :end AND `p`.`state`=2 GROUP BY `p`.adwares , `p`.`owner` ORDER BY `owner`,`adwares` ");
 
         $stmt->bindParam(':start', $startDt, PDO::PARAM_INT);
         $stmt->bindParam(':end', $endDt, PDO::PARAM_INT);
@@ -1624,7 +1635,7 @@ function countTotal01($cuser, $adware_type, $flg)
         }
 
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `v_pay_x10` WHERE `adware_type`=:adware_type  AND `cuser`=:cuser AND `regist` BETWEEN :startDt AND :endDt ") ;
+        $stmt = $pdo->prepare("SELECT count(*) as cnt FROM `v_pay_x10` WHERE `state`=2 AND `adware_type`=:adware_type  AND `cuser`=:cuser AND `regist` BETWEEN :startDt AND :endDt ") ;
 
         $stmt->bindParam(':cuser', $cuser, PDO::PARAM_STR);
         $stmt->bindParam(':adware_type', $adware_type, PDO::PARAM_INT);
@@ -1653,7 +1664,7 @@ function getTotal01($cuser, $adware_type, $flg)
         }
 
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT sum(`cost`) as cnt FROM `v_pay_x10` WHERE `adware_type`=:adware_type  AND `cuser`=:cuser AND `regist` BETWEEN :startDt AND :endDt ") ;
+        $stmt = $pdo->prepare("SELECT sum(`cost`) as cnt FROM `v_pay_x10` WHERE `state`=2 AND  `adware_type`=:adware_type  AND `cuser`=:cuser AND `regist` BETWEEN :startDt AND :endDt ") ;
 
         $stmt->bindParam(':cuser', $cuser, PDO::PARAM_STR);
         $stmt->bindParam(':adware_type', $adware_type, PDO::PARAM_INT);
@@ -1682,7 +1693,7 @@ function getTotal01All($cuser, $flg)
         }
 
         require 'dns.php';
-        $stmt = $pdo->prepare("SELECT sum(`cost`) as cnt FROM `v_pay_x10` WHERE `adware_type`<>2 AND `cuser`=:cuser AND `regist` BETWEEN :startDt AND :endDt ") ;
+        $stmt = $pdo->prepare("SELECT sum(`cost`) as cnt FROM `v_pay_x10` WHERE `state`=2 AND  `adware_type`<>2 AND `cuser`=:cuser AND `regist` BETWEEN :startDt AND :endDt ") ;
 
         $stmt->bindParam(':cuser', $cuser, PDO::PARAM_STR);
         $stmt->bindParam(':startDt', $startDt, PDO::PARAM_INT);

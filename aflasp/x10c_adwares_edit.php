@@ -329,7 +329,7 @@ if (!empty($adware->check_type)) {
 $adware_type_0 = " checked";
 $adware_type_1 = "";
 $adware_type_2 = "";
-$txt_adtype="目標達成タイプ";
+$txt_adtype="成果報酬タイプ";
 $results_1 = ' style="display:none;"';
 $results_2 = ' style="display:block;"';
 $results_3 = ' style="display:none;"';
@@ -580,7 +580,7 @@ $(function(){
                                 <td>
                                     <?php if (empty($adware->id)) { ?>
                                     <label><input type="radio" name="adware_type" onclick="typeChange();" value="0"
-                                            <?php echo $adware_type_0; ?>>目標達成タイプ</label>
+                                            <?php echo $adware_type_0; ?>>成果報酬タイプ</label>
                                     <label><input type="radio" name="adware_type" onclick="typeChange();" value="1"
                                             <?php echo $adware_type_1; ?>>クリック報酬タイプ</label>
                                             <label><input type="radio" name="adware_type" onclick="typeChange();" value="2"
@@ -848,6 +848,16 @@ $(function(){
                                     <input type="text" name="keyword[]" size="40" maxlength="25" value=<?php echo $kword[7]; ?>>
                                     <input type="text" name="keyword[]" size="40" maxlength="25" value=<?php echo $kword[8]; ?>>
                                     <input type="text" name="keyword[]" size="40" maxlength="25" value=<?php echo $kword[9]; ?>>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>承認条件目安</th>
+                                <td>
+                                    <textarea id="meyasu" name="meyasu" cols="" rows=""
+                                        class="textarea"><?php echo $adware->meyasu; ?></textarea>
+                                        <?php $wk = $adware->results_00=="1" ? " checked" : "" ; ?>
+                                    <label><input type="checkbox" id="results_00" name="results_00" value="1"
+                                            <?php echo $wk; ?>>サンプル提供可能</label><br>
                                 </td>
                             </tr>
                             <tr>

@@ -38,7 +38,7 @@ $ads = getAdwaresRecentry(7);
 $titleHtml='';
 $backHtml='';
 if ($adtype=="0") {
-    $titleHtml .= '目標達成報酬成果一覧（月別）';
+    $titleHtml .= '成果報酬報酬成果一覧（月別）';
     $backHtml='<a href="x10u_result_occurrence.php?adtype=0" class="bd_blu">目的達成報酬（発生別）へ</a>';
 } elseif ($adtype=="1") {
     $titleHtml .= 'クリック報酬成果一覧（月別）';

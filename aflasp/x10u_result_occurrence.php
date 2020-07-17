@@ -73,7 +73,7 @@ if ($adtype<>"2") {
 $titleHtml='';
 $backHtml='';
 if ($adtype=="0") {
-    $titleHtml .= '目標達成報酬（発生別）';
+    $titleHtml .= '成果報酬報酬（発生別）';
     $backHtml='<a href="x10u_result_monthry.php?adtype=0" class="bd_blu">目的達成報酬（月別）へ</a>';
 } elseif ($adtype=="1") {
     $titleHtml .= 'クリック報酬（発生別）';

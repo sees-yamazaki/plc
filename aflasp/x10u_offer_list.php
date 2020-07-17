@@ -115,7 +115,7 @@ foreach ($ads as $ad) {
     $adHtml.='<div class="row">';
     $adHtml.='<a href="x10u_offer_detail.php?id='.$ad->id.'">';
     if ($ad->adware_type=="0") {
-        $adHtml .= '<p class="label"><span class="bg_pink">目標達成</span></p>';
+        $adHtml .= '<p class="label"><span class="bg_pink">成果報酬</span></p>';
     } elseif ($ad->adware_type=="1") {
         $adHtml .= '<p class="label"><span class="bg_grn">クリック</span></p>';
     } elseif ($ad->adware_type=="2") {
@@ -194,7 +194,7 @@ function paging(vlu) {
                         <img class="off" src="./x10u/assets/img/icon_handshake.svg" alt="">
                         <img class="on" src="./x10u/assets/img/icon_handshake_wh.svg" alt="">
                       </span>
-                      <span class="text">目標達成<br>報酬タイプ</span>
+                      <span class="text">成果報酬<br>報酬タイプ</span>
                     </span>
                   </label>
                   <label class="offer-type_label offer-type_label-click">

@@ -65,8 +65,10 @@ $adware->hashtag = $_POST['hashtag'];
 $adware->denials = $_POST['denials'];
 $adware->ngword = $_POST['ngword'];
 $adware->note = $_POST['note'];
+$adware->meyasu = $_POST['meyasu'];
 $adware->startdt = $_POST['startdt'];
 $adware->enddt = $_POST['enddt'];
+$adware->results_00 = empty($_POST['results_00']) ? 0 : $_POST['results_00'];
 $adware->results_10 = empty($_POST['results_10']) ? 0 : $_POST['results_10'];
 $adware->results_20 = empty($_POST['results_20']) ? 0 : $_POST['results_20'];
 $adware->results_21 = empty($_POST['results_21']) ? 0 : $_POST['results_21'];
@@ -212,7 +214,7 @@ if ($adware->open=="0") {
     $txt_open = '非公開';
 }
 
-$txt_adware_type = "目標達成タイプ";
+$txt_adware_type = "成果報酬タイプ";
 if ($adware->adware_type=="1") {
     $txt_adware_type = 'クリック報酬タイプ';
 } elseif ($adware->adware_type=="2") {
@@ -267,7 +269,7 @@ if (empty($deleteAd)) {
                                 </td>
                             </tr>
                             <tr>
-                                <th>成果表示名</th>
+                                <th>広告名</th>
                                 <td><?php echo $adware->name; ?>
                                 </td>
                             </tr>
@@ -278,7 +280,7 @@ if (empty($deleteAd)) {
                             </tr>
                             <tr>
                                 <th>広告説明文</th>
-                                <td style="max-width: 500px;"><?php echo nl2br($adware->comment); ?>
+                                <td style="max-width: 500px;word-break : break-all;"><?php echo nl2br($adware->comment); ?>
                                 </td>
                             </tr>
                             <tr>
@@ -365,6 +367,17 @@ if (empty($deleteAd)) {
                             <tr>
                                 <th>キーワード、タグ</th>
                                 <td><?php echo nl2br($adware->keyword); ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>承認条件目安</th>
+                                <td style="max-width: 500px;">
+                                <?php
+                                    if ($adware->results_00=="1") {
+                                        echo "サンプル提供可能<br>";
+                                    }
+                                ?>
+                                <?php echo nl2br($adware->meyasu); ?>
                                 </td>
                             </tr>
                             <tr>
@@ -526,12 +539,16 @@ if (empty($deleteAd)) {
                 value="<?php echo $adware->ngword; ?>">
             <input type="hidden" name="note"
                 value="<?php echo $adware->note; ?>">
+            <input type="hidden" name="meyasu"
+                value="<?php echo $adware->meyasu; ?>">
             <input type="hidden" name="startdt"
                 value="<?php echo $adware->startdt; ?>">
             <input type="hidden" name="enddt"
                 value="<?php echo $adware->enddt; ?>">
             <input type="hidden" name="deleteAd"
                 value="<?php echo $deleteAd; ?>">
+            <input type="hidden" name="results_00"
+                value="<?php echo $adware->results_00; ?>">
             <input type="hidden" name="results_10"
                 value="<?php echo $adware->results_10; ?>">
             <input type="hidden" name="results_20"

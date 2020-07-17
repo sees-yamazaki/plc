@@ -83,7 +83,7 @@ if ($LOGIN_TYPE=='admin') {
 }
 
 
-$txt_adtype="目標達成タイプ";
+$txt_adtype="成果報酬タイプ";
 if ($adware->adware_type=="1") {
     $txt_adtype="クリック報酬タイプ";
 }

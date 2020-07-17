@@ -66,7 +66,7 @@ $pays = getPayLimit($startdt, $enddt, $LOGIN_ID, $adtype, $limitPage, $offsetPag
 $titleHtml='';
 $backHtml='';
 if ($adtype=="0") {
-    $titleHtml .= '目標達成報酬（発生別）';
+    $titleHtml .= '成果報酬報酬（発生別）';
     $backHtml='<a href="x10n_result_monthly.php?adtype=0">目的達成報酬（月別）へ</a>';
 } else {
     $titleHtml .= 'クリック報酬（発生別）';

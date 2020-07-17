@@ -65,7 +65,7 @@ if (isset($_GET['req'])) {
 $titleHtml = '';
 $titleHtml .= '<div class="article__section_title">';
 if ($ad->adware_type=="0") {
-    $titleHtml .= '<p class="label"><span class="bg_pink">目標達成</span></p>';
+    $titleHtml .= '<p class="label"><span class="bg_pink">成果報酬</span></p>';
 } elseif ($ad->adware_type=="1") {
     $titleHtml .= '<p class="label"><span class="bg_grn">クリック</span></p>';
 } elseif ($ad->adware_type=="2") {
@@ -407,6 +407,11 @@ foreach ($tags as $tag) {
 <meta name="description" content="アフィリエイト管理画面">
 <?php include(__DIR__ . '/x10u/inc/meta.php'); ?>
 <link rel="stylesheet" href="./x10u/assets/css/offer_detail.css">
+<style>
+p.break{
+  word-break: break-all;
+}
+</style>
 </head>
 
 <body>
@@ -431,7 +436,7 @@ foreach ($tags as $tag) {
 
         <div class="article__section article__section_outline" id="url">
           <h3 class="bar-title"><span class="bar-title-text">オファー概要</span></h3>
-          <p class="article__section_outline_text"><?php echo nl2br($ad->comment); ?></p>
+          <p class="article__section_outline_text break"><?php echo nl2br($ad->comment); ?></p>
           <?php if (mb_strlen($ad->comment)>120) { ?>
           <div class="filter-cover sp"></div>
           <p class="js-btn-filter btn-filter-off f-blu sp">続きを読む</p>
@@ -462,6 +467,16 @@ foreach ($tags as $tag) {
             <dl>
               <dt>カテゴリ</dt>
               <dd><?php echo $ad->category_name; ?></dd>
+            </dl>
+            <dl>
+              <dt>承認条件目安</dt>
+              <?php
+                $rslt = "";
+                $rslt .= $ad->results_00=="1" ? "サンプル提供可能<br>" : "";
+                $rslt .= empty($ad->meyasu) ? "" : nl2br($ad->meyasu);
+                $rslt =  empty($rslt) ? "なし" : $rslt;
+              ?>
+              <dd><?php echo $rslt; ?></dd>
             </dl>
             <dl>
               <dt>成果条件</dt>
@@ -512,7 +527,7 @@ foreach ($tags as $tag) {
             </dl>
             <dl>
               <dt>オファー期間</dt>
-              <dd><?php echo empty($ad->enddt) ? "なし" : date('Y/m/d', strtotime($ad->startdt)).'〜'.date('Y/m/d', strtotime($ad->enddt)); ?></dd>
+              <dd><?php echo empty($ad->enddt) ? "継続" : date('Y/m/d', strtotime($ad->startdt)).'〜'.date('Y/m/d', strtotime($ad->enddt)); ?></dd>
             </dl>
           </div>
         </div>

@@ -46,6 +46,8 @@ class cls_adwares
     public $open ;
     public $open_user ;
     public $regist ;
+    public $meyasu ;
+    public $results_00 ;
     public $results_10 ;
     public $results_20 ;
     public $results_21 ;
@@ -593,9 +595,11 @@ function insertAdwares($adwares)
         $x10->denials = $adwares->denials;
         $x10->ngword = $adwares->ngword;
         $x10->note = $adwares->note;
+        $x10->meyasu = $adwares->meyasu;
         $x10->startdt = $adwares->startdt;
         $x10->enddt = $adwares->enddt;
         $x10->cuser = $adwares->cuser;
+        $x10->results_00 = $adwares->results_00;
         $x10->results_10 = $adwares->results_10;
         $x10->results_20 = $adwares->results_20;
         $x10->results_21 = $adwares->results_21;
@@ -702,9 +706,11 @@ function updateAdwares($adwares)
         $x10->denials = $adwares->denials;
         $x10->ngword = $adwares->ngword;
         $x10->note = $adwares->note;
+        $x10->meyasu = $adwares->meyasu;
         $x10->startdt = $adwares->startdt;
         $x10->enddt = $adwares->enddt;
         $x10->cuser = $adwares->cuser;
+        $x10->results_00 = $adwares->results_00;
         $x10->results_10 = $adwares->results_10;
         $x10->results_20 = $adwares->results_20;
         $x10->results_21 = $adwares->results_21;

@@ -31,7 +31,7 @@ foreach ($offering as $ofr) {
         $ofrHtml.='<div class="row">';
         $ofrHtml.='<a href="x10u_offer_detail.php?id='.$ofr->adware.'">';
         if ($ofr->adware_type=="0") {
-            $ofrHtml .= '<p class="label"><span class="bg_pink">目標達成</span></p>';
+            $ofrHtml .= '<p class="label"><span class="bg_pink">成果報酬</span></p>';
         } elseif ($ofr->adware_type=="1") {
             $ofrHtml .= '<p class="label"><span class="bg_grn">クリック</span></p>';
         } elseif ($ofr->adware_type=="2") {
@@ -112,7 +112,7 @@ $today = date('Y-m-d');
                 <h3 class="bar-title"><span class="bar-title-text">承認済み進行中オファー</span></h3>
                 <div class="tab-style_table_area">
                     <ul class="tab-style flex-wrap js-tab_list">
-                        <li class="tab_item is-active">目標報酬</li>
+                        <li class="tab_item is-active">成果報酬</li>
                         <li class="tab_item">クリック報酬</li>
                         <li class="tab_item">投稿報酬</li>
                     </ul>
@@ -244,7 +244,7 @@ $today = date('Y-m-d');
                 <h3 class="bar-title"><span class="bar-title-text">掲載終了オファー</span></h3>
                 <div class="tab-style_table_area">
                     <ul class="tab-style flex-wrap js-tab_list">
-                        <li class="tab_item is-active">目標報酬</li>
+                        <li class="tab_item is-active">成果報酬</li>
                         <li class="tab_item">クリック報酬</li>
                         <li class="tab_item">投稿報酬</li>
                     </ul>

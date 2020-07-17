@@ -48,7 +48,7 @@ foreach ($ads as $ad) {
     $pickupHtml.='<h3 class="item_name">'.$ad->name.'</h3>';
     $pickupHtml.='<ul class="label_list flex-wrap">';
     if ($ad->adware_type=="0") {
-        $pickupHtml.='<li class="bg_pink">目標達成</li>';
+        $pickupHtml.='<li class="bg_pink">成果報酬</li>';
     } else {
         $pickupHtml.='<li class="bg_grn">クリック</li>';
     }
@@ -70,7 +70,7 @@ foreach ($ads as $ad) {
     $newerHtml.='<div class="row">';
     $newerHtml.='<a href="x10u_offer_detail.php?id='.$ad->id.'">';
     if ($ad->adware_type=="0") {
-        $newerHtml.='<p class="label"><span class="bg_pink">目標達成</span></p>';
+        $newerHtml.='<p class="label"><span class="bg_pink">成果報酬</span></p>';
     } elseif ($ad->adware_type=="1") {
         $newerHtml.='<p class="label"><span class="bg_grn">クリック</span></p>';
     } elseif ($ad->adware_type=="2") {
@@ -111,7 +111,7 @@ foreach ($offering as $ofr) {
         $offeringHtml .= '<div class="row">';
         $offeringHtml .= '<a href="x10u_offer_detail.php?id='.$ad->id.'">';
         if ($ofr->adware_type=="0") {
-            $offeringHtml .= '<p class="label"><span class="bg_pink">目標達成</span></p>';
+            $offeringHtml .= '<p class="label"><span class="bg_pink">成果報酬</span></p>';
         } elseif ($ofr->adware_type=="1") {
             $offeringHtml .= '<p class="label"><span class="bg_grn">クリック</span></p>';
         } elseif ($ofr->adware_type=="2") {
@@ -134,7 +134,7 @@ foreach ($approved as $app) {
     $approvedHtml .= '<div class="row">';
     $approvedHtml .= '<a href="x10u_offer_detail.php?id='.$app->adware.'">';
     if ($app->adware_type=="0") {
-        $approvedHtml .= '<p class="label"><span class="bg_pink">目標達成</span></p>';
+        $approvedHtml .= '<p class="label"><span class="bg_pink">成果報酬</span></p>';
     } elseif ($app->adware_type=="1") {
         $approvedHtml .= '<p class="label"><span class="bg_grn">クリック</span></p>';
     } elseif ($app->adware_type=="2") {
@@ -188,7 +188,7 @@ if (empty($approvedHtml)) {
         <div class="tab-style_table_area">
           <ul class="tab-style flex-wrap js-tab_list">
                         <li class="tab_item is-active">すべて</li>
-                        <li class="tab_item">目標報酬</li>
+                        <li class="tab_item">成果報酬</li>
                         <li class="tab_item">クリック報酬</li>
                         <li class="tab_item">投稿報酬</li>
                     </ul>
@@ -356,7 +356,7 @@ if (empty($approvedHtml)) {
                         <?php echo $approvedHtml; ?>
                         <!--<div class="row">
               <a href="./offer_detail.html">
-                <p class="label"><span class="bg_pink">目標達成</span></p>
+                <p class="label"><span class="bg_pink">成果報酬</span></p>
                 <p class="row_text"><span class="ap">承</span>特定医療器具ダイエットグッズ「コシマワール」の購入</p>
               </a>
             </div>

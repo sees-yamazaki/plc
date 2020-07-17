@@ -167,7 +167,7 @@ function paging(vlu) {
                     <th>広告タイプ</th>
                     <td>
                         <label><input type="checkbox" name="adware_type[]" value="0"
-                                <?php echo $adtyped[0]; ?>>目標達成タイプ</label>
+                                <?php echo $adtyped[0]; ?>>成果報酬タイプ</label>
                         <label><input type="checkbox" name="adware_type[]" value="1"
                                 <?php echo $adtyped[1]; ?>>クリック報酬タイプ</label>
                         <label><input type="checkbox" name="adware_type[]" value="2"

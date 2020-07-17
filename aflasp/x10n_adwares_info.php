@@ -85,7 +85,7 @@ $html .= '<br>';
 
 if ($ad->adware_type=="0") {
     $html .= '[目標報酬]<br>';
-    $html .= '報酬単価<br>'.$ad->money.'円/目標達成<br>';
+    $html .= '報酬単価<br>'.$ad->money.'円/成果報酬<br>';
 } else {
     $html .= '[クリック報酬]<br>';
     $html .= '報酬単価<br>'.$ad->click_money.'円/1クリック<br>';

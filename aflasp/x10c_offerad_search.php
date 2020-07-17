@@ -299,7 +299,7 @@ function paging(vlu) {
                                 <th>広告タイプ</th>
                                 <td>
                                     <label><input type="checkbox" name="adware_type[]" value="0"
-                                            <?php echo $adtyped[0]; ?>>目標達成タイプ</label>
+                                            <?php echo $adtyped[0]; ?>>成果報酬タイプ</label>
                                     <label><input type="checkbox" name="adware_type[]" value="1"
                                             <?php echo $adtyped[1]; ?>>クリック報酬タイプ</label>
                                     <label><input type="checkbox" name="adware_type[]" value="2"
@@ -307,7 +307,7 @@ function paging(vlu) {
                                 </td>
                             </tr>
                             <tr>
-                                <th>承認タイプ</th>
+                                <th>承認タイプ<?php echo $LOGIN_TYPE ?></th>
                                 <td>
                                 <!--
                                     <label><input type="checkbox" name="approvable[]" value="0"
@@ -416,7 +416,7 @@ function paging(vlu) {
                     <tr>
                         <th>広告タイプ</th>
                         <?php  if ($ad->adware_type=="0") { ?>
-                        <td>目標達成タイプ</td>
+                        <td>成果報酬タイプ</td>
                         <?php  } elseif ($ad->adware_type=="1") { ?>
                         <td>クリック報酬タイプ</td>
                         <?php  } elseif ($ad->adware_type=="2") { ?>
@@ -436,8 +436,11 @@ function paging(vlu) {
                         <td>
                             <!-- <a href="offerad_edit.php?type=adwares&amp;id=<?php echo $ad->id; ?>&amp;mode=<?php echo $mode; ?>"><?php echo $ad->name; ?></a>
                             -->
-                            <a
-                                href="x10c_adwares_edit.php?type=adwares&amp;id=<?php echo $ad->id; ?>&amp;mode=<?php echo $mode; ?>"><?php echo $ad->name; ?></a>
+                            <?php if($LOGIN_TYPE=='admin'){ ?>
+                                <a href="x10c_adwares_edit.php?type=adwares&amp;id=<?php echo $ad->id; ?>&amp;mode=<?php echo $mode; ?>"><?php echo $ad->name; ?></a>
+                            <?php }else{ ?>
+                                <?php echo $ad->name; ?>
+                            <?php } ?>
                         </td>
                     </tr>
                     <tr>
@@ -492,7 +495,7 @@ function paging(vlu) {
 
                     <tr>
                         <th>広告の説明</th>
-                        <td class="adwares_info" style="max-width: 500px;"><?php echo nl2br($ad->comment); ?>
+                        <td class="adwares_info" style="max-width: 500px; word-break : break-all;"><?php echo nl2br($ad->comment); ?>
                         </td>
                     </tr>
                     <?php  if ($ad->approvable=="1") { ?>

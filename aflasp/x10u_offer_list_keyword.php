@@ -65,7 +65,7 @@ foreach ($ads as $ad) {
     $adHtml.='<div class="row">';
     $adHtml.='<a href="x10u_offer_detail.php?id='.$ad->id.'">';
     if ($ad->adware_type=="0") {
-        $adHtml .= '<p class="label"><span class="bg_pink">目標達成</span></p>';
+        $adHtml .= '<p class="label"><span class="bg_pink">成果報酬</span></p>';
     } else {
         $adHtml .= '<p class="label"><span class="bg_grn">クリック</span></p>';
     }
