@@ -201,7 +201,7 @@
                                 <ul class=" navigation-submenu" id="pages">
                                     <li><a href="x10c_post_check.php" class="menu">投稿を確定する</a></li>
                                     <li><a href="x10c_post_uncheck.php" class="menu">投稿の確定を修正</a></li>
-                                    <li><a href="search.php?type=pay&run=true" class="menu">目標・投稿報酬の発生履歴</a></li>
+                                    <li><a href="search.php?type=pay&run=true" class="menu">成功・投稿報酬の発生履歴</a></li>
                                     <li><a href="search.php?type=click_pay&run=true" class="menu">クリック報酬の発生履歴</a></li>
                                 </ul>
                             </li>

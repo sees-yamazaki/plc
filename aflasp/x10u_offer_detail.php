@@ -47,8 +47,104 @@ if (isset($_GET['req'])) {
             $ofr->status = "0";
             insertX10Offer($ofr);
         }
+        if ($ad->adware_type=="2") {
+            $sys = getSystem();
+            $cuser = getCUser($ad->cuser);
+        
+            mb_language("Japanese");
+            mb_internal_encoding("UTF-8");
+        
+            $text = "この度は、Smafeeのご利用ありがとうございます。\n";
+            $text .= "下記内容をご確認ください。\n\n";
+            
+            $text .= "■オファーリクエスト情報━━━━━━━━━━━━━━━━━━━━\n";
+            $text .= "オファー名　　：".$ad->name."\n";
+
+            $nUser = getNuser($LOGIN_ID);
+            $text .= "リクエスト者　：".$LOGIN_ID.$nUser->name."\n";
+
+            $sns2 = empty($nuserX10->instagram) ? '' : "instagram:https://www.instagram.com/".$nuserX10->instagram."\n";
+            $sns2 .= empty($nuserX10->facebook) ? '' : "facebook:https://www.facebook.com/".$nuserX10->facebook."\n";
+            $sns2 .= empty($nuserX10->twitter) ? '' : "twitter:https://twitter.com/".$nuserX10->twitter."\n";
+            $sns2 .= empty($nuserX10->youtube) ? '' : "youtube:https://www.youtube.com/channel/".$nuserX10->youtube."\n";
+            $text .= empty($sns2) ? "SNSアカウントは設定されていません" : $sns2;
+            $text .= "\n";
+            $text .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+            
+            $text .= "リクエストの承認確認は\n";
+            $text .= "下記のアドレスよりログインしてご確認ください。\n";
+            $text .= "https://smafee.jp/a/\n";
+            
+            $text .= "その他ご不明な点・ご質問などございましたら、\n";
+            $text .= "Smafee サポートデスクもしくは担当者までお問い合わせください。\n\n";
+            
+            $text .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+            $text .= "お問い合わせ\n";
+            $text .= "https://smafee.jp/contact/\n";
+            
+            $text .= "このメールは、送信専用メールアドレスから配信されています。\n";
+            $text .= "ご返信いただいてもお答えできませんので、ご了承ください。\n\n";
+            
+            $text .= "■Smafee\n";
+            $text .= "https://smafee.jp/\n";
+            $text .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        
+            $to      = $cuser->mail;
+            $subject = "【".$sys->site_title."】参加リクエスト到着のお知らせ";
+            $message = $text;
+            $headers = 'From:"'.mb_encode_mimeheader($sys->mail_name).'" <'. trim($sys->mail_address).'>';
+            mb_send_mail($to, $subject, $message, $headers);
+        }
     } elseif ($_GET['req']=="2") {
         updateX10Offer($id, $LOGIN_ID, 10);
+        if ($ad->adware_type=="2") {
+            $sys = getSystem();
+            $cuser = getCUser($ad->cuser);
+        
+            mb_language("Japanese");
+            mb_internal_encoding("UTF-8");
+        
+            $text = "この度は、Smafeeのご利用ありがとうございます。\n";
+            $text .= "下記内容をご確認ください。\n\n";
+            
+            $text .= "■投稿確認依頼情報━━━━━━━━━━━━━━━━━━━━\n";
+            $text .= "オファー名　　：".$ad->name."\n";
+
+            $nUser = getNuser($LOGIN_ID);
+            $text .= "リクエスト者　：".$LOGIN_ID.$nUser->name."\n";
+
+            $sns2 = empty($nuserX10->instagram) ? '' : "instagram:https://www.instagram.com/".$nuserX10->instagram."\n";
+            $sns2 .= empty($nuserX10->facebook) ? '' : "facebook:https://www.facebook.com/".$nuserX10->facebook."\n";
+            $sns2 .= empty($nuserX10->twitter) ? '' : "twitter:https://twitter.com/".$nuserX10->twitter."\n";
+            $sns2 .= empty($nuserX10->youtube) ? '' : "youtube:https://www.youtube.com/channel/".$nuserX10->youtube."\n";
+            $text .= empty($sns2) ? "SNSアカウントは設定されていません" : $sns2;
+            $text .= "\n";
+            $text .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+            
+            $text .= "投稿確認の承認は\n";
+            $text .= "下記のアドレスよりログインしてご確認ください。\n";
+            $text .= "https://smafee.jp/a/\n";
+            
+            $text .= "その他ご不明な点・ご質問などございましたら、\n";
+            $text .= "Smafee サポートデスクもしくは担当者までお問い合わせください。\n\n";
+            
+            $text .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+            $text .= "お問い合わせ\n";
+            $text .= "https://smafee.jp/contact/\n";
+            
+            $text .= "このメールは、送信専用メールアドレスから配信されています。\n";
+            $text .= "ご返信いただいてもお答えできませんので、ご了承ください。\n\n";
+            
+            $text .= "■Smafee\n";
+            $text .= "https://smafee.jp/\n";
+            $text .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        
+            $to      = $cuser->mail;
+            $subject = "【".$sys->site_title."】投稿確認依頼到着のお知らせ";
+            $message = $text;
+            $headers = 'From:"'.mb_encode_mimeheader($sys->mail_name).'" <'. trim($sys->mail_address).'>';
+            mb_send_mail($to, $subject, $message, $headers);
+        }
     } elseif ($_GET['req']=="3") {
         updateX10Offer($id, $LOGIN_ID, 2);
     } elseif ($_GET['req']=="5") {

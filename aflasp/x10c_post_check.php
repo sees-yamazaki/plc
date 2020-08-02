@@ -16,10 +16,10 @@ include 'x10c/db/adwares.php';
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
 $LOGIN_TYPE = $_SESSION[ $SESSION_TYPE ];
 
-$pastday = isset($_POST['pastday']) ? $_POST['pastday']: 30;
+$pastday = isset($_POST['pastday']) ? $_POST['pastday']: 29;
 
 $dayHtml='';
-for ($i = 0; $i < 50; $i++) {
+for ($i = 0; $i < 30; $i++) {
     $wk = ($i==$pastday) ? " selected" : "";
     $dayHtml .= '<option value="'.$i.'" '.$wk.'>'.$i."</option>";
 }

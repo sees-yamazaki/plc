@@ -695,7 +695,7 @@ $(function(){
                                     </div>
                                 </td>
                             </tr>
-                            <?php if (substr($sys->home, 0, 16)=='http://smafee.jp') { ?>
+                            <?php if ($_SERVER['HTTP_HOST']=='smafee.jp') { ?>
                                 <input type="hidden" name="span" value="1">
                                 <input type="hidden" name="span_type" value="d">
                                 <input type="hidden" name="use_cookie_interval" value="0">

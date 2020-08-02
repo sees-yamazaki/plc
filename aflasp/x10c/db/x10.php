@@ -698,13 +698,14 @@ function insertX10Offer($ofr)
 {
     try {
         require 'dns.php';
+        $now = strtotime("NOW");
         $sql = "INSERT  INTO `x10_offer`(`adware`, `nuser`, `status`, `regist`, `edittime`) VALUES (:adware, :nuser, :status, :regist, :edittime)";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':adware', $ofr->adware, PDO::PARAM_STR);
         $stmt->bindParam(':nuser', $ofr->nuser, PDO::PARAM_STR);
         $stmt->bindParam(':status', $ofr->status, PDO::PARAM_INT);
-        $stmt->bindParam(':regist', strtotime("NOW"), PDO::PARAM_INT);
-        $stmt->bindParam(':edittime', strtotime("NOW"), PDO::PARAM_INT);
+        $stmt->bindParam(':regist', $now, PDO::PARAM_INT);
+        $stmt->bindParam(':edittime', $now, PDO::PARAM_INT);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
@@ -717,13 +718,14 @@ function insertX10Offer($ofr)
 function updateX10Offer($adware, $nuser, $status)
 {
     try {
+        $now = strtotime("NOW");
         require 'dns.php';
         $sql = "UPDATE `x10_offer` SET `status`=:status,edittime=:edittime WHERE `adware`=:adware AND `nuser`=:nuser ";
         $stmt = $pdo -> prepare($sql);
         $stmt->bindParam(':adware', $adware, PDO::PARAM_STR);
         $stmt->bindParam(':nuser', $nuser, PDO::PARAM_STR);
         $stmt->bindParam(':status', $status, PDO::PARAM_INT);
-        $stmt->bindParam(':edittime', strtotime("NOW"), PDO::PARAM_INT);
+        $stmt->bindParam(':edittime', $now, PDO::PARAM_INT);
         execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
     } catch (PDOException $e) {
         $errorMessage = 'データベースエラー';
@@ -1706,4 +1708,66 @@ function getTotal01All($cuser, $flg)
         //
     }
     return $result;
+}
+
+
+class cls_cuser
+{
+    public $id ;
+    public $name ;
+    public $mail ;
+}
+
+function getCUser($cuser)
+{
+    try {
+        $result = new cls_cuser();
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT * FROM `cuser` WHERE id=:cuser");
+        $stmt->bindParam(':cuser', $cuser, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result->id = $row['id'];
+            $result->name = $row['name'];
+            $result->mail = $row['mail'];
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $result;
+}
+
+function getTotalCost($where, $nuser)
+{
+    try {
+        $cost = 0;
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT SUM(`cost`) AS 'cost' FROM `v_pay_x10` WHERE `owner`=:owner AND `state`=2 ".$where);
+        $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $cost = is_null($row['cost']) ? 0 : $row['cost'];
+    } catch (PDOException $e) {
+        //
+    }
+    return $cost;
+}
+
+function getTotalPay($where, $nuser)
+{
+    try {
+        $cost = 0;
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT SUM(`cost`) AS 'cost' FROM `returnss` WHERE `owner`=:owner  ".$where);
+        $stmt->bindParam(':owner', $nuser, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $cost = is_null($row['cost']) ? 0 : $row['cost'];
+    } catch (PDOException $e) {
+        //
+    }
+    return $cost;
 }

@@ -213,7 +213,7 @@ if (empty($approvedHtml)) {
                                             <td class="td-num"><?php echo(number_format($cnt_click_0 + $cnt_click_1)); ?>件</td>
                                             <td class="td-num"><?php echo(number_format($pays_0->cnt + $pays_1->cnt + $pays_2->cnt0)); ?>件</td>
                                             <td class="td-num"><?php echo(number_format($pays_0->cnt2 + $pays_1->cnt2 + $pays_2->cnt3)); ?>件</td>
-                                            <td class="td-num"><?php echo(number_format($pays_0->cst0 + $pays_0->cst1 + $pays_1->cst0 + $pays_1->cst1 + $pays_2->cst2)); ?>円</td>
+                                            <td class="td-num"><?php echo(number_format($pays_0->cst0 + $pays_1->cst0 + $pays_2->cst2)); ?>円</td>
                                             <td class="td-num"><?php echo(number_format($pays_0->cst2 + $pays_1->cst2 + $pays_2->cst3)); ?>円</td>
                                             <td class="td-num"><?php echo number_format($pays_2->cnt2); ?>件</td>
                                             <td class="td-num">
@@ -243,7 +243,7 @@ if (empty($approvedHtml)) {
                                             <td class="td-num"><?php echo number_format($cnt_click_0); ?>件</td>
                                             <td class="td-num"><?php echo number_format($pays_0->cnt); ?>件</td>
                                             <td class="td-num"><?php echo number_format($pays_0->cnt2); ?>件</td>
-                                            <td class="td-num"><?php echo(number_format($pays_0->cst0 + $pays_0->cst1)); ?>円</td>
+                                            <td class="td-num"><?php echo(number_format($pays_0->cst0)); ?>円</td>
                                             <td class="td-num"><?php echo number_format($pays_0->cst2); ?>円</td>
                                             <td class="td-num"><?php echo(number_format($pays_0->cnt1)); ?>件</td>
                                         </tr>
@@ -270,7 +270,7 @@ if (empty($approvedHtml)) {
                                             <td class="td-num"><?php echo number_format($cnt_click_1); ?>件</td>
                                             <td class="td-num"><?php echo number_format($pays_1->cnt); ?>件</td>
                                             <td class="td-num"><?php echo number_format($pays_1->cnt2); ?>件</td>
-                                            <td class="td-num"><?php echo(number_format($pays_1->cst0 + $pays_1->cst1)); ?>円</td>
+                                            <td class="td-num"><?php echo(number_format($pays_1->cst0)); ?>円</td>
                                             <td class="td-num"><?php echo number_format($pays_1->cst2); ?>円</td>
                                             <td class="td-num"><?php echo(number_format($pays_1->cnt1)); ?>件</td>
                                         </tr>

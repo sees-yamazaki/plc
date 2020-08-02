@@ -29,7 +29,9 @@ if (isset($_POST['fixed'])) {
 }
 
 if (isset($_POST['search'])) {
-    $where = " WHERE `pay`.`state`<>0 AND (`pay`.`adwares`='".$_POST['search_adware']."' OR `ad`.`name` LIKE '%".$_POST['search_adware']."%' )";
+    $pDay =  strtotime("-30 day");
+
+    $where = " WHERE `pay`.`state`<>0 AND (`pay`.`adwares`='".$_POST['search_adware']."' OR `ad`.`name` LIKE '%".$_POST['search_adware']."%' ) AND `pay`.regist>".$pDay;
 
     $posts = getPosts($where);
 }

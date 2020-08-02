@@ -143,7 +143,7 @@ $today = date('Y-m-d');
                                             <td class="td-num"><span class="num"><?php echo $pay->cnt; ?></span>件</td>
                                             <td class="td-num"><span class="num"><?php echo $pay->cnt2; ?></span>件</td>
                                             <td class="td-num"><span
-                                                    class="num"><?php echo($pay->cst0 + $pay->cst1); ?></span>円</td>
+                                                    class="num"><?php echo($pay->cst0); ?></span>円</td>
                                             <td class="td-num"><span class="num"><?php echo $pay->cst2; ?></span>円</td>
                                             <?php $wk = $cnt>0 ? "成果発生中" : "掲載用URL表示"; ?>
                                             <td class="td-text"><a
@@ -182,7 +182,7 @@ $today = date('Y-m-d');
                                             <td class="td-num"><span class="num"><?php echo $pay->cnt; ?></span>件</td>
                                             <td class="td-num"><span class="num"><?php echo $pay->cnt2; ?></span>件</td>
                                             <td class="td-num"><span
-                                                    class="num"><?php echo($pay->cst0 + $pay->cst1); ?></span>円</td>
+                                                    class="num"><?php echo($pay->cst0); ?></span>円</td>
                                             <td class="td-num"><span class="num"><?php echo $pay->cst2; ?></span>円</td>
                                             <?php $wk = $cnt>0 ? "成果発生中" : "掲載用URL表示"; ?>
                                             <td class="td-text"><a

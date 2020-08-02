@@ -721,3 +721,31 @@ function updateNuserX10Kubun($nuserId, $kubun, $kana, $birthday)
         logging("ARGS : ". json_encode(func_get_args()));
     }
 }
+
+function updateNuserX10sns($nuser)
+{
+    try {
+        require 'dns.php';
+        $sql = "UPDATE `x10_nuser` SET `nickname`=:nickname, `instagram`=:instagram, `facebook`=:facebook, `twitter`=:twitter, `youtube`=:youtube  WHERE `id`=:id";
+        $stmt = $pdo -> prepare($sql);
+        $stmt->bindParam(':id', $nuser->id, PDO::PARAM_STR);
+        $stmt->bindParam(':nickname', $nuser->nickname, PDO::PARAM_STR);
+        $stmt->bindParam(':instagram', $nuser->instagram, PDO::PARAM_STR);
+        $stmt->bindParam(':facebook', $nuser->facebook, PDO::PARAM_STR);
+        $stmt->bindParam(':twitter', $nuser->twitter, PDO::PARAM_STR);
+        $stmt->bindParam(':youtube', $nuser->youtube, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        if ($stmt->rowCount()==0) {
+            logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+            logging("UPDATE ERROR : ". $sql);
+            logging("ARGS : ". json_encode(func_get_args()));
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $insertid;
+}

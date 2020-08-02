@@ -28,7 +28,7 @@ if (isset($_POST['doCheck'])) {
     $nUser->twitter = $_POST['twitter'];
     $nUser->youtube = $_POST['youtube'];
 
-    updateNuserX10($nUser);
+    updateNuserX10sns($nUser);
 
     header('Location: x10u_user_sns_complete.php');
 } elseif (isset($_POST['4back'])) {
