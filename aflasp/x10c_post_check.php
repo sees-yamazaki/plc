@@ -7,10 +7,8 @@ include 'x10c_helper.php';
 include 'x10c/db/x10.php';
 include 'x10c/db/nuser.php';
 include 'x10c/db/adwares.php';
-//include 'x10c/db/dns.php';
-//require('custom/conf.php');
-// require('x10c/db/x10.php');
-// require('x10c/db/adwares.php')
+include 'x10c/db/system.php';
+include 'x10c_mail.php';
 
 
 $LOGIN_ID = $_SESSION[ $SESSION_NAME ];
@@ -32,9 +30,13 @@ if (isset($_POST['fixed'])) {
             $errMsg = '<tr><td colspan=5 style="color:red;">【広告報酬の上限超過のため確定できませんでした】</td></tr>';
         } else {
             adCost($_POST['adwares'], $_POST['owner'], $_POST['cost']);
+            //【Smafee】投稿最終確認完了(成果確定)のお知らせ
+            mail_n13($_POST['owner'], $ad);
         }
     } elseif (isset($_POST['stts14'])) {
         ignoreCost($_POST['adwares'], $_POST['owner']);
+        //【Smafee】投稿最終確認否認のお知らせ
+        mail_n14($_POST['owner'], $ad);
     }
 }
 

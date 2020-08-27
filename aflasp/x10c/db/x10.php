@@ -1436,6 +1436,27 @@ function getReturnsses($where)
     return $results;
 }
 
+function getReturnss($id)
+{
+    try {
+        $result = new cls_post();
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT `returnss`.*, `nuser`.`name` FROM `returnss` LEFT JOIN `nuser` ON `returnss`.`owner`=`nuser`.`id`  WHERE `returnss`.`id`='".$id."'");
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result->id = $row['id'];
+        $result->owner = $row['owner'];
+        $result->cost = $row['cost'];
+        $result->state = $row['state'];
+        $result->regist = $row['regist'];
+        $result->name = $row['name'];
+    } catch (PDOException $e) {
+        //
+    }
+    return $result;
+}
+
 function getReportPayed($y, $m)
 {
     try {
@@ -1486,6 +1507,38 @@ function getReportPayC($LOGIN_TYPE, $LOGIN_ID, $y, $m)
         $results = array();
         require 'dns.php';
         if ($LOGIN_TYPE=='admin') {
+            $stmt = $pdo->prepare("SELECT `p`.`cuser`, SUM(`p`.`cost`) AS cost, MAX(`c`.`name`) AS cname FROM `v_pay_x10` AS p LEFT JOIN `cuser` AS c ON `p`.`cuser` = `c`.`id` WHERE `p`.`state`=2 AND  `p`.`regist` BETWEEN :start AND :end AND `p`.`state`=2 GROUP BY `p`.`cuser` ORDER BY `cuser` ");
+        } else {
+            $stmt = $pdo->prepare("SELECT `p`.`cuser`, SUM(`p`.`cost`) AS cost, MAX(`c`.`name`) AS cname FROM `v_pay_x10` AS p LEFT JOIN `cuser` AS c ON `p`.`cuser` = `c`.`id` WHERE `p`.`state`=2 AND  `p`.`regist` BETWEEN :start AND :end AND `p`.`cuser`=:cuser  AND `p`.`state`=2   GROUP BY `p`.`cuser` ORDER BY `cuser` ");
+            $stmt->bindParam(':cuser', $LOGIN_ID, PDO::PARAM_STR);
+        }
+
+        $stmt->bindParam(':start', $startDt, PDO::PARAM_INT);
+        $stmt->bindParam(':end', $endDt, PDO::PARAM_INT);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result = new cls_csv();
+            $result->cost = $row['cost'];
+            $result->nname = $row['nname'];
+            $result->cname = is_null($row['cname']) ? 'その他': $row['cname'];
+            array_push($results, $result);
+        }
+    } catch (PDOException $e) {
+        //
+    }
+    return $results;
+}
+
+function getReportPayC_old($LOGIN_TYPE, $LOGIN_ID, $y, $m)
+{
+    try {
+        $startDt = strtotime($y.'-'.$m.'-01 00:00:00');
+        $endDt   = strtotime(date('Y-m-d 23:59:59', strtotime($y.'-'.$m.' last day of this month')));
+
+        $results = array();
+        require 'dns.php';
+        if ($LOGIN_TYPE=='admin') {
             $stmt = $pdo->prepare("SELECT `p`.adwares , `p`.`owner` , SUM(`p`.`cost`) as cost  ,MAX( `p`.`name`) as adname ,MAX( `p`.`adware_type`) as adware_type,MAX( `n`.`name`) as nname, MAX( `p`.`cuser`) as cuser, MAX( `c`.`name`) as cname FROM `v_pay_x10` AS p LEFT JOIN `nuser` as n ON `p`.`owner`=`n`.`id`  LEFT JOIN `cuser` as c ON `p`.`cuser`=`c`.`id` WHERE `p`.`state`=2 AND  `p`.`regist` BETWEEN :start AND :end AND `p`.`state`=2 GROUP BY `p`.adwares , `p`.`owner` ORDER BY `cuser`,`adwares` ");
         } else {
             $stmt = $pdo->prepare("SELECT `p`.adwares , `p`.`owner` , SUM(`p`.`cost`) as cost  ,MAX( `p`.`name`) as adname ,MAX( `p`.`adware_type`) as adware_type,MAX( `n`.`name`) as nname, MAX( `p`.`cuser`) as cuser, MAX( `c`.`name`) as cname FROM `v_pay_x10` AS p LEFT JOIN `nuser` as n ON `p`.`owner`=`n`.`id`  LEFT JOIN `cuser` as c ON `p`.`cuser`=`c`.`id` WHERE `p`.`state`=2 AND  `p`.`regist` BETWEEN :start AND :end AND `p`.`cuser`=:cuser AND `p`.`state`=2 GROUP BY `p`.adwares , `p`.`owner` ORDER BY `cuser`,`adwares` ");
@@ -1512,6 +1565,7 @@ function getReportPayC($LOGIN_TYPE, $LOGIN_ID, $y, $m)
     }
     return $results;
 }
+
 
 
 function getReportPayN($y, $m)

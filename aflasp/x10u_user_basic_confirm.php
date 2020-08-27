@@ -84,6 +84,9 @@ if (isset($_POST['doCheck'])) {
         mb_send_mail($to, $subject, $message, $headers);
     }
 
+    //【Smafee】ユーザー情報設定変更完了のお知らせ
+    mail_n16($LOGIN_ID);
+    
     header('Location: x10u_user_basic_complete.php', true, 307);
 } elseif (isset($_POST['4back'])) {
     header('Location: x10u_user_basic_edit.php', true, 307);

@@ -615,6 +615,30 @@ function getNuserX10($nId)
     return $result;
 }
 
+function getNuserSNS($nId)
+{
+    try {
+        require 'dns.php';
+        $stmt = $pdo->prepare("SELECT * FROM `x10_nuser` WHERE id=:id");
+        $stmt->bindParam(':id', $nId, PDO::PARAM_STR);
+        execSql($stmt, __FILE__." : ".__METHOD__."() : ".__LINE__);
+        $sns = "";
+        if ($row = $stmt->fetch()) {
+            $sns2 = empty($row['instagram']) ? '' : "instagram:https://www.instagram.com/".$row['instagram']."\n";
+            $sns2 .= empty($row['facebook']) ? '' : "facebook:https://www.facebook.com/".$row['facebook']."\n";
+            $sns2 .= empty($row['twitter']) ? '' : "twitter:https://twitter.com/".$row['twitter']."\n";
+            $sns2 .= empty($row['youtube']) ? '' : "youtube:https://www.youtube.com/channel/".$row['youtube']."\n";
+            $sns .= empty($sns2) ? "SNSアカウントは設定されていません" : $sns2;
+        }
+    } catch (PDOException $e) {
+        $errorMessage = 'DATABASE ERROR';
+        logging(__FILE__." : ".__METHOD__."() : ".__LINE__);
+        logging("DATABASE ERROR : ".$e->getMessage());
+        logging("ARGS : ". json_encode(func_get_args()));
+    }
+    return $sns;
+}
+
 function countNuserX10($nId)
 {
     try {

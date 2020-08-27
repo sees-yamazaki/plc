@@ -7,6 +7,8 @@ include 'x10c_helper.php';
 include 'x10c/db/x10.php';
 include 'x10c/db/nuser.php';
 include 'x10c/db/adwares.php';
+include 'x10c/db/system.php';
+include 'x10c_mail.php';
 //include 'x10c/db/dns.php';
 //require('custom/conf.php');
 // require('x10c/db/x10.php');
@@ -24,6 +26,8 @@ if (isset($_POST['fixed'])) {
     $IDs = $_POST['id'];
     foreach ($IDs as $ID) {
         updatePayStatus($ID, '入金済み');
+        //【Smafee】振込処理完了のお知らせ
+        mail_n17($ID);
     }
 }
 

@@ -56,11 +56,12 @@ for ($i = 1; $i <= 12; $i++) {
     $dataHtml2 ='<tr class="'.$oe.'">';
     $dataHtml2 .='<td>'.$tgtY.'年'.$i.'月</td>';
     $dataHtml2 .='<td class="sitename">'.$kijun.'</td>';
-    $dataHtml2 .='<td>'.number_format(round($tmp_cost * 1.1)).'</td>';//成果報酬額・税込
-    $dataHtml2 .='<td>'.number_format($tmp_cost).'</td>';//成果報酬額・税別
-    $dataHtml2 .='<td>'.number_format(round($tmp_cost * 0.1)).'</td>';//成果報酬額・税金
+    $tax = round($tmp_cost * 0.1);
+    $dataHtml2 .='<td>'.number_format($tmp_cost).'</td>';//成果報酬額・税込
+    $dataHtml2 .='<td>'.number_format($tmp_cost-$tax).'</td>';//成果報酬額・税別
+    $dataHtml2 .='<td>'.number_format($tax).'</td>';//成果報酬額・税金
     $dataHtml2 .='<td>'.number_format($carry).'</td>';//先月繰越金額
-    $dataHtml2 .='<td>'.number_format($carry+round($tmp_cost * 1.1)).'</td>';//振込対象金額
+    $dataHtml2 .='<td>'.number_format($carry+$tmp_cost).'</td>';//振込対象金額
     $dataHtml2 .='<td>00</td>';//手数料
     $dataHtml2 .='<td class="bold bgcheck">'.number_format($tmp_pay).'</td>';//振込金額
 

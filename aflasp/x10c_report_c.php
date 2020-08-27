@@ -36,7 +36,8 @@ if (isset($_POST['output'])) {
     $fp = fopen('php://output', 'w');
 
     foreach ($rows as $row) {
-        $data = [$row->cname,$adtype[$row->adware_type],$row->adname,$row->cost,$row->nname,$row->owner];
+        //$data = [$row->cname,$adtype[$row->adware_type],$row->adname,$row->cost,$row->nname,$row->owner];
+        $data = [$row->cname,$row->cost,round($row->cost*1.3)];
         fputcsv($fp, $data, ',', '"');
     }
     fclose($fp);
@@ -50,14 +51,15 @@ if (isset($_POST['output'])) {
 
 $html='';
 $total=0;
+$taxtotal=0;
 foreach ($rows as $row) {
     $html.='<tr>';
     $html.='';
     $html.='<td class="t_left">'.$row->cname.'</td>';
-    $html.='<td class="t_left">'.$adtype[$row->adware_type].$row->adname.'</td>';
     $html.='<td class="t_right">'.number_format($row->cost).'</td>';
     $total = $total + $row->cost;
-    $html.='<td class="t_left">'.$row->nname.'('.$row->owner.')</td>';
+    $html.='<td class="t_right">'.number_format(round($row->cost*1.3)).'</td>';
+    $taxtotal=$taxtotal + round($row->cost*1.3);
     $html.='<input name="search" type="hidden" value="1">';
     $html.='';
     $html.='</tr>';
@@ -65,10 +67,9 @@ foreach ($rows as $row) {
 
 if (!empty($html)) {
     $html.='<tr>';
-    $html.='<td class="t_left"></td>';
-    $html.='<td class="t_left">合計</td>';
+    $html.='<td class="t_right">合計</td>';
     $html.='<td class="t_right">'.number_format($total).'</td>';
-    $html.='<td class="t_left"></td>';
+    $html.='<td class="t_right">'.number_format($taxtotal).'</td>';
     $html.='</tr>';
 }
 
@@ -117,17 +118,16 @@ if ($LOGIN_TYPE=='admin') {
                 <td colspan=5><input type="submit" style="width:90%" value="CSV出力する"></td>
             </tr>
             <tr>
-                <th width="180">広告主</th>
-                <th width="200">広告名</th>
-                <th>報酬金額</th>
-                <th>アフィリエイター</th>
+                <th width="300">広告主</th>
+                <th width="200">広告成果総額</th>
+                <th>請求額</th>
             </tr>
 
             <?php echo $html; ?>
             </form>
         </table>
     </div>
-
+<?php echo $_SERVER['SCRIPT_FILENAME']; ?>
 
     </div>
 

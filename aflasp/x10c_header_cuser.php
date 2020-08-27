@@ -222,7 +222,7 @@
                                 <i class="mdi mdi-package-down link-icon"></i>
                             </a>
                             <ul class=" navigation-submenu" id="pages">
-                                <li><a href="x10c_report_c.php" class="menu">広告主成果一覧</a></li>
+                                <li><a href="x10c_report_c.php" class="menu">広告主請求額一覧</a></li>
                             </ul>
                         </li>
                             <li>

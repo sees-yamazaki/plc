@@ -51,6 +51,7 @@ for ($i = 1; $i <= 12; $i++) {
     $kijun = date('Y年n月', $stt);
     $where = " AND regist  BETWEEN ".$stt." AND ".$end;
     $tmp_cost = getTotalCost($where, $LOGIN_ID);
+    $tax = round($tmp_cost * 0.1);
 
     //支払いは当月
     $stt = strtotime($tgtY.'-'.$i.'-01 00:00:00');
@@ -60,19 +61,20 @@ for ($i = 1; $i <= 12; $i++) {
 
     $carry2 = $carry + $tmp_cost - $tmp_pay;
 
+
     echo mb_convert_encoding('"'.$tgtY.'年'.$i.'月"', "SJIS", "UTF-8");
     echo ',';
     echo mb_convert_encoding('"'.$kijun.'"', "SJIS", "UTF-8");
     echo ',';
-    echo round($tmp_cost * 1.1);
-    echo ',';
     echo $tmp_cost;
     echo ',';
-    echo round($tmp_cost * 0.1);
+    echo $tmp_cost-$tax;
+    echo ',';
+    echo $tax;
     echo ',';
     echo $carry;
     echo ',';
-    echo $carry+round($tmp_cost * 1.1);
+    echo $carry+$tmp_cost;
     echo ',';
     echo '0';
     echo ',';

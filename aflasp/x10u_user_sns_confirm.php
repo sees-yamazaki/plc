@@ -6,6 +6,7 @@ include 'x10c/db/adwares.php';
 include 'x10c/db/x10.php';
 include 'x10c/db/nuser.php';
 include 'x10c/db/system.php';
+include 'x10c_mail.php';
 
 session_start();
 
@@ -29,6 +30,10 @@ if (isset($_POST['doCheck'])) {
     $nUser->youtube = $_POST['youtube'];
 
     updateNuserX10sns($nUser);
+
+    //【Smafee】ユーザー情報設定変更完了のお知らせ
+    mail_n16($LOGIN_ID);
+
 
     header('Location: x10u_user_sns_complete.php');
 } elseif (isset($_POST['4back'])) {

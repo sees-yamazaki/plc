@@ -7,6 +7,8 @@ include 'x10c_helper.php';
 include 'x10c/db/x10.php';
 include 'x10c/db/nuser.php';
 include 'x10c/db/adwares.php';
+include 'x10c/db/system.php';
+include 'x10c_mail.php';
 //include 'x10c/db/dns.php';
 //require('custom/conf.php');
 // require('x10c/db/x10.php');
@@ -64,6 +66,23 @@ if (isset($_POST['doEdit'])) {
             } elseif ($ss[0]=="10" || $ss[0]=="11") {
                 //投稿がダメ
                 deletePost($id, $LOGIN_ID, $ss[1]);
+            }
+
+            // 変更前[2]  変更後[0]　
+            // 0-承認前　1-否認　2-承認
+            // 10-承認前　11-否認　12-承認　<=投稿
+            if ($ss[2]<>"2" && $ss[0]=="2") {
+                // 【Smafee】承認制広告リクエスト承認のお知らせ
+                mail_n04($ss[1], $ad);
+            } elseif ($ss[2]<>"1" && $ss[0]=="1") {
+                // 【Smafee】承認制広告リクエスト非承認のお知らせ
+                mail_n05($ss[1], $ad);
+            } elseif ($ss[2]<>"12" && $ss[0]=="12") {
+                // 【Smafee】投稿確認完了のお知らせ
+                mail_n11($ss[1], $ad);
+            } elseif ($ss[2]<>"11" && $ss[0]=="11") {
+                // 【Smafee】投稿確認否認のお知らせ
+                mail_n12($ss[1], $ad);
             }
         }
         updateAdwareOpenUser($id, $user);
@@ -156,9 +175,9 @@ if ($adware->adware_type=="1") {
                                         $stts = array('','','','','','','','','','','','','','');
                                         $stts[$ofr->status] = ' checked';
                                         if ($ofr->status=="0" || $ofr->status=="1" || $ofr->status=="2") {
-                                            echo "<input type='radio' name='stts[".$i."]' value='0:".$ofr->nuser."'".$stts[0].">承認待ち</input>　" ;
-                                            echo "<input type='radio' name='stts[".$i."]' value='1:".$ofr->nuser."'".$stts[1].">否認</input>　" ;
-                                            echo "<input type='radio' name='stts[".$i."]' value='2:".$ofr->nuser."'".$stts[2].">承認</input>　" ;
+                                            echo "<input type='radio' name='stts[".$i."]' value='0:".$ofr->nuser.":".$ofr->status."'".$stts[0].">承認待ち</input>　" ;
+                                            echo "<input type='radio' name='stts[".$i."]' value='1:".$ofr->nuser.":".$ofr->status."'".$stts[1].">否認</input>　" ;
+                                            echo "<input type='radio' name='stts[".$i."]' value='2:".$ofr->nuser.":".$ofr->status."'".$stts[2].">承認</input>　" ;
                                         } else {
                                             echo "<input type='radio' name='stts[".$i."]' value='10:".$ofr->nuser.":".$ofr->status."'".$stts[10].">承認待ち</input>　" ;
                                             echo "<input type='radio' name='stts[".$i."]' value='11:".$ofr->nuser.":".$ofr->status."'".$stts[11].">否認</input>　" ;

@@ -259,7 +259,7 @@
                             </a>
                             <ul class=" navigation-submenu" id="pages">
                                 <li><a href="x10c_report.php" class="menu">入金済み一覧</a></li>
-                                <li><a href="x10c_report_c.php" class="menu">広告主成果一覧</a></li>
+                                <li><a href="x10c_report_c.php" class="menu">広告主請求額一覧</a></li>
                                 <li><a href="x10c_report_n.php" class="menu">ユーザー成果一覧</a></li>
                                 <!--
                                 <li><a href="other.php?key=pay_report" class="menu">成果レポート出力</a></li>

@@ -24,7 +24,9 @@ $pdo = new PDO('mysql:dbname='.$DB_NAME.';charset=utf8;host='.$SQL_SERVER, $SQL_
 
 
 $pDay =  strtotime("-30 day");
-$stmt = $pdo->prepare("SELECT `pay`.*, `ad`.`name` FROM `pay` LEFT JOIN `v_adwares_status` as `ad` ON `pay`.`adwares`=`ad`.`id` "." WHERE `pay`.`state`=0 AND `pay`.regist<".$pDay);
+$sql = "SELECT `pay`.*, `ad`.`name` FROM `pay` LEFT JOIN `v_adwares_status` as `ad` ON `pay`.`adwares`=`ad`.`id` WHERE `pay`.`state`=0 AND `pay`.`regist`<".$pDay;
+
+$stmt = $pdo->prepare($sql);
 $stmt->execute();
 
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -47,11 +49,13 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $stmt3->bindParam(':cost', $cost, PDO::PARAM_INT);
     $stmt3->execute();
 
+
     $sql = "UPDATE `pay` SET `state`=2 , `is_notice`=1 WHERE owner=:owner AND  adwares=:adwares";
     $stmt4 = $pdo -> prepare($sql);
     $stmt4->bindParam(':adwares', $adwares, PDO::PARAM_STR);
     $stmt4->bindParam(':owner', $nuser, PDO::PARAM_STR);
     $stmt4->execute();
+
 
     if (substr($adwares, 0, 1)=="A") {
         $sql = "UPDATE `adwares` SET `money_count`= COALESCE(`money_count`,0)+:cost, `pay_count`=COALESCE(`pay_count`,0)+1 WHERE  id=:id";

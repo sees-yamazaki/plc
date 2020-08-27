@@ -157,24 +157,42 @@ if ($_POST['banner3_DELETE']=="1") {
 
 $sys = getSystem();
 
+$mailBody = "■広告概要━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+$mailBody .= "広告名：".$adware->name."\n";
+if ($adware->adware_type=="0") {
+    $mailBody .= "広告タイプ：成果報酬\n";
+} elseif ($adware->adware_type=="1") {
+    $mailBody .= "広告タイプ：クリック報酬\n";
+} elseif ($adware->adware_type=="2") {
+    $mailBody .= "広告タイプ：投稿報酬\n";
+}
+if ($adware->approvable=="0") {
+    $mailBody .= "承認タイプ：オープン\n";
+} elseif ($adware->approvable=="1") {
+    $mailBody .= "承認タイプ：承認制\n";
+}
+$mailBody .= "報酬：".($adware->money+$adware->click_money)."\n";
+$mailBody .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+
+
 if (isset($_POST['back'])) {
     header('Location: x10c_adwares_edit.php', true, 307);
 } elseif (isset($_POST['doEdit']) && !empty($deleteAd)) {
     if ($LOGIN_TYPE=='admin') {
         deleteAdwares($adware);
+        sendMail4Admin("広告が削除されました", "広告が削除されました\n\n".$mailBody);
         header('Location: x10c_adwares_edited.php?deleteAd=1');
     } else {
         stopAdwares($adware);
-        sendMail4Admin($sys, "広告が削除されました", "広告名：".$adware->name);
         header('Location: x10c_adwares_edited.php?deleteAd=2');
     }
 } elseif (isset($_POST['doEdit'])) {
     if (empty($id)) {
         insertAdwares($adware);
-        sendMail4Admin($sys, "広告が登録されました", "広告名：".$adware->name);
+        sendMail4Admin("広告が登録されました", "新規の広告が登録されました\n\n".$mailBody);
     } else {
         updateAdwares($adware);
-        sendMail4Admin($sys, "広告が更新されました", "広告名：".$adware->name);
+        sendMail4Admin("広告が更新されました", "広告が更新されました\n\n".$mailBody);
     }
 
     header('Location: x10c_adwares_edited.php');

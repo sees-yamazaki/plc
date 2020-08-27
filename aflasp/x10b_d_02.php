@@ -31,7 +31,7 @@ $sys_mail_name = $row['mail_name'];
 $sys_site_title = $row['site_title'];
 
 
-$stmt = $pdo->prepare("SELECT DISTINCT(`cuser`) AS 'cuser' FROM `v_offer_x10` WHERE `status`=0");
+$stmt = $pdo->prepare("SELECT DISTINCT(`cuser`) AS 'cuser' FROM `v_offer_x10` WHERE `status`=0 AND `cuser`<>'ADMIN'");
 $stmt->execute();
 
 $cusers = array();

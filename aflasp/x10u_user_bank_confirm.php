@@ -30,6 +30,9 @@ if (isset($_POST['doCheck'])) {
 
     updateNuserBank($nUser);
 
+    //【Smafee】ユーザー情報設定変更完了のお知らせ
+    mail_n16($LOGIN_ID);
+    
     header('Location: x10u_user_bank_complete.php');
 } elseif (isset($_POST['4back'])) {
     header('Location: x10u_user_bank_edit.php', true, 307);
