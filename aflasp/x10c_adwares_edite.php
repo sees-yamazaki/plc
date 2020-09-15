@@ -171,7 +171,7 @@ if ($adware->approvable=="0") {
 } elseif ($adware->approvable=="1") {
     $mailBody .= "承認タイプ：承認制\n";
 }
-$mailBody .= "報酬：".($adware->money+$adware->click_money)."\n";
+$mailBody .= "報酬：".number_format($adware->money+$adware->click_money)."円\n";
 $mailBody .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
 
 
@@ -191,7 +191,38 @@ if (isset($_POST['back'])) {
         insertAdwares($adware);
         sendMail4Admin("広告が登録されました", "新規の広告が登録されました\n\n".$mailBody);
     } else {
+        $old_adware= getAdware($adware->id);
         updateAdwares($adware);
+
+        $mailBody .= "■更新内容━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        $mailBody .= $old_adware->name <> $adware->name ? "広告名：".$adware->name."\n" : "";
+        $mailBody .= $old_adware->category <> $adware->category ? "カテゴリー：".$adware->category."\n" : "";
+        $mailBody .= $old_adware->comment <> $adware->comment ? "広告説明文：".$adware->comment."\n" : "";
+        $mailBody .= $old_adware->ad_text <> $adware->ad_text ? "キャッチコピー：".$adware->ad_text."\n" : "";
+        $mailBody .= $old_adware->url <> $adware->url ? "ジャンプ先URL：".$adware->url."\n" : "";
+        $mailBody .= $old_adware->money <> $adware->money ? "報酬：".$adware->money."\n" : "";
+        $mailBody .= $old_adware->click_money <> $adware->click_money ? "報酬：".$adware->click_money."\n" : "";
+        $mailBody .= $old_adware->limits <> $adware->limits ? "予算上限：".$adware->limits."\n" : "";
+        $mailBody .= $old_adware->url_over <> $adware->url_over ? "予算オーバー時のURL：".$adware->url_over."\n" : "";
+        $mailBody .= $old_adware->auto <> $adware->auto ? "成果の認証：".$adware->auto."\n" : "";
+        $mailBody .= $old_adware->open <> $adware->open ? "公開/非公開：".$adware->open."\n" : "";
+        $mailBody .= $old_adware->keyword <> $adware->keyword ? "キーワード、タグ：".$adware->keyword."\n" : "";
+        $mailBody .= $old_adware->meyasu <> $adware->meyasu ? "承認条件目安：".$adware->meyasu."\n" : "";
+        $mailBody .= $old_adware->results_00 <> $adware->results_00 ? "承認条件目安：サンプル提供可能\n" : "";
+        $mailBody .= $old_adware->results <> $adware->results ? "成果条件：".$adware->results."\n" : "";
+        $mailBody .= $old_adware->results_10 <> $adware->results_10 ? "成果条件：URLのクリック\n" : "";
+        $mailBody .= $old_adware->results_20 <> $adware->results_20 ? "成果条件：商品購入\n" : "";
+        $mailBody .= $old_adware->results_21 <> $adware->results_21 ? "成果条件：資料請求\n" : "";
+        $mailBody .= $old_adware->results_22 <> $adware->results_22 ? "成果条件：会員登録\n" : "";
+        $mailBody .= $old_adware->results_30 <> $adware->results_30 ? "成果条件：URLの貼り付け\n" : "";
+        $mailBody .= $old_adware->results_31 <> $adware->results_31 ? "成果条件：指定のハッシュタグ\n" : "";
+        $mailBody .= $old_adware->denials <> $adware->denials ? "否認条件：".$adware->denials."\n" : "";
+        $mailBody .= $old_adware->hashtag <> $adware->hashtag ? "指定ハッシュタグ：".$adware->hashtag."\n" : "";
+        $mailBody .= $old_adware->ngword <> $adware->ngword ? "NGキーワード：".$adware->ngword."\n" : "";
+        $mailBody .= $old_adware->note <> $adware->note ? "備考：".$adware->note."\n" : "";
+        $mailBody .= $old_adware->startdt <> $adware->startdt ? "開始日：".$adware->startdt."\n" : "";
+        $mailBody .= $old_adware->enddt <> $adware->enddt ? "終了日：".$adware->enddt."\n" : "";
+        $mailBody .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
         sendMail4Admin("広告が更新されました", "広告が更新されました\n\n".$mailBody);
     }
 

@@ -51,7 +51,7 @@ for ($i = 1; $i <= 12; $i++) {
     $kijun = date('Y年n月', $stt);
     $where = " AND regist  BETWEEN ".$stt." AND ".$end;
     $tmp_cost = getTotalCost($where, $LOGIN_ID);
-    $tax = round($tmp_cost * 0.1);
+    $tax = round($tmp_cost * 0.09090909);
 
     //支払いは当月
     $stt = strtotime($tgtY.'-'.$i.'-01 00:00:00');

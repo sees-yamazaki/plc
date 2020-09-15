@@ -56,7 +56,7 @@ for ($i = 1; $i <= 12; $i++) {
     $dataHtml2 ='<tr class="'.$oe.'">';
     $dataHtml2 .='<td>'.$tgtY.'年'.$i.'月</td>';
     $dataHtml2 .='<td class="sitename">'.$kijun.'</td>';
-    $tax = round($tmp_cost * 0.1);
+    $tax = round($tmp_cost * 0.09090909);
     $dataHtml2 .='<td>'.number_format($tmp_cost).'</td>';//成果報酬額・税込
     $dataHtml2 .='<td>'.number_format($tmp_cost-$tax).'</td>';//成果報酬額・税別
     $dataHtml2 .='<td>'.number_format($tax).'</td>';//成果報酬額・税金
@@ -127,26 +127,38 @@ for ($i = 1; $i <= 12; $i++) {
 
         <section class="sec-fee-report section">
             <div class="sec__inner container">
-                <h3 class="bar-title"><span class="bar-title-text">振込予定金額</span></h3>
-                <?php
+            <?php
             
-            $thisY = date('Y');
-            $thisM = date('m');
-            $where = " AND regist < ".strtotime(date('Y-m-d 00:00:00', mktime(0, 0, 0, $thisM - 1, 1, $thisY)));
-            $present_cost = getTotalCost($where, $LOGIN_ID);
-            //支払いは当月基準
+            //全期間の報酬と支払いを取得
+            $present_cost = getTotalCost("", $LOGIN_ID);
             $present_pay = getTotalPay("", $LOGIN_ID);
             $present_carry = $present_cost - $present_pay;
-            $ari = $present_carry>4999 ? "あり" : "なし";
-        ?>
+
+            $nextYM = date('m月', strtotime('next month'));
+            //先月、確定して報酬（来月支払い報酬）を取得
+            $startYMD = date('Y-m-1 00:00:00', strtotime('last month'));
+            $endYMD = date('Y-m-1 00:00:00', strtotime('this month'));
+            $where = " AND regist >= ".strtotime($startYMD)." AND regist < ".strtotime($endYMD);
+            $next_pay = getTotalPay($where, $LOGIN_ID);
+
+            $ari = $next_pay>0 ? "あり" : "なし";
+            ?>
+                <h3 class="bar-title"><span class="bar-title-text">現在の報酬額</span></h3>
                 <div class="dl-style">
                     <dl>
-                        <dt>来月振込予定</dt>
+                        <dd><?php echo number_format($present_carry) ?>円</dd>
+                        <dd>振り込み金額に達している場合、振込日前後は処理のタイミングで最新の数字が表示されない可能性がありますのでご了承ください。</dd>
+                    </dl>
+                </div>
+                <h3 class="bar-title"><span class="bar-title-text">振込予定金額</span></h3>
+                <div class="dl-style">
+                    <dl>
+                        <dt>振込予定(<?php echo $nextYM ?>)</dt>
                         <dd><?php echo $ari ?></dd>
                     </dl>
                     <dl>
-                        <dt>繰越金額合計</dt>
-                        <dd><?php echo number_format($present_carry) ?>円</dd>
+                        <dt>繰越予定金額合計</dt>
+                        <dd><?php echo number_format($next_pay) ?>円</dd>
                     </dl>
                 </div>
             </div>
@@ -154,10 +166,10 @@ for ($i = 1; $i <= 12; $i++) {
         <section class="sec-fee-report section">
             <div class="section__inner container">
                 <h3 class="bar-title"><span class="bar-title-text"><?php echo $tgtY ?>年のレポート</span></h3>
-                
+
                 <div class="search__contents_wrap">
                     <div class="custom__btn_drop sp">
-                    <a class="js-drop_btn" href="">表示期間を選択</a>
+                        <a class="js-drop_btn" href="">表示期間を選択</a>
                     </div>
                     <div class="search__contents drop_contents">
                         <form class="search__form" action="" method="post">
@@ -167,7 +179,7 @@ for ($i = 1; $i <= 12; $i++) {
                                         <?php
                                         for ($i = 2019; $i <= date('Y'); $i++) {
                                             $wk = ($i==$tgtY) ? " selected" : "";
-                                            echo "<option value='".$i."' ".$wk.">".$i."</option>";
+                                            echo "<option value='".$i."12' ".$wk.">".$i."</option>";
                                         }
                                         ?>
                                     </select>　
@@ -223,12 +235,12 @@ for ($i = 1; $i <= 12; $i++) {
 
 
                 <div class="result__link_btn_list">
-                    表示データをダウンロード: 
-                    <form  method="post" action="x10u_result_fee_report_csv.php" download='data_'.$tgtYM.'.csv'>
+                    表示データをダウンロード:
+                    <form method="post" action="x10u_result_fee_report_csv.php" download='data_' .$tgtYM.'.csv'>
                         <input type="hidden" name="tgtYM" value="<?php echo $tgtYM ?>">
                         <input type="submit" class="btn btn-info" value="CSV">
-                    </form> | 
-                    <form  method="post" action="x10u_result_fee_report_xls.php" download='data_'.$tgtYM.'.xlsx'>
+                    </form> |
+                    <form method="post" action="x10u_result_fee_report_xls.php" download='data_' .$tgtYM.'.xlsx'>
                         <input type="hidden" name="tgtYM" value="<?php echo $tgtYM ?>">
                         <input type="submit" class="btn btn-info" value="EXCEL">
                     </form>

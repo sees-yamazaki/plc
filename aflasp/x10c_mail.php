@@ -38,16 +38,23 @@ function sendMailFromAdmin($to, $subject, $message)
     $message .= "https://smafee.jp/contact/\n";
     $message .= "このメールは、送信専用メールアドレスから配信されています。\n";
     $message .= "ご返信いただいてもお答えできませんので、ご了承ください。\n\n";
+    $message .= "個人情報の取扱いについては個人情報保護方針をご覧下さい。\n";
+    $message .= "https://smafee.jp/privacy/\n\n";
     $message .= "■Smafee\n";
-    $message .= "https://smafee.jp/\n";
+    $message .= str_replace("a/", "", $sys->home)."\n";
     $message .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
 
     mb_send_mail($to, $subject2, $message, $headers);
 }
 
-function mail_c02($LOGIN_ID, $cuser, $ad_name)
+function mail_c02($LOGIN_ID, $cUser, $ad_name)
 {
-    $text = "この度は、Smafeeのご利用ありがとうございます。\n";
+    $cuser = getCUser($cUser);
+    $text .= $cuser->name."　様\n\n";
+
+
+    $text = "いつもSmafeeのご利用ありがとうございます。\n";
+    $text = "ユーザー様よりオファー（広告）の承認申請が到着致しました。\n";
     $text .= "下記内容をご確認ください。\n\n";
     
     $text .= "■オファーリクエスト情報━━━━━━━━━━━━━━━━━━━━\n";
@@ -72,16 +79,20 @@ function mail_c02($LOGIN_ID, $cuser, $ad_name)
     $text .= "その他ご不明な点・ご質問などございましたら、\n";
     $text .= "Smafee サポートデスクもしくは担当者までお問い合わせください。\n\n";
 
-    $cuser = getCUser($cuser);
     $to      = $cuser->mail;
     $subject = "参加リクエスト到着のお知らせ";
     $message = $text;
     sendMailFromAdmin($to, $subject, $message);
 }
 
-function mail_c04($LOGIN_ID, $cuser, $ad_name)
+function mail_c04($LOGIN_ID, $cUser, $ad_name)
 {
+    $cuser = getCUser($cUser);
+    $text .= $cuser->name."　様\n\n";
+
+
     $text = "この度は、Smafeeのご利用ありがとうございます。\n";
+    $text = "ユーザー様より投稿報酬の投稿確認申請が到着致しました。\n";
     $text .= "下記内容をご確認ください。\n\n";
             
     $text .= "■投稿確認依頼情報━━━━━━━━━━━━━━━━━━━━\n";
@@ -99,19 +110,79 @@ function mail_c04($LOGIN_ID, $cuser, $ad_name)
     $text .= "\n";
     $text .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
             
-    $text .= "投稿確認の承認は\n";
-    $text .= "下記のアドレスよりログインしてご確認ください。\n";
+    $text .= "投稿のご確認は上記のSNSをリンクをご確認いただくか\n";
+    $text .= "下記のアドレスよりログインしてリクエスト一覧からご確認ください。\n";
     $text .= "https://smafee.jp/a/\n";
             
     $text .= "その他ご不明な点・ご質問などございましたら、\n";
     $text .= "Smafee サポートデスクもしくは担当者までお問い合わせください。\n\n";
             
-    $cuser = getCUser($cuser);
     $to      = $cuser->mail;
     $subject = "投稿確認依頼到着のお知らせ";
     $message = $text;
     sendMailFromAdmin($to, $subject, $message);
 }
+
+
+function mail_n01($LOGIN_ID)
+{
+    $sys = getSystem();
+    $nUser = getNuser($LOGIN_ID);
+
+    $text = $nUser->name."　様\n\n";
+
+    $text .= "この度は、【Smafee】にご登録いただき、誠にありがとうございます。\n";
+    $text .= "お客さまの登録状況は、仮登録となっております。\n\n";
+
+    $text .= "下記URLより、メールアドレスを認証の上、本登録の完了をお願いいたします。\n\n";
+    
+    $text .= "■認証URL━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+
+    if (substr($sys->home, -1)=='/') {
+        $sys->home = substr($sys->home, 0, -1);
+    }
+    $md5 = md5($LOGIN_ID . $nUser->mail);
+    $text .= $sys->home."/x10u_activation.php?type=nUser&id=".$LOGIN_ID."&md5=".$md5;
+    $text .= "\n";
+
+    $text .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+            
+    $text .= "※このメールに心当たりがない場合は、本メールの削除をお願いいたします。\n\n";
+
+    $to      = $nUser->mail;
+    $subject = "会員仮登録完了のお知らせ";
+    $message = $text;
+    sendMailFromAdmin($to, $subject, $message);
+}
+
+
+function mail_n02($LOGIN_ID)
+{
+    $sys = getSystem();
+    $nUser = getNuser($LOGIN_ID);
+
+    $text = $nUser->name."　様\n\n";
+
+    $text .= "この度は、【Smafee】にご登録いただき、誠にありがとうございます。\n";
+    $text .= "会員登録が完了いたしましたのでお知らせいたします。\n\n";
+
+    $text .= "下記URLより、登録情報の変更および登録内容をご確認いただけます。\n\n";
+    
+    $text .= "■ログインURL━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+
+    $text .= str_replace("a/", "", $sys->home)."login\n";
+
+    $text .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+            
+    $text .= "※このメールに心当たりがない場合は、本メールの削除をお願いいたします。\n\n";
+
+    $to      = $nUser->mail;
+    $subject = "会員登録完了のお知らせ";
+    $message = $text;
+    sendMailFromAdmin($to, $subject, $message);
+}
+
+
 
 function mail_n03($LOGIN_ID, $ad)
 {
@@ -139,7 +210,7 @@ function mail_n03($LOGIN_ID, $ad)
     } else {
         $text .= "オファータイプ：\n";
     }
-    $text .= "成果単価　　　：".number_format($ad->money)."円\n";
+    $text .= "成果単価　　　：".number_format($ad->money+$ad->click_money)."円\n";
     $text .= "オファー主　　：".$cuser->name."\n";
     $text .= "オファーURL　：".$sys->home."x10u_offer_detail.php?id=".$ad->id."\n";
     $text .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
@@ -184,7 +255,7 @@ function mail_n04($LOGIN_ID, $ad)
     } else {
         $text .= "オファータイプ：\n";
     }
-    $text .= "成果単価　　　：".number_format($ad->money)."円\n";
+    $text .= "成果単価　　　：".number_format($ad->money+$ad->click_money)."円\n";
     $text .= "オファー主　　：".$cuser->name."\n";
     $text .= "オファーURL　：".$sys->home."x10u_offer_detail.php?id=".$ad->id."\n";
     $text .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
@@ -230,7 +301,7 @@ function mail_n05($LOGIN_ID, $ad)
     } else {
         $text .= "オファータイプ：\n";
     }
-    $text .= "成果単価　　　：".number_format($ad->money)."円\n";
+    $text .= "成果単価　　　：".number_format($ad->money+$ad->click_money)."円\n";
     $text .= "オファー主　　：".$cuser->name."\n";
     $text .= "オファーURL　：".$sys->home."x10u_offer_detail.php?id=".$ad->id."\n";
     $text .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
@@ -300,7 +371,7 @@ function mail_n10($LOGIN_ID, $ad)
     $text .= "\n\n";
 
     $to      = $nUser->mail;
-    $subject = "承認制広告リクエスト完了のお知らせ";
+    $subject = "投稿確認リクエスト完了のお知らせ";
     $message = $text;
     sendMailFromAdmin($to, $subject, $message);
 }
@@ -485,7 +556,15 @@ function mail_n14($LOGIN_ID, $ad)
     $text .= "いつも【Smafee】をご利用いただき、誠にありがとうございます。\n";
     $text .= "投稿報酬型広告への投稿最終確認が否認となってしまいましたのでお知らせいたします。\n\n";
 
-    $text .= "■オファー情報━━━━━━━━━━━━━━━━━━━━\n";
+    $text .= "※投稿リクエストは再度行うことが出来ますが\n";
+    $text .= "下記をご確認の上行って頂けますと承認されやすくなるかと思います。\n\n";
+
+    $text .= "・SNSアカウントにて設定しているアカウントとは別のSNSで投稿した\n";
+    $text .= "（ログイン後メニューの「設定変更」確認）\n";
+    $text .= "・オファー主（広告主）が設定されている否認条件に該当\n";
+    $text .= "・オファー主（広告主）が設定されているNGワードを使用している\n\n";
+
+    $text .= "■投稿確認情報━━━━━━━━━━━━━━━━━━━━━━━━━\n";
     $text .= "オファー名　　：".$ad->name."\n";
     if ($ad->adware_type=="0") {
         $text .= "オファータイプ：成果報酬型\n";
@@ -506,10 +585,9 @@ function mail_n14($LOGIN_ID, $ad)
     $text .= "\n";
     $text .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
             
-    $text .= "※否認理由は個別にお応えすることが出来ませんのでご了承下さい。\n";
-    $text .= "※多くある否認理由と致しまして下記理由が挙げられます\n";
-    $text .= "・投稿が削除されていた・編集されていた\n";
-    $text .= "・オファー主（広告主）が設定されている否認条件に該当\n\n";
+    $text .= "※投稿は上記で設定されているSNSアカウントを広告主が確認致します\n";
+    $text .= "投稿したSNSと上記が一致していない場合はSNSアカウント設定より編集してください\n";
+    $text .= "（ログイン後メニューの「設定変更」確認）\n\n";
     
     $text .= "※そのほか操作方法等はマニュアルをご確認下さい。\n";
     $text .= "・スマフィーのはじめ方\n";
@@ -517,7 +595,7 @@ function mail_n14($LOGIN_ID, $ad)
     $text .= "\n\n";
 
     $to      = $nUser->mail;
-    $subject = "投稿最終確認完了(成果確定)のお知らせ";
+    $subject = "投稿確認否認のお知らせ";
     $message = $text;
     sendMailFromAdmin($to, $subject, $message);
 }

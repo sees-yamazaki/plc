@@ -24,7 +24,7 @@ $pdo = new PDO('mysql:dbname='.$DB_NAME.';charset=utf8;host='.$SQL_SERVER, $SQL_
 
 
 $pDay =  strtotime("-30 day");
-$sql = "SELECT `pay`.*, `ad`.`name` FROM `pay` LEFT JOIN `v_adwares_status` as `ad` ON `pay`.`adwares`=`ad`.`id` WHERE `pay`.`state`=0 AND `pay`.`regist`<".$pDay;
+$sql = "SELECT `pay`.*, `ad`.`name` FROM `pay` LEFT JOIN `v_adwares_status` as `ad` ON `pay`.`adwares`=`ad`.`id` WHERE `pay`.`state`=0 AND `pay`.`regist`<".$pDay." AND `ad`.`adware_type`=2";
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute();

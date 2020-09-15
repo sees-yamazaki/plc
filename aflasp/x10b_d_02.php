@@ -43,12 +43,22 @@ mb_language("Japanese");
 mb_internal_encoding("UTF-8");
 
 foreach ($cusers as $cuser) {
+    $stmt3 = $pdo->prepare("SELECT * FROM `cuser` WHERE id=:cuser");
+    $stmt3->bindParam(':cuser', $cuser, PDO::PARAM_STR);
+    $stmt3->execute();
+    $row3 = $stmt3->fetch(PDO::FETCH_ASSOC);
+    $u_name = $row3['name'];
+    $u_mail = $row3['mail'];
+
+    $text .= $u_name."　様\n\n";
+
+
     $stmt2 = $pdo->prepare("SELECT  `A`.`name` AS `aname`,`U`.`id` AS `uid`, `U`.`name`,`U`.`mail`,`X`.`instagram`,`X`.`facebook`,`X`.`twitter`,`X`.`youtube`  FROM `v_offer_x10` AS `O` LEFT JOIN `nuser` AS `U` ON `O`.`nuser`=`U`.`id`  LEFT JOIN `x10_nuser` AS `X` ON `O`.`nuser`=`X`.`id` LEFT JOIN `v_adwares_x10` AS `A` ON `O`.`adware`=`A`.`id`  WHERE `status`=0 AND `O`.`cuser`='".$cuser."' AND `O`.`cuser`<>'ADMIN'");
     $stmt2->execute();
 
 
-    $text = "この度は、Smafeeのご利用ありがとうございます。\n";
-    $text .= "参加リクエスト申請が1件以上残っているクライアント様にお送りしております。\n\n";
+    $text = "いつもSmafeeのご利用ありがとうございます。\n";
+    $text = "参加リクエスト申請が1件以上残っているクライアント様にお送りしております。\n\n";
 
     $text .= "下記内容をご確認ください。\n\n";
 
@@ -84,11 +94,6 @@ foreach ($cusers as $cuser) {
     $text .= "https://smafee.jp/\n";
     $text .= "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
 
-    $stmt3 = $pdo->prepare("SELECT * FROM `cuser` WHERE id=:cuser");
-    $stmt3->bindParam(':cuser', $cuser, PDO::PARAM_STR);
-    $stmt3->execute();
-    $row3 = $stmt3->fetch(PDO::FETCH_ASSOC);
-    $u_mail = $row3['mail'];
 
     $to      = $u_mail;
     $subject = "【".$sys_site_title."】参加リクエストをご確認下さい";

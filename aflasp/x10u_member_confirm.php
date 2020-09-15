@@ -6,6 +6,7 @@ include 'x10c/db/adwares.php';
 include 'x10c/db/x10.php';
 include 'x10c/db/nuser.php';
 include 'x10c/db/system.php';
+include 'x10c_mail.php';
 
 session_start();
 
@@ -65,27 +66,7 @@ if (isset($_POST['doCheck'])) {
 
         insertNuserX10($nUserX);
 
-
-        $sys = getSystem();
-
-        mb_language("Japanese");
-        mb_internal_encoding("UTF-8");
-
-        $text = "\n\nメールアドレスを認証するために、下記URLをクリックしてください。\n\n";
-        if (substr($sys->home, -1)=='/') {
-            $sys->home = substr($sys->home, 0, -1);
-        }
-        $md5 = md5($nId . $nUser->mail);
-        $text .= $sys->home."/x10u_activation.php?type=nUser&id=".$nId."&md5=".$md5;
-        $sysurl = str_replace("a/", "", $sys->home);
-        $text .= "\n\n".$sys->site_title."\n\n".$sysurl;
-
-        $to      = $nUser->mail;
-        $subject = "【".$sys->site_title."】メールアドレスの認証が完了しました。";
-        $message = $text;
-        $headers = 'From:"'.mb_encode_mimeheader($sys->mail_name).'" <'. trim($sys->mail_address).'>';
-        mb_send_mail($to, $subject, $message, $headers);
-        
+        mail_n01($nId);
 
         header('Location: x10u_member_complete.php');
     }

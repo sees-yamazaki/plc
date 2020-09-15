@@ -127,7 +127,6 @@ if ($LOGIN_TYPE=='admin') {
             </form>
         </table>
     </div>
-<?php echo $_SERVER['SCRIPT_FILENAME']; ?>
 
     </div>
 

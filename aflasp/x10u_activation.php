@@ -6,6 +6,7 @@ include 'x10c/db/adwares.php';
 include 'x10c/db/x10.php';
 include 'x10c/db/nuser.php';
 include 'x10c/db/system.php';
+include 'x10c_mail.php';
 
 // セッション再開
 session_start();
@@ -27,6 +28,7 @@ $html='';
 if ($md5_==$md5) {
     $sys = getSystem();
     updateNuserActivate($nUser->id, $sys->nuser_accept_admin);
+    mail_n02($nId);
     $html.='<div class="alert_box_complete">';
     $html.='<h4 class="alert_box_complete_title"><span class="icon_check_grn"></span>アクティベーションが完了致しました。</h4>';
     $html.='<p class="alert_box_text">下記よりログイン画面にお進み下さい。</p>';
